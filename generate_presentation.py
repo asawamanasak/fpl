@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 """
 FPL Presentation Generator
-- Starter & Bench Cards: Clean Official FPL Team Kit Shirts (Without Squad Numbers)
+- Side-by-Side Comparison: Choice 1 (Heavy Arsenal GKP) vs Choice 2 (Unbreakable Foundation & Depth)
+- Clean Official FPL Team Kit Shirts (Without Squad Numbers) from https://fantasy.premierleague.com
 - FDR Ticker Legend Strip: Easy (FDR 2), Normal (FDR 3), Hard (FDR 4), Very Hard (FDR 5)
-- Kit Shirt Images exclusively from https://fantasy.premierleague.com
-- Fixture Table: Multi-Column Sorting (Name, Club, Pos, Cost, GW3-38) + Reset Sort Button
-- Fixed Sticky Table Overlap Glitch with Multi-Layer Z-Index & Opaque Backgrounds
-- Chip Roadmap: Verified 8-Chip Status Strip (Bench Boost 1 [USED GW1], Wildcard 1 [USED GW3], and 6 Available [GREEN])
-- Renamed Nav Tabs: Plan Lineup, FDR Ticker, Chip Roadmap, Research Sources
-- Zero Emojis, Dark Minimalist Theme, 5 Sources Integrated
+- Full Season Ticker (GW3 - GW38) Multi-Column Sorting + Reset Button
+- Verified 8-Chip Roadmap & 5 Intelligence Sources Ledger
+- Zero Emojis, Dark Minimalist Theme
 """
 
 import json
@@ -153,7 +151,6 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     
     current_gw = current_event_obj["id"] if current_event_obj else entry.get("current_event", 2)
     next_gw = next_event_obj["id"] if next_event_obj else current_gw + 1
-    next_deadline = next_event_obj["deadline_time"] if next_event_obj else ""
 
     teams = {t["id"]: t for t in bootstrap.get("teams", [])}
     elements_map = {e["id"]: e for e in bootstrap.get("elements", [])}
@@ -213,11 +210,9 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
         tot_pts = el.get("total_points", 0)
         xgi = float(el.get("expected_goal_involvements", 0.0) or 0.0)
-        p_code = el.get("code", "")
 
         return {
             "id": el["id"],
-            "code": p_code,
             "web_name": el["web_name"],
             "full_name": f"{el.get('first_name', '')} {el.get('second_name', '')}",
             "team_code": team_short,
@@ -237,9 +232,9 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             "xgi": xgi
         }
 
-    # Blueprint 1 (3-5-2 Midfield Dominance)
-    bp1_ids = [
-        (109, True, False, False, False, True),   # Verbruggen (GKP)
+    # CHOICE 1: User Latest Wildcard (Raya £6.0m GKP, Groß £5.5m, Walle Egeli £4.5m)
+    c1_ids = [
+        (1, True, False, False, False, False),    # Raya (GKP)
         (391, True, False, False, True, False),   # Gvardiol (DEF Core)
         (10, True, False, False, False, False),   # White (DEF)
         (499, True, False, False, False, False),  # Pedro Porro (DEF)
@@ -247,45 +242,50 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         (399, True, False, False, False, False),  # Cherki (MID)
         (40, True, False, False, False, False),   # Rogers (MID)
         (368, True, False, False, True, False),   # Szoboszlai (MID Core)
-        (565, True, False, False, False, False),  # M.Sangaré (MID)
+        (124, True, False, False, False, True),   # Groß (MID Value)
         (411, True, True, False, True, False),    # Haaland (FWD C Core)
         (165, True, False, False, True, False),   # João Pedro (FWD Core)
         # Bench
         (497, False, False, False, False, False), # Dubravka (GKP Sub)
-        (249, False, False, False, False, True),  # Louie Barry (FWD Sub 1 Value)
-        (115, False, False, False, False, False), # De Cuyper (DEF Sub 2)
-        (31, False, False, False, False, False),  # Konsa (DEF Sub 3)
+        (321, False, False, False, False, True),  # Walle Egeli (FWD Sub 1 Enabler)
+        (31, False, False, False, False, False),  # Konsa (DEF Sub 2)
+        (593, False, False, False, False, False), # Dedić (DEF Sub 3)
     ]
-    bp1_squad = [build_player_by_id(*p) for p in bp1_ids if build_player_by_id(*p)]
-    bp1_starters = [p for p in bp1_squad if p["is_starter"]]
-    bp1_bench = [p for p in bp1_squad if not p["is_starter"]]
-    bp1_cost = sum(p["cost"] for p in bp1_squad)
-    bp1_bank = round(100.1 - bp1_cost, 2)
+    c1_squad = [build_player_by_id(*p) for p in c1_ids if build_player_by_id(*p)]
+    c1_starters = [p for p in c1_squad if p["is_starter"]]
+    c1_bench = [p for p in c1_squad if not p["is_starter"]]
+    c1_cost = sum(p["cost"] for p in c1_squad)
+    c1_bank = round(100.3 - c1_cost, 2)
+    if c1_bank < 0: c1_bank = 0.0
 
-    # Blueprint 2 (3-4-3 Heavy Strike with Barry starting)
-    bp2_ids = [
-        (109, True, False, False, False, True),   # Verbruggen (GKP)
+    # CHOICE 2: Recommended Unbreakable Foundation (Verbruggen £4.5m, Barry £5.5m Sub, Mitchell £4.5m, Bank £0.5m)
+    c2_ids = [
+        (109, True, False, False, False, True),   # Verbruggen (GKP Value)
         (391, True, False, False, True, False),   # Gvardiol (DEF Core)
         (10, True, False, False, False, False),   # White (DEF)
-        (115, True, False, False, False, False),  # De Cuyper (DEF)
+        (499, True, False, False, False, False),  # Pedro Porro (DEF)
         (154, True, False, True, False, False),   # Palmer (MID VC)
         (399, True, False, False, False, False),  # Cherki (MID)
         (40, True, False, False, False, False),   # Rogers (MID)
         (368, True, False, False, True, False),   # Szoboszlai (MID Core)
+        (124, True, False, False, False, True),   # Groß (MID Value)
         (411, True, True, False, True, False),    # Haaland (FWD C Core)
         (165, True, False, False, True, False),   # João Pedro (FWD Core)
-        (249, True, False, False, False, True),   # Barry (FWD Value)
         # Bench
         (497, False, False, False, False, False), # Dubravka (GKP Sub)
-        (499, False, False, False, False, False), # Pedro Porro (DEF Sub 1)
-        (565, False, False, False, False, False), # M.Sangaré (MID Sub 2)
-        (31, False, False, False, False, False),  # Konsa (DEF Sub 3)
+        (249, False, False, False, False, True),  # Louie Barry (FWD Sub 1 - xGI 2.02)
+        (204, False, False, False, False, False), # Mitchell (DEF Sub 2 - 180 mins)
+        (593, False, False, False, False, False), # Dedić (DEF Sub 3 - 180 mins)
     ]
-    bp2_squad = [build_player_by_id(*p) for p in bp2_ids if build_player_by_id(*p)]
-    bp2_starters = [p for p in bp2_squad if p["is_starter"]]
-    bp2_bench = [p for p in bp2_squad if not p["is_starter"]]
-    bp2_cost = sum(p["cost"] for p in bp2_squad)
-    bp2_bank = round(100.1 - bp2_cost, 2)
+    c2_squad = [build_player_by_id(*p) for p in c2_ids if build_player_by_id(*p)]
+    c2_starters = [p for p in c2_squad if p["is_starter"]]
+    c2_bench = [p for p in c2_squad if not p["is_starter"]]
+    c2_cost = sum(p["cost"] for p in c2_squad)
+    c2_bank = 0.5
+
+    # Combine unique players for full season ticker
+    all_ticker_pids = list(dict.fromkeys([p[0] for p in c1_ids] + [p[0] for p in c2_ids]))
+    all_ticker_squad = [build_player_by_id(pid, True) for pid in all_ticker_pids if build_player_by_id(pid, True)]
 
     # Generate GW3 to GW38 headers
     gw_headers = []
@@ -897,25 +897,25 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                 <div class="season-badge">FPL 2026/27</div>
                 <div class="title-box">
                     <h1>{entry.get("name", "GEMINI UNITED")}</h1>
-                    <p>Manager: {entry.get("player_first_name", "")} {entry.get("player_last_name", "")} | Official FPL Kit Squad</p>
+                    <p>Manager: {entry.get("player_first_name", "")} {entry.get("player_last_name", "")} | Wildcard GW3 Options</p>
                 </div>
             </div>
             <div class="stats-strip">
                 <div class="stat-cell">
-                    <span class="lbl">Squad Value</span>
-                    <span class="val">£{bp1_cost:.1f}m</span>
+                    <span class="lbl">Squad Choice</span>
+                    <span class="val" style="color:#ffffff;">3-5-2 Matrix</span>
                 </div>
                 <div class="stat-cell">
-                    <span class="lbl">In Bank</span>
-                    <span class="val" style="color:var(--accent-sky);">£{bp1_bank:.1f}m</span>
+                    <span class="lbl">Bank (Choice 2)</span>
+                    <span class="val" style="color:var(--accent-sky);">+£0.5m</span>
                 </div>
                 <div class="stat-cell">
-                    <span class="lbl">Total Budget</span>
-                    <span class="val" style="color:#ffffff;">£100.1m</span>
-                </div>
-                <div class="stat-cell">
-                    <span class="lbl">GW3 Chip</span>
+                    <span class="lbl">Active Chip</span>
                     <span class="val">WILDCARD</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="lbl">Season Target</span>
+                    <span class="val" style="color:var(--accent-emerald);">TOP 100K</span>
                 </div>
             </div>
         </div>
@@ -931,84 +931,84 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
     <!-- Main Content Area -->
     <main>
-        <!-- TAB 1: PLAN LINEUP (CLEAN FPL KIT SHIRTS WITHOUT SQUAD NUMBERS) -->
+        <!-- TAB 1: PLAN LINEUP (SIDE-BY-SIDE CHOICE 1 VS CHOICE 2) -->
         <section id="tab-comparison" class="tab-content active">
             <div class="lineup-split-grid">
                 
-                <!-- LEFT COLUMN: BLUEPRINT 1 (3-5-2) -->
+                <!-- LEFT COLUMN: CHOICE 1 (USER'S SETUP) -->
                 <div class="plan-column">
                     <div class="plan-col-header">
                         <div>
-                            <div class="plan-title">Blueprint 1: Midfield Dominance (3-5-2)</div>
-                            <span style="font-size:0.68rem; color:var(--text-secondary);">Sub 1: Louie Barry (FWD &bull; xGI 1.96)</span>
+                            <div class="plan-title">Choice 1: Heavy Arsenal GKP &amp; Midfield Power</div>
+                            <span style="font-size:0.68rem; color:var(--text-secondary);">Raya (£6.0m) &bull; Groß (£5.5m) &bull; Sub: Walle Egeli (£4.5m)</span>
                         </div>
                         <div class="fin-badge">
-                            Value: <span style="color:var(--accent-emerald);">£{bp1_cost:.1f}m</span> | Bank: <span style="color:var(--accent-sky);">£{bp1_bank:.1f}m</span>
+                            Cost: <span style="color:var(--accent-emerald);">£{c1_cost:.1f}m</span> | Bank: <span style="color:var(--accent-sky);">£{c1_bank:.1f}m</span>
                         </div>
                     </div>
 
                     <div class="compact-pitch">
                         <!-- FWD (2) -->
                         <div class="pitch-row">
-                            {"".join([render_starter_card(p) for p in bp1_starters if p["pos"] == "FWD"])}
+                            {"".join([render_starter_card(p) for p in c1_starters if p["pos"] == "FWD"])}
                         </div>
                         <!-- MID (5) -->
                         <div class="pitch-row">
-                            {"".join([render_starter_card(p) for p in bp1_starters if p["pos"] == "MID"])}
+                            {"".join([render_starter_card(p) for p in c1_starters if p["pos"] == "MID"])}
                         </div>
                         <!-- DEF (3) -->
                         <div class="pitch-row">
-                            {"".join([render_starter_card(p) for p in bp1_starters if p["pos"] == "DEF"])}
+                            {"".join([render_starter_card(p) for p in c1_starters if p["pos"] == "DEF"])}
                         </div>
                         <!-- GKP (1) -->
                         <div class="pitch-row">
-                            {"".join([render_starter_card(p) for p in bp1_starters if p["pos"] == "GKP"])}
+                            {"".join([render_starter_card(p) for p in c1_starters if p["pos"] == "GKP"])}
                         </div>
                     </div>
 
                     <div class="compact-bench-strip">
-                        <div class="bench-lbl">Substitutes Bench (Playing Depth)</div>
+                        <div class="bench-lbl">Substitutes Bench</div>
                         <div class="bench-row">
-                            {"".join([render_bench_chip(p, sub_idx=i+1) for i, p in enumerate(bp1_bench)])}
+                            {"".join([render_bench_chip(p, sub_idx=i+1) for i, p in enumerate(c1_bench)])}
                         </div>
                     </div>
                 </div>
 
-                <!-- RIGHT COLUMN: BLUEPRINT 2 (3-4-3) -->
-                <div class="plan-column">
+                <!-- RIGHT COLUMN: CHOICE 2 (RECOMMENDED FOUNDATION SETUP) -->
+                <div class="plan-column" style="border-color: rgba(16, 185, 129, 0.4);">
                     <div class="plan-col-header">
                         <div>
-                            <div class="plan-title">Blueprint 2: Heavy Attack (3-4-3 with Barry)</div>
-                            <span style="font-size:0.68rem; color:var(--text-secondary);">Barry starts &bull; De Cuyper starts in DEF</span>
+                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2: Unbreakable Foundation &amp; Depth</div>
+                            <span style="font-size:0.68rem; color:var(--text-secondary);">Verbruggen (£4.5m) &bull; 100% Starters &bull; Sub 1: Barry (xGI 2.02)</span>
                         </div>
-                        <div class="fin-badge">
-                            Value: <span style="color:var(--accent-emerald);">£{bp2_cost:.1f}m</span> | Bank: <span style="color:var(--accent-sky);">£{bp2_bank:.1f}m</span>
+                        <div class="fin-badge" style="border-color:var(--accent-emerald);">
+                            Cost: <span style="color:var(--accent-emerald);">£{c2_cost:.1f}m</span> | Bank: <span style="color:var(--accent-sky);">+£{c2_bank:.1f}m</span>
                         </div>
                     </div>
 
                     <div class="compact-pitch">
-                        <!-- FWD (3) -->
+                        <!-- FWD (2) -->
                         <div class="pitch-row">
-                            {"".join([render_starter_card(p) for p in bp2_starters if p["pos"] == "FWD"])}
+                            {"".join([render_starter_card(p) for p in c2_starters if p["pos"] == "FWD"])}
                         </div>
-                        <!-- MID (4) -->
+                        <!-- MID (5) -->
                         <div class="pitch-row">
-                            {"".join([render_starter_card(p) for p in bp2_starters if p["pos"] == "MID"])}
+                            {"".join([render_starter_card(p) for p in c2_starters if p["pos"] == "MID"])}
                         </div>
                         <!-- DEF (3) -->
                         <div class="pitch-row">
-                            {"".join([render_starter_card(p) for p in bp2_starters if p["pos"] == "DEF"])}
+                            {"".join([render_starter_card(p) for p in c2_starters if p["pos"] == "DEF"])}
                         </div>
                         <!-- GKP (1) -->
                         <div class="pitch-row">
-                            {"".join([render_starter_card(p) for p in bp2_starters if p["pos"] == "GKP"])}
+                            {"".join([render_starter_card(p) for p in c2_starters if p["pos"] == "GKP"])}
                         </div>
                     </div>
 
                     <div class="compact-bench-strip">
-                        <div class="bench-lbl">Substitutes Bench (Playing Depth)</div>
+                        <div class="bench-lbl">Substitutes Bench (100% 90-Min Regulars)</div>
                         <div class="bench-row">
-                            {"".join([render_bench_chip(p, sub_idx=i+1) for i, p in enumerate(bp2_bench)])}
+                            {"".join([render_bench_chip(p, sub_idx=i+1) for i, p in enumerate(c2_bench)])}
                         </div>
                     </div>
                 </div>
@@ -1048,7 +1048,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                             </tr>
                         </thead>
                         <tbody>
-                            {"".join([render_ticker_row_full_season(p, team_fixtures, 3, 38, i) for i, p in enumerate(bp1_squad)])}
+                            {"".join([render_ticker_row_full_season(p, team_fixtures, 3, 38, i) for i, p in enumerate(all_ticker_squad)])}
                         </tbody>
                     </table>
                 </div>
@@ -1311,7 +1311,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print(f"[✔] Generated Presentation without Squad Numbers successfully at: {output_file}")
+    print(f"[✔] Generated Presentation with Choice 1 vs Choice 2 successfully at: {output_file}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate FPL Presentation HTML")

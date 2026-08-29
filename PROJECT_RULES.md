@@ -4,9 +4,10 @@
 
 ---
 
-### 1. นโยบายการอัปเดต Presentation & GitHub Push (Local-First Workflow)
-* **Local-First Always :** ทุกครั้งที่มีการวิเคราะห์ทีมหรือปรับเปลี่ยนผังไลน์อัป ระบบจะสร้างและอัปเดตไฟล์ Presentation ในเครื่อง Local เท่านั้น (`index.html` และ `fpl_gw{X}_presentation.html`) เพื่อให้ผู้จัดการทีมตรวจเช็กในเครื่องก่อน
-* **Explicit GitHub Push Only :** **ห้ามสั่ง Git Push ขึ้น GitHub โดยอัตโนมัติเด็ดขาด** จะทำการ Push ไฟล์ขึ้น GitHub ต่อเมื่อผู้จัดการทีมมีคำสั่งแจ้งอย่างชัดเจนเท่านั้น (เช่น "อัปโหลดขึ้น GitHub", "Push ขึ้น GitHub")
+### 1. กฎการดึงข้อมูลสดก่อนตอบทุกครั้ง (Mandatory Live API Fetch Protocol)
+* **Live Fetch on Every Query :** ทุกครั้งที่มีคำถามจากผู้จัดการทีม ไม่ว่าจะเป็นการวิเคราะห์ทีม, การถามข้อมูลนักเตะ, หรือคำถามทั่วไป ระบบจะต้องทำการ Re-fetch ข้อมูลสดล่าสุดจาก **Official FPL API** และ **Solio Analytics API** ทันที ก่อนเริ่มการคำนวณและตอบคำถามเสมอ เพื่อให้ได้ตัวเลขราคา, สถานะอาการบาดเจ็บ, สถิติ xGI และข้อมูลที่ถูกต้องเป็นปัจจุบัน 100%
+* **Local-First Presentation :** การสร้างและแก้ไขไฟล์ Presentation จะทำในเครื่อง Local เสมอ (`index.html` และ `fpl_gw{X}_presentation.html`)
+* **Explicit GitHub Push Only :** ทำการ Push ขึ้น GitHub ต่อเมื่อผู้จัดการทีมมีคำสั่งแจ้งอย่างชัดเจนเท่านั้น
 
 ---
 
@@ -27,5 +28,5 @@
 ---
 
 ### 4. นโยบายการบริหารทีมระยะยาว (Long-Term Low Turnover Policy)
-* **No Deadweight Bench :** ตัวสำรองทุกคนต้องเป็นตัวจริงที่ลงเล่น 90 นาทีจริงในพรีเมียร์ลีก
+* **No Deadweight Bench :** ตัวสำรองทุกคนต้องเป็นตัวจริงที่ลงเล่นจริงในพรีเมียร์ลีก
 * **Target :** จบฤดูกาลในอันดับ **Top 100k**
