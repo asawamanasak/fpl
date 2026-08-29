@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """
 FPL Presentation Generator
+- Starter & Bench Cards: Clean Official FPL Team Kit Shirts (Without Squad Numbers)
 - FDR Ticker Legend Strip: Easy (FDR 2), Normal (FDR 3), Hard (FDR 4), Very Hard (FDR 5)
-- Kit Shirt Images & Squad Numbers exclusively from https://fantasy.premierleague.com
-- Starter Cards: Official FPL Team Kit Shirt with Squad Number (#) & Info Box Below
-- Bench Cards: Compact FPL Team Kit Shirt Chips
+- Kit Shirt Images exclusively from https://fantasy.premierleague.com
 - Fixture Table: Multi-Column Sorting (Name, Club, Pos, Cost, GW3-38) + Reset Sort Button
 - Fixed Sticky Table Overlap Glitch with Multi-Layer Z-Index & Opaque Backgrounds
 - Chip Roadmap: Verified 8-Chip Status Strip (Bench Boost 1 [USED GW1], Wildcard 1 [USED GW3], and 6 Available [GREEN])
@@ -26,25 +25,6 @@ def load_json(filepath):
     except Exception:
         return None
 
-# Verified Official Squad Numbers for Lineup Kit Display
-SQUAD_NUMBERS = {
-    109: 1,   # Bart Verbruggen (Brighton)
-    391: 24,  # Joško Gvardiol (Man City)
-    10: 4,    # Benjamin White (Arsenal)
-    499: 23,  # Pedro Porro (Spurs)
-    154: 20,  # Cole Palmer (Chelsea)
-    399: 18,  # Rayan Cherki (Man City)
-    40: 17,   # Morgan Rogers (Chelsea)
-    368: 8,   # Dominik Szoboszlai (Liverpool)
-    565: 26,  # Mamadou Sangaré (Brentford)
-    411: 9,   # Erling Haaland (Man City)
-    165: 9,   # João Pedro (Chelsea)
-    497: 1,   # Martin Dúbravka (Spurs)
-    249: 19,  # Thierno Barry (Everton)
-    115: 29,  # Maxim De Cuyper (Brighton)
-    31: 15,   # Ezri Konsa (Arsenal)
-}
-
 def render_starter_card(p):
     cap_marker = ""
     if p.get("is_captain"):
@@ -57,14 +37,12 @@ def render_starter_card(p):
     core_tag = '<span class="core-tag-mini">CORE</span>' if p.get("is_core") else ''
     enabler_tag = '<span class="enabler-tag-mini">VALUE</span>' if p.get("is_enabler") else ''
 
-    p_id = p.get("id", 1)
     t_code = p.get("official_team_code", 43)
     is_gkp = p.get("pos") == "GKP"
     shirt_suffix = "_1-66.png" if is_gkp else "-66.png"
     
     # Official FPL Shirt URL from fantasy.premierleague.com only
     fpl_shirt_url = f"https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_{t_code}{shirt_suffix}"
-    squad_no = SQUAD_NUMBERS.get(p_id, p_id % 99 + 1)
 
     return f"""
     <div class="starter-card">
@@ -73,7 +51,6 @@ def render_starter_card(p):
                  alt="{p['web_name']}" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#{squad_no}</span>
             {cap_marker}
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini {pos_class}">{p['pos']}</span>
@@ -99,14 +76,12 @@ def render_bench_chip(p, sub_idx=1):
     enabler_tag = '<span class="enabler-tag-mini">VALUE</span>' if p.get("is_enabler") else ''
     sub_tag = f'<span class="sub-label-mini">S{sub_idx}</span>'
 
-    p_id = p.get("id", 1)
     t_code = p.get("official_team_code", 43)
     is_gkp = p.get("pos") == "GKP"
     shirt_suffix = "_1-66.png" if is_gkp else "-66.png"
     
     # Official FPL Shirt URL from fantasy.premierleague.com only
     fpl_shirt_url = f"https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_{t_code}{shirt_suffix}"
-    squad_no = SQUAD_NUMBERS.get(p_id, p_id % 99 + 1)
 
     return f"""
     <div class="player-chip bench-chip">
@@ -117,7 +92,6 @@ def render_bench_chip(p, sub_idx=1):
                 {core_tag}
                 {enabler_tag}
             </div>
-            <span class="bench-squad-no">#{squad_no}</span>
         </div>
         <div class="chip-center">
             <img src="{fpl_shirt_url}" 
@@ -523,7 +497,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             align-items: flex-start;
         }}
 
-        /* STARTER CARD: TEAM KIT SHIRT + SQUAD NUMBER FROM FANTASY.PREMIERLEAGUE.COM */
+        /* STARTER CARD: CLEAN TEAM KIT SHIRT (WITHOUT SQUAD NUMBER) */
         .starter-card {{
             display: flex;
             flex-direction: column;
@@ -553,21 +527,6 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             height: 54px;
             object-fit: contain;
             filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
-        }}
-        .squad-number-tag {{
-            position: absolute;
-            top: 4px;
-            left: 5px;
-            font-size: 0.68rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-            color: #cbd5e1;
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid var(--border-accent);
-            padding: 0.05rem 0.25rem;
-            border-radius: 3px;
-            line-height: 1;
-            z-index: 3;
         }}
         .starter-badges-overlay {{
             position: absolute;
@@ -636,7 +595,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         }}
         .starter-fix-text {{ color: var(--text-secondary); font-weight: 600; }}
 
-        /* Bench Chip with Official Team Shirt */
+        /* Bench Chip with Clean Official Team Shirt */
         .player-chip.bench-chip {{
             background: rgba(15, 20, 28, 0.95);
             border: 1px solid #1e293b;
@@ -649,7 +608,6 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             gap: 1px;
         }}
         .chip-top {{ display: flex; justify-content: space-between; align-items: center; font-size: 0.55rem; }}
-        .bench-squad-no {{ font-size: 0.55rem; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-weight: 700; }}
         .chip-center {{ display: flex; align-items: center; gap: 0.35rem; margin: 1px 0; }}
         .bench-shirt-img {{ width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }}
         .chip-name-box {{ text-align: left; overflow: hidden; flex: 1; }}
@@ -973,7 +931,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
     <!-- Main Content Area -->
     <main>
-        <!-- TAB 1: PLAN LINEUP (OFFICIAL FPL KIT SHIRTS & SQUAD NUMBERS) -->
+        <!-- TAB 1: PLAN LINEUP (CLEAN FPL KIT SHIRTS WITHOUT SQUAD NUMBERS) -->
         <section id="tab-comparison" class="tab-content active">
             <div class="lineup-split-grid">
                 
@@ -1353,7 +1311,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print(f"[✔] Generated Presentation with FDR Legend Strip successfully at: {output_file}")
+    print(f"[✔] Generated Presentation without Squad Numbers successfully at: {output_file}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate FPL Presentation HTML")

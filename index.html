@@ -203,7 +203,7 @@
             align-items: flex-start;
         }
 
-        /* STARTER CARD: TEAM KIT SHIRT + SQUAD NUMBER FROM FANTASY.PREMIERLEAGUE.COM */
+        /* STARTER CARD: CLEAN TEAM KIT SHIRT (WITHOUT SQUAD NUMBER) */
         .starter-card {
             display: flex;
             flex-direction: column;
@@ -233,21 +233,6 @@
             height: 54px;
             object-fit: contain;
             filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
-        }
-        .squad-number-tag {
-            position: absolute;
-            top: 4px;
-            left: 5px;
-            font-size: 0.68rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-            color: #cbd5e1;
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid var(--border-accent);
-            padding: 0.05rem 0.25rem;
-            border-radius: 3px;
-            line-height: 1;
-            z-index: 3;
         }
         .starter-badges-overlay {
             position: absolute;
@@ -316,7 +301,7 @@
         }
         .starter-fix-text { color: var(--text-secondary); font-weight: 600; }
 
-        /* Bench Chip with Official Team Shirt */
+        /* Bench Chip with Clean Official Team Shirt */
         .player-chip.bench-chip {
             background: rgba(15, 20, 28, 0.95);
             border: 1px solid #1e293b;
@@ -329,7 +314,6 @@
             gap: 1px;
         }
         .chip-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.55rem; }
-        .bench-squad-no { font-size: 0.55rem; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-weight: 700; }
         .chip-center { display: flex; align-items: center; gap: 0.35rem; margin: 1px 0; }
         .bench-shirt-img { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
         .chip-name-box { text-align: left; overflow: hidden; flex: 1; }
@@ -653,7 +637,7 @@
 
     <!-- Main Content Area -->
     <main>
-        <!-- TAB 1: PLAN LINEUP (OFFICIAL FPL KIT SHIRTS & SQUAD NUMBERS) -->
+        <!-- TAB 1: PLAN LINEUP (CLEAN FPL KIT SHIRTS WITHOUT SQUAD NUMBERS) -->
         <section id="tab-comparison" class="tab-content active">
             <div class="lineup-split-grid">
                 
@@ -679,7 +663,6 @@
                  alt="Haaland" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#9</span>
             <span class="role-badge-starter cap">C</span>
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-FWD">FWD</span>
@@ -703,7 +686,6 @@
                  alt="João Pedro" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#9</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-FWD">FWD</span>
@@ -731,7 +713,6 @@
                  alt="Palmer" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#20</span>
             <span class="role-badge-starter vc">V</span>
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-MID">MID</span>
@@ -755,7 +736,6 @@
                  alt="Cherki" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#18</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-MID">MID</span>
@@ -779,7 +759,6 @@
                  alt="Rogers" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#17</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-MID">MID</span>
@@ -803,7 +782,6 @@
                  alt="Szoboszlai" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#8</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-MID">MID</span>
@@ -827,7 +805,6 @@
                  alt="M.Sangaré" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#26</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-MID">MID</span>
@@ -855,7 +832,6 @@
                  alt="Gvardiol" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#24</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-DEF">DEF</span>
@@ -879,7 +855,6 @@
                  alt="White" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#4</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-DEF">DEF</span>
@@ -903,7 +878,6 @@
                  alt="Pedro Porro" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#23</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-DEF">DEF</span>
@@ -931,7 +905,6 @@
                  alt="Verbruggen" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#1</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-GKP">GKP</span>
@@ -964,7 +937,6 @@
                 
                 
             </div>
-            <span class="bench-squad-no">#1</span>
         </div>
         <div class="chip-center">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_6_1-66.png" 
@@ -990,7 +962,6 @@
                 
                 <span class="enabler-tag-mini">VALUE</span>
             </div>
-            <span class="bench-squad-no">#19</span>
         </div>
         <div class="chip-center">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_11-66.png" 
@@ -1016,7 +987,6 @@
                 
                 
             </div>
-            <span class="bench-squad-no">#29</span>
         </div>
         <div class="chip-center">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_36-66.png" 
@@ -1042,7 +1012,6 @@
                 
                 
             </div>
-            <span class="bench-squad-no">#15</span>
         </div>
         <div class="chip-center">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_3-66.png" 
@@ -1086,7 +1055,6 @@
                  alt="Haaland" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#9</span>
             <span class="role-badge-starter cap">C</span>
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-FWD">FWD</span>
@@ -1110,7 +1078,6 @@
                  alt="João Pedro" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#9</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-FWD">FWD</span>
@@ -1134,7 +1101,6 @@
                  alt="Barry" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#19</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-FWD">FWD</span>
@@ -1162,7 +1128,6 @@
                  alt="Palmer" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#20</span>
             <span class="role-badge-starter vc">V</span>
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-MID">MID</span>
@@ -1186,7 +1151,6 @@
                  alt="Cherki" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#18</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-MID">MID</span>
@@ -1210,7 +1174,6 @@
                  alt="Rogers" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#17</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-MID">MID</span>
@@ -1234,7 +1197,6 @@
                  alt="Szoboszlai" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#8</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-MID">MID</span>
@@ -1262,7 +1224,6 @@
                  alt="Gvardiol" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#24</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-DEF">DEF</span>
@@ -1286,7 +1247,6 @@
                  alt="White" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#4</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-DEF">DEF</span>
@@ -1310,7 +1270,6 @@
                  alt="De Cuyper" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#29</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-DEF">DEF</span>
@@ -1338,7 +1297,6 @@
                  alt="Verbruggen" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            <span class="squad-number-tag">#1</span>
             
             <div class="starter-badges-overlay">
                 <span class="pos-tag-mini pos-GKP">GKP</span>
@@ -1371,7 +1329,6 @@
                 
                 
             </div>
-            <span class="bench-squad-no">#1</span>
         </div>
         <div class="chip-center">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_6_1-66.png" 
@@ -1397,7 +1354,6 @@
                 
                 
             </div>
-            <span class="bench-squad-no">#23</span>
         </div>
         <div class="chip-center">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_6-66.png" 
@@ -1423,7 +1379,6 @@
                 
                 
             </div>
-            <span class="bench-squad-no">#26</span>
         </div>
         <div class="chip-center">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_94-66.png" 
@@ -1449,7 +1404,6 @@
                 
                 
             </div>
-            <span class="bench-squad-no">#15</span>
         </div>
         <div class="chip-center">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_3-66.png" 
