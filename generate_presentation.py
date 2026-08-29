@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 FPL Presentation Generator
+- FDR Ticker Legend Strip: Easy (FDR 2), Normal (FDR 3), Hard (FDR 4), Very Hard (FDR 5)
 - Kit Shirt Images & Squad Numbers exclusively from https://fantasy.premierleague.com
 - Starter Cards: Official FPL Team Kit Shirt with Squad Number (#) & Info Box Below
 - Bench Cards: Compact FPL Team Kit Shirt Chips
@@ -674,7 +675,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         .bench-lbl {{ font-size: 0.58rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem; }}
         .bench-row {{ display: flex; justify-content: center; gap: 0.35rem; }}
 
-        /* FULL SEASON FDR TICKER WITH FULL COLUMN SORTING, RESET BUTTON & FIXED STICKY BUG */
+        /* FULL SEASON FDR TICKER WITH FULL COLUMN SORTING, RESET BUTTON & FDR LEGEND */
         .ticker-container {{
             background: var(--bg-surface);
             border: 1px solid var(--border-main);
@@ -694,7 +695,38 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             border-bottom: 1px solid var(--border-main);
             margin-bottom: 0.45rem;
             flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }}
+        .fdr-legend-strip {{
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.25rem;
+        }}
+        .fdr-legend-label {{
+            font-size: 0.62rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 2px;
+        }}
+        .fdr-legend-item {{
+            font-size: 0.62rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }}
+        .fdr-legend-item.fdr-2 {{ background: #0c2d48; color: #38bdf8; border: 1px solid #0369a1; }}
+        .fdr-legend-item.fdr-3 {{ background: #1e293b; color: #94a3b8; border: 1px solid #334155; }}
+        .fdr-legend-item.fdr-4 {{ background: #451a03; color: #fbbf24; border: 1px solid #78350f; }}
+        .fdr-legend-item.fdr-5 {{ background: #450a0a; color: #f87171; border: 1px solid #7f1d1d; }}
+
         .reset-btn {{
             background: #1e293b;
             border: 1px solid var(--border-accent);
@@ -1026,13 +1058,19 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             </div>
         </section>
 
-        <!-- TAB 2: FDR TICKER -->
+        <!-- TAB 2: FDR TICKER (WITH FDR DIFFICULTY COLOR LEGEND) -->
         <section id="tab-ticker" class="tab-content">
             <div class="ticker-container">
                 <div class="ticker-header-bar">
                     <div>
                         <h2 style="font-size:1rem; font-weight:700; color:#ffffff;">Full Season Fixture Difficulty &amp; Sorting (GW3 &ndash; GW38)</h2>
-                        <p style="font-size:0.75rem; color:var(--text-secondary);">คลิกที่หัวคอลัมน์เพื่อเรียงลำดับ หรือกดปุ่ม Reset Sort เพื่อคืนค่าเดิม</p>
+                        <div class="fdr-legend-strip">
+                            <span class="fdr-legend-label">FDR Scale:</span>
+                            <span class="fdr-legend-item fdr-2">FDR 2 &bull; Easy</span>
+                            <span class="fdr-legend-item fdr-3">FDR 3 &bull; Normal</span>
+                            <span class="fdr-legend-item fdr-4">FDR 4 &bull; Hard</span>
+                            <span class="fdr-legend-item fdr-5">FDR 5 &bull; Very Hard</span>
+                        </div>
                     </div>
                     <div style="display:flex; gap:0.6rem; align-items:center;">
                         <button class="reset-btn" onclick="resetTableSort()">Reset Sort</button>
@@ -1315,7 +1353,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print(f"[✔] Generated Presentation with Official FPL Shirts & Numbers successfully at: {output_file}")
+    print(f"[✔] Generated Presentation with FDR Legend Strip successfully at: {output_file}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate FPL Presentation HTML")
