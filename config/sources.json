@@ -1,0 +1,42 @@
+{
+  "project_name": "FPL Strategy & Analytics",
+  "team_id": 306983,
+  "team_name": "GEMINI UNITED",
+  "manager": "Micky Asawamanasak",
+  "data_sources": [
+    {
+      "id": "solio_analytics",
+      "name": "Solio Analytics",
+      "url": "https://fpl.solioanalytics.com",
+      "api_endpoints": {
+        "markdown": "https://fpl.solioanalytics.com/api/data/latest.md",
+        "json": "https://fpl.solioanalytics.com/api/data/latest.json"
+      },
+      "usage": "Used for AI Projected Points, xG/xA/xCS models, Best Captain ranking, Highest-leverage Differentials, Clean Sheet odds, and Transfer Solvers."
+    },
+    {
+      "id": "fantasy_football_scout",
+      "name": "Fantasy Football Scout",
+      "url": "https://www.fantasyfootballscout.co.uk",
+      "usage": "Used for Press Conference round-ups, Injury News, Predicted Lineups, Leaked Lineups before deadline, and Scout Picks."
+    },
+    {
+      "id": "coach_fpl_fdr",
+      "name": "Coach FPL FDR",
+      "url": "https://coachfplfdr.streamlit.app",
+      "usage": "Used for advanced Fixture Difficulty Ratings (FDR), attacking vs defensive fixture strength, and defensive rotation pair planning."
+    },
+    {
+      "id": "live_fpl",
+      "name": "LiveFPL",
+      "url": "https://www.livefpl.net",
+      "usage": "Used for Real-time Effective Ownership (EO), Top 10k Template tracking, Safety Scores, and Live Rank projections."
+    },
+    {
+      "id": "fpl_gameweek",
+      "name": "FPL Gameweek",
+      "url": "https://www.fplgameweek.com",
+      "usage": "Used for Live Mini-league tracking, real-time auto-subs, and live Rival Squad monitoring."
+    }
+  ]
+}

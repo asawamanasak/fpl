@@ -1,0 +1,61 @@
+{
+  "current": [
+    {
+      "event": 1,
+      "points": 78,
+      "total_points": 78,
+      "rank": 144372,
+      "rank_sort": 146620,
+      "overall_rank": 144372,
+      "percentile_rank": 5,
+      "overall_rank_percentage": "2",
+      "bank": 0,
+      "value": 1000,
+      "event_transfers": 0,
+      "event_transfers_cost": 0,
+      "points_on_bench": 0
+    },
+    {
+      "event": 2,
+      "points": 9,
+      "total_points": 87,
+      "rank": 7417222,
+      "rank_sort": 7418630,
+      "overall_rank": 1045842,
+      "percentile_rank": 75,
+      "overall_rank_percentage": "11",
+      "bank": 0,
+      "value": 1001,
+      "event_transfers": 0,
+      "event_transfers_cost": 0,
+      "points_on_bench": 0
+    }
+  ],
+  "past": [
+    {
+      "season_name": "2023/24",
+      "total_points": 1963,
+      "rank": 5238250,
+      "rank_percentage": "48"
+    },
+    {
+      "season_name": "2024/25",
+      "total_points": 2039,
+      "rank": 5057942,
+      "rank_percentage": "44"
+    },
+    {
+      "season_name": "2025/26",
+      "total_points": 2365,
+      "rank": 33524,
+      "rank_percentage": "0.3"
+    }
+  ],
+  "chips": [
+    {
+      "name": "bboost",
+      "time": "2026-08-21T14:07:54.737402Z",
+      "event": 1
+    }
+  ]
+}
