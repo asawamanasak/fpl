@@ -29,9 +29,9 @@ def load_json(filepath):
 def render_starter_card(p):
     cap_marker = ""
     if p.get("is_captain"):
-        cap_marker = '<span class="role-badge-starter cap">C</span>'
+        cap_marker = '<span class="role-badge-cap">C</span>'
     elif p.get("is_vice_captain"):
-        cap_marker = '<span class="role-badge-starter vc">V</span>'
+        cap_marker = '<span class="role-badge-vc">V</span>'
 
     pos_class = f"pos-{p['pos']}"
     fdr_class = f"fdr-{p['next_fdr']}"
@@ -47,17 +47,17 @@ def render_starter_card(p):
 
     return f"""
     <div class="starter-card">
+        <div class="starter-card-top">
+            <span class="pos-tag-mini {pos_class}">{p['pos']}</span>
+            {cap_marker}
+            {core_tag}
+            {enabler_tag}
+        </div>
         <div class="starter-photo-wrap">
             <img src="{fpl_shirt_url}" 
                  alt="{p['web_name']}" 
                  class="starter-shirt-img" 
                  loading="lazy" />
-            {cap_marker}
-            <div class="starter-badges-overlay">
-                <span class="pos-tag-mini {pos_class}">{p['pos']}</span>
-                {core_tag}
-                {enabler_tag}
-            </div>
         </div>
         <div class="starter-info-card">
             <div class="starter-name" title="{p['full_name']}">{p['web_name']}</div>
@@ -578,90 +578,85 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             flex-wrap: nowrap;
         }}
 
-        /* ENLARGED STARTER CARD (104px Width) */
+        /* UNIFIED SEAMLESS STARTER CARD */
         .starter-card {{
+            background: rgba(15, 23, 42, 0.96);
+            border: 1px solid var(--border-main);
+            border-radius: 7px;
+            padding: 0.25rem 0.3rem 0.2rem;
+            width: 96px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 104px;
-            transition: transform 0.15s ease;
+            gap: 2px;
             flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+            transition: transform 0.15s ease, border-color 0.15s ease;
+            position: relative;
         }}
         .starter-card:hover {{
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+            border-color: var(--accent-sky);
+        }}
+        .starter-card-top {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 2px;
+            min-height: 15px;
+        }}
+        .role-badge-cap {{
+            background: var(--accent-amber);
+            color: #000000;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            font-weight: 800;
+            padding: 0.04rem 0.25rem;
+            border-radius: 3px;
+            line-height: 1;
+        }}
+        .role-badge-vc {{
+            background: #cbd5e1;
+            color: #000000;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            font-weight: 800;
+            padding: 0.04rem 0.25rem;
+            border-radius: 3px;
+            line-height: 1;
         }}
         .starter-photo-wrap {{
-            position: relative;
-            width: 104px;
-            height: 72px;
+            width: 100%;
+            height: 48px;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid var(--border-main);
-            border-bottom: none;
-            border-radius: 7px 7px 0 0;
-            overflow: hidden;
-            z-index: 1;
+            margin: 1px 0;
         }}
         .starter-shirt-img {{
-            width: 58px;
-            height: 58px;
+            width: 44px;
+            height: 44px;
             object-fit: contain;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.65));
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
         }}
-        .starter-badges-overlay {{
-            position: absolute;
-            bottom: 3px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 2px;
-            align-items: center;
-            white-space: nowrap;
-            z-index: 4;
-        }}
-        .role-badge-starter {{
-            position: absolute;
-            top: 3px;
-            right: 4px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.62rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-            border: 1px solid #000;
-            z-index: 5;
-        }}
-        .role-badge-starter.cap {{ background: var(--accent-amber); color: #000; }}
-        .role-badge-starter.vc {{ background: #cbd5e1; color: #000; }}
-
         .starter-info-card {{
-            background: rgba(21, 27, 38, 0.98);
-            border: 1px solid var(--border-main);
-            border-top: none;
-            border-radius: 0 0 7px 7px;
-            padding: 0.25rem 0.35rem;
-            width: 104px;
+            width: 100%;
+            border-top: 1px solid var(--border-muted);
+            padding-top: 2px;
             text-align: center;
-            z-index: 2;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
         }}
         .starter-name {{
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 700;
             color: #ffffff;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            line-height: 1.2;
+            line-height: 1.15;
         }}
         .starter-meta {{
-            font-size: 0.6rem;
+            font-size: 0.58rem;
             color: var(--text-muted);
             font-family: 'JetBrains Mono', monospace;
             margin: 1px 0;
@@ -671,56 +666,56 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.58rem;
+            font-size: 0.56rem;
             border-top: 1px solid var(--border-muted);
-            padding-top: 2px;
-            margin-top: 2px;
+            padding-top: 1px;
+            margin-top: 1px;
         }}
         .starter-fix-text {{ color: var(--text-secondary); font-weight: 600; }}
 
-        /* REDESIGNED FULL-SIZE BENCH CARDS */
+        /* FULL-SIZE BENCH CARDS */
         .compact-bench-strip {{ 
             background: var(--bg-card-inner); 
             border: 1px solid var(--border-muted); 
             border-radius: 8px; 
-            padding: 0.45rem 0.55rem; 
-            margin-top: 0.45rem; 
+            padding: 0.4rem 0.5rem; 
+            margin-top: 0.4rem; 
             flex-shrink: 0; 
             overflow-x: auto;
         }}
         .bench-lbl {{ 
-            font-size: 0.62rem; 
+            font-size: 0.6rem; 
             font-weight: 700; 
             color: var(--text-muted); 
             text-transform: uppercase; 
             letter-spacing: 0.5px; 
-            margin-bottom: 0.3rem; 
+            margin-bottom: 0.25rem; 
             text-align: center;
         }}
         .bench-row {{ 
             display: flex; 
             justify-content: center; 
-            gap: 0.55rem; 
+            gap: 0.45rem; 
             min-width: max-content; 
         }}
 
         .bench-card {{
             background: rgba(15, 20, 28, 0.95);
             border: 1px solid var(--border-main);
-            border-radius: 6px;
-            padding: 0.25rem 0.35rem;
-            width: 114px;
+            border-radius: 7px;
+            padding: 0.25rem 0.3rem 0.2rem;
+            width: 104px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 2px;
             flex-shrink: 0;
-            transition: transform 0.15s ease;
+            transition: transform 0.15s ease, border-color 0.15s ease;
         }}
         .bench-card:hover {{
             transform: translateY(-2px);
-            border-color: var(--border-accent);
+            border-color: var(--accent-sky);
         }}
         .bench-card-top {{
             display: flex;
