@@ -233,30 +233,30 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             "xgi": xgi
         }
 
-    # CHOICE 1: User Latest Wildcard (Raya £6.0m GKP, Groß £5.5m, Walle Egeli £4.5m)
+    # CHOICE 1: User's Dynamic Selection from Screenshot (Bruno Fernandes £12.0m, Egan £4.0m, Xhaka £5.5m)
     c1_ids = [
-        (1, True, False, False, False, False),    # Raya (GKP £6.0m)
+        (109, True, False, False, False, False),  # Verbruggen (GKP £4.5m)
         (391, True, False, False, True, False),   # Gvardiol (DEF Core £5.6m)
-        (10, True, False, False, False, False),   # White (DEF £5.5m)
-        (499, True, False, False, False, False),  # Pedro Porro (DEF £5.5m)
-        (154, True, False, True, False, False),   # Palmer (MID VC £9.6m)
-        (399, True, False, False, False, False),  # Cherki (MID £7.6m)
-        (40, True, False, False, False, False),   # Rogers (MID £7.5m)
-        (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m)
+        (593, True, False, False, False, False),  # Dedić (DEF £4.5m)
+        (31, True, False, False, False, False),   # Konsa (DEF £4.5m)
+        (277, True, False, True, False, True),    # Egan (DEF VC £4.0m - 17 pts)
+        (426, True, False, False, False, False),  # B.Fernandes (MID £12.0m - 25 pts)
         (124, True, False, False, False, True),   # Groß (MID Value £5.5m)
+        (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m)
+        (154, True, False, False, False, False),  # Palmer (MID £9.6m)
+        (544, True, False, False, False, False),  # Xhaka (MID £5.5m)
         (411, True, True, False, True, False),    # Haaland (FWD C Core £15.5m)
-        (165, True, False, False, True, False),   # João Pedro (FWD Core £7.6m)
         # Bench
-        (497, False, False, False, False, False), # Dubravka (GKP Sub £4.0m)
-        (321, False, False, False, False, True),  # Walle Egeli (FWD Sub 1 £4.5m)
-        (31, False, False, False, False, False),  # Konsa (DEF Sub 2 £4.5m)
-        (593, False, False, False, False, False), # Dedić (DEF Sub 3 £4.5m)
+        (496, False, False, False, False, False), # Kinsky (GKP Sub £4.5m)
+        (165, False, False, False, True, False),  # João Pedro (FWD Sub 1 Core £7.6m)
+        (10, False, False, False, False, False),  # White (DEF Sub 2 £5.5m)
+        (321, False, False, False, False, True),  # Walle Egeli (FWD Sub 3 £4.5m)
     ]
     c1_squad = [build_player_by_id(*p) for p in c1_ids if build_player_by_id(*p)]
     c1_starters = [p for p in c1_squad if p["is_starter"]]
     c1_bench = [p for p in c1_squad if not p["is_starter"]]
     c1_cost = sum(p["cost"] for p in c1_squad)
-    c1_bank = round(100.4 - c1_cost, 2)
+    c1_bank = round(100.2 - c1_cost, 2)
     if c1_bank < 0: c1_bank = 0.0
 
     # CHOICE 2: Antigravity's Master Fortress Blueprint (Elanga £6.0m, De Cuyper £4.6m, Barry £5.5m Sub 1, 100% Nailed)
@@ -1016,12 +1016,12 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         <section id="tab-comparison" class="tab-content active">
             <div class="lineup-split-grid">
                 
-                <!-- LEFT COLUMN: CHOICE 1 (USER'S SETUP) -->
+                <!-- LEFT COLUMN: CHOICE 1 (MANAGER'S DYNAMIC LINEUP) -->
                 <div class="plan-column">
                     <div class="plan-col-header">
                         <div>
-                            <div class="plan-title">Choice 1: Heavy Arsenal GKP &amp; Midfield Power</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">Raya (£6.0m) &bull; Groß (£5.5m) &bull; Sub: Walle Egeli (£4.5m)</span>
+                            <div class="plan-title">Choice 1: Manager Dynamic Selection</div>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">Audit Mode: Strengths &amp; Weaknesses Evaluation</span>
                         </div>
                         <div class="fin-badge">
                             Cost: <span style="color:var(--accent-emerald);">£{c1_cost:.1f}m</span> | Bank: <span style="color:var(--accent-sky);">£{c1_bank:.1f}m</span>
@@ -1060,7 +1060,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="plan-col-header">
                         <div>
                             <div class="plan-title" style="color:var(--accent-emerald);">Choice 2: The Master Fortress Blueprint</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">Elanga (£6.0m) &bull; De Cuyper (£4.6m) &bull; Sub 1: Barry (xGI 2.02)</span>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">AI Autonomous Optimization &bull; 100% Starters &bull; 2-FT Buffer</span>
                         </div>
                         <div class="fin-badge" style="border-color:var(--accent-emerald);">
                             Cost: <span style="color:var(--accent-emerald);">£{c2_cost:.1f}m</span> | Bank: <span style="color:var(--accent-sky);">£{c2_bank:.1f}m</span>
@@ -1185,38 +1185,50 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                 <div class="grid-2">
                     <div class="panel">
                         <div class="panel-header">
-                            <div class="panel-title">Triple Captain Strategy (TC 1 &amp; TC 2)</div>
-                            <span class="source-pill">Single-Chip Rule</span>
+                            <div class="panel-title">Master Chip Strategy (38 Gameweeks Schedule)</div>
+                            <span class="source-pill">AI Roadmap</span>
                         </div>
-                        <div style="display:flex; flex-direction:column; gap:0.5rem; font-size:0.8rem; color:var(--text-secondary);">
+                        <div style="display:flex; flex-direction:column; gap:0.45rem; font-size:0.78rem; color:var(--text-secondary);">
                             <div class="stat-card-row">
-                                <strong style="color:#fff;">GW3 สถานะ: ใช้งาน Wildcard เท่านั้น</strong>
-                                <p style="font-size:0.72rem; color:var(--accent-amber); margin-top:2px;">ตามกฎ FPL ใช้ได้เพียง 1 ชิปต่อสัปดาห์ (Haaland กัปตัน 2x ปกติ)</p>
+                                <strong style="color:#fff;">GW1 : Bench Boost 1 [USED]</strong>
+                                <p style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">ใช้เก็บแต้มสำรองสัปดาห์เปิดฤดูกาล</p>
                             </div>
                             <div class="stat-card-row">
-                                <strong style="color:#fff;">Triple Captain 1 (ครึ่งแรก: GW10-15)</strong>
-                                <p style="font-size:0.72rem; margin-top:2px;">เป้าหมาย: เกมเหย้าแมนฯ ซิตี้พบทีมท้ายตาราง หรือสัปดาห์ที่มี Mini-Double Gameweek</p>
+                                <strong style="color:#fff;">GW3 : Wildcard 1 [ACTIVE / IN-USE]</strong>
+                                <p style="font-size:0.7rem; color:var(--accent-emerald); margin-top:2px;">สร้างฐานทัพ 15 ตัวจริง Zero Deadweight &bull; ปรัชญา 2-FT Buffer</p>
                             </div>
                             <div class="stat-card-row">
-                                <strong style="color:#fff;">Triple Captain 2 (ครึ่งหลัง: GW34 หรือ GW37)</strong>
-                                <p style="font-size:0.72rem; margin-top:2px;">ล็อกไว้ใช้ในสัปดาห์ที่มี Double Gameweek ใหญ่ เพื่อรับแต้มคูณ 3 ทั้ง 2 แมตช์</p>
+                                <strong style="color:#fff;">GW7 / GW13 / GW16 : Triple Captain 1 [TARGET]</strong>
+                                <p style="font-size:0.7rem; color:var(--accent-sky); margin-top:2px;">ล็อกเป้า Haaland เกมเหย้าพบทีมน้องใหม่ (IPS / LEE / HUL)</p>
+                            </div>
+                            <div class="stat-card-row">
+                                <strong style="color:#fff;">GW18 / GW19 : Free Hit 1 [TARGET]</strong>
+                                <p style="font-size:0.7rem; color:var(--accent-amber); margin-top:2px;">ช่วง Boxing Day & Festive Period ป้องกันการโรเตชันหนัก 3 นัด/สัปดาห์</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="panel">
                         <div class="panel-header">
-                            <div class="panel-title">Free Hit Strategy (FH 1 &amp; FH 2)</div>
-                            <span class="source-pill">Chip Roadmap</span>
+                            <div class="panel-title">Second Half Double Gameweek Strategy (GW20-38)</div>
+                            <span class="source-pill">Endgame Surge</span>
                         </div>
-                        <div style="display:flex; flex-direction:column; gap:0.5rem; font-size:0.8rem; color:var(--text-secondary);">
+                        <div style="display:flex; flex-direction:column; gap:0.45rem; font-size:0.78rem; color:var(--text-secondary);">
                             <div class="stat-card-row">
-                                <strong style="color:#fff;">Free Hit 1 (ครึ่งแรก: GW17-19 Festive Period)</strong>
-                                <p style="font-size:0.72rem; margin-top:2px;">ช่วงที่มีการหมุนเวียนนักเตะถี่ช่วงบ็อกซิ่งเดย์ หรือมีเกมเลื่อนจากคาราบาวคัพ</p>
+                                <strong style="color:#fff;">GW29 : Free Hit 2 [BLANK GW]</strong>
+                                <p style="font-size:0.7rem; color:var(--accent-amber); margin-top:2px;">สัปดาห์ FA Cup ชนโปรแกรมลีก (เตะ 4-5 คู่) จัด 11 ตัวจริงเฉพาะกิจ</p>
                             </div>
                             <div class="stat-card-row">
-                                <strong style="color:#fff;">Free Hit 2 (ครึ่งหลัง: GW29 หรือ GW32 Blank GW)</strong>
-                                <p style="font-size:0.72rem; margin-top:2px;">สัปดาห์ที่มีทีมติดแข่ง FA Cup จนเหลือคู่เตะน้อย จัด 11 ตัวจริงเฉพาะกิจโดยไม่ลบแต้ม</p>
+                                <strong style="color:#fff;">GW30 / GW31 : Wildcard 2 [RESTRUCTURE]</strong>
+                                <p style="font-size:0.7rem; color:var(--accent-emerald); margin-top:2px;">ยกเครื่อง 15 ผู้เล่นเพื่อเตรียมทีมรับศึก Double Gameweeks</p>
+                            </div>
+                            <div class="stat-card-row">
+                                <strong style="color:#fff;">GW34 : Triple Captain 2 [DGW34]</strong>
+                                <p style="font-size:0.7rem; color:var(--accent-sky); margin-top:2px;">ใช้กับกัปตันตัวท็อปที่มีโปรแกรมเตะเบิ้ล 2 แมตช์ในสัปดาห์เดียว</p>
+                            </div>
+                            <div class="stat-card-row">
+                                <strong style="color:#fff;">GW37 : Bench Boost 2 [MEGA DGW37]</strong>
+                                <p style="font-size:0.7rem; color:var(--accent-emerald); margin-top:2px;">สัปดาห์ Double Gameweek ใหญ่ที่สุด 15 ผู้เล่นเตะ 30 แมตช์เต็มอัตรา</p>
                             </div>
                         </div>
                     </div>
