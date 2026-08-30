@@ -237,24 +237,24 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             "minutes": mins
         }
 
-    # CHOICE 1: User's Dynamic Selection from Screenshot (Bruno Fernandes £12.0m, Egan £4.0m, Xhaka £5.5m)
+    # CHOICE 1: User's Dynamic Selection from Screenshot (5-3-2 Formation, Wildcard Active)
     c1_ids = [
         (109, True, False, False, False, False),  # Verbruggen (GKP £4.5m)
-        (391, True, False, False, True, False),   # Gvardiol (DEF Core £5.6m)
+        (391, True, False, False, True, False),   # Gvardiol (DEF Core £5.5m)
         (593, True, False, False, False, False),  # Dedić (DEF £4.5m)
         (31, True, False, False, False, False),   # Konsa (DEF £4.5m)
-        (277, True, False, True, False, True),    # Egan (DEF VC £4.0m - 17 pts)
-        (426, True, False, False, False, False),  # B.Fernandes (MID £12.0m - 25 pts)
-        (124, True, False, False, False, True),   # Groß (MID Value £5.5m)
+        (204, True, False, False, False, False),  # Mitchell (DEF £4.5m)
+        (10, True, False, False, False, False),   # White (DEF £5.5m)
+        (398, True, False, True, False, False),   # Foden (MID VC £7.0m)
         (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m)
         (154, True, False, False, False, False),  # Palmer (MID £9.6m)
-        (544, True, False, False, False, False),  # Xhaka (MID £5.5m)
+        (464, True, False, False, False, False),  # Wissa (FWD £6.0m)
         (411, True, True, False, True, False),    # Haaland (FWD C Core £15.5m)
         # Bench
-        (496, False, False, False, False, False), # Kinsky (GKP Sub £4.5m)
-        (165, False, False, False, True, False),  # João Pedro (FWD Sub 1 Core £7.6m)
-        (10, False, False, False, False, False),  # White (DEF Sub 2 £5.5m)
-        (321, False, False, False, False, True),  # Walle Egeli (FWD Sub 3 £4.5m)
+        (1, False, False, False, False, False),   # Raya (GKP Sub £6.0m)
+        (68, False, False, False, False, False),  # Tavernier (MID Sub 1 £6.0m)
+        (236, False, False, False, False, False), # Dewsbury-Hall (MID Sub 2 £6.5m)
+        (165, False, False, False, True, False),  # João Pedro (FWD Sub 3 Core £7.6m)
     ]
     c1_squad = [build_player_by_id(*p) for p in c1_ids if build_player_by_id(*p)]
     c1_starters = [p for p in c1_squad if p["is_starter"]]
@@ -1201,7 +1201,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                         <div>
                             <div class="plan-title">Choice 1: Manager Dynamic Selection</div>
                             <div class="plan-sub-tags">
-                                <span class="formation-pill">4-5-1</span>
+                                <span class="formation-pill">5-3-2</span>
                                 <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
                             </div>
                         </div>
@@ -1293,7 +1293,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="summary-panel-header">
                         <div>
                             <div class="plan-title">Choice 1 : Manager Dynamic Selection</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">4-5-1 Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m</span>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">5-3-2 Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m</span>
                         </div>
                         <span class="source-pill">Audit Mode</span>
                     </div>
@@ -1302,13 +1302,13 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
                         <div class="pros-cons-item">
-                            <strong>Mega Heavyweight Midfield (Bruno + Palmer + Szoboszlai) :</strong> มี Bruno Fernandes (£12.0m &bull; 25 แต้ม / 2.56 xGI อันดับ 1 ของลีก) คุมจุดโทษ เตะมุม และเพลย์เมกเกอร์ตัวจริง ผสาน 3 เสาหลักแดนกลาง
+                            <strong>Double Man City Fixture Exploitation (COV Home) :</strong> กุมความได้เปรียบสูงสุดจากโปรแกรมที่ง่ายที่สุดของสัปดาห์ ด้วยการซ้อน 3 ตัวท็อปแมนฯ ซิตี้ (Haaland C + Foden VC + Gvardiol) พบ Coventry (FDR 2)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Egan (£4.0m &bull; Hull) Ultra Value Enabler :</strong> กองหลังตัวจริง 180 นาทีเต็ม ทำไปแล้ว 17 แต้ม ในราคาประหยัด ช่วยเปิดงบดึง Bruno ได้สำเร็จ
+                            <strong>High Starting Firepower (xGI 7.62) :</strong> 11 ตัวจริงมีขุมกำลังเกมรุกอันตรายรอบด้าน ทั้ง Haaland, Foden (xGI 1.84), Szoboszlai (xGI 1.45), Wissa (xGI 1.40) และ Palmer
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Premium GKP Rotation :</strong> มีผู้รักษาประตูตัวจริงจาก 2 สโมสรใหญ่ (Verbruggen £4.5m + Kinsky £4.5m) คอยสลับใช้งานตามความยากง่าย
+                            <strong>100% Premium Starting Depth on Bench :</strong> ผู้เล่นบนม้านั่งสำรองทั้ง 4 คน (Raya £6.0m, Tavernier £6.0m, Dewsbury-Hall £6.5m, João Pedro £7.6m) เป็นตัวจริง 90 นาทีระดับพรีเมียม
                         </div>
                     </div>
 
@@ -1316,13 +1316,13 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
                         <div class="pros-cons-item">
-                            <strong>£13.1m Benched Value (ตัวท็อปจมน้ำบนม้านั่ง) :</strong> การจับ João Pedro (£7.6m / xGI 1.95) และ White (£5.5m) นั่งสำรอง เสี่ยงเสียแต้มจากการที่ตัวเกรดท็อปไม่ได้ออกสตาร์ต
+                            <strong>Extreme Benched Capital (£26.1m จมน้ำบนม้านั่ง) :</strong> เม็ดเงินบนม้านั่งสำรองสูงถึง £26.1m (มากกว่า 26% ของงบรวมทั้งทีม) โดยเฉพาะ João Pedro (£7.6m / 11 แต้ม) ที่หล่นไปเป็น Sub 3 และ Raya (£6.0m)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>0-Minute Risk (Ezri Konsa £4.5m) :</strong> Konsa ยังไม่ได้รับโอกาสลงสนามใน 2 นัดแรก (0 นาที) อาจส่งผลให้ระบบต้องสลับตัวสำรองลงมาเล่นแทน
+                            <strong>Defensive Conflict in ARS vs CHE :</strong> การส่งกองหลัง 5 คนในสัปดาห์นี้ ต้องชนเกมอาร์เซนอลพบเชลซี (White, Konsa vs Palmer) หากเชลซียิงประตู คลีนชีตแนวรับจะแตกทันที
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Low Attacking Output :</strong> Xhaka (£5.5m) เล่นกลางรับมีค่า xGI เพียง 0.39 และ Walle Egeli (£4.5m) เป็นสำรองที่ลงเพียง 10 นาที
+                            <strong>0-Minute Risk (Ezri Konsa £4.5m) :</strong> Konsa ยังไม่ได้รับโอกาสลงสนามใน 2 สัปดาห์แรก (0 นาที) จะทำให้ระบบต้องสลับ Sub 1 (Tavernier) ลงมาแทนอัตโนมัติ
                         </div>
                     </div>
                 </div>
