@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """
 FPL Presentation Generator
-- Fully Responsive Design: Optimized for Desktop, iPad, and Mobile Phones (iOS & Android)
-- Side-by-Side Comparison on Desktop, Clean Stacked & Scaled View on Mobile
-- Clean Official FPL Team Kit Shirts from https://fantasy.premierleague.com
-- FDR Ticker Legend Strip: Easy (FDR 2), Normal (FDR 3), Hard (FDR 4), Very Hard (FDR 5)
-- Full Season Ticker (GW3 - GW38) Multi-Column Sorting + Reset Button
+- 4 Navigation Tabs:
+  1. Plan Lineup (Side-by-Side Pitch & Full Bench)
+  2. Plan Summary (Live Real-Time Quantitative Comparison & Pros/Cons Audit)
+  3. FDR Ticker (Full Season GW3-38 Matrix & Legend)
+  4. Research Sources (5 Intelligence Sources Ledger)
+- Larger Player Shirts & Info Cards, Tighter Snug Pitch Spacing
+- Upgraded Prominent Substitutes Bench Cards
 - Verified 8-Chip Roadmap & 5 Intelligence Sources Ledger
 - Zero Emojis, Dark Minimalist Theme
 """
@@ -68,43 +70,43 @@ def render_starter_card(p):
     </div>
     """
 
-def render_bench_chip(p, sub_idx=1):
+def render_bench_card(p, sub_idx=1):
     pos_class = f"pos-{p['pos']}"
     fdr_class = f"fdr-{p['next_fdr']}"
     core_tag = '<span class="core-tag-mini">CORE</span>' if p.get("is_core") else ''
     enabler_tag = '<span class="enabler-tag-mini">VALUE</span>' if p.get("is_enabler") else ''
-    sub_tag = f'<span class="sub-label-mini">S{sub_idx}</span>'
+    
+    is_gkp = p.get("pos") == "GKP"
+    sub_label = "GKP SUB" if is_gkp else f"SUB {sub_idx}"
+    sub_tag = f'<span class="sub-label-badge">{sub_label}</span>'
 
     t_code = p.get("official_team_code", 43)
-    is_gkp = p.get("pos") == "GKP"
     shirt_suffix = "_1-66.png" if is_gkp else "-66.png"
     
     # Official FPL Shirt URL from fantasy.premierleague.com only
     fpl_shirt_url = f"https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_{t_code}{shirt_suffix}"
 
     return f"""
-    <div class="player-chip bench-chip">
-        <div class="chip-top">
-            <div style="display:flex; align-items:center; gap:2px;">
-                <span class="pos-tag-mini {pos_class}">{p['pos']}</span>
-                {sub_tag}
-                {core_tag}
-                {enabler_tag}
-            </div>
+    <div class="bench-card">
+        <div class="bench-card-top">
+            <span class="pos-tag-mini {pos_class}">{p['pos']}</span>
+            {sub_tag}
+            {core_tag}
+            {enabler_tag}
         </div>
-        <div class="chip-center">
+        <div class="bench-photo-wrap">
             <img src="{fpl_shirt_url}" 
                  alt="{p['web_name']}" 
                  class="bench-shirt-img" 
                  loading="lazy" />
-            <div class="chip-name-box">
-                <div class="chip-name" title="{p['full_name']}">{p['web_name']}</div>
-                <div class="chip-team-cost">{p['team_code']} &bull; £{p['cost']:.1f}m</div>
-            </div>
         </div>
-        <div class="chip-meta">
-            <span>FDR {p['next_fdr']}</span>
-            <span class="fdr-pill {fdr_class}">{p['next_fix'].split(' ')[0]}</span>
+        <div class="bench-info-card">
+            <div class="bench-name" title="{p['full_name']}">{p['web_name']}</div>
+            <div class="bench-meta">{p['team_code']} &bull; £{p['cost']:.1f}m</div>
+            <div class="bench-fix-row">
+                <span class="bench-fix-text">{p['next_fix'].split(' ')[0]}</span>
+                <span class="fdr-pill {fdr_class}">FDR {p['next_fdr']}</span>
+            </div>
         </div>
     </div>
     """
@@ -211,6 +213,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
         tot_pts = el.get("total_points", 0)
         xgi = float(el.get("expected_goal_involvements", 0.0) or 0.0)
+        mins = el.get("minutes", 0)
 
         return {
             "id": el["id"],
@@ -230,7 +233,8 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             "next_fdr": next_fdr,
             "solio_pts": solio_pts,
             "total_points": tot_pts,
-            "xgi": xgi
+            "xgi": xgi,
+            "minutes": mins
         }
 
     # CHOICE 1: User's Dynamic Selection from Screenshot (Bruno Fernandes £12.0m, Egan £4.0m, Xhaka £5.5m)
@@ -256,8 +260,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     c1_starters = [p for p in c1_squad if p["is_starter"]]
     c1_bench = [p for p in c1_squad if not p["is_starter"]]
     c1_cost = sum(p["cost"] for p in c1_squad)
-    c1_bank = round(100.2 - c1_cost, 2)
-    if c1_bank < 0: c1_bank = 0.0
+    c1_bank = 0.0
 
     # CHOICE 2: Antigravity's Master Fortress Blueprint (Elanga £6.0m, De Cuyper £4.6m, Barry £5.5m Sub 1, 100% Nailed)
     c2_ids = [
@@ -269,7 +272,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         (399, True, False, False, False, False),  # Cherki (MID £7.6m)
         (40, True, False, False, False, False),   # Rogers (MID £7.5m)
         (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m)
-        (463, True, False, False, False, False),  # Anthony Elanga (MID £6.0m - 17 pts)
+        (454, True, False, False, False, False),  # Anthony Elanga (MID £6.0m - 17 pts)
         (411, True, True, False, True, False),    # Haaland (FWD C Core £15.5m)
         (165, True, False, False, True, False),   # João Pedro (FWD Core £7.6m)
         # Bench (100% 90-Minute Starters)
@@ -282,7 +285,21 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     c2_starters = [p for p in c2_squad if p["is_starter"]]
     c2_bench = [p for p in c2_squad if not p["is_starter"]]
     c2_cost = sum(p["cost"] for p in c2_squad)
-    c2_bank = 0.0
+    c2_bank = round(100.1 - c2_cost, 1)
+
+    # Dynamic metrics computation for Plan Summary
+    c1_tot_pts = sum(p["total_points"] for p in c1_squad)
+    c2_tot_pts = sum(p["total_points"] for p in c2_squad)
+    c1_start_pts = sum(p["total_points"] for p in c1_starters)
+    c2_start_pts = sum(p["total_points"] for p in c2_starters)
+
+    c1_tot_xgi = sum(p["xgi"] for p in c1_squad)
+    c2_tot_xgi = sum(p["xgi"] for p in c2_squad)
+    c1_start_xgi = sum(p["xgi"] for p in c1_starters)
+    c2_start_xgi = sum(p["xgi"] for p in c2_starters)
+
+    c1_nailed_count = sum(1 for p in c1_squad if p["minutes"] >= 90)
+    c2_nailed_count = sum(1 for p in c2_squad if p["minutes"] >= 90)
 
     # Combine unique players for full season ticker
     all_ticker_pids = list(dict.fromkeys([p[0] for p in c1_ids] + [p[0] for p in c2_ids]))
@@ -319,6 +336,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             --accent-emerald: #10b981;
             --accent-sky: #38bdf8;
             --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
             
             --fdr-1: #10b981;
             --fdr-2: #0284c7;
@@ -339,11 +357,10 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             overflow-x: hidden;
         }}
 
-        /* Desktop specific height control */
-        @media (min-width: 1025px) {{
+        @media (min-width: 1200px) {{
             body {{
                 height: 100vh;
-                overflow: hidden; /* App mode on desktop */
+                overflow: hidden; /* App view on large desktop */
             }}
         }}
 
@@ -355,7 +372,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             flex-shrink: 0;
         }}
         .header-wrap {{
-            max-width: 1600px;
+            max-width: 1680px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -390,11 +407,11 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         .stat-cell {{
             background: var(--bg-card);
             border: 1px solid var(--border-main);
-            padding: 0.2rem 0.5rem;
+            padding: 0.2rem 0.55rem;
             border-radius: 6px;
             display: flex;
             flex-direction: column;
-            min-width: 72px;
+            min-width: 75px;
         }}
         .stat-cell .lbl {{
             font-size: 0.54rem;
@@ -403,19 +420,19 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             font-weight: 600;
         }}
         .stat-cell .val {{
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             font-weight: 700;
             color: var(--accent-emerald);
             font-family: 'JetBrains Mono', monospace;
             line-height: 1.2;
         }}
 
-        /* Navigation Bar */
+        /* Navigation Bar (4 Tabs) */
         .nav-bar {{
             display: flex;
             gap: 0.3rem;
-            max-width: 1600px;
-            margin: 0.35rem auto 0;
+            max-width: 1680px;
+            margin: 0.3rem auto 0;
             padding: 0 1rem;
             flex-shrink: 0;
             width: 100%;
@@ -427,9 +444,9 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             background: var(--bg-surface);
             border: 1px solid var(--border-main);
             color: var(--text-secondary);
-            padding: 0.35rem 0.7rem;
+            padding: 0.35rem 0.75rem;
             border-radius: 6px;
-            font-size: 0.72rem;
+            font-size: 0.74rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.15s ease;
@@ -443,9 +460,9 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
         /* Main View Container */
         main {{
-            max-width: 1600px;
-            margin: 0.35rem auto 0;
-            padding: 0 1rem 0.75rem;
+            max-width: 1680px;
+            margin: 0.3rem auto 0;
+            padding: 0 1rem 0.65rem;
             flex: 1;
             width: 100%;
             display: flex;
@@ -480,78 +497,122 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             align-items: center;
             padding-bottom: 0.35rem;
             border-bottom: 1px solid var(--border-main);
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.4rem;
             flex-shrink: 0;
             gap: 0.4rem;
         }}
-        .plan-title {{ font-size: 0.84rem; font-weight: 700; color: #ffffff; }}
+        .plan-title {{ font-size: 0.88rem; font-weight: 700; color: #ffffff; }}
+        .plan-sub-tags {{
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+            margin-top: 0.2rem;
+            flex-wrap: wrap;
+        }}
+        .formation-pill {{
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            font-weight: 700;
+            background: #1e293b;
+            color: #cbd5e1;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-accent);
+        }}
+        .active-chip-pill {{
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 0.1rem 0.45rem;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            text-transform: uppercase;
+        }}
+        .active-chip-pill.chip-wildcard {{
+            background: rgba(16, 185, 129, 0.18);
+            color: #34d399;
+            border: 1px solid #10b981;
+        }}
+        .ft-buffer-pill {{
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            font-weight: 700;
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid #0284c7;
+        }}
         .fin-badge {{
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            font-size: 0.68rem;
             font-weight: 700;
             background: var(--bg-card);
             border: 1px solid var(--border-muted);
-            padding: 0.15rem 0.4rem;
+            padding: 0.15rem 0.45rem;
             border-radius: 4px;
             white-space: nowrap;
         }}
 
-        /* Compact Pitch */
+        /* REDESIGNED SNUG PITCH */
         .compact-pitch {{
             background: #09130e;
             border: 1px solid #163324;
             border-radius: 8px;
-            padding: 0.35rem;
+            padding: 0.65rem 0.4rem;
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            min-height: 480px;
-            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.7);
+            justify-content: space-around;
+            gap: 0.5rem;
+            min-height: 460px;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.75);
         }}
         .pitch-row {{
             display: flex;
             justify-content: center;
-            gap: 0.4rem;
-            align-items: flex-start;
+            gap: 0.55rem;
+            align-items: center;
             flex-wrap: nowrap;
         }}
 
-        /* STARTER CARD */
+        /* ENLARGED STARTER CARD (104px Width) */
         .starter-card {{
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 88px;
+            width: 104px;
             transition: transform 0.15s ease;
             flex-shrink: 0;
         }}
         .starter-card:hover {{
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }}
         .starter-photo-wrap {{
             position: relative;
-            width: 88px;
-            height: 64px;
+            width: 104px;
+            height: 72px;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(15, 23, 42, 0.7);
             border: 1px solid var(--border-main);
             border-bottom: none;
-            border-radius: 6px 6px 0 0;
+            border-radius: 7px 7px 0 0;
             overflow: hidden;
             z-index: 1;
         }}
         .starter-shirt-img {{
-            width: 48px;
-            height: 48px;
+            width: 58px;
+            height: 58px;
             object-fit: contain;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.65));
         }}
         .starter-badges-overlay {{
             position: absolute;
-            bottom: 2px;
+            bottom: 3px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -562,15 +623,15 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         }}
         .role-badge-starter {{
             position: absolute;
-            top: 2px;
-            right: 3px;
-            width: 16px;
-            height: 16px;
+            top: 3px;
+            right: 4px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.58rem;
+            font-size: 0.62rem;
             font-weight: 800;
             font-family: 'JetBrains Mono', monospace;
             border: 1px solid #000;
@@ -583,15 +644,112 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             background: rgba(21, 27, 38, 0.98);
             border: 1px solid var(--border-main);
             border-top: none;
-            border-radius: 0 0 6px 6px;
-            padding: 0.2rem 0.25rem;
-            width: 88px;
+            border-radius: 0 0 7px 7px;
+            padding: 0.25rem 0.35rem;
+            width: 104px;
             text-align: center;
             z-index: 2;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
         }}
         .starter-name {{
-            font-size: 0.68rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }}
+        .starter-meta {{
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            margin: 1px 0;
+            font-weight: 600;
+        }}
+        .starter-fix-row {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.58rem;
+            border-top: 1px solid var(--border-muted);
+            padding-top: 2px;
+            margin-top: 2px;
+        }}
+        .starter-fix-text {{ color: var(--text-secondary); font-weight: 600; }}
+
+        /* REDESIGNED FULL-SIZE BENCH CARDS */
+        .compact-bench-strip {{ 
+            background: var(--bg-card-inner); 
+            border: 1px solid var(--border-muted); 
+            border-radius: 8px; 
+            padding: 0.45rem 0.55rem; 
+            margin-top: 0.45rem; 
+            flex-shrink: 0; 
+            overflow-x: auto;
+        }}
+        .bench-lbl {{ 
+            font-size: 0.62rem; 
+            font-weight: 700; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            margin-bottom: 0.3rem; 
+            text-align: center;
+        }}
+        .bench-row {{ 
+            display: flex; 
+            justify-content: center; 
+            gap: 0.55rem; 
+            min-width: max-content; 
+        }}
+
+        .bench-card {{
+            background: rgba(15, 20, 28, 0.95);
+            border: 1px solid var(--border-main);
+            border-radius: 6px;
+            padding: 0.25rem 0.35rem;
+            width: 114px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+            transition: transform 0.15s ease;
+        }}
+        .bench-card:hover {{
+            transform: translateY(-2px);
+            border-color: var(--border-accent);
+        }}
+        .bench-card-top {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 2px;
+        }}
+        .bench-photo-wrap {{
+            width: 100%;
+            height: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1px 0;
+        }}
+        .bench-shirt-img {{
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
+        }}
+        .bench-info-card {{
+            width: 100%;
+            border-top: 1px solid var(--border-muted);
+            padding-top: 2px;
+        }}
+        .bench-name {{
+            font-size: 0.72rem;
             font-weight: 700;
             color: #ffffff;
             white-space: nowrap;
@@ -599,69 +757,140 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             text-overflow: ellipsis;
             line-height: 1.15;
         }}
-        .starter-meta {{
-            font-size: 0.54rem;
+        .bench-meta {{
+            font-size: 0.58rem;
             color: var(--text-muted);
             font-family: 'JetBrains Mono', monospace;
             margin: 1px 0;
         }}
-        .starter-fix-row {{
+        .bench-fix-row {{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.52rem;
+            font-size: 0.56rem;
             border-top: 1px solid var(--border-muted);
-            padding-top: 2px;
+            padding-top: 1px;
             margin-top: 1px;
         }}
-        .starter-fix-text {{ color: var(--text-secondary); font-weight: 600; }}
+        .bench-fix-text {{ color: var(--text-secondary); font-weight: 600; }}
 
-        /* Bench Chip */
-        .player-chip.bench-chip {{
-            background: rgba(15, 20, 28, 0.95);
-            border: 1px solid #1e293b;
-            border-radius: 6px;
-            padding: 0.2rem 0.3rem;
-            width: 90px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-            flex-shrink: 0;
+        .sub-label-badge {{
+            font-size: 0.52rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            background: #0369a1;
+            color: #e0f2fe;
+            padding: 0.05rem 0.25rem;
+            border-radius: 3px;
         }}
-        .chip-top {{ display: flex; justify-content: space-between; align-items: center; font-size: 0.52rem; }}
-        .chip-center {{ display: flex; align-items: center; gap: 0.3rem; margin: 1px 0; }}
-        .bench-shirt-img {{ width: 24px; height: 24px; object-fit: contain; flex-shrink: 0; }}
-        .chip-name-box {{ text-align: left; overflow: hidden; flex: 1; }}
-        .chip-name {{ font-size: 0.68rem; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.1; }}
-        .chip-team-cost {{ font-size: 0.54rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }}
-        .chip-meta {{ display: flex; justify-content: space-between; align-items: center; font-size: 0.54rem; color: var(--text-muted); border-top: 1px solid var(--border-muted); padding-top: 1px; }}
 
-        .pos-tag-mini {{ font-size: 0.48rem; font-weight: 700; padding: 0.04rem 0.18rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; }}
+        .pos-tag-mini {{ font-size: 0.5rem; font-weight: 700; padding: 0.04rem 0.2rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; }}
         .pos-GKP {{ background: #27272a; color: #fbbf24; }}
         .pos-DEF {{ background: #1e293b; color: #38bdf8; }}
         .pos-MID {{ background: #14532d; color: #4ade80; }}
         .pos-FWD {{ background: #4c0519; color: #fb7185; }}
 
-        .core-tag-mini {{ font-size: 0.46rem; font-weight: 800; background: #0f766e; color: #ccfbf1; padding: 0.04rem 0.16rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }}
-        .enabler-tag-mini {{ font-size: 0.46rem; font-weight: 800; background: #78350f; color: #fef3c7; padding: 0.04rem 0.16rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }}
-        .sub-label-mini {{ font-size: 0.5rem; font-family: 'JetBrains Mono', monospace; color: var(--accent-sky); font-weight: 700; }}
+        .core-tag-mini {{ font-size: 0.48rem; font-weight: 800; background: #0f766e; color: #ccfbf1; padding: 0.04rem 0.18rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }}
+        .enabler-tag-mini {{ font-size: 0.48rem; font-weight: 800; background: #78350f; color: #fef3c7; padding: 0.04rem 0.18rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }}
 
-        .fdr-pill {{ font-size: 0.52rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.04rem 0.18rem; border-radius: 2px; }}
+        .fdr-pill {{ font-size: 0.56rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.04rem 0.2rem; border-radius: 2px; }}
         .fdr-pill.fdr-2 {{ background: rgba(2, 132, 199, 0.25); color: #38bdf8; }}
         .fdr-pill.fdr-3 {{ background: rgba(100, 116, 139, 0.25); color: #94a3b8; }}
 
-        .compact-bench-strip {{ 
-            background: var(--bg-card-inner); 
-            border: 1px solid var(--border-muted); 
-            border-radius: 6px; 
-            padding: 0.3rem 0.4rem; 
-            margin-top: 0.35rem; 
-            flex-shrink: 0; 
-            overflow-x: auto;
+        /* =========================================================
+           PLAN SUMMARY TAB STYLING (NEW!)
+           ========================================================= */
+        .summary-metrics-strip {{
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-shrink: 0;
         }}
-        .bench-lbl {{ font-size: 0.56rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem; }}
-        .bench-row {{ display: flex; justify-content: center; gap: 0.3rem; min-width: max-content; }}
+        .summary-metric-card {{
+            background: var(--bg-surface);
+            border: 1px solid var(--border-main);
+            border-radius: 8px;
+            padding: 0.5rem 0.65rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }}
+        .summary-metric-title {{
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }}
+        .summary-metric-values {{
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 2px;
+        }}
+        .metric-sub-val {{
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }}
+        .metric-tag-c1 {{ color: #cbd5e1; }}
+        .metric-tag-c2 {{ color: var(--accent-emerald); }}
+
+        .summary-split-grid {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 0.25rem;
+        }}
+        .summary-plan-panel {{
+            background: var(--bg-surface);
+            border: 1px solid var(--border-main);
+            border-radius: 10px;
+            padding: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }}
+        .summary-panel-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.45rem;
+            border-bottom: 1px solid var(--border-main);
+        }}
+        .pros-cons-section {{
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }}
+        .section-badge-title {{
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }}
+        .badge-pro {{ color: var(--accent-emerald); }}
+        .badge-con {{ color: var(--accent-rose); }}
+
+        .pros-cons-item {{
+            background: var(--bg-card);
+            border: 1px solid var(--border-muted);
+            border-radius: 6px;
+            padding: 0.45rem 0.65rem;
+            font-size: 0.76rem;
+            line-height: 1.4;
+            color: var(--text-secondary);
+        }}
+        .pros-cons-item strong {{
+            color: var(--text-main);
+        }}
 
         /* FULL SEASON FDR TICKER */
         .ticker-container {{
@@ -833,67 +1062,6 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         .fdr-box-lg.fdr-4 {{ background: #451a03; color: #fbbf24; border: 1px solid #78350f; }}
         .fdr-box-lg.fdr-5 {{ background: #450a0a; color: #f87171; border: 1px solid #7f1d1d; }}
 
-        /* CHIP ROADMAP */
-        .chips-section-header {{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.35rem;
-        }}
-        .chips-half-label {{
-            font-size: 0.6rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }}
-        .chip-status-strip {{
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 0.4rem;
-            margin-bottom: 0.75rem;
-            flex-shrink: 0;
-        }}
-        .chip-mini-card {{
-            padding: 0.35rem 0.25rem;
-            border-radius: 6px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }}
-        .chip-mini-card.chip-used {{
-            background: #141923;
-            border: 1px solid #283141;
-        }}
-        .chip-mini-card.chip-used .chip-mini-title {{
-            color: #64748b;
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-decoration: line-through;
-        }}
-        .chip-mini-card.chip-used .chip-mini-status {{
-            color: #475569;
-            font-size: 0.54rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-        }}
-        .chip-mini-card.chip-avail {{
-            background: rgba(16, 185, 129, 0.08);
-            border: 1px solid var(--accent-emerald);
-        }}
-        .chip-mini-card.chip-avail .chip-mini-title {{
-            color: #ffffff;
-            font-size: 0.65rem;
-            font-weight: 700;
-        }}
-        .chip-mini-card.chip-avail .chip-mini-status {{
-            color: var(--accent-emerald);
-            font-size: 0.54rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-        }}
-
         /* RESEARCH SOURCES */
         .sources-ledger {{ display: flex; flex-direction: column; width: 100%; }}
         .source-ledger-row {{ 
@@ -927,18 +1095,18 @@ def generate_html_report(data_dir="data", output_file="index.html"):
            MOBILE & TABLET RESPONSIVE STYLING (< 1024px & < 768px)
            ========================================================= */
         @media (max-width: 1024px) {{
-            .lineup-split-grid {{
+            .lineup-split-grid, .summary-split-grid {{
                 grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 1.25rem;
+            }}
+            .summary-metrics-strip {{
+                grid-template-columns: repeat(3, 1fr);
             }}
             .grid-2 {{
                 grid-template-columns: 1fr;
             }}
-            .chip-status-strip {{
-                grid-template-columns: repeat(4, 1fr);
-            }}
             .compact-pitch {{
-                min-height: 440px;
+                min-height: 430px;
             }}
         }}
 
@@ -951,16 +1119,27 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             .stats-strip {{ width: 100%; justify-content: space-between; }}
             .stat-cell {{ flex: 1; min-width: 65px; padding: 0.18rem 0.35rem; }}
             
-            .starter-card {{ width: 68px; }}
-            .starter-photo-wrap {{ width: 68px; height: 52px; }}
-            .starter-shirt-img {{ width: 36px; height: 36px; }}
-            .starter-info-card {{ width: 68px; padding: 0.15rem 0.2rem; }}
-            .starter-name {{ font-size: 0.62rem; }}
-            .starter-meta {{ font-size: 0.5rem; }}
-            .starter-fix-row {{ font-size: 0.48rem; }}
+            .starter-card {{ width: 72px; }}
+            .starter-photo-wrap {{ width: 72px; height: 54px; }}
+            .starter-shirt-img {{ width: 40px; height: 40px; }}
+            .starter-info-card {{ width: 72px; padding: 0.18rem 0.2rem; }}
+            .starter-name {{ font-size: 0.64rem; }}
+            .starter-meta {{ font-size: 0.52rem; }}
+            .starter-fix-row {{ font-size: 0.5rem; }}
             
-            .pitch-row {{ gap: 0.2rem; }}
-            .compact-pitch {{ padding: 0.25rem 0.15rem; min-height: 410px; }}
+            .bench-card {{ width: 88px; padding: 0.2rem 0.25rem; }}
+            .bench-photo-wrap {{ height: 38px; }}
+            .bench-shirt-img {{ width: 34px; height: 34px; }}
+            .bench-name {{ font-size: 0.64rem; }}
+            .bench-meta {{ font-size: 0.52rem; }}
+            .bench-fix-row {{ font-size: 0.5rem; }}
+
+            .pitch-row {{ gap: 0.25rem; }}
+            .compact-pitch {{ padding: 0.35rem 0.2rem; min-height: 400px; }}
+
+            .summary-metrics-strip {{
+                grid-template-columns: repeat(2, 1fr);
+            }}
 
             .source-ledger-row {{
                 grid-template-columns: 1fr;
@@ -977,18 +1156,18 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             <div class="brand-meta">
                 <div class="season-badge">FPL 2026/27</div>
                 <div class="title-box">
-                    <h1>{entry.get("name", "GEMINI UNITED")}</h1>
+                    <h1>{entry.get("name", "GEMINI UNITED")} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: {entry.get('id', 306983)})</span></h1>
                     <p>Manager: {entry.get("player_first_name", "")} {entry.get("player_last_name", "")} | Wildcard GW3 Options</p>
                 </div>
             </div>
             <div class="stats-strip">
                 <div class="stat-cell">
-                    <span class="lbl">Comparison</span>
-                    <span class="val" style="color:#ffffff;">Choice 1 vs 2</span>
+                    <span class="lbl">Total Budget</span>
+                    <span class="val" style="color:#ffffff;">£100.1m</span>
                 </div>
                 <div class="stat-cell">
-                    <span class="lbl">Squad Depth</span>
-                    <span class="val" style="color:var(--accent-sky);">100% Starters</span>
+                    <span class="lbl">Bank (Choice 2)</span>
+                    <span class="val" style="color:var(--accent-sky);">+£{c2_bank:.1f}m</span>
                 </div>
                 <div class="stat-cell">
                     <span class="lbl">Active Chip</span>
@@ -1002,17 +1181,17 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         </div>
     </header>
 
-    <!-- Navigation -->
+    <!-- Navigation (4 Clean Tabs) -->
     <nav class="nav-bar">
         <button class="tab-btn active" onclick="switchTab('comparison')">Plan Lineup</button>
+        <button class="tab-btn" onclick="switchTab('summary')">Plan Summary</button>
         <button class="tab-btn" onclick="switchTab('ticker')">FDR Ticker</button>
-        <button class="tab-btn" onclick="switchTab('chips')">Chip Roadmap</button>
         <button class="tab-btn" onclick="switchTab('sources')">Research Sources</button>
     </nav>
 
     <!-- Main Content Area -->
     <main>
-        <!-- TAB 1: PLAN LINEUP (RESPONSIVE SPLIT GRID) -->
+        <!-- TAB 1: PLAN LINEUP -->
         <section id="tab-comparison" class="tab-content active">
             <div class="lineup-split-grid">
                 
@@ -1021,7 +1200,10 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="plan-col-header">
                         <div>
                             <div class="plan-title">Choice 1: Manager Dynamic Selection</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">Audit Mode: Strengths &amp; Weaknesses Evaluation</span>
+                            <div class="plan-sub-tags">
+                                <span class="formation-pill">4-5-1</span>
+                                <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
+                            </div>
                         </div>
                         <div class="fin-badge">
                             Cost: <span style="color:var(--accent-emerald);">£{c1_cost:.1f}m</span> | Bank: <span style="color:var(--accent-sky);">£{c1_bank:.1f}m</span>
@@ -1029,7 +1211,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     </div>
 
                     <div class="compact-pitch">
-                        <!-- FWD (2) -->
+                        <!-- FWD (1) -->
                         <div class="pitch-row">
                             {"".join([render_starter_card(p) for p in c1_starters if p["pos"] == "FWD"])}
                         </div>
@@ -1037,7 +1219,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                         <div class="pitch-row">
                             {"".join([render_starter_card(p) for p in c1_starters if p["pos"] == "MID"])}
                         </div>
-                        <!-- DEF (3) -->
+                        <!-- DEF (4) -->
                         <div class="pitch-row">
                             {"".join([render_starter_card(p) for p in c1_starters if p["pos"] == "DEF"])}
                         </div>
@@ -1050,7 +1232,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="compact-bench-strip">
                         <div class="bench-lbl">Substitutes Bench</div>
                         <div class="bench-row">
-                            {"".join([render_bench_chip(p, sub_idx=i+1) for i, p in enumerate(c1_bench)])}
+                            {"".join([render_bench_card(p, sub_idx=i+1) for i, p in enumerate(c1_bench)])}
                         </div>
                     </div>
                 </div>
@@ -1060,10 +1242,14 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="plan-col-header">
                         <div>
                             <div class="plan-title" style="color:var(--accent-emerald);">Choice 2: The Master Fortress Blueprint</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">AI Autonomous Optimization &bull; 100% Starters &bull; 2-FT Buffer</span>
+                            <div class="plan-sub-tags">
+                                <span class="formation-pill">3-5-2</span>
+                                <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
+                                <span class="ft-buffer-pill">2-FT BUFFER</span>
+                            </div>
                         </div>
                         <div class="fin-badge" style="border-color:var(--accent-emerald);">
-                            Cost: <span style="color:var(--accent-emerald);">£{c2_cost:.1f}m</span> | Bank: <span style="color:var(--accent-sky);">£{c2_bank:.1f}m</span>
+                            Cost: <span style="color:var(--accent-emerald);">£{c2_cost:.1f}m</span> | Bank: <span style="color:var(--accent-sky);">+£{c2_bank:.1f}m</span>
                         </div>
                     </div>
 
@@ -1089,7 +1275,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="compact-bench-strip">
                         <div class="bench-lbl">Substitutes Bench (100% 90-Min Regulars)</div>
                         <div class="bench-row">
-                            {"".join([render_bench_chip(p, sub_idx=i+1) for i, p in enumerate(c2_bench)])}
+                            {"".join([render_bench_card(p, sub_idx=i+1) for i, p in enumerate(c2_bench)])}
                         </div>
                     </div>
                 </div>
@@ -1097,7 +1283,96 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             </div>
         </section>
 
-        <!-- TAB 2: FDR TICKER -->
+        <!-- TAB 2: PLAN SUMMARY (REAL-TIME STRATEGIC AUDIT & PROS/CONS) -->
+        <section id="tab-summary" class="tab-content">
+            <!-- Pros & Cons Split Grid -->
+            <div class="summary-split-grid">
+                
+                <!-- CHOICE 1 PROS & CONS -->
+                <div class="summary-plan-panel">
+                    <div class="summary-panel-header">
+                        <div>
+                            <div class="plan-title">Choice 1 : Manager Dynamic Selection</div>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">4-5-1 Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m</span>
+                        </div>
+                        <span class="source-pill">Audit Mode</span>
+                    </div>
+
+                    <!-- Pros -->
+                    <div class="pros-cons-section">
+                        <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
+                        <div class="pros-cons-item">
+                            <strong>Mega Heavyweight Midfield (Bruno + Palmer + Szoboszlai) :</strong> มี Bruno Fernandes (£12.0m &bull; 25 แต้ม / 2.56 xGI อันดับ 1 ของลีก) คุมจุดโทษ เตะมุม และเพลย์เมกเกอร์ตัวจริง ผสาน 3 เสาหลักแดนกลาง
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Egan (£4.0m &bull; Hull) Ultra Value Enabler :</strong> กองหลังตัวจริง 180 นาทีเต็ม ทำไปแล้ว 17 แต้ม ในราคาประหยัด ช่วยเปิดงบดึง Bruno ได้สำเร็จ
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Premium GKP Rotation :</strong> มีผู้รักษาประตูตัวจริงจาก 2 สโมสรใหญ่ (Verbruggen £4.5m + Kinsky £4.5m) คอยสลับใช้งานตามความยากง่าย
+                        </div>
+                    </div>
+
+                    <!-- Cons -->
+                    <div class="pros-cons-section">
+                        <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
+                        <div class="pros-cons-item">
+                            <strong>£13.1m Benched Value (ตัวท็อปจมน้ำบนม้านั่ง) :</strong> การจับ João Pedro (£7.6m / xGI 1.95) และ White (£5.5m) นั่งสำรอง เสี่ยงเสียแต้มจากการที่ตัวเกรดท็อปไม่ได้ออกสตาร์ต
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>0-Minute Risk (Ezri Konsa £4.5m) :</strong> Konsa ยังไม่ได้รับโอกาสลงสนามใน 2 นัดแรก (0 นาที) อาจส่งผลให้ระบบต้องสลับตัวสำรองลงมาเล่นแทน
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Low Attacking Output :</strong> Xhaka (£5.5m) เล่นกลางรับมีค่า xGI เพียง 0.39 และ Walle Egeli (£4.5m) เป็นสำรองที่ลงเพียง 10 นาที
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHOICE 2 PROS & CONS -->
+                <div class="summary-plan-panel" style="border-color: rgba(16, 185, 129, 0.45);">
+                    <div class="summary-panel-header">
+                        <div>
+                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 : The Master Fortress Blueprint</div>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-5-2 Formation &bull; Cost: £{c2_cost:.1f}m &bull; Bank: +£{c2_bank:.1f}m</span>
+                        </div>
+                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">AI Blueprint</span>
+                    </div>
+
+                    <!-- Pros -->
+                    <div class="pros-cons-section">
+                        <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
+                        <div class="pros-cons-item">
+                            <strong>100% Nailed Regulars (Zero Deadweight) :</strong> ผู้เล่นทั้ง 15 คนเป็นตัวจริง 90 นาทีเต็ม ปลอดภัย 100% ต่อการสะสม 2 Free Transfers ยืนยาว
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Dual Elite Attackers (Haaland + João Pedro) :</strong> ส่ง 2 กองหน้าที่ดีที่สุดในลีกยืนคู่กัน ปลดล็อกค่า Starting xGI สูงถึง 9.35 (เทียบกับ 4.41 ใน C1)
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Newcastle Golden Run Exploitation :</strong> ดึง Anthony Elanga (£6.0m &bull; 17 แต้ม) + Dedić (£4.5m) เก็บแต้มจากโปรแกรมที่ง่ายที่สุดในลีก (FDR 2.67) โดยไม่ต้องใช้ Isak
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Top Defensive Attacker :</strong> ใส่ Maxim De Cuyper (£4.6m &bull; xGI 1.68 อันดับ 1 ของกองหลัง) + Gvardiol (£5.6m)
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Financial Flexibility :</strong> มีเงินคงเหลือใน Bank +£0.6m สำหรับบริหารจัดการและรองรับราคาขึ้น-ลง
+                        </div>
+                    </div>
+
+                    <!-- Cons -->
+                    <div class="pros-cons-section">
+                        <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
+                        <div class="pros-cons-item">
+                            <strong>No Bruno Fernandes :</strong> ไม่มี Bruno Fernandes (£12.0m) ตัวทำแต้มอันดับ 1 ของลีก (ชดเชยด้วยการกระจายขุมกำลัง 5 ตัวรุกแทน)
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Single GKP Reliance :</strong> พึ่งพา Verbruggen (£4.5m) เป็นผู้รักษาประตูหลักคนเดียว (สำรอง Dúbravka £4.0m ยังไม่ได้ลงเล่น)
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 3: FDR TICKER -->
         <section id="tab-ticker" class="tab-content">
             <div class="ticker-container">
                 <div class="ticker-header-bar">
@@ -1133,107 +1408,6 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </section>
-
-        <!-- TAB 3: CHIP ROADMAP -->
-        <section id="tab-chips" class="tab-content">
-            <div class="panel-scroll" style="display:flex; flex-direction:column; gap:0.6rem;">
-                
-                <!-- 8 Official Season Chips Strip -->
-                <div class="chips-section-header">
-                    <span class="chips-half-label">First Half (GW1 - GW19)</span>
-                    <span class="chips-half-label">Second Half (GW20 - GW38)</span>
-                </div>
-                <div class="chip-status-strip">
-                    <div class="chip-mini-card chip-used" title="Used in Gameweek 1">
-                        <span class="chip-mini-title">Bench Boost 1</span>
-                        <span class="chip-mini-status">USED (GW1)</span>
-                    </div>
-                    <div class="chip-mini-card chip-used" title="Active in Gameweek 3">
-                        <span class="chip-mini-title">Wildcard 1</span>
-                        <span class="chip-mini-status">USED (GW3)</span>
-                    </div>
-                    <div class="chip-mini-card chip-avail" title="Available for GW10-15">
-                        <span class="chip-mini-title">Triple Cap 1</span>
-                        <span class="chip-mini-status">AVAILABLE (GW10-15)</span>
-                    </div>
-                    <div class="chip-mini-card chip-avail" title="Available for Festive GW17-19">
-                        <span class="chip-mini-title">Free Hit 1</span>
-                        <span class="chip-mini-status">AVAILABLE (GW17-19)</span>
-                    </div>
-
-                    <div class="chip-mini-card chip-avail" title="Available from GW20">
-                        <span class="chip-mini-title">Wildcard 2</span>
-                        <span class="chip-mini-status">AVAILABLE (GW20+)</span>
-                    </div>
-                    <div class="chip-mini-card chip-avail" title="Available for DGW34/37">
-                        <span class="chip-mini-title">Bench Boost 2</span>
-                        <span class="chip-mini-status">AVAILABLE (DGW)</span>
-                    </div>
-                    <div class="chip-mini-card chip-avail" title="Available for DGW34/37">
-                        <span class="chip-mini-title">Triple Cap 2</span>
-                        <span class="chip-mini-status">AVAILABLE (GW34/37)</span>
-                    </div>
-                    <div class="chip-mini-card chip-avail" title="Available for Blank GW29/32">
-                        <span class="chip-mini-title">Free Hit 2</span>
-                        <span class="chip-mini-status">AVAILABLE (GW29/32)</span>
-                    </div>
-                </div>
-
-                <!-- Strategic Panels -->
-                <div class="grid-2">
-                    <div class="panel">
-                        <div class="panel-header">
-                            <div class="panel-title">Master Chip Strategy (38 Gameweeks Schedule)</div>
-                            <span class="source-pill">AI Roadmap</span>
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:0.45rem; font-size:0.78rem; color:var(--text-secondary);">
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW1 : Bench Boost 1 [USED]</strong>
-                                <p style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">ใช้เก็บแต้มสำรองสัปดาห์เปิดฤดูกาล</p>
-                            </div>
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW3 : Wildcard 1 [ACTIVE / IN-USE]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-emerald); margin-top:2px;">สร้างฐานทัพ 15 ตัวจริง Zero Deadweight &bull; ปรัชญา 2-FT Buffer</p>
-                            </div>
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW7 / GW13 / GW16 : Triple Captain 1 [TARGET]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-sky); margin-top:2px;">ล็อกเป้า Haaland เกมเหย้าพบทีมน้องใหม่ (IPS / LEE / HUL)</p>
-                            </div>
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW18 / GW19 : Free Hit 1 [TARGET]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-amber); margin-top:2px;">ช่วง Boxing Day & Festive Period ป้องกันการโรเตชันหนัก 3 นัด/สัปดาห์</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="panel">
-                        <div class="panel-header">
-                            <div class="panel-title">Second Half Double Gameweek Strategy (GW20-38)</div>
-                            <span class="source-pill">Endgame Surge</span>
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:0.45rem; font-size:0.78rem; color:var(--text-secondary);">
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW29 : Free Hit 2 [BLANK GW]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-amber); margin-top:2px;">สัปดาห์ FA Cup ชนโปรแกรมลีก (เตะ 4-5 คู่) จัด 11 ตัวจริงเฉพาะกิจ</p>
-                            </div>
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW30 / GW31 : Wildcard 2 [RESTRUCTURE]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-emerald); margin-top:2px;">ยกเครื่อง 15 ผู้เล่นเพื่อเตรียมทีมรับศึก Double Gameweeks</p>
-                            </div>
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW34 : Triple Captain 2 [DGW34]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-sky); margin-top:2px;">ใช้กับกัปตันตัวท็อปที่มีโปรแกรมเตะเบิ้ล 2 แมตช์ในสัปดาห์เดียว</p>
-                            </div>
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW37 : Bench Boost 2 [MEGA DGW37]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-emerald); margin-top:2px;">สัปดาห์ Double Gameweek ใหญ่ที่สุด 15 ผู้เล่นเตะ 30 แมตช์เต็มอัตรา</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </section>
 
@@ -1387,7 +1561,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print(f"[✔] Generated Responsive Presentation successfully at: {output_file}")
+    print(f"[✔] Generated Presentation with Plan Summary Tab at: {output_file}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate FPL Presentation HTML")

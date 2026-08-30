@@ -24,6 +24,7 @@
             --accent-emerald: #10b981;
             --accent-sky: #38bdf8;
             --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
             
             --fdr-1: #10b981;
             --fdr-2: #0284c7;
@@ -44,11 +45,10 @@
             overflow-x: hidden;
         }
 
-        /* Desktop specific height control */
-        @media (min-width: 1025px) {
+        @media (min-width: 1200px) {
             body {
                 height: 100vh;
-                overflow: hidden; /* App mode on desktop */
+                overflow: hidden; /* App view on large desktop */
             }
         }
 
@@ -60,7 +60,7 @@
             flex-shrink: 0;
         }
         .header-wrap {
-            max-width: 1600px;
+            max-width: 1680px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -95,11 +95,11 @@
         .stat-cell {
             background: var(--bg-card);
             border: 1px solid var(--border-main);
-            padding: 0.2rem 0.5rem;
+            padding: 0.2rem 0.55rem;
             border-radius: 6px;
             display: flex;
             flex-direction: column;
-            min-width: 72px;
+            min-width: 75px;
         }
         .stat-cell .lbl {
             font-size: 0.54rem;
@@ -108,19 +108,19 @@
             font-weight: 600;
         }
         .stat-cell .val {
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             font-weight: 700;
             color: var(--accent-emerald);
             font-family: 'JetBrains Mono', monospace;
             line-height: 1.2;
         }
 
-        /* Navigation Bar */
+        /* Navigation Bar (4 Tabs) */
         .nav-bar {
             display: flex;
             gap: 0.3rem;
-            max-width: 1600px;
-            margin: 0.35rem auto 0;
+            max-width: 1680px;
+            margin: 0.3rem auto 0;
             padding: 0 1rem;
             flex-shrink: 0;
             width: 100%;
@@ -132,9 +132,9 @@
             background: var(--bg-surface);
             border: 1px solid var(--border-main);
             color: var(--text-secondary);
-            padding: 0.35rem 0.7rem;
+            padding: 0.35rem 0.75rem;
             border-radius: 6px;
-            font-size: 0.72rem;
+            font-size: 0.74rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.15s ease;
@@ -148,9 +148,9 @@
 
         /* Main View Container */
         main {
-            max-width: 1600px;
-            margin: 0.35rem auto 0;
-            padding: 0 1rem 0.75rem;
+            max-width: 1680px;
+            margin: 0.3rem auto 0;
+            padding: 0 1rem 0.65rem;
             flex: 1;
             width: 100%;
             display: flex;
@@ -185,78 +185,122 @@
             align-items: center;
             padding-bottom: 0.35rem;
             border-bottom: 1px solid var(--border-main);
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.4rem;
             flex-shrink: 0;
             gap: 0.4rem;
         }
-        .plan-title { font-size: 0.84rem; font-weight: 700; color: #ffffff; }
+        .plan-title { font-size: 0.88rem; font-weight: 700; color: #ffffff; }
+        .plan-sub-tags {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+            margin-top: 0.2rem;
+            flex-wrap: wrap;
+        }
+        .formation-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            font-weight: 700;
+            background: #1e293b;
+            color: #cbd5e1;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-accent);
+        }
+        .active-chip-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 0.1rem 0.45rem;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            text-transform: uppercase;
+        }
+        .active-chip-pill.chip-wildcard {
+            background: rgba(16, 185, 129, 0.18);
+            color: #34d399;
+            border: 1px solid #10b981;
+        }
+        .ft-buffer-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            font-weight: 700;
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid #0284c7;
+        }
         .fin-badge {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            font-size: 0.68rem;
             font-weight: 700;
             background: var(--bg-card);
             border: 1px solid var(--border-muted);
-            padding: 0.15rem 0.4rem;
+            padding: 0.15rem 0.45rem;
             border-radius: 4px;
             white-space: nowrap;
         }
 
-        /* Compact Pitch */
+        /* REDESIGNED SNUG PITCH */
         .compact-pitch {
             background: #09130e;
             border: 1px solid #163324;
             border-radius: 8px;
-            padding: 0.35rem;
+            padding: 0.65rem 0.4rem;
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            min-height: 480px;
-            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.7);
+            justify-content: space-around;
+            gap: 0.5rem;
+            min-height: 460px;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.75);
         }
         .pitch-row {
             display: flex;
             justify-content: center;
-            gap: 0.4rem;
-            align-items: flex-start;
+            gap: 0.55rem;
+            align-items: center;
             flex-wrap: nowrap;
         }
 
-        /* STARTER CARD */
+        /* ENLARGED STARTER CARD (104px Width) */
         .starter-card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 88px;
+            width: 104px;
             transition: transform 0.15s ease;
             flex-shrink: 0;
         }
         .starter-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
         .starter-photo-wrap {
             position: relative;
-            width: 88px;
-            height: 64px;
+            width: 104px;
+            height: 72px;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(15, 23, 42, 0.7);
             border: 1px solid var(--border-main);
             border-bottom: none;
-            border-radius: 6px 6px 0 0;
+            border-radius: 7px 7px 0 0;
             overflow: hidden;
             z-index: 1;
         }
         .starter-shirt-img {
-            width: 48px;
-            height: 48px;
+            width: 58px;
+            height: 58px;
             object-fit: contain;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.65));
         }
         .starter-badges-overlay {
             position: absolute;
-            bottom: 2px;
+            bottom: 3px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -267,15 +311,15 @@
         }
         .role-badge-starter {
             position: absolute;
-            top: 2px;
-            right: 3px;
-            width: 16px;
-            height: 16px;
+            top: 3px;
+            right: 4px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.58rem;
+            font-size: 0.62rem;
             font-weight: 800;
             font-family: 'JetBrains Mono', monospace;
             border: 1px solid #000;
@@ -288,15 +332,112 @@
             background: rgba(21, 27, 38, 0.98);
             border: 1px solid var(--border-main);
             border-top: none;
-            border-radius: 0 0 6px 6px;
-            padding: 0.2rem 0.25rem;
-            width: 88px;
+            border-radius: 0 0 7px 7px;
+            padding: 0.25rem 0.35rem;
+            width: 104px;
             text-align: center;
             z-index: 2;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
         }
         .starter-name {
-            font-size: 0.68rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+        .starter-meta {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            margin: 1px 0;
+            font-weight: 600;
+        }
+        .starter-fix-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.58rem;
+            border-top: 1px solid var(--border-muted);
+            padding-top: 2px;
+            margin-top: 2px;
+        }
+        .starter-fix-text { color: var(--text-secondary); font-weight: 600; }
+
+        /* REDESIGNED FULL-SIZE BENCH CARDS */
+        .compact-bench-strip { 
+            background: var(--bg-card-inner); 
+            border: 1px solid var(--border-muted); 
+            border-radius: 8px; 
+            padding: 0.45rem 0.55rem; 
+            margin-top: 0.45rem; 
+            flex-shrink: 0; 
+            overflow-x: auto;
+        }
+        .bench-lbl { 
+            font-size: 0.62rem; 
+            font-weight: 700; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            margin-bottom: 0.3rem; 
+            text-align: center;
+        }
+        .bench-row { 
+            display: flex; 
+            justify-content: center; 
+            gap: 0.55rem; 
+            min-width: max-content; 
+        }
+
+        .bench-card {
+            background: rgba(15, 20, 28, 0.95);
+            border: 1px solid var(--border-main);
+            border-radius: 6px;
+            padding: 0.25rem 0.35rem;
+            width: 114px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+            transition: transform 0.15s ease;
+        }
+        .bench-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-accent);
+        }
+        .bench-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 2px;
+        }
+        .bench-photo-wrap {
+            width: 100%;
+            height: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1px 0;
+        }
+        .bench-shirt-img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
+        }
+        .bench-info-card {
+            width: 100%;
+            border-top: 1px solid var(--border-muted);
+            padding-top: 2px;
+        }
+        .bench-name {
+            font-size: 0.72rem;
             font-weight: 700;
             color: #ffffff;
             white-space: nowrap;
@@ -304,69 +445,140 @@
             text-overflow: ellipsis;
             line-height: 1.15;
         }
-        .starter-meta {
-            font-size: 0.54rem;
+        .bench-meta {
+            font-size: 0.58rem;
             color: var(--text-muted);
             font-family: 'JetBrains Mono', monospace;
             margin: 1px 0;
         }
-        .starter-fix-row {
+        .bench-fix-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.52rem;
+            font-size: 0.56rem;
             border-top: 1px solid var(--border-muted);
-            padding-top: 2px;
+            padding-top: 1px;
             margin-top: 1px;
         }
-        .starter-fix-text { color: var(--text-secondary); font-weight: 600; }
+        .bench-fix-text { color: var(--text-secondary); font-weight: 600; }
 
-        /* Bench Chip */
-        .player-chip.bench-chip {
-            background: rgba(15, 20, 28, 0.95);
-            border: 1px solid #1e293b;
-            border-radius: 6px;
-            padding: 0.2rem 0.3rem;
-            width: 90px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-            flex-shrink: 0;
+        .sub-label-badge {
+            font-size: 0.52rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            background: #0369a1;
+            color: #e0f2fe;
+            padding: 0.05rem 0.25rem;
+            border-radius: 3px;
         }
-        .chip-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.52rem; }
-        .chip-center { display: flex; align-items: center; gap: 0.3rem; margin: 1px 0; }
-        .bench-shirt-img { width: 24px; height: 24px; object-fit: contain; flex-shrink: 0; }
-        .chip-name-box { text-align: left; overflow: hidden; flex: 1; }
-        .chip-name { font-size: 0.68rem; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.1; }
-        .chip-team-cost { font-size: 0.54rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
-        .chip-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.54rem; color: var(--text-muted); border-top: 1px solid var(--border-muted); padding-top: 1px; }
 
-        .pos-tag-mini { font-size: 0.48rem; font-weight: 700; padding: 0.04rem 0.18rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; }
+        .pos-tag-mini { font-size: 0.5rem; font-weight: 700; padding: 0.04rem 0.2rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; }
         .pos-GKP { background: #27272a; color: #fbbf24; }
         .pos-DEF { background: #1e293b; color: #38bdf8; }
         .pos-MID { background: #14532d; color: #4ade80; }
         .pos-FWD { background: #4c0519; color: #fb7185; }
 
-        .core-tag-mini { font-size: 0.46rem; font-weight: 800; background: #0f766e; color: #ccfbf1; padding: 0.04rem 0.16rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }
-        .enabler-tag-mini { font-size: 0.46rem; font-weight: 800; background: #78350f; color: #fef3c7; padding: 0.04rem 0.16rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }
-        .sub-label-mini { font-size: 0.5rem; font-family: 'JetBrains Mono', monospace; color: var(--accent-sky); font-weight: 700; }
+        .core-tag-mini { font-size: 0.48rem; font-weight: 800; background: #0f766e; color: #ccfbf1; padding: 0.04rem 0.18rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }
+        .enabler-tag-mini { font-size: 0.48rem; font-weight: 800; background: #78350f; color: #fef3c7; padding: 0.04rem 0.18rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }
 
-        .fdr-pill { font-size: 0.52rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.04rem 0.18rem; border-radius: 2px; }
+        .fdr-pill { font-size: 0.56rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.04rem 0.2rem; border-radius: 2px; }
         .fdr-pill.fdr-2 { background: rgba(2, 132, 199, 0.25); color: #38bdf8; }
         .fdr-pill.fdr-3 { background: rgba(100, 116, 139, 0.25); color: #94a3b8; }
 
-        .compact-bench-strip { 
-            background: var(--bg-card-inner); 
-            border: 1px solid var(--border-muted); 
-            border-radius: 6px; 
-            padding: 0.3rem 0.4rem; 
-            margin-top: 0.35rem; 
-            flex-shrink: 0; 
-            overflow-x: auto;
+        /* =========================================================
+           PLAN SUMMARY TAB STYLING (NEW!)
+           ========================================================= */
+        .summary-metrics-strip {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-shrink: 0;
         }
-        .bench-lbl { font-size: 0.56rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem; }
-        .bench-row { display: flex; justify-content: center; gap: 0.3rem; min-width: max-content; }
+        .summary-metric-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-main);
+            border-radius: 8px;
+            padding: 0.5rem 0.65rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .summary-metric-title {
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .summary-metric-values {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 2px;
+        }
+        .metric-sub-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+        .metric-tag-c1 { color: #cbd5e1; }
+        .metric-tag-c2 { color: var(--accent-emerald); }
+
+        .summary-split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 0.25rem;
+        }
+        .summary-plan-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-main);
+            border-radius: 10px;
+            padding: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .summary-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.45rem;
+            border-bottom: 1px solid var(--border-main);
+        }
+        .pros-cons-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+        .section-badge-title {
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .badge-pro { color: var(--accent-emerald); }
+        .badge-con { color: var(--accent-rose); }
+
+        .pros-cons-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-muted);
+            border-radius: 6px;
+            padding: 0.45rem 0.65rem;
+            font-size: 0.76rem;
+            line-height: 1.4;
+            color: var(--text-secondary);
+        }
+        .pros-cons-item strong {
+            color: var(--text-main);
+        }
 
         /* FULL SEASON FDR TICKER */
         .ticker-container {
@@ -538,67 +750,6 @@
         .fdr-box-lg.fdr-4 { background: #451a03; color: #fbbf24; border: 1px solid #78350f; }
         .fdr-box-lg.fdr-5 { background: #450a0a; color: #f87171; border: 1px solid #7f1d1d; }
 
-        /* CHIP ROADMAP */
-        .chips-section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.35rem;
-        }
-        .chips-half-label {
-            font-size: 0.6rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .chip-status-strip {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 0.4rem;
-            margin-bottom: 0.75rem;
-            flex-shrink: 0;
-        }
-        .chip-mini-card {
-            padding: 0.35rem 0.25rem;
-            border-radius: 6px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-        .chip-mini-card.chip-used {
-            background: #141923;
-            border: 1px solid #283141;
-        }
-        .chip-mini-card.chip-used .chip-mini-title {
-            color: #64748b;
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-decoration: line-through;
-        }
-        .chip-mini-card.chip-used .chip-mini-status {
-            color: #475569;
-            font-size: 0.54rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        .chip-mini-card.chip-avail {
-            background: rgba(16, 185, 129, 0.08);
-            border: 1px solid var(--accent-emerald);
-        }
-        .chip-mini-card.chip-avail .chip-mini-title {
-            color: #ffffff;
-            font-size: 0.65rem;
-            font-weight: 700;
-        }
-        .chip-mini-card.chip-avail .chip-mini-status {
-            color: var(--accent-emerald);
-            font-size: 0.54rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
         /* RESEARCH SOURCES */
         .sources-ledger { display: flex; flex-direction: column; width: 100%; }
         .source-ledger-row { 
@@ -632,18 +783,18 @@
            MOBILE & TABLET RESPONSIVE STYLING (< 1024px & < 768px)
            ========================================================= */
         @media (max-width: 1024px) {
-            .lineup-split-grid {
+            .lineup-split-grid, .summary-split-grid {
                 grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 1.25rem;
+            }
+            .summary-metrics-strip {
+                grid-template-columns: repeat(3, 1fr);
             }
             .grid-2 {
                 grid-template-columns: 1fr;
             }
-            .chip-status-strip {
-                grid-template-columns: repeat(4, 1fr);
-            }
             .compact-pitch {
-                min-height: 440px;
+                min-height: 430px;
             }
         }
 
@@ -656,16 +807,27 @@
             .stats-strip { width: 100%; justify-content: space-between; }
             .stat-cell { flex: 1; min-width: 65px; padding: 0.18rem 0.35rem; }
             
-            .starter-card { width: 68px; }
-            .starter-photo-wrap { width: 68px; height: 52px; }
-            .starter-shirt-img { width: 36px; height: 36px; }
-            .starter-info-card { width: 68px; padding: 0.15rem 0.2rem; }
-            .starter-name { font-size: 0.62rem; }
-            .starter-meta { font-size: 0.5rem; }
-            .starter-fix-row { font-size: 0.48rem; }
+            .starter-card { width: 72px; }
+            .starter-photo-wrap { width: 72px; height: 54px; }
+            .starter-shirt-img { width: 40px; height: 40px; }
+            .starter-info-card { width: 72px; padding: 0.18rem 0.2rem; }
+            .starter-name { font-size: 0.64rem; }
+            .starter-meta { font-size: 0.52rem; }
+            .starter-fix-row { font-size: 0.5rem; }
             
-            .pitch-row { gap: 0.2rem; }
-            .compact-pitch { padding: 0.25rem 0.15rem; min-height: 410px; }
+            .bench-card { width: 88px; padding: 0.2rem 0.25rem; }
+            .bench-photo-wrap { height: 38px; }
+            .bench-shirt-img { width: 34px; height: 34px; }
+            .bench-name { font-size: 0.64rem; }
+            .bench-meta { font-size: 0.52rem; }
+            .bench-fix-row { font-size: 0.5rem; }
+
+            .pitch-row { gap: 0.25rem; }
+            .compact-pitch { padding: 0.35rem 0.2rem; min-height: 400px; }
+
+            .summary-metrics-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
 
             .source-ledger-row {
                 grid-template-columns: 1fr;
@@ -682,18 +844,18 @@
             <div class="brand-meta">
                 <div class="season-badge">FPL 2026/27</div>
                 <div class="title-box">
-                    <h1>GEMINI UNITED</h1>
+                    <h1>GEMINI UNITED <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: 306983)</span></h1>
                     <p>Manager: Micky Asawamanasak | Wildcard GW3 Options</p>
                 </div>
             </div>
             <div class="stats-strip">
                 <div class="stat-cell">
-                    <span class="lbl">Comparison</span>
-                    <span class="val" style="color:#ffffff;">Choice 1 vs 2</span>
+                    <span class="lbl">Total Budget</span>
+                    <span class="val" style="color:#ffffff;">£100.1m</span>
                 </div>
                 <div class="stat-cell">
-                    <span class="lbl">Squad Depth</span>
-                    <span class="val" style="color:var(--accent-sky);">100% Starters</span>
+                    <span class="lbl">Bank (Choice 2)</span>
+                    <span class="val" style="color:var(--accent-sky);">+£0.7m</span>
                 </div>
                 <div class="stat-cell">
                     <span class="lbl">Active Chip</span>
@@ -707,17 +869,17 @@
         </div>
     </header>
 
-    <!-- Navigation -->
+    <!-- Navigation (4 Clean Tabs) -->
     <nav class="nav-bar">
         <button class="tab-btn active" onclick="switchTab('comparison')">Plan Lineup</button>
+        <button class="tab-btn" onclick="switchTab('summary')">Plan Summary</button>
         <button class="tab-btn" onclick="switchTab('ticker')">FDR Ticker</button>
-        <button class="tab-btn" onclick="switchTab('chips')">Chip Roadmap</button>
         <button class="tab-btn" onclick="switchTab('sources')">Research Sources</button>
     </nav>
 
     <!-- Main Content Area -->
     <main>
-        <!-- TAB 1: PLAN LINEUP (RESPONSIVE SPLIT GRID) -->
+        <!-- TAB 1: PLAN LINEUP -->
         <section id="tab-comparison" class="tab-content active">
             <div class="lineup-split-grid">
                 
@@ -726,7 +888,10 @@
                     <div class="plan-col-header">
                         <div>
                             <div class="plan-title">Choice 1: Manager Dynamic Selection</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">Audit Mode: Strengths &amp; Weaknesses Evaluation</span>
+                            <div class="plan-sub-tags">
+                                <span class="formation-pill">4-5-1</span>
+                                <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
+                            </div>
                         </div>
                         <div class="fin-badge">
                             Cost: <span style="color:var(--accent-emerald);">£100.2m</span> | Bank: <span style="color:var(--accent-sky);">£0.0m</span>
@@ -734,7 +899,7 @@
                     </div>
 
                     <div class="compact-pitch">
-                        <!-- FWD (2) -->
+                        <!-- FWD (1) -->
                         <div class="pitch-row">
                             
     <div class="starter-card">
@@ -880,7 +1045,7 @@
     </div>
     
                         </div>
-                        <!-- DEF (3) -->
+                        <!-- DEF (4) -->
                         <div class="pitch-row">
                             
     <div class="starter-card">
@@ -1009,103 +1174,95 @@
                         <div class="bench-lbl">Substitutes Bench</div>
                         <div class="bench-row">
                             
-    <div class="player-chip bench-chip">
-        <div class="chip-top">
-            <div style="display:flex; align-items:center; gap:2px;">
-                <span class="pos-tag-mini pos-GKP">GKP</span>
-                <span class="sub-label-mini">S1</span>
-                
-                
-            </div>
+    <div class="bench-card">
+        <div class="bench-card-top">
+            <span class="pos-tag-mini pos-GKP">GKP</span>
+            <span class="sub-label-badge">GKP SUB</span>
+            
+            
         </div>
-        <div class="chip-center">
+        <div class="bench-photo-wrap">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_6_1-66.png" 
                  alt="Kinsky" 
                  class="bench-shirt-img" 
                  loading="lazy" />
-            <div class="chip-name-box">
-                <div class="chip-name" title="Antonín Kinský">Kinsky</div>
-                <div class="chip-team-cost">TOT &bull; £4.5m</div>
-            </div>
         </div>
-        <div class="chip-meta">
-            <span>FDR 3</span>
-            <span class="fdr-pill fdr-3">NFO</span>
+        <div class="bench-info-card">
+            <div class="bench-name" title="Antonín Kinský">Kinsky</div>
+            <div class="bench-meta">TOT &bull; £4.5m</div>
+            <div class="bench-fix-row">
+                <span class="bench-fix-text">NFO</span>
+                <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
         </div>
     </div>
     
-    <div class="player-chip bench-chip">
-        <div class="chip-top">
-            <div style="display:flex; align-items:center; gap:2px;">
-                <span class="pos-tag-mini pos-FWD">FWD</span>
-                <span class="sub-label-mini">S2</span>
-                <span class="core-tag-mini">CORE</span>
-                
-            </div>
+    <div class="bench-card">
+        <div class="bench-card-top">
+            <span class="pos-tag-mini pos-FWD">FWD</span>
+            <span class="sub-label-badge">SUB 2</span>
+            <span class="core-tag-mini">CORE</span>
+            
         </div>
-        <div class="chip-center">
+        <div class="bench-photo-wrap">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_8-66.png" 
                  alt="João Pedro" 
                  class="bench-shirt-img" 
                  loading="lazy" />
-            <div class="chip-name-box">
-                <div class="chip-name" title="João Pedro Junqueira de Jesus">João Pedro</div>
-                <div class="chip-team-cost">CHE &bull; £7.6m</div>
-            </div>
         </div>
-        <div class="chip-meta">
-            <span>FDR 5</span>
-            <span class="fdr-pill fdr-5">ARS</span>
+        <div class="bench-info-card">
+            <div class="bench-name" title="João Pedro Junqueira de Jesus">João Pedro</div>
+            <div class="bench-meta">CHE &bull; £7.6m</div>
+            <div class="bench-fix-row">
+                <span class="bench-fix-text">ARS</span>
+                <span class="fdr-pill fdr-5">FDR 5</span>
+            </div>
         </div>
     </div>
     
-    <div class="player-chip bench-chip">
-        <div class="chip-top">
-            <div style="display:flex; align-items:center; gap:2px;">
-                <span class="pos-tag-mini pos-DEF">DEF</span>
-                <span class="sub-label-mini">S3</span>
-                
-                
-            </div>
+    <div class="bench-card">
+        <div class="bench-card-top">
+            <span class="pos-tag-mini pos-DEF">DEF</span>
+            <span class="sub-label-badge">SUB 3</span>
+            
+            
         </div>
-        <div class="chip-center">
+        <div class="bench-photo-wrap">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_3-66.png" 
                  alt="White" 
                  class="bench-shirt-img" 
                  loading="lazy" />
-            <div class="chip-name-box">
-                <div class="chip-name" title="Benjamin White">White</div>
-                <div class="chip-team-cost">ARS &bull; £5.5m</div>
-            </div>
         </div>
-        <div class="chip-meta">
-            <span>FDR 4</span>
-            <span class="fdr-pill fdr-4">CHE</span>
+        <div class="bench-info-card">
+            <div class="bench-name" title="Benjamin White">White</div>
+            <div class="bench-meta">ARS &bull; £5.5m</div>
+            <div class="bench-fix-row">
+                <span class="bench-fix-text">CHE</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
         </div>
     </div>
     
-    <div class="player-chip bench-chip">
-        <div class="chip-top">
-            <div style="display:flex; align-items:center; gap:2px;">
-                <span class="pos-tag-mini pos-FWD">FWD</span>
-                <span class="sub-label-mini">S4</span>
-                
-                <span class="enabler-tag-mini">VALUE</span>
-            </div>
+    <div class="bench-card">
+        <div class="bench-card-top">
+            <span class="pos-tag-mini pos-FWD">FWD</span>
+            <span class="sub-label-badge">SUB 4</span>
+            
+            <span class="enabler-tag-mini">VALUE</span>
         </div>
-        <div class="chip-center">
+        <div class="bench-photo-wrap">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_40-66.png" 
                  alt="Walle Egeli" 
                  class="bench-shirt-img" 
                  loading="lazy" />
-            <div class="chip-name-box">
-                <div class="chip-name" title="Sindre Walle Egeli">Walle Egeli</div>
-                <div class="chip-team-cost">IPS &bull; £4.5m</div>
-            </div>
         </div>
-        <div class="chip-meta">
-            <span>FDR 4</span>
-            <span class="fdr-pill fdr-4">LIV</span>
+        <div class="bench-info-card">
+            <div class="bench-name" title="Sindre Walle Egeli">Walle Egeli</div>
+            <div class="bench-meta">IPS &bull; £4.5m</div>
+            <div class="bench-fix-row">
+                <span class="bench-fix-text">LIV</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
         </div>
     </div>
     
@@ -1118,10 +1275,14 @@
                     <div class="plan-col-header">
                         <div>
                             <div class="plan-title" style="color:var(--accent-emerald);">Choice 2: The Master Fortress Blueprint</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">AI Autonomous Optimization &bull; 100% Starters &bull; 2-FT Buffer</span>
+                            <div class="plan-sub-tags">
+                                <span class="formation-pill">3-5-2</span>
+                                <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
+                                <span class="ft-buffer-pill">2-FT BUFFER</span>
+                            </div>
                         </div>
                         <div class="fin-badge" style="border-color:var(--accent-emerald);">
-                            Cost: <span style="color:var(--accent-emerald);">£99.4m</span> | Bank: <span style="color:var(--accent-sky);">£0.0m</span>
+                            Cost: <span style="color:var(--accent-emerald);">£99.4m</span> | Bank: <span style="color:var(--accent-sky);">+£0.7m</span>
                         </div>
                     </div>
 
@@ -1129,29 +1290,6 @@
                         <!-- FWD (2) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
-        <div class="starter-photo-wrap">
-            <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_4-66.png" 
-                 alt="Woltemade" 
-                 class="starter-shirt-img" 
-                 loading="lazy" />
-            
-            <div class="starter-badges-overlay">
-                <span class="pos-tag-mini pos-FWD">FWD</span>
-                
-                
-            </div>
-        </div>
-        <div class="starter-info-card">
-            <div class="starter-name" title="Nick Woltemade">Woltemade</div>
-            <div class="starter-meta">NEW &bull; £6.0m</div>
-            <div class="starter-fix-row">
-                <span class="starter-fix-text">BOU</span>
-                <span class="fdr-pill fdr-3">FDR 3</span>
-            </div>
-        </div>
-    </div>
-    
     <div class="starter-card">
         <div class="starter-photo-wrap">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_43-66.png" 
@@ -1294,6 +1432,29 @@
         </div>
     </div>
     
+    <div class="starter-card">
+        <div class="starter-photo-wrap">
+            <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_4-66.png" 
+                 alt="Elanga" 
+                 class="starter-shirt-img" 
+                 loading="lazy" />
+            
+            <div class="starter-badges-overlay">
+                <span class="pos-tag-mini pos-MID">MID</span>
+                
+                
+            </div>
+        </div>
+        <div class="starter-info-card">
+            <div class="starter-name" title="Anthony Elanga">Elanga</div>
+            <div class="starter-meta">NEW &bull; £6.0m</div>
+            <div class="starter-fix-row">
+                <span class="starter-fix-text">BOU</span>
+                <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
+        </div>
+    </div>
+    
                         </div>
                         <!-- DEF (3) -->
                         <div class="pitch-row">
@@ -1401,103 +1562,95 @@
                         <div class="bench-lbl">Substitutes Bench (100% 90-Min Regulars)</div>
                         <div class="bench-row">
                             
-    <div class="player-chip bench-chip">
-        <div class="chip-top">
-            <div style="display:flex; align-items:center; gap:2px;">
-                <span class="pos-tag-mini pos-GKP">GKP</span>
-                <span class="sub-label-mini">S1</span>
-                
-                
-            </div>
+    <div class="bench-card">
+        <div class="bench-card-top">
+            <span class="pos-tag-mini pos-GKP">GKP</span>
+            <span class="sub-label-badge">GKP SUB</span>
+            
+            
         </div>
-        <div class="chip-center">
+        <div class="bench-photo-wrap">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_6_1-66.png" 
                  alt="Dubravka" 
                  class="bench-shirt-img" 
                  loading="lazy" />
-            <div class="chip-name-box">
-                <div class="chip-name" title="Martin Dubravka">Dubravka</div>
-                <div class="chip-team-cost">TOT &bull; £4.0m</div>
-            </div>
         </div>
-        <div class="chip-meta">
-            <span>FDR 3</span>
-            <span class="fdr-pill fdr-3">NFO</span>
+        <div class="bench-info-card">
+            <div class="bench-name" title="Martin Dubravka">Dubravka</div>
+            <div class="bench-meta">TOT &bull; £4.0m</div>
+            <div class="bench-fix-row">
+                <span class="bench-fix-text">NFO</span>
+                <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
         </div>
     </div>
     
-    <div class="player-chip bench-chip">
-        <div class="chip-top">
-            <div style="display:flex; align-items:center; gap:2px;">
-                <span class="pos-tag-mini pos-FWD">FWD</span>
-                <span class="sub-label-mini">S2</span>
-                
-                <span class="enabler-tag-mini">VALUE</span>
-            </div>
+    <div class="bench-card">
+        <div class="bench-card-top">
+            <span class="pos-tag-mini pos-FWD">FWD</span>
+            <span class="sub-label-badge">SUB 2</span>
+            
+            <span class="enabler-tag-mini">VALUE</span>
         </div>
-        <div class="chip-center">
+        <div class="bench-photo-wrap">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_11-66.png" 
                  alt="Barry" 
                  class="bench-shirt-img" 
                  loading="lazy" />
-            <div class="chip-name-box">
-                <div class="chip-name" title="Thierno Barry">Barry</div>
-                <div class="chip-team-cost">EVE &bull; £5.5m</div>
-            </div>
         </div>
-        <div class="chip-meta">
-            <span>FDR 4</span>
-            <span class="fdr-pill fdr-4">MUN</span>
+        <div class="bench-info-card">
+            <div class="bench-name" title="Thierno Barry">Barry</div>
+            <div class="bench-meta">EVE &bull; £5.5m</div>
+            <div class="bench-fix-row">
+                <span class="bench-fix-text">MUN</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
         </div>
     </div>
     
-    <div class="player-chip bench-chip">
-        <div class="chip-top">
-            <div style="display:flex; align-items:center; gap:2px;">
-                <span class="pos-tag-mini pos-DEF">DEF</span>
-                <span class="sub-label-mini">S3</span>
-                
-                
-            </div>
+    <div class="bench-card">
+        <div class="bench-card-top">
+            <span class="pos-tag-mini pos-DEF">DEF</span>
+            <span class="sub-label-badge">SUB 3</span>
+            
+            
         </div>
-        <div class="chip-center">
+        <div class="bench-photo-wrap">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_31-66.png" 
                  alt="Mitchell" 
                  class="bench-shirt-img" 
                  loading="lazy" />
-            <div class="chip-name-box">
-                <div class="chip-name" title="Tyrick Mitchell">Mitchell</div>
-                <div class="chip-team-cost">CRY &bull; £4.5m</div>
-            </div>
         </div>
-        <div class="chip-meta">
-            <span>FDR 3</span>
-            <span class="fdr-pill fdr-3">FUL</span>
+        <div class="bench-info-card">
+            <div class="bench-name" title="Tyrick Mitchell">Mitchell</div>
+            <div class="bench-meta">CRY &bull; £4.5m</div>
+            <div class="bench-fix-row">
+                <span class="bench-fix-text">FUL</span>
+                <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
         </div>
     </div>
     
-    <div class="player-chip bench-chip">
-        <div class="chip-top">
-            <div style="display:flex; align-items:center; gap:2px;">
-                <span class="pos-tag-mini pos-DEF">DEF</span>
-                <span class="sub-label-mini">S4</span>
-                
-                
-            </div>
+    <div class="bench-card">
+        <div class="bench-card-top">
+            <span class="pos-tag-mini pos-DEF">DEF</span>
+            <span class="sub-label-badge">SUB 4</span>
+            
+            
         </div>
-        <div class="chip-center">
+        <div class="bench-photo-wrap">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_4-66.png" 
                  alt="Dedić" 
                  class="bench-shirt-img" 
                  loading="lazy" />
-            <div class="chip-name-box">
-                <div class="chip-name" title="Amar Dedic">Dedić</div>
-                <div class="chip-team-cost">NEW &bull; £4.5m</div>
-            </div>
         </div>
-        <div class="chip-meta">
-            <span>FDR 3</span>
-            <span class="fdr-pill fdr-3">BOU</span>
+        <div class="bench-info-card">
+            <div class="bench-name" title="Amar Dedic">Dedić</div>
+            <div class="bench-meta">NEW &bull; £4.5m</div>
+            <div class="bench-fix-row">
+                <span class="bench-fix-text">BOU</span>
+                <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
         </div>
     </div>
     
@@ -1508,7 +1661,96 @@
             </div>
         </section>
 
-        <!-- TAB 2: FDR TICKER -->
+        <!-- TAB 2: PLAN SUMMARY (REAL-TIME STRATEGIC AUDIT & PROS/CONS) -->
+        <section id="tab-summary" class="tab-content">
+            <!-- Pros & Cons Split Grid -->
+            <div class="summary-split-grid">
+                
+                <!-- CHOICE 1 PROS & CONS -->
+                <div class="summary-plan-panel">
+                    <div class="summary-panel-header">
+                        <div>
+                            <div class="plan-title">Choice 1 : Manager Dynamic Selection</div>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">4-5-1 Formation &bull; Cost: £100.2m &bull; Bank: £0.0m</span>
+                        </div>
+                        <span class="source-pill">Audit Mode</span>
+                    </div>
+
+                    <!-- Pros -->
+                    <div class="pros-cons-section">
+                        <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
+                        <div class="pros-cons-item">
+                            <strong>Mega Heavyweight Midfield (Bruno + Palmer + Szoboszlai) :</strong> มี Bruno Fernandes (£12.0m &bull; 25 แต้ม / 2.56 xGI อันดับ 1 ของลีก) คุมจุดโทษ เตะมุม และเพลย์เมกเกอร์ตัวจริง ผสาน 3 เสาหลักแดนกลาง
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Egan (£4.0m &bull; Hull) Ultra Value Enabler :</strong> กองหลังตัวจริง 180 นาทีเต็ม ทำไปแล้ว 17 แต้ม ในราคาประหยัด ช่วยเปิดงบดึง Bruno ได้สำเร็จ
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Premium GKP Rotation :</strong> มีผู้รักษาประตูตัวจริงจาก 2 สโมสรใหญ่ (Verbruggen £4.5m + Kinsky £4.5m) คอยสลับใช้งานตามความยากง่าย
+                        </div>
+                    </div>
+
+                    <!-- Cons -->
+                    <div class="pros-cons-section">
+                        <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
+                        <div class="pros-cons-item">
+                            <strong>£13.1m Benched Value (ตัวท็อปจมน้ำบนม้านั่ง) :</strong> การจับ João Pedro (£7.6m / xGI 1.95) และ White (£5.5m) นั่งสำรอง เสี่ยงเสียแต้มจากการที่ตัวเกรดท็อปไม่ได้ออกสตาร์ต
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>0-Minute Risk (Ezri Konsa £4.5m) :</strong> Konsa ยังไม่ได้รับโอกาสลงสนามใน 2 นัดแรก (0 นาที) อาจส่งผลให้ระบบต้องสลับตัวสำรองลงมาเล่นแทน
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Low Attacking Output :</strong> Xhaka (£5.5m) เล่นกลางรับมีค่า xGI เพียง 0.39 และ Walle Egeli (£4.5m) เป็นสำรองที่ลงเพียง 10 นาที
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHOICE 2 PROS & CONS -->
+                <div class="summary-plan-panel" style="border-color: rgba(16, 185, 129, 0.45);">
+                    <div class="summary-panel-header">
+                        <div>
+                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 : The Master Fortress Blueprint</div>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-5-2 Formation &bull; Cost: £99.4m &bull; Bank: +£0.7m</span>
+                        </div>
+                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">AI Blueprint</span>
+                    </div>
+
+                    <!-- Pros -->
+                    <div class="pros-cons-section">
+                        <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
+                        <div class="pros-cons-item">
+                            <strong>100% Nailed Regulars (Zero Deadweight) :</strong> ผู้เล่นทั้ง 15 คนเป็นตัวจริง 90 นาทีเต็ม ปลอดภัย 100% ต่อการสะสม 2 Free Transfers ยืนยาว
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Dual Elite Attackers (Haaland + João Pedro) :</strong> ส่ง 2 กองหน้าที่ดีที่สุดในลีกยืนคู่กัน ปลดล็อกค่า Starting xGI สูงถึง 9.35 (เทียบกับ 4.41 ใน C1)
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Newcastle Golden Run Exploitation :</strong> ดึง Anthony Elanga (£6.0m &bull; 17 แต้ม) + Dedić (£4.5m) เก็บแต้มจากโปรแกรมที่ง่ายที่สุดในลีก (FDR 2.67) โดยไม่ต้องใช้ Isak
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Top Defensive Attacker :</strong> ใส่ Maxim De Cuyper (£4.6m &bull; xGI 1.68 อันดับ 1 ของกองหลัง) + Gvardiol (£5.6m)
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Financial Flexibility :</strong> มีเงินคงเหลือใน Bank +£0.6m สำหรับบริหารจัดการและรองรับราคาขึ้น-ลง
+                        </div>
+                    </div>
+
+                    <!-- Cons -->
+                    <div class="pros-cons-section">
+                        <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
+                        <div class="pros-cons-item">
+                            <strong>No Bruno Fernandes :</strong> ไม่มี Bruno Fernandes (£12.0m) ตัวทำแต้มอันดับ 1 ของลีก (ชดเชยด้วยการกระจายขุมกำลัง 5 ตัวรุกแทน)
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Single GKP Reliance :</strong> พึ่งพา Verbruggen (£4.5m) เป็นผู้รักษาประตูหลักคนเดียว (สำรอง Dúbravka £4.0m ยังไม่ได้ลงเล่น)
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 3: FDR TICKER -->
         <section id="tab-ticker" class="tab-content">
             <div class="ticker-container">
                 <div class="ticker-header-bar">
@@ -1686,9 +1928,9 @@
     </tr>
     
     <tr data-orig-index="18">
-        <td class="tbl-sticky tbl-name" data-val="Woltemade">Woltemade</td>
+        <td class="tbl-sticky tbl-name" data-val="Elanga">Elanga</td>
         <td class="tbl-sticky-2" data-val="NEW">NEW</td>
-        <td class="tbl-sticky-3" data-val="4"><span class="pos-tag-mini pos-FWD">FWD</span></td>
+        <td class="tbl-sticky-3" data-val="3"><span class="pos-tag-mini pos-MID">MID</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="6.0">£6.0m</td>
         <td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td>
     </tr>
@@ -1720,107 +1962,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </section>
-
-        <!-- TAB 3: CHIP ROADMAP -->
-        <section id="tab-chips" class="tab-content">
-            <div class="panel-scroll" style="display:flex; flex-direction:column; gap:0.6rem;">
-                
-                <!-- 8 Official Season Chips Strip -->
-                <div class="chips-section-header">
-                    <span class="chips-half-label">First Half (GW1 - GW19)</span>
-                    <span class="chips-half-label">Second Half (GW20 - GW38)</span>
-                </div>
-                <div class="chip-status-strip">
-                    <div class="chip-mini-card chip-used" title="Used in Gameweek 1">
-                        <span class="chip-mini-title">Bench Boost 1</span>
-                        <span class="chip-mini-status">USED (GW1)</span>
-                    </div>
-                    <div class="chip-mini-card chip-used" title="Active in Gameweek 3">
-                        <span class="chip-mini-title">Wildcard 1</span>
-                        <span class="chip-mini-status">USED (GW3)</span>
-                    </div>
-                    <div class="chip-mini-card chip-avail" title="Available for GW10-15">
-                        <span class="chip-mini-title">Triple Cap 1</span>
-                        <span class="chip-mini-status">AVAILABLE (GW10-15)</span>
-                    </div>
-                    <div class="chip-mini-card chip-avail" title="Available for Festive GW17-19">
-                        <span class="chip-mini-title">Free Hit 1</span>
-                        <span class="chip-mini-status">AVAILABLE (GW17-19)</span>
-                    </div>
-
-                    <div class="chip-mini-card chip-avail" title="Available from GW20">
-                        <span class="chip-mini-title">Wildcard 2</span>
-                        <span class="chip-mini-status">AVAILABLE (GW20+)</span>
-                    </div>
-                    <div class="chip-mini-card chip-avail" title="Available for DGW34/37">
-                        <span class="chip-mini-title">Bench Boost 2</span>
-                        <span class="chip-mini-status">AVAILABLE (DGW)</span>
-                    </div>
-                    <div class="chip-mini-card chip-avail" title="Available for DGW34/37">
-                        <span class="chip-mini-title">Triple Cap 2</span>
-                        <span class="chip-mini-status">AVAILABLE (GW34/37)</span>
-                    </div>
-                    <div class="chip-mini-card chip-avail" title="Available for Blank GW29/32">
-                        <span class="chip-mini-title">Free Hit 2</span>
-                        <span class="chip-mini-status">AVAILABLE (GW29/32)</span>
-                    </div>
-                </div>
-
-                <!-- Strategic Panels -->
-                <div class="grid-2">
-                    <div class="panel">
-                        <div class="panel-header">
-                            <div class="panel-title">Master Chip Strategy (38 Gameweeks Schedule)</div>
-                            <span class="source-pill">AI Roadmap</span>
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:0.45rem; font-size:0.78rem; color:var(--text-secondary);">
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW1 : Bench Boost 1 [USED]</strong>
-                                <p style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">ใช้เก็บแต้มสำรองสัปดาห์เปิดฤดูกาล</p>
-                            </div>
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW3 : Wildcard 1 [ACTIVE / IN-USE]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-emerald); margin-top:2px;">สร้างฐานทัพ 15 ตัวจริง Zero Deadweight &bull; ปรัชญา 2-FT Buffer</p>
-                            </div>
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW7 / GW13 / GW16 : Triple Captain 1 [TARGET]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-sky); margin-top:2px;">ล็อกเป้า Haaland เกมเหย้าพบทีมน้องใหม่ (IPS / LEE / HUL)</p>
-                            </div>
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW18 / GW19 : Free Hit 1 [TARGET]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-amber); margin-top:2px;">ช่วง Boxing Day & Festive Period ป้องกันการโรเตชันหนัก 3 นัด/สัปดาห์</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="panel">
-                        <div class="panel-header">
-                            <div class="panel-title">Second Half Double Gameweek Strategy (GW20-38)</div>
-                            <span class="source-pill">Endgame Surge</span>
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:0.45rem; font-size:0.78rem; color:var(--text-secondary);">
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW29 : Free Hit 2 [BLANK GW]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-amber); margin-top:2px;">สัปดาห์ FA Cup ชนโปรแกรมลีก (เตะ 4-5 คู่) จัด 11 ตัวจริงเฉพาะกิจ</p>
-                            </div>
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW30 / GW31 : Wildcard 2 [RESTRUCTURE]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-emerald); margin-top:2px;">ยกเครื่อง 15 ผู้เล่นเพื่อเตรียมทีมรับศึก Double Gameweeks</p>
-                            </div>
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW34 : Triple Captain 2 [DGW34]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-sky); margin-top:2px;">ใช้กับกัปตันตัวท็อปที่มีโปรแกรมเตะเบิ้ล 2 แมตช์ในสัปดาห์เดียว</p>
-                            </div>
-                            <div class="stat-card-row">
-                                <strong style="color:#fff;">GW37 : Bench Boost 2 [MEGA DGW37]</strong>
-                                <p style="font-size:0.7rem; color:var(--accent-emerald); margin-top:2px;">สัปดาห์ Double Gameweek ใหญ่ที่สุด 15 ผู้เล่นเตะ 30 แมตช์เต็มอัตรา</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </section>
 
