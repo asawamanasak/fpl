@@ -265,9 +265,9 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     # CHOICE 2: Antigravity's Master Fortress Blueprint (Elanga £6.0m, De Cuyper £4.6m, Barry £5.5m Sub 1, 100% Nailed)
     c2_ids = [
         (109, True, False, False, False, True),   # Verbruggen (GKP £4.5m)
-        (391, True, False, False, True, False),   # Gvardiol (DEF Core £5.6m)
-        (10, True, False, False, False, False),   # White (DEF £5.5m)
+        (391, True, False, False, True, False),   # Gvardiol (DEF Core £5.5m)
         (115, True, False, False, False, False),  # De Cuyper (DEF £4.6m - xGI 1.68)
+        (593, True, False, False, False, False),  # Amar Dedić (DEF £4.5m - BOU H)
         (154, True, False, True, False, False),   # Palmer (MID VC £9.6m)
         (399, True, False, False, False, False),  # Cherki (MID £7.6m)
         (40, True, False, False, False, False),   # Rogers (MID £7.5m)
@@ -279,7 +279,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         (497, False, False, False, False, False), # Dubravka (GKP Sub £4.0m)
         (249, False, False, False, False, True),  # Louie Barry (FWD Sub 1 - £5.5m / xGI 2.02)
         (204, False, False, False, False, False), # Tyrick Mitchell (DEF Sub 2 - £4.5m / 180 mins)
-        (593, False, False, False, False, False), # Amar Dedić (DEF Sub 3 - £4.5m / 180 mins)
+        (10, False, False, False, False, False),  # Benjamin White (DEF Sub 3 - £5.5m)
     ]
     c2_squad = [build_player_by_id(*p) for p in c2_ids if build_player_by_id(*p)]
     c2_starters = [p for p in c2_squad if p["is_starter"]]
@@ -1336,19 +1336,19 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
                         <div class="pros-cons-item">
-                            <strong>100% Nailed Regulars (Zero Deadweight) :</strong> ผู้เล่นทั้ง 15 คนเป็นตัวจริง 90 นาทีเต็ม ปลอดภัย 100% ต่อการสะสม 2 Free Transfers ยืนยาว
+                            <strong>100% Home Fixture Clean Sheet Strategy :</strong> แนวรับตัวจริงทั้ง 3 คน (Gvardiol COV, De Cuyper LEE, Dedić BOU) เล่นเกมเหย้าพบทีมที่ FDR 2 ทั้งหมด หลบความเสี่ยงเกมใหญ่ ARS vs CHE ได้อย่างสมบูรณ์แบบ
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Dual Elite Attackers (Haaland + João Pedro) :</strong> ส่ง 2 กองหน้าที่ดีที่สุดในลีกยืนคู่กัน ปลดล็อกค่า Starting xGI สูงถึง 9.35 (เทียบกับ 4.41 ใน C1)
+                            <strong>Dual Elite Attackers Unleashed :</strong> ส่ง Haaland (C) และ João Pedro ยืนคู่กัน ผลิต Starting xGI สูงถึง 9.05 และมี 5 กองกลางตัวรุก xGI กระจายแต้มต่อเนื่อง
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Newcastle Golden Run Exploitation :</strong> ดึง Anthony Elanga (£6.0m &bull; 17 แต้ม) + Dedić (£4.5m) เก็บแต้มจากโปรแกรมที่ง่ายที่สุดในลีก (FDR 2.67) โดยไม่ต้องใช้ Isak
+                            <strong>Newcastle Golden Run Exploitation :</strong> ดึง Anthony Elanga (£6.0m &bull; 17 แต้ม) + Dedić (£4.5m) รับแต้มจากโปรแกรมที่ง่ายที่สุดในลีก (FDR 2.67) โดยไม่ต้องเสี่ยงกับ Isak
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Top Defensive Attacker :</strong> ใส่ Maxim De Cuyper (£4.6m &bull; xGI 1.68 อันดับ 1 ของกองหลัง) + Gvardiol (£5.6m)
+                            <strong>Top Defensive Attacker :</strong> ใส่ Maxim De Cuyper (£4.6m &bull; xGI 1.68 อันดับ 1 ของกองหลัง) เล่นวิงแบ็กฝั่งซ้ายลุ้นทั้งคลีนชีตและประตู
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Financial Flexibility :</strong> มีเงินคงเหลือใน Bank +£0.6m สำหรับบริหารจัดการและรองรับราคาขึ้น-ลง
+                            <strong>2-FT Buffer &amp; Bank Flexibility :</strong> มีเงินเหลือใน Bank +£{c2_bank:.1f}m และโครงสร้าง 15 ตัวจริง 90 นาที ช่วยให้สะสม 2 Free Transfers ยืนยาว
                         </div>
                     </div>
 
