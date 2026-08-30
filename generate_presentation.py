@@ -314,7 +314,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>FPL Dashboard | GEMINI UNITED</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1183,10 +1183,10 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
     <!-- Navigation (4 Clean Tabs) -->
     <nav class="nav-bar">
-        <button class="tab-btn active" onclick="switchTab('comparison')">Plan Lineup</button>
-        <button class="tab-btn" onclick="switchTab('summary')">Plan Summary</button>
-        <button class="tab-btn" onclick="switchTab('ticker')">FDR Ticker</button>
-        <button class="tab-btn" onclick="switchTab('sources')">Research Sources</button>
+        <button class="tab-btn active" onclick="switchTab('comparison', this)">Plan Lineup</button>
+        <button class="tab-btn" onclick="switchTab('summary', this)">Plan Summary</button>
+        <button class="tab-btn" onclick="switchTab('ticker', this)">FDR Ticker</button>
+        <button class="tab-btn" onclick="switchTab('sources', this)">Research Sources</button>
     </nav>
 
     <!-- Main Content Area -->
@@ -1490,14 +1490,18 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     </main>
 
     <script>
-        function switchTab(tabId) {{
+        function switchTab(tabId, btn) {{
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
             const target = document.getElementById('tab-' + tabId);
             if (target) target.classList.add('active');
             
-            event.currentTarget.classList.add('active');
+            if (btn) {{
+                btn.classList.add('active');
+            }} else if (window.event && window.event.currentTarget) {{
+                window.event.currentTarget.classList.add('active');
+            }}
         }}
 
         // Multi-Column Sorting & Reset Functionality
