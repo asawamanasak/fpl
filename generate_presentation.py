@@ -1240,7 +1240,6 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">3-5-2</span>
                                 <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
-                                <span class="ft-buffer-pill">2-FT BUFFER</span>
                             </div>
                         </div>
                         <div class="fin-badge" style="border-color:var(--accent-emerald);">
@@ -1297,10 +1296,10 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
                         <div class="pros-cons-item">
-                            <strong>Double Man City Fixture Exploitation (COV Home) :</strong> กุมความได้เปรียบสูงสุดจากโปรแกรมที่ง่ายที่สุดของสัปดาห์ ด้วยการซ้อน 3 ตัวท็อปแมนฯ ซิตี้ (Haaland C + Foden VC + Gvardiol) พบ Coventry (FDR 2)
+                            <strong>Triple Man City Fixture Exploitation (COV Home) :</strong> กุมความได้เปรียบสูงสุดจากโปรแกรมที่ง่ายที่สุดของสัปดาห์ ด้วยการซ้อน 3 ตัวท็อปแมนฯ ซิตี้ (Haaland C + Foden VC + Gvardiol) พบ Coventry (FDR 2)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>High Starting Firepower (xGI 7.62) :</strong> 11 ตัวจริงมีขุมกำลังเกมรุกอันตรายรอบด้าน ทั้ง Haaland, Foden (xGI 1.84), Szoboszlai (xGI 1.45), Wissa (xGI 1.40) และ Palmer
+                            <strong>High Starting Firepower (xGI {c1_start_xgi:.2f}) :</strong> 11 ตัวจริงมีขุมกำลังเกมรุกอันตรายรอบด้าน ทั้ง Haaland, Foden (xGI 1.84), Szoboszlai (xGI 1.45), Wissa (xGI 1.37) และ Palmer (20 แต้ม)
                         </div>
                         <div class="pros-cons-item">
                             <strong>100% Premium Starting Depth on Bench :</strong> ผู้เล่นบนม้านั่งสำรองทั้ง 4 คน (Raya £6.0m, Tavernier £6.0m, Dewsbury-Hall £6.5m, João Pedro £7.6m) เป็นตัวจริง 90 นาทีระดับพรีเมียม
@@ -1311,7 +1310,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
                         <div class="pros-cons-item">
-                            <strong>Extreme Benched Capital (£26.1m จมน้ำบนม้านั่ง) :</strong> เม็ดเงินบนม้านั่งสำรองสูงถึง £26.1m (มากกว่า 26% ของงบรวมทั้งทีม) โดยเฉพาะ João Pedro (£7.6m / 11 แต้ม) ที่หล่นไปเป็น Sub 3 และ Raya (£6.0m)
+                            <strong>Extreme Benched Capital (£26.1m จมน้ำบนม้านั่ง) :</strong> เม็ดเงินบนม้านั่งสำรองสูงถึง £26.1m (มากกว่า 26% ของงบรวมทั้งทีม) โดยเฉพาะ João Pedro (£7.6m / 20 แต้ม / xGI 1.95) ที่หล่นไปเป็น Sub 3 และ Raya (£6.0m)
                         </div>
                         <div class="pros-cons-item">
                             <strong>Defensive Conflict in ARS vs CHE :</strong> การส่งกองหลัง 5 คนในสัปดาห์นี้ ต้องชนเกมอาร์เซนอลพบเชลซี (White, Konsa vs Palmer) หากเชลซียิงประตู คลีนชีตแนวรับจะแตกทันที
@@ -1339,13 +1338,13 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                             <strong>100% Home Fixture Clean Sheet Strategy :</strong> แนวรับตัวจริงทั้ง 3 คน (Gvardiol COV, De Cuyper LEE, Dedić BOU) เล่นเกมเหย้าพบทีมที่ FDR 2 ทั้งหมด หลบความเสี่ยงเกมใหญ่ ARS vs CHE ได้อย่างสมบูรณ์แบบ
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Dual Elite Attackers Unleashed :</strong> ส่ง Haaland (C) และ João Pedro ยืนคู่กัน ผลิต Starting xGI สูงถึง 9.05 และมี 5 กองกลางตัวรุก xGI กระจายแต้มต่อเนื่อง
+                            <strong>Dual Elite Attackers Unleashed :</strong> ส่ง Haaland (C) และ João Pedro ยืนคู่กัน ผลิต Starting xGI สูงถึง {c2_start_xgi:.2f} และมี 5 กองกลางตัวรุก xGI กระจายแต้มต่อเนื่อง
                         </div>
                         <div class="pros-cons-item">
                             <strong>Newcastle Golden Run Exploitation :</strong> ดึง Anthony Elanga (£6.0m &bull; 17 แต้ม) + Dedić (£4.5m) รับแต้มจากโปรแกรมที่ง่ายที่สุดในลีก (FDR 2.67) โดยไม่ต้องเสี่ยงกับ Isak
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Top Defensive Attacker :</strong> ใส่ Maxim De Cuyper (£4.6m &bull; xGI 1.68 อันดับ 1 ของกองหลัง) เล่นวิงแบ็กฝั่งซ้ายลุ้นทั้งคลีนชีตและประตู
+                            <strong>Top Defensive Attacker :</strong> ใส่ Maxim De Cuyper (£4.6m &bull; xGI 1.76 อันดับ 1 ของกองหลัง) เล่นวิงแบ็กฝั่งซ้ายลุ้นทั้งคลีนชีตและประตู
                         </div>
                         <div class="pros-cons-item">
                             <strong>2-FT Buffer &amp; Bank Flexibility :</strong> มีเงินเหลือใน Bank +£{c2_bank:.1f}m และโครงสร้าง 15 ตัวจริง 90 นาที ช่วยให้สะสม 2 Free Transfers ยืนยาว
