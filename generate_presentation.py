@@ -15,7 +15,7 @@ FPL Presentation Generator
 import json
 import os
 import argparse
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 def load_json(filepath):
     if not os.path.exists(filepath):
@@ -301,6 +301,21 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     c1_nailed_count = sum(1 for p in c1_squad if p["minutes"] >= 90)
     c2_nailed_count = sum(1 for p in c2_squad if p["minutes"] >= 90)
 
+    # Dynamic Choice 2 Analysis Generation
+    c2_def_str = ", ".join([f"{p['web_name']} {p['next_fix'].split(' ')[0]}" for p in c2_starters if p['pos'] == 'DEF'])
+    c2_cap_name = next((p['web_name'] for p in c2_starters if p['is_captain']), "Haaland")
+    c2_vc_name = next((p['web_name'] for p in c2_starters if p['is_vice_captain']), "Palmer")
+    c2_fwds_str = " + ".join([p['web_name'] for p in c2_starters if p['pos'] == 'FWD'])
+
+    # Dynamic Last Sync Timestamp from GitHub Cloud / Live API (ICT / UTC+7)
+    ict_tz = timezone(timedelta(hours=7))
+    if os.path.exists("data/bootstrap_static.json"):
+        mtime = os.path.getmtime("data/bootstrap_static.json")
+        sync_dt = datetime.fromtimestamp(mtime, tz=timezone.utc).astimezone(ict_tz)
+    else:
+        sync_dt = datetime.now(ict_tz)
+    last_sync_str = sync_dt.strftime("%d/%m/%Y %I:%M %p")
+
     # Combine unique players for full season ticker
     all_ticker_pids = list(dict.fromkeys([p[0] for p in c1_ids] + [p[0] for p in c2_ids]))
     all_ticker_squad = [build_player_by_id(pid, True) for pid in all_ticker_pids if build_player_by_id(pid, True)]
@@ -399,6 +414,31 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         }}
         .title-box p {{ font-size: 0.68rem; color: var(--text-secondary); }}
         
+        .sync-pill {{
+            font-size: 0.64rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 0.1rem 0.42rem;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-left: 0.35rem;
+            letter-spacing: 0.2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }}
+        .sync-dot {{
+            width: 6px;
+            height: 6px;
+            background: var(--accent-emerald);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 6px var(--accent-emerald);
+        }}
+
         .stats-strip {{ 
             display: flex; 
             gap: 0.4rem; 
@@ -1151,7 +1191,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             <div class="brand-meta">
                 <div class="season-badge">FPL 2026/27</div>
                 <div class="title-box">
-                    <h1>{entry.get("name", "GEMINI UNITED")} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: {entry.get('id', 306983)})</span></h1>
+                    <h1>{entry.get("name", "GEMINI UNITED")} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: {entry.get('id', 306983)})</span> <span class="sync-pill" title="Last live database sync from GitHub Cloud"><span class="sync-dot"></span>Last Sync: {last_sync_str}</span></h1>
                     <p>Manager: {entry.get("player_first_name", "")} {entry.get("player_last_name", "")} | Wildcard GW3 Options</p>
                 </div>
             </div>
@@ -1335,13 +1375,13 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
                         <div class="pros-cons-item">
-                            <strong>100% Home Fixture Clean Sheet Strategy :</strong> แนวรับตัวจริงทั้ง 3 คน (Gvardiol COV, De Cuyper LEE, Dedić BOU) เล่นเกมเหย้าพบทีมที่ FDR 2 ทั้งหมด หลบความเสี่ยงเกมใหญ่ ARS vs CHE ได้อย่างสมบูรณ์แบบ
+                            <strong>100% Home Fixture Clean Sheet Strategy :</strong> แนวรับตัวจริงทั้ง 3 คน ({c2_def_str}) เล่นเกมเหย้าพบทีมที่ FDR 2 ทั้งหมด หลบความเสี่ยงเกมใหญ่ ARS vs CHE ได้อย่างสมบูรณ์แบบ
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Dual Elite Attackers Unleashed :</strong> ส่ง Haaland (C) และ João Pedro ยืนคู่กัน ผลิต Starting xGI สูงถึง {c2_start_xgi:.2f} และมี 5 กองกลางตัวรุก xGI กระจายแต้มต่อเนื่อง
+                            <strong>Dual Elite Attackers Unleashed :</strong> ส่ง {c2_fwds_str} ({c2_cap_name} C) ยืนคู่กัน ผลิต Starting xGI สูงถึง {c2_start_xgi:.2f} และมี 5 กองกลางตัวรุก xGI กระจายแต้มต่อเนื่อง
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Newcastle Golden Run Exploitation :</strong> ดึง Anthony Elanga (£6.0m &bull; 17 แต้ม) + Dedić (£4.5m) รับแต้มจากโปรแกรมที่ง่ายที่สุดในลีก (FDR 2.67) โดยไม่ต้องเสี่ยงกับ Isak
+                            <strong>Newcastle Golden Run Exploitation :</strong> ดึง Anthony Elanga + Dedić รับแต้มจากโปรแกรมที่ง่ายที่สุดในลีก (FDR 2.67) โดยไม่ต้องเสี่ยงกับ Isak
                         </div>
                         <div class="pros-cons-item">
                             <strong>Top Defensive Attacker :</strong> ใส่ Maxim De Cuyper (£4.6m &bull; xGI 1.76 อันดับ 1 ของกองหลัง) เล่นวิงแบ็กฝั่งซ้ายลุ้นทั้งคลีนชีตและประตู
