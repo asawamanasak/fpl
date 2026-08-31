@@ -1,0 +1,40 @@
+name: Hybrid Choice 2 Real-Time Engine
+
+on:
+  schedule:
+    # รันอัตโนมัติทุกๆ 15 นาที
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  optimize-choice-2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Execute 15-Min Choice 2 Autonomous Optimizer
+        run: |
+          python auto_sync_choice2.py
+
+      - name: Commit and Push Changes if Real-Time Updates Detected
+        run: |
+          git config --global user.name "Hybrid-Choice2-Bot"
+          git config --global user.email "hybrid-bot@gemini-united.local"
+          git add data/ index.html fpl_gw3_presentation.html
+          if git diff --staged --quiet; then
+            echo "No changes in real-time data or Choice 2 optimization."
+          else
+            git commit -m "[Hybrid Real-Time Sync] Auto-updated Choice 2 via 15-min autonomous schedule"
+            git push origin main
+          fi
