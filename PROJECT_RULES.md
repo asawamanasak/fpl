@@ -13,11 +13,11 @@
 
 ### 2. ข้อกำหนดการทำงานของ 2 แผน (Choice 1 vs Choice 2 Protocols)
 
-#### Choice 1 : แผนที่ผู้จัดการทีมตัดสินใจเลือกเอง (Manager Dynamic Selection)
+#### Choice 1 : Micky Selection (Manager Dynamic Selection)
 * **บทบาทของ AI :** ทำหน้าที่เป็น **ผู้ตรวจสอบแท็กติก (Tactical Auditor)**
 * **แนวทางปฏิบัติ :** **ไม่อนุมานหรือใส่ข้อสันนิษฐานวิธีคิดแทนผู้จัดการทีม** เพราะผู้จัดการทีมปรับแก้ข้อมูลอย่าง Dynamic ด้วยตนเองตลอดเวลา เมื่อผู้จัดการทีมส่งไลน์อัปเข้ามา AI จะทำการวิเคราะห์และคอมเมนต์เฉพาะ **"จุดแข็ง (Strengths) และ จุดอ่อน (Weaknesses)"** เท่านั้น
 
-#### Choice 2 : The Master Fortress Blueprint (AI Autonomous Optimization)
+#### Choice 2 : GEMINI Selection (AI Autonomous Optimization)
 * **บทบาทของ AI :** ทำหน้าที่เป็น **ผู้วางแผนกลยุทธ์อิสระ 100% (Master Strategist)**
 * **แนวทางปฏิบัติ :** 
   * AI มีสิทธิ์ตัดสินใจจัดตัว เข้า-ออก วางกัปตัน และวางแผนระยะยาวตลอด 38 Gameweek ได้เอง 100% โดยอิงจาก 5 แหล่งข้อมูลวิจัยเชิงปริมาณ
@@ -63,10 +63,10 @@
 
 ### 7. สถาปัตยกรรมการทำงานระบบไฮบริด (The Hybrid Dual-Engine Architecture)
 ระบบถูกออกแบบให้ทำงานร่วมกันแบบ 2 โหมดคู่ขนาน (Hybrid Dual-Engine):
-1. **Choice 1 : Manager Dynamic Mode (Manual Control & Auditor)**
+1. **Choice 1 : Micky Selection (Manager Dynamic Mode & Auditor)**
    * ควบคุมและตัดสินใจโดยผู้จัดการทีม 100%
    * จัดการและทดสอบในเครื่อง Local เสมอ และจะ Push ขึ้น GitHub ต่อเมื่อผู้จัดการทีมมีคำสั่ง Manual ชัดเจนเท่านั้น
-2. **Choice 2 : Autonomous Cloud Engine (15-Minute Cron on GitHub Actions)**
+2. **Choice 2 : GEMINI Selection (Autonomous Cloud Engine & 15-Minute Cron)**
    * ควบคุมและคำนวณโดย AI อิสระ 100% ผ่านระบบ GitHub Actions Workflow (`.github/workflows/hybrid_choice2_cron.yml`)
    * **รอบการทำงานอัตโนมัติ (Every 15 Minutes) :** ระบบใน Cloud จะดึงข้อมูลสดจาก 5 แหล่งวิจัยทุกๆ 15 นาที เพื่อตรวจสอบความฟิต, ราคาตลาด, ข่าวงานแถลงข่าว และอัตรา Clean Sheet
    * **จุดตัดยอดไฟนอล (Final Lockdown at Deadline - 30m) :** ระบบจะล็อกการจัดทัพ 11 ตัวจริง, กัปตัน [C], รองกัปตัน [VC], ลำดับม้านั่งสำรอง และ Re-compile หน้าเว็บอัตโนมัติก่อนเริ่มแต่ละ Gameweek 30 นาทีพอดี

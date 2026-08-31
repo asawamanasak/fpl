@@ -1230,11 +1230,11 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         <section id="tab-comparison" class="tab-content active">
             <div class="lineup-split-grid">
                 
-                <!-- LEFT COLUMN: CHOICE 1 (MANAGER'S DYNAMIC LINEUP) -->
+                <!-- LEFT COLUMN: CHOICE 1 (MICKY SELECTION) -->
                 <div class="plan-column">
                     <div class="plan-col-header">
                         <div>
-                            <div class="plan-title">Choice 1: Manager Dynamic Selection</div>
+                            <div class="plan-title">Choice 1 &bull; Micky Selection</div>
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">5-3-2</span>
                                 <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
@@ -1272,11 +1272,11 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     </div>
                 </div>
 
-                <!-- RIGHT COLUMN: CHOICE 2 (THE MASTER FORTRESS BLUEPRINT) -->
+                <!-- RIGHT COLUMN: CHOICE 2 (GEMINI SELECTION) -->
                 <div class="plan-column" style="border-color: rgba(16, 185, 129, 0.45);">
                     <div class="plan-col-header">
                         <div>
-                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2: The Master Fortress Blueprint</div>
+                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Selection</div>
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">3-5-2</span>
                                 <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
@@ -1326,7 +1326,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                 <div class="summary-plan-panel">
                     <div class="summary-panel-header">
                         <div>
-                            <div class="plan-title">Choice 1 : Manager Dynamic Selection</div>
+                            <div class="plan-title">Choice 1 &bull; Micky Selection</div>
                             <span style="font-size:0.65rem; color:var(--text-secondary);">5-3-2 Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m</span>
                         </div>
                         <span class="source-pill">Audit Mode</span>
@@ -1365,7 +1365,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                 <div class="summary-plan-panel" style="border-color: rgba(16, 185, 129, 0.45);">
                     <div class="summary-panel-header">
                         <div>
-                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 : The Master Fortress Blueprint</div>
+                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Selection</div>
                             <span style="font-size:0.65rem; color:var(--text-secondary);">3-5-2 Formation &bull; Cost: £{c2_cost:.1f}m &bull; Bank: +£{c2_bank:.1f}m</span>
                         </div>
                         <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">AI Blueprint</span>

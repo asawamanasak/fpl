@@ -30,11 +30,17 @@ def fetch_live_data():
     os.makedirs('data', exist_ok=True)
 
     # 1. bootstrap-static
-    req = urllib.request.Request('https://fantasy.premierleague.com/api/bootstrap-static/', headers=headers)
-    with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
-        bs = json.loads(resp.read().decode('utf-8'))
-        with open('data/bootstrap_static.json', 'w', encoding='utf-8') as f:
-            json.dump(bs, f, ensure_ascii=False)
+    try:
+        req = urllib.request.Request('https://fantasy.premierleague.com/api/bootstrap-static/', headers=headers)
+        with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
+            bs = json.loads(resp.read().decode('utf-8'))
+            with open('data/bootstrap_static.json', 'w', encoding='utf-8') as f:
+                json.dump(bs, f, ensure_ascii=False)
+    except Exception as e:
+        print(f"Warning fetching bootstrap-static: {e}")
+        if os.path.exists('data/bootstrap_static.json'):
+            with open('data/bootstrap_static.json', 'r', encoding='utf-8') as f:
+                bs = json.load(f)
 
     # 2. entry
     try:
@@ -57,11 +63,17 @@ def fetch_live_data():
         print(f"Warning fetching history: {e}")
 
     # 4. fixtures
-    req = urllib.request.Request('https://fantasy.premierleague.com/api/fixtures/', headers=headers)
-    with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
-        fix = json.loads(resp.read().decode('utf-8'))
-        with open('data/fixtures.json', 'w', encoding='utf-8') as f:
-            json.dump(fix, f, ensure_ascii=False)
+    try:
+        req = urllib.request.Request('https://fantasy.premierleague.com/api/fixtures/', headers=headers)
+        with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
+            fix = json.loads(resp.read().decode('utf-8'))
+            with open('data/fixtures.json', 'w', encoding='utf-8') as f:
+                json.dump(fix, f, ensure_ascii=False)
+    except Exception as e:
+        print(f"Warning fetching fixtures: {e}")
+        if os.path.exists('data/fixtures.json'):
+            with open('data/fixtures.json', 'r', encoding='utf-8') as f:
+                fix = json.load(f)
 
     return bs, fix
 
