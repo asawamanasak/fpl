@@ -111,6 +111,17 @@ def render_bench_card(p, sub_idx=1):
     </div>
     """
 
+def render_bench_list(bench_players):
+    outfield_idx = 1
+    cards = []
+    for p in bench_players:
+        if p.get("pos") == "GKP":
+            cards.append(render_bench_card(p, sub_idx="GKP"))
+        else:
+            cards.append(render_bench_card(p, sub_idx=outfield_idx))
+            outfield_idx += 1
+    return "".join(cards)
+
 def render_ticker_row_full_season(p, team_fixtures, start_gw=3, end_gw=38, orig_idx=0):
     t_id = p.get("team_id", 1)
     fix_dict = team_fixtures.get(t_id, {})
@@ -237,14 +248,14 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             "minutes": mins
         }
 
-    # CHOICE 1: User's Dynamic Selection from Screenshot (5-3-2 Formation, Wildcard Active)
+    # CHOICE 1: User's Dynamic Selection from Screenshot (3-5-2 Formation, Wildcard Active)
     c1_ids = [
         (109, True, False, False, False, False),  # Verbruggen (GKP £4.5m)
-        (391, True, False, False, True, False),   # Gvardiol (DEF Core £5.5m)
-        (593, True, False, False, False, False),  # Dedić (DEF £4.5m)
-        (31, True, False, False, False, False),   # Konsa (DEF £4.5m)
+        (391, True, False, False, True, False),   # Gvardiol (DEF Core £5.6m)
         (204, True, False, False, False, False),  # Mitchell (DEF £4.5m)
         (10, True, False, False, False, False),   # White (DEF £5.5m)
+        (236, True, False, False, False, False),  # Dewsbury-Hall (MID £6.5m)
+        (68, True, False, False, False, False),   # Tavernier (MID £6.0m)
         (398, True, False, True, False, False),   # Foden (MID VC £7.0m)
         (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m)
         (154, True, False, False, False, False),  # Palmer (MID £9.6m)
@@ -252,9 +263,9 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         (411, True, True, False, True, False),    # Haaland (FWD C Core £15.5m)
         # Bench
         (1, False, False, False, False, False),   # Raya (GKP Sub £6.0m)
-        (68, False, False, False, False, False),  # Tavernier (MID Sub 1 £6.0m)
-        (236, False, False, False, False, False), # Dewsbury-Hall (MID Sub 2 £6.5m)
-        (165, False, False, False, True, False),  # João Pedro (FWD Sub 3 Core £7.6m)
+        (31, False, False, False, False, False),   # Konsa (DEF Sub 1 £4.5m)
+        (165, False, False, False, True, False),  # João Pedro (FWD Sub 2 Core £7.6m)
+        (593, False, False, False, False, False), # Dedić (DEF Sub 3 £4.5m)
     ]
     c1_squad = [build_player_by_id(*p) for p in c1_ids if build_player_by_id(*p)]
     c1_starters = [p for p in c1_squad if p["is_starter"]]
@@ -1236,7 +1247,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                         <div>
                             <div class="plan-title">Choice 1 &bull; Micky Selection</div>
                             <div class="plan-sub-tags">
-                                <span class="formation-pill">5-3-2</span>
+                                <span class="formation-pill">3-5-2</span>
                                 <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
                             </div>
                         </div>
@@ -1246,7 +1257,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     </div>
 
                     <div class="compact-pitch">
-                        <!-- FWD (1) -->
+                        <!-- FWD (2) -->
                         <div class="pitch-row">
                             {"".join([render_starter_card(p) for p in c1_starters if p["pos"] == "FWD"])}
                         </div>
@@ -1254,7 +1265,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                         <div class="pitch-row">
                             {"".join([render_starter_card(p) for p in c1_starters if p["pos"] == "MID"])}
                         </div>
-                        <!-- DEF (4) -->
+                        <!-- DEF (3) -->
                         <div class="pitch-row">
                             {"".join([render_starter_card(p) for p in c1_starters if p["pos"] == "DEF"])}
                         </div>
@@ -1267,7 +1278,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="compact-bench-strip">
                         <div class="bench-lbl">Substitutes Bench</div>
                         <div class="bench-row">
-                            {"".join([render_bench_card(p, sub_idx=i+1) for i, p in enumerate(c1_bench)])}
+                            {render_bench_list(c1_bench)}
                         </div>
                     </div>
                 </div>
@@ -1309,7 +1320,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="compact-bench-strip">
                         <div class="bench-lbl">Substitutes Bench (100% 90-Min Regulars)</div>
                         <div class="bench-row">
-                            {"".join([render_bench_card(p, sub_idx=i+1) for i, p in enumerate(c2_bench)])}
+                            {render_bench_list(c2_bench)}
                         </div>
                     </div>
                 </div>
@@ -1327,7 +1338,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="summary-panel-header">
                         <div>
                             <div class="plan-title">Choice 1 &bull; Micky Selection</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">5-3-2 Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m</span>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-5-2 Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m</span>
                         </div>
                         <span class="source-pill">Audit Mode</span>
                     </div>
@@ -1339,10 +1350,10 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                             <strong>Triple Man City Fixture Exploitation (COV Home) :</strong> กุมความได้เปรียบสูงสุดจากโปรแกรมที่ง่ายที่สุดของสัปดาห์ ด้วยการซ้อน 3 ตัวท็อปแมนฯ ซิตี้ (Haaland C + Foden VC + Gvardiol) พบ Coventry (FDR 2)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>High Starting Firepower (xGI {c1_start_xgi:.2f}) :</strong> 11 ตัวจริงมีขุมกำลังเกมรุกอันตรายรอบด้าน ทั้ง Haaland, Foden (xGI 1.84), Szoboszlai (xGI 1.45), Wissa (xGI 1.37) และ Palmer (20 แต้ม)
+                            <strong>Attacking 3-5-2 Midfield Overload (Starting xGI {c1_start_xgi:.2f}) :</strong> อัปเกรดแดนกลางเป็น 5 คน ส่ง Dewsbury-Hall (MUN H) และ Tavernier (NEW A) ลงเป็นตัวจริงร่วมกับ Foden, Szoboszlai, Palmer เพิ่มโอกาสเก็บแต้มรอบด้าน
                         </div>
                         <div class="pros-cons-item">
-                            <strong>100% Premium Starting Depth on Bench :</strong> ผู้เล่นบนม้านั่งสำรองทั้ง 4 คน (Raya £6.0m, Tavernier £6.0m, Dewsbury-Hall £6.5m, João Pedro £7.6m) เป็นตัวจริง 90 นาทีระดับพรีเมียม
+                            <strong>Elite First-Sub Firepower on Bench :</strong> ตัวสำรองเกรดพรีเมียมคอยสแตนด์บาย (Konsa Sub 1, João Pedro 20 แต้ม Sub 2, Dedić Sub 3) พร้อมลงมาเก็บแต้มทันทีหากมีตัวจริงไม่ได้ลงเล่น
                         </div>
                     </div>
 
@@ -1350,13 +1361,13 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
                         <div class="pros-cons-item">
-                            <strong>Extreme Benched Capital (£26.1m จมน้ำบนม้านั่ง) :</strong> เม็ดเงินบนม้านั่งสำรองสูงถึง £26.1m (มากกว่า 26% ของงบรวมทั้งทีม) โดยเฉพาะ João Pedro (£7.6m / 20 แต้ม / xGI 1.95) ที่หล่นไปเป็น Sub 3 และ Raya (£6.0m)
+                            <strong>João Pedro on Bench Sub 2 (£7.6m &bull; 20 แต้ม พักข้างสนาม) :</strong> João Pedro กองหน้าที่ทำแต้มสูงสุดของทีม (20 แต้ม / xGI 1.95) ถูกวางไว้เป็นตัวสำรองลำดับ 2 (Sub 2) เสี่ยงแต้มหลุดหาก 5 กองกลางตัวจริงลงครบ 90 นาที
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Defensive Conflict in ARS vs CHE :</strong> การส่งกองหลัง 5 คนในสัปดาห์นี้ ต้องชนเกมอาร์เซนอลพบเชลซี (White, Konsa vs Palmer) หากเชลซียิงประตู คลีนชีตแนวรับจะแตกทันที
+                            <strong>High Benched Capital (£22.6m บนม้านั่งสำรอง) :</strong> เม็ดเงินบนม้านั่งสำรองรวมกันสูงถึง £22.6m (Raya £6.0m, Konsa £4.5m, Pedro £7.6m, Dedić £4.5m)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>0-Minute Risk (Ezri Konsa £4.5m) :</strong> Konsa ยังไม่ได้รับโอกาสลงสนามใน 2 สัปดาห์แรก (0 นาที) จะทำให้ระบบต้องสลับ Sub 1 (Tavernier) ลงมาแทนอัตโนมัติ
+                            <strong>Tough Away Fixtures in Midfield :</strong> Palmer (ARS A) และ Tavernier (NEW A) ต้องเผชิญหน้ากับเกมเยือนระดับ FDR 4 ใน 11 ตัวจริง
                         </div>
                     </div>
                 </div>
