@@ -250,22 +250,22 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
     # CHOICE 1: User's Dynamic Selection from Screenshot (3-5-2 Formation, Wildcard Active)
     c1_ids = [
-        (109, True, False, False, False, False),  # Verbruggen (GKP £4.5m)
-        (391, True, False, False, True, False),   # Gvardiol (DEF Core £5.6m)
-        (204, True, False, False, False, False),  # Mitchell (DEF £4.5m)
-        (10, True, False, False, False, False),   # White (DEF £5.5m)
-        (236, True, False, False, False, False),  # Dewsbury-Hall (MID £6.5m)
-        (68, True, False, False, False, False),   # Tavernier (MID £6.0m)
-        (398, True, False, True, False, False),   # Foden (MID VC £7.0m)
-        (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m)
-        (154, True, False, False, False, False),  # Palmer (MID £9.6m)
-        (464, True, False, False, False, False),  # Wissa (FWD £6.0m)
-        (411, True, True, False, True, False),    # Haaland (FWD C Core £15.5m)
+        (497, True, False, False, False, True),   # Dubravka (GKP £4.0m, TOT)
+        (391, True, False, False, True, False),   # Gvardiol (DEF Core £5.6m, MCI)
+        (304, True, False, False, False, False),  # O'Shea (DEF £4.0m, IPS)
+        (4, True, False, False, True, False),     # Gabriel (DEF Core £8.0m, ARS)
+        (124, True, False, False, False, False),  # Groß (MID £5.5m, BHA)
+        (68, True, False, False, False, False),   # Tavernier (MID £6.0m, BOU)
+        (398, True, False, True, False, False),   # Foden (MID VC £7.0m, MCI)
+        (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m, LIV)
+        (154, True, False, False, False, False),  # Palmer (MID £9.6m, CHE)
+        (464, True, False, False, False, False),  # Wissa (FWD £6.1m, NEW)
+        (411, True, True, False, True, False),    # Haaland (FWD C Core £15.5m, MCI)
         # Bench
-        (1, False, False, False, False, False),   # Raya (GKP Sub £6.0m)
-        (31, False, False, False, False, False),   # Konsa (DEF Sub 1 £4.5m)
-        (165, False, False, False, True, False),  # João Pedro (FWD Sub 2 Core £7.6m)
-        (593, False, False, False, False, False), # Dedić (DEF Sub 3 £4.5m)
+        (1, False, False, False, False, False),   # Raya (GKP Sub £6.0m, ARS)
+        (277, False, False, False, False, False), # Egan (DEF Sub 1 £4.0m, HUL)
+        (165, False, False, False, True, False),  # João Pedro (FWD Sub 2 Core £7.6m, CHE)
+        (31, False, False, False, False, False),  # Konsa (DEF Sub 3 £4.4m, ARS)
     ]
     c1_squad = [build_player_by_id(*p) for p in c1_ids if build_player_by_id(*p)]
     c1_starters = [p for p in c1_squad if p["is_starter"]]
@@ -1347,13 +1347,16 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
                         <div class="pros-cons-item">
-                            <strong>Triple Man City Fixture Exploitation (COV Home) :</strong> กุมความได้เปรียบสูงสุดจากโปรแกรมที่ง่ายที่สุดของสัปดาห์ ด้วยการซ้อน 3 ตัวท็อปแมนฯ ซิตี้ (Haaland C + Foden VC + Gvardiol) พบ Coventry (FDR 2)
+                            <strong>Premium Aerial Threat &amp; City Fixture (Gabriel £8.0m + Gvardiol £5.6m) :</strong> เสริม Gabriel กองหลังอาวุธอันตรายจากลูกเตะมุมและเกมรับอาร์เซนอล พร้อม Gvardiol ที่ลงเล่นเกมเหย้าพบ Coventry (FDR 2)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Attacking 3-5-2 Midfield Overload (Starting xGI {c1_start_xgi:.2f}) :</strong> อัปเกรดแดนกลางเป็น 5 คน ส่ง Dewsbury-Hall (MUN H) และ Tavernier (NEW A) ลงเป็นตัวจริงร่วมกับ Foden, Szoboszlai, Palmer เพิ่มโอกาสเก็บแต้มรอบด้าน
+                            <strong>Groß Creative Engine Integration (LEE Home FDR 2) :</strong> ส่ง Pascal Groß (£5.5m) ผู้รับหน้าที่สัมปทานเตะมุมและฟรีคิกของไบรท์ตัน เล่นเกมเหย้าพบ Leeds เพิ่มมิติการทำแต้มแอสซิสต์ในแดนกลาง
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Elite First-Sub Firepower on Bench :</strong> ตัวสำรองเกรดพรีเมียมคอยสแตนด์บาย (Konsa Sub 1, João Pedro 20 แต้ม Sub 2, Dedić Sub 3) พร้อมลงมาเก็บแต้มทันทีหากมีตัวจริงไม่ได้ลงเล่น
+                            <strong>Triple Man City Core Retained :</strong> รักษาแกนหลัก 3 ตัวแมนฯ ซิตี้ (Haaland C + Foden VC + Gvardiol) ลุ้นแต้มกัปตันสูงสุดในสัปดาห์นี้
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Restructured Budget Lineup :</strong> ถ่ายงบแนวรับสำรองด้วย Egan (£4.0m) และ O'Shea (£4.0m) ช่วยกระจายงบไปลงที่ Gabriel และ 5 กองกลางตัวรุก
                         </div>
                     </div>
 
@@ -1361,13 +1364,16 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
                         <div class="pros-cons-item">
-                            <strong>João Pedro on Bench Sub 2 (£7.6m &bull; 20 แต้ม พักข้างสนาม) :</strong> João Pedro กองหน้าที่ทำแต้มสูงสุดของทีม (20 แต้ม / xGI 1.95) ถูกวางไว้เป็นตัวสำรองลำดับ 2 (Sub 2) เสี่ยงแต้มหลุดหาก 5 กองกลางตัวจริงลงครบ 90 นาที
+                            <strong>João Pedro Still Benched at Sub 2 (£7.6m &bull; 20 แต้ม) :</strong> João Pedro กองหน้าที่ทำแต้มสูงสุดของทีม (20 แต้ม / xGI 1.95) ยังคงนั่งสำรองอันดับ 2 หาก 5 กองกลางตัวจริงลงครบ 90 นาที แต้มจะไม่ถูกนำมาคิด
                         </div>
                         <div class="pros-cons-item">
-                            <strong>High Benched Capital (£22.6m บนม้านั่งสำรอง) :</strong> เม็ดเงินบนม้านั่งสำรองรวมกันสูงถึง £22.6m (Raya £6.0m, Konsa £4.5m, Pedro £7.6m, Dedić £4.5m)
+                            <strong>Goalkeeper Dilemma (Dubravka £4.0m vs Raya £6.0m) :</strong> ตัดสินใจส่ง Dubravka ตัวราคาประหยัดลงตัวจริงเยือนฟอเรสต์ ขณะที่ Raya ค่าตัว £6.0m ต้องนั่งสำรองในเกมพบเชลซี
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Tough Away Fixtures in Midfield :</strong> Palmer (ARS A) และ Tavernier (NEW A) ต้องเผชิญหน้ากับเกมเยือนระดับ FDR 4 ใน 11 ตัวจริง
+                            <strong>Arsenal Defensive Risk vs Chelsea :</strong> มีทั้ง Gabriel, Raya และ Konsa ที่ผูกกับผลงานเกมรับของอาร์เซนอลในศึกลอนดอนดาร์บี้พบเชลซี (พร้อม Palmer ที่ยืนฝั่งตรงข้าม)
+                        </div>
+                        <div class="pros-cons-item">
+                            <strong>Dara O'Shea vs Liverpool (LIV Home FDR 4) :</strong> ส่ง O'Shea รับมือแนวรุกอันตรายของลิเวอร์พูล มีความเสี่ยงต่อการเสียคลีนชีตสูง
                         </div>
                     </div>
                 </div>
