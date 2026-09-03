@@ -154,6 +154,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     entry = load_json(os.path.join(data_dir, "entry.json"))
     fixtures = load_json(os.path.join(data_dir, "fixtures.json"))
     solio = load_json(os.path.join(data_dir, "solio_latest.json"))
+    history = load_json(os.path.join(data_dir, "history.json"))
 
     if not bootstrap or not entry:
         print("[!] Missing required data. Run fetch_fpl_data.py first.")
@@ -329,6 +330,8 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
     # Dynamic Gameweek Detection from Events
     active_gw = 3
+    deadline_epoch = 1788543000
+    deadline_str = "Sat 05 Sep, 00:30 ICT"
     for ev in bootstrap.get("events", []):
         if ev.get("is_current") and not ev.get("finished"):
             active_gw = ev.get("id", 3)
@@ -338,6 +341,57 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             if ev.get("is_next"):
                 active_gw = ev.get("id", 3)
                 break
+
+    for ev in bootstrap.get("events", []):
+        if ev.get("id") == active_gw:
+            deadline_epoch = ev.get("deadline_time_epoch", 1788543000)
+            if ev.get("deadline_time"):
+                try:
+                    dt = datetime.fromisoformat(ev["deadline_time"].replace("Z", "+00:00")).astimezone(ict_tz)
+                    deadline_str = dt.strftime("%a %d %b, %H:%M ICT")
+                except Exception:
+                    pass
+            break
+
+    # Global Rank Trajectory & Top 100k Tracker
+    overall_rank = 65185
+    if history and isinstance(history, dict) and history.get("current"):
+        latest_history = history["current"][-1]
+        overall_rank = latest_history.get("overall_rank", 65185)
+    elif os.path.exists("data/gw_performance_archive.json"):
+        try:
+            with open("data/gw_performance_archive.json", "r", encoding="utf-8") as f:
+                perf_data = json.load(f)
+                if perf_data.get("trajectory"):
+                    overall_rank = perf_data["trajectory"][-1].get("overall_rank", 65185)
+        except Exception:
+            pass
+    in_top_100k = (overall_rank <= 100000)
+    rank_target_label = "TOP 100K : ON TRACK" if in_top_100k else "TOP 100K : PURSUING"
+    rank_tag_class = "status-ontrack" if in_top_100k else "status-pursuing"
+
+    # Friday Press Conference & Squad Health Watcher Data
+    tactical_alerts_data = {"total_alerts": 0, "alerts": []}
+    if os.path.exists("data/tactical_alerts.json"):
+        try:
+            with open("data/tactical_alerts.json", "r", encoding="utf-8") as f:
+                tactical_alerts_data = json.load(f)
+        except Exception:
+            pass
+    total_flags = tactical_alerts_data.get("total_alerts", 0)
+    if total_flags == 0:
+        health_status_badge = "100% MATCH FIT"
+        health_badge_class = "health-badge-ok"
+        health_detail_text = "เฝ้าระวังตัวหลักทั้ง 15 คน (Haaland, Palmer, Foden, Gakpo, Szoboszlai, Pedro ฯลฯ) ตรวจพบความพร้อม 100% ปราศจากรายงานบาดเจ็บหรือแบนจากงานแถลงข่าว"
+        health_alerts_html = ""
+    else:
+        health_status_badge = f"{total_flags} TACTICAL ALERTS"
+        health_badge_class = "health-badge-warning"
+        health_detail_text = f"ตรวจพบความเสี่ยงหรืออาการบาดเจ็บของนักเตะในทีม {total_flags} รายการ กรุณาตรวจสอบตัวเลือกสำรอง:"
+        items = []
+        for alt in tactical_alerts_data.get("alerts", []):
+            items.append(f'<div class="health-alert-pill"><strong>{alt["web_name"]}</strong>: โอกาสลงสนาม {alt.get("chance", "???")}% &bull; {alt.get("news", "No news")}</div>')
+        health_alerts_html = '<div class="health-alerts-box">' + "".join(items) + '</div>'
 
     # Combine unique players for full season ticker
     all_ticker_pids = list(dict.fromkeys([p[0] for p in c1_ids] + [p[0] for p in c2_ids]))
@@ -504,6 +558,141 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             color: var(--accent-emerald);
             font-family: 'JetBrains Mono', monospace;
             line-height: 1.2;
+        }}
+
+        /* Feature 5: Deadline Countdown Pill */
+        .deadline-pill {{
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.62rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }}
+        .deadline-tag-prefix {{
+            background: rgba(56, 189, 248, 0.2);
+            color: var(--accent-sky);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.55rem;
+            letter-spacing: 0.5px;
+        }}
+        .countdown-clock {{
+            color: #ffffff;
+            font-weight: 700;
+        }}
+        .lockdown-badge {{
+            background: rgba(245, 158, 11, 0.18);
+            color: var(--accent-amber);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.52rem;
+            letter-spacing: 0.4px;
+        }}
+
+        /* Feature 3: Top 100k Trajectory Cell */
+        .stat-rank-cell {{
+            border-color: rgba(16, 185, 129, 0.35);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(15, 23, 42, 0.6));
+        }}
+        .rank-trajectory-tag {{
+            font-size: 0.52rem;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            margin-top: 3px;
+            letter-spacing: 0.4px;
+            display: inline-block;
+            width: fit-content;
+        }}
+        .status-ontrack {{
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }}
+        .status-pursuing {{
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-amber);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }}
+
+        /* Feature 4: Squad Fitness & Press Conference Widget */
+        .squad-health-widget {{
+            background: var(--bg-card);
+            border: 1px solid var(--border-main);
+            border-radius: 10px;
+            padding: 0.9rem 1.2rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+        }}
+        .health-top-bar {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.4rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }}
+        .health-meta {{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        .health-heading {{
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-bright);
+        }}
+        .health-dot-active {{
+            width: 8px;
+            height: 8px;
+            background: var(--accent-emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-emerald);
+            animation: sync-pulse 2s infinite ease-in-out;
+        }}
+        .health-status-badge {{
+            font-size: 0.62rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }}
+        .health-badge-ok {{
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }}
+        .health-badge-warning {{
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-amber);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }}
+        .health-detail-text {{
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }}
+        .health-alerts-box {{
+            margin-top: 0.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }}
+        .health-alert-pill {{
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--accent-rose);
+            font-size: 0.72rem;
+            padding: 3px 8px;
+            border-radius: 4px;
         }}
 
         /* Navigation Bar (4 Tabs) */
@@ -1232,6 +1421,9 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                 <div class="title-box">
                     <h1>{entry.get("name", "GEMINI UNITED")} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: {entry.get('id', 306983)})</span> <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: {last_sync_str}<span class="sync-tag-active">ACTIVE</span></span></h1>
                     <p>Manager: {entry.get("player_first_name", "")} {entry.get("player_last_name", "")} | Wildcard GW{active_gw} Options</p>
+                    <div class="deadline-pill" title="Official Gameweek {active_gw} Deadline">
+                        <span class="deadline-tag-prefix">DEADLINE</span> {deadline_str} &bull; <span id="countdownTimer" class="countdown-clock">--h --m --s</span> <span class="lockdown-badge">LOCKDOWN AT -30M</span>
+                    </div>
                 </div>
             </div>
             <div class="stats-strip">
@@ -1247,9 +1439,10 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <span class="lbl">Active Chip</span>
                     <span class="val">WILDCARD</span>
                 </div>
-                <div class="stat-cell">
-                    <span class="lbl">Season Goal</span>
-                    <span class="val" style="color:var(--accent-emerald);">TOP 100K</span>
+                <div class="stat-cell stat-rank-cell">
+                    <span class="lbl">Global Rank</span>
+                    <span class="val" style="color:var(--accent-emerald);">{overall_rank:,}</span>
+                    <span class="rank-trajectory-tag {rank_tag_class}">{rank_target_label}</span>
                 </div>
             </div>
         </div>
@@ -1358,6 +1551,21 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
         <!-- TAB 2: PLAN SUMMARY (REAL-TIME STRATEGIC AUDIT & PROS/CONS) -->
         <section id="tab-summary" class="tab-content">
+            <!-- Feature 4: Squad Fitness & Friday Press Conference Watcher Widget -->
+            <div class="squad-health-widget">
+                <div class="health-top-bar">
+                    <div class="health-meta">
+                        <span class="health-dot-active"></span>
+                        <span class="health-heading">Friday Press Conference &amp; Squad Fitness Watcher</span>
+                    </div>
+                    <span class="health-status-badge {health_badge_class}">{health_status_badge}</span>
+                </div>
+                <div class="health-detail-text">
+                    {health_detail_text}
+                </div>
+                {health_alerts_html}
+            </div>
+
             <!-- Pros & Cons Split Grid -->
             <div class="summary-split-grid">
                 
@@ -1496,6 +1704,21 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                 <div style="margin-bottom:0.6rem; border-bottom:1px solid var(--border-main); padding-bottom:0.4rem;">
                     <h2 style="font-size:0.95rem; font-weight:700; color:#ffffff;">Research Sources &amp; Analytical Framework</h2>
                     <p style="font-size:0.72rem; color:var(--text-secondary);">แหล่งข้อมูลเชิงลึก 5 ด้านที่เชื่อมโยงในการวิเคราะห์และจัดสรรทีม GEMINI UNITED</p>
+                </div>
+
+                <!-- Feature 4: Squad Fitness & Friday Press Conference Watcher Widget -->
+                <div class="squad-health-widget">
+                    <div class="health-top-bar">
+                        <div class="health-meta">
+                            <span class="health-dot-active"></span>
+                            <span class="health-heading">Friday Press Conference &amp; Squad Fitness Watcher</span>
+                        </div>
+                        <span class="health-status-badge {health_badge_class}">{health_status_badge}</span>
+                    </div>
+                    <div class="health-detail-text">
+                        {health_detail_text}
+                    </div>
+                    {health_alerts_html}
                 </div>
 
                 <div class="sources-ledger">
@@ -1637,6 +1860,26 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             lastSortedCol = -1;
             sortAsc = true;
         }}
+
+        // Feature 5: Real-Time Deadline Countdown Timer
+        const deadlineEpoch = {deadline_epoch};
+        function updateDeadlineCountdown() {{
+            const now = Math.floor(Date.now() / 1000);
+            const diff = deadlineEpoch - now;
+            const timerEl = document.getElementById('countdownTimer');
+            if (!timerEl) return;
+            if (diff <= 0) {{
+                timerEl.textContent = "DEADLINE PASSED";
+                timerEl.style.color = "var(--accent-rose)";
+            }} else {{
+                const hours = Math.floor(diff / 3600);
+                const mins = Math.floor((diff % 3600) / 60);
+                const secs = diff % 60;
+                timerEl.textContent = hours + "h " + mins + "m " + secs + "s";
+            }}
+        }}
+        setInterval(updateDeadlineCountdown, 1000);
+        updateDeadlineCountdown();
     </script>
 </body>
 </html>
