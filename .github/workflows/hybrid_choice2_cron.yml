@@ -2,8 +2,7 @@ name: Hybrid Choice 2 Real-Time Engine
 
 on:
   schedule:
-    # รันอัตโนมัติทุกๆ 15 นาที
-    - cron: '*/15 * * * *'
+   - cron: '8,23,38,53 * * * *'
   workflow_dispatch:
 
 permissions:
