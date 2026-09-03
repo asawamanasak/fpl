@@ -70,6 +70,16 @@
    * ควบคุมและคำนวณโดย AI อิสระ 100% ผ่านระบบ GitHub Actions Workflow (`.github/workflows/hybrid_choice2_cron.yml`)
    * **รอบการทำงานแบบเยื้องนาที (Offset 15-Minute Schedule : `8,23,38,53 * * * *`) :** ป้องกันปัญหาคิวประมวลผลเซิร์ฟเวอร์ GitHub หน่วงช่วงชั่วโมงเร่งด่วน โดยรันที่นาทีเยื้อง
    * **ระบบ Smart Commit & Cryptographic Fingerprinting :** ตรวจสอบลายเซ็นข้อมูล (SHA256 Fingerprint) ของราคานักเตะ, ข่าวอาการบาดเจ็บ, และผลการแข่งขัน จะทำการ Git Commit และ Deploy ขึ้น GitHub Pages เฉพาะเมื่อข้อมูลมีการเปลี่ยนแปลงจริงเท่านั้น ป้องกันการเกิด Commit ซ้ำซ้อนและป้องกันการถูก GitHub Throttling
+   * **ระบบเฝ้าระวังงานแถลงข่าววันศุกร์ (Press Conference & Injury Watcher) :** เฝ้าระวังสถานะความฟิตของนักเตะคีย์แมนแบบอัตโนมัติ พร้อมแจ้งเตือน Tactical Alert ทันทีหากมีรายงานนักเตะเจ็บ
+   * **ระบบสรุปและประเมินผลคะแนนหลังจบ Gameweek (Post-GW Archive Automation) :** บันทึกคะแนนจริงที่ทำได้และเส้นทางอันดับโลก (Overall Rank Trajectory) เพื่อประเมินความแม่นยำในการมุ่งสู่เป้าหมาย Top 100k
    * **จุดตัดยอดไฟนอล (Final Lockdown at Deadline - 30m) :** ระบบจะเข้าสู่โหมด Final Lockdown นับถอยหลัง < 2 ชั่วโมงก่อนเดดไลน์ และล็อกการจัดทัพ 11 ตัวจริง, กัปตัน [C], รองกัปตัน [VC], ลำดับม้านั่งสำรอง ก่อนเริ่มแต่ละ Gameweek 30 นาทีพอดี
+
+---
+
+### 8. สถาปัตยกรรมจุดย้อนกลับออนไลน์ (Online Rollback Architecture)
+ทุกการอัปเกรดโครงสร้างจะถูกบันทึกเป็น Git Tags และ Git Branches บน GitHub:
+* `rollback_0` : สภาพแวดล้อมตั้งต้นของระบบ
+* `rollback_1` : ระบบปิด 5 ช่องโหว่ (Resilience Backoff, Sub 1 Priority, Active Pulse Badge)
+* `rollback_2` : ระบบยกระดับความเสถียรเชิงกลยุทธ์ (Press Conference Watcher, Post-GW Archive Automation, Concurrency Safe)
 
 
