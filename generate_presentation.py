@@ -250,21 +250,21 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
     # CHOICE 1: User's Dynamic Selection from Screenshot (3-5-2 Formation, Wildcard Active)
     c1_ids = [
-        (497, True, False, False, False, True),   # Dubravka (GKP £4.0m, TOT)
+        (109, True, False, False, False, False),  # Verbruggen (GKP £4.5m, BHA)
         (391, True, False, False, True, False),   # Gvardiol (DEF Core £5.6m, MCI)
-        (304, True, False, False, False, False),  # O'Shea (DEF £4.0m, IPS)
+        (277, True, False, False, False, False),  # Egan (DEF £4.0m, HUL)
         (4, True, False, False, True, False),     # Gabriel (DEF Core £8.0m, ARS)
         (124, True, False, False, False, False),  # Groß (MID £5.5m, BHA)
-        (68, True, False, False, False, False),   # Tavernier (MID £6.0m, BOU)
+        (367, True, False, False, True, False),   # Gakpo (MID Core £7.0m, LIV)
         (398, True, False, True, False, False),   # Foden (MID VC £7.0m, MCI)
         (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m, LIV)
         (154, True, False, False, False, False),  # Palmer (MID £9.6m, CHE)
         (464, True, False, False, False, False),  # Wissa (FWD £6.1m, NEW)
         (411, True, True, False, True, False),    # Haaland (FWD C Core £15.5m, MCI)
         # Bench
-        (1, False, False, False, False, False),   # Raya (GKP Sub £6.0m, ARS)
-        (165, False, False, False, True, False),  # João Pedro (FWD Sub 1 Core £7.6m, CHE)
-        (277, False, False, False, False, False), # Egan (DEF Sub 2 £4.0m, HUL)
+        (496, False, False, False, False, False), # Kinsky (GKP Sub £4.5m, TOT)
+        (165, False, False, False, True, False),  # João Pedro (FWD Sub 1 Core £7.7m, CHE)
+        (304, False, False, False, False, False), # O'Shea (DEF Sub 2 £4.0m, IPS)
         (31, False, False, False, False, False),  # Konsa (DEF Sub 3 £4.4m, ARS)
     ]
     c1_squad = [build_player_by_id(*p) for p in c1_ids if build_player_by_id(*p)]
@@ -1375,19 +1375,19 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
                         <div class="pros-cons-item">
-                            <strong>First-Sub Firepower Security (João Pedro Sub 1 Priority) :</strong> สลับ João Pedro (£7.6m &bull; 20 แต้ม &bull; xGI 1.95) ขึ้นมาเป็นตัวสำรองลำดับที่ 1 (Sub 1) อย่างสมบูรณ์แบบ รับประกันว่าหากมีตัวจริงแนวรุกหรือแดนกลางไม่ได้ลงสนาม แต้มของ Pedro จะถูกดึงลงมาทดแทนทันที กำจัดความเสี่ยงแต้มตกหล่น 100%
+                            <strong>Double Liverpool Midfield Stack (Gakpo £7.0m + Szoboszlai £7.0m) :</strong> ซ้อน 2 ขุมกำลังตัวรุกตัวเก่งลิเวอร์พูลเยือน Ipswich Town (FDR 2) ยกระดับเพดานทำแต้มแดนกลางอย่างมหาศาล มีโอกาสลุ้นทั้งประตูและแอสซิสต์คู่
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Premium Aerial Threat &amp; City Fixture (Gabriel £8.0m + Gvardiol £5.6m) :</strong> เสริม Gabriel กองหลังอาวุธอันตรายจากลูกเตะมุมและเกมรับอาร์เซนอล พร้อม Gvardiol ที่ลงเล่นเกมเหย้าพบ Coventry (FDR 2)
+                            <strong>Verbruggen Home Fixture Advantage (LEE Home FDR 2) :</strong> ดึง Bart Verbruggen (£4.5m) กลับมาเฝ้าเสาตัวจริงในบ้านรับมือ Leeds เพิ่มโอกาสเก็บคลีนชีตและแต้มเซฟ
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Groß Creative Engine Integration (LEE Home FDR 2) :</strong> ส่ง Pascal Groß (£5.5m) ผู้รับหน้าที่สัมปทานเตะมุมและฟรีคิกของไบรท์ตัน เล่นเกมเหย้าพบ Leeds เพิ่มมิติการทำแต้มแอสซิสต์ในแดนกลาง
+                            <strong>First-Sub Firepower Security (João Pedro Sub 1 Priority) :</strong> ล็อก João Pedro (£7.7m &bull; 20 แต้ม &bull; xGI 1.95) ยืนเป็นตัวสำรองลำดับที่ 1 (Sub 1) อย่างสมบูรณ์แบบ รับประกันว่าหากมีตัวจริงแนวรุกหรือแดนกลางไม่ได้ลงสนาม แต้มของ Pedro จะถูกดึงลงมาทดแทนทันที
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Triple Man City Core Retained :</strong> รักษาแกนหลัก 3 ตัวแมนฯ ซิตี้ (Haaland C + Foden VC + Gvardiol) ลุ้นแต้มกัปตันสูงสุดในสัปดาห์นี้
+                            <strong>Triple Man City Core Retained :</strong> รักษาแกนหลัก 3 ตัวแมนฯ ซิตี้ (Haaland C + Foden VC + Gvardiol) ลุ้นแต้มกัปตันสูงสุดในเกมเหย้าพบ Coventry
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Restructured Budget Lineup :</strong> ถ่ายงบแนวรับสำรองด้วย Egan (£4.0m) และ O'Shea (£4.0m) ช่วยกระจายงบไปลงที่ Gabriel และ 5 กองกลางตัวรุก
+                            <strong>Groß Creative Engine Integration (LEE Home FDR 2) :</strong> ส่ง Pascal Groß (£5.5m) ผู้รับหน้าที่สัมปทานเตะมุมและฟรีคิกของไบรท์ตัน เล่นเกมเหย้าพบ Leeds เพิ่มมิติการทำแอสซิสต์
                         </div>
                     </div>
 
@@ -1395,13 +1395,13 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
                         <div class="pros-cons-item">
-                            <strong>Goalkeeper Dilemma (Dubravka £4.0m vs Raya £6.0m) :</strong> ตัดสินใจส่ง Dubravka ตัวราคาประหยัดลงตัวจริงเยือนฟอเรสต์ ขณะที่ Raya ค่าตัว £6.0m ต้องนั่งสำรองในเกมพบเชลซี
+                            <strong>Double Liverpool Away Fixture Dependency :</strong> การพึ่งพา 2 กองกลางลิเวอร์พูลพร้อมกัน หากเกมเยือนอิปสวิชเกิดจังหวะตื้อ แต้มแดนกลางจะหายไปพร้อมกันทั้ง Gakpo และ Szoboszlai
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Arsenal Defensive Risk vs Chelsea :</strong> มีทั้ง Gabriel, Raya และ Konsa ที่ผูกกับผลงานเกมรับของอาร์เซนอลในศึกลอนดอนดาร์บี้พบเชลซี (พร้อม Palmer ที่ยืนฝั่งตรงข้าม)
+                            <strong>Arsenal vs Chelsea Derby Exposure :</strong> มี Gabriel ยืนแนวรับอาร์เซนอล ขณะที่ Cole Palmer ยืนตัวจริงฝั่งตรงข้ามในศึกลอนดอนดาร์บี้
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Dara O'Shea vs Liverpool (LIV Home FDR 4) :</strong> ส่ง O'Shea รับมือแนวรุกอันตรายของลิเวอร์พูล มีความเสี่ยงต่อการเสียคลีนชีตสูง
+                            <strong>Egan Matchup vs Aston Villa :</strong> ส่ง John Egan (£4.0m) ยืนตัวจริงรับมือเกมรุกแอสตัน วิลลา มีความเสี่ยงต่อการเสียคลีนชีต
                         </div>
                     </div>
                 </div>
