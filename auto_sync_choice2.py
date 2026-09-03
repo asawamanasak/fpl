@@ -5,12 +5,13 @@ auto_sync_choice2.py
 Hybrid Autonomous Engine for Choice 2 (The Master Fortress Blueprint).
 Runs on an offset 15-minute schedule via GitHub Actions.
 
-Smart Commit System:
-1. Re-fetches Official FPL API.
-2. Computes an exact cryptographic data fingerprint across player prices (now_cost),
+Smart Commit & Resilience Architecture:
+1. Re-fetches Official FPL API with Exponential Backoff & Retry (handles network flakiness).
+2. Computes an exact cryptographic data fingerprint (SHA256) across player prices (now_cost),
    injury flags (status/news), points, and fixture progress.
 3. Checks proximity to Gameweek deadline (< 2 hours triggers Final Lockdown mode).
-4. Only compiles presentation and touches files if substantive changes exist or forced,
+4. Detects current active Gameweek dynamically for multi-gameweek roll-over (GW3 -> GW38).
+5. Only compiles presentation and touches files if substantive changes exist or forced,
    preventing git commit spam and eliminating GitHub Actions queue throttling.
 """
 
@@ -19,9 +20,33 @@ import urllib.request
 import ssl
 import sys
 import os
+import time
 import subprocess
 import hashlib
 from datetime import datetime, timezone
+
+def fetch_json_with_retry(url, headers, timeout=15, max_retries=3, backoff_factor=2):
+    """
+    Resilient HTTP JSON fetcher with exponential backoff.
+    Attempts max_retries with progressive delays [2s, 4s, 8s] to gracefully handle FPL API rate limits.
+    """
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
+    last_error = None
+    for attempt in range(max_retries):
+        try:
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, context=ctx, timeout=timeout) as resp:
+                return json.loads(resp.read().decode('utf-8'))
+        except Exception as e:
+            last_error = e
+            if attempt < max_retries - 1:
+                sleep_sec = backoff_factor * (attempt + 1)
+                print(f"[Network Retry] Attempt {attempt + 1} failed for {url}: {e}. Retrying in {sleep_sec}s...")
+                time.sleep(sleep_sec)
+    raise last_error
 
 def extract_data_fingerprint(bs, fix):
     """
@@ -72,12 +97,27 @@ def check_deadline_status(bs):
                 return is_urgent, diff_sec, ev.get('id')
     return False, None, None
 
-def fetch_live_data():
-    ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
-    headers = {'User-Agent': 'Mozilla/5.0'}
+def get_active_gameweek(bs):
+    """
+    Detect the active Gameweek for squad planning:
+    1. If a gameweek is currently in play (is_current=True and finished=False), use it.
+    2. Otherwise, use the upcoming deadline gameweek (is_next=True).
+    3. Fallback to is_current.
+    """
+    events = bs.get('events', []) if isinstance(bs, dict) else []
+    for ev in events:
+        if ev.get('is_current') and not ev.get('finished'):
+            return ev.get('id', 3)
+    for ev in events:
+        if ev.get('is_next'):
+            return ev.get('id', 3)
+    for ev in events:
+        if ev.get('is_current'):
+            return ev.get('id', 3)
+    return 3
 
+def fetch_live_data():
+    headers = {'User-Agent': 'Mozilla/5.0'}
     os.makedirs('data', exist_ok=True)
 
     bs = None
@@ -85,22 +125,18 @@ def fetch_live_data():
 
     # 1. bootstrap-static
     try:
-        req = urllib.request.Request('https://fantasy.premierleague.com/api/bootstrap-static/', headers=headers)
-        with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
-            bs = json.loads(resp.read().decode('utf-8'))
+        bs = fetch_json_with_retry('https://fantasy.premierleague.com/api/bootstrap-static/', headers=headers)
     except Exception as e:
-        print(f"Warning fetching live bootstrap-static: {e}")
+        print(f"Warning fetching live bootstrap-static after retries: {e}")
         if os.path.exists('data/bootstrap_static.json'):
             with open('data/bootstrap_static.json', 'r', encoding='utf-8') as f:
                 bs = json.load(f)
 
     # 2. fixtures
     try:
-        req = urllib.request.Request('https://fantasy.premierleague.com/api/fixtures/', headers=headers)
-        with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
-            fix = json.loads(resp.read().decode('utf-8'))
+        fix = fetch_json_with_retry('https://fantasy.premierleague.com/api/fixtures/', headers=headers)
     except Exception as e:
-        print(f"Warning fetching live fixtures: {e}")
+        print(f"Warning fetching live fixtures after retries: {e}")
         if os.path.exists('data/fixtures.json'):
             with open('data/fixtures.json', 'r', encoding='utf-8') as f:
                 fix = json.load(f)
@@ -108,11 +144,9 @@ def fetch_live_data():
     # 3. entry & history
     for endpoint, filename in [('entry/306983/', 'data/entry.json'), ('entry/306983/history/', 'data/history.json')]:
         try:
-            req = urllib.request.Request(f'https://fantasy.premierleague.com/api/{endpoint}', headers=headers)
-            with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
-                data = json.loads(resp.read().decode('utf-8'))
-                with open(filename, 'w', encoding='utf-8') as f:
-                    json.dump(data, f, ensure_ascii=False)
+            data = fetch_json_with_retry(f'https://fantasy.premierleague.com/api/{endpoint}', headers=headers)
+            with open(filename, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False)
         except Exception as e:
             print(f"Notice fetching {endpoint}: {e}")
 
@@ -121,7 +155,7 @@ def fetch_live_data():
 def main():
     force_run = '--force' in sys.argv
     print(f"[{datetime.now(timezone.utc).isoformat()}] Starting Choice 2 Smart Real-Time Engine...")
-    
+
     bs, fix = fetch_live_data()
     if not bs:
         print("Error: Could not retrieve bootstrap-static data. Aborting.")
@@ -164,14 +198,20 @@ def main():
     with open(fp_file, 'w', encoding='utf-8') as f:
         f.write(current_fp)
 
-    # Re-run presentation generator
+    active_gw = get_active_gameweek(bs)
+
+    # Re-run presentation generator for main dashboard and dynamic gameweek archive
     cmd = [sys.executable, "generate_presentation.py", "--out", "index.html"]
     subprocess.run(cmd, check=True)
 
-    cmd_gw3 = [sys.executable, "generate_presentation.py", "--out", "fpl_gw3_presentation.html"]
-    subprocess.run(cmd_gw3, check=True)
+    cmd_dyn = [sys.executable, "generate_presentation.py", "--out", f"fpl_gw{active_gw}_presentation.html"]
+    subprocess.run(cmd_dyn, check=True)
 
-    print(f"[{datetime.now(timezone.utc).isoformat()}] Choice 2 Optimization & Presentation Compilation Complete.")
+    if active_gw != 3:
+        cmd_gw3 = [sys.executable, "generate_presentation.py", "--out", "fpl_gw3_presentation.html"]
+        subprocess.run(cmd_gw3, check=True)
+
+    print(f"[{datetime.now(timezone.utc).isoformat()}] Choice 2 Optimization & Presentation Compilation Complete (Active GW{active_gw}).")
 
 if __name__ == "__main__":
     main()

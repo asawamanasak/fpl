@@ -101,7 +101,7 @@
             letter-spacing: 0.2px;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
         .sync-dot {
             width: 6px;
@@ -110,6 +110,21 @@
             border-radius: 50%;
             display: inline-block;
             box-shadow: 0 0 6px var(--accent-emerald);
+            animation: sync-pulse 2s infinite ease-in-out;
+        }
+        @keyframes sync-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(0.8); }
+        }
+        .sync-tag-active {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-emerald);
+            font-size: 0.52rem;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            margin-left: 2px;
+            letter-spacing: 0.5px;
         }
 
         .stats-strip { 
@@ -864,11 +879,7 @@
             <div class="brand-meta">
                 <div class="season-badge">FPL 2026/27</div>
                 <div class="title-box">
-<<<<<<< Updated upstream
-                    <h1>GEMINI UNITED <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: 306983)</span> <span class="sync-pill" title="Last live database sync from GitHub Cloud"><span class="sync-dot"></span>Last Sync: 03/09/2026 12:18 PM</span></h1>
-=======
-                    <h1>GEMINI UNITED <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: 306983)</span> <span class="sync-pill" title="Last live database sync from GitHub Cloud"><span class="sync-dot"></span>Last Sync: 03/09/2026 12:20 PM</span></h1>
->>>>>>> Stashed changes
+                    <h1>GEMINI UNITED <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: 306983)</span> <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 03/09/2026 12:32 PM<span class="sync-tag-active">ACTIVE</span></span></h1>
                     <p>Manager: Micky Asawamanasak | Wildcard GW3 Options</p>
                 </div>
             </div>
@@ -1223,31 +1234,8 @@
     
     <div class="bench-card">
         <div class="bench-card-top">
-            <span class="pos-tag-mini pos-DEF">DEF</span>
-            <span class="sub-label-badge">SUB 1</span>
-            
-            
-        </div>
-        <div class="bench-photo-wrap">
-            <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_88-66.png" 
-                 alt="Egan" 
-                 class="bench-shirt-img" 
-                 loading="lazy" />
-        </div>
-        <div class="bench-info-card">
-            <div class="bench-name" title="John Egan">Egan</div>
-            <div class="bench-meta">HUL &bull; £4.0m</div>
-            <div class="bench-fix-row">
-                <span class="bench-fix-text">AVL</span>
-                <span class="fdr-pill fdr-3">FDR 3</span>
-            </div>
-        </div>
-    </div>
-    
-    <div class="bench-card">
-        <div class="bench-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
-            <span class="sub-label-badge">SUB 2</span>
+            <span class="sub-label-badge">SUB 1</span>
             <span class="core-tag-mini">CORE</span>
             
         </div>
@@ -1263,6 +1251,29 @@
             <div class="bench-fix-row">
                 <span class="bench-fix-text">ARS</span>
                 <span class="fdr-pill fdr-5">FDR 5</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bench-card">
+        <div class="bench-card-top">
+            <span class="pos-tag-mini pos-DEF">DEF</span>
+            <span class="sub-label-badge">SUB 2</span>
+            
+            
+        </div>
+        <div class="bench-photo-wrap">
+            <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_88-66.png" 
+                 alt="Egan" 
+                 class="bench-shirt-img" 
+                 loading="lazy" />
+        </div>
+        <div class="bench-info-card">
+            <div class="bench-name" title="John Egan">Egan</div>
+            <div class="bench-meta">HUL &bull; £4.0m</div>
+            <div class="bench-fix-row">
+                <span class="bench-fix-text">AVL</span>
+                <span class="fdr-pill fdr-3">FDR 3</span>
             </div>
         </div>
     </div>
@@ -1703,6 +1714,9 @@
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
                         <div class="pros-cons-item">
+                            <strong>First-Sub Firepower Security (João Pedro Sub 1 Priority) :</strong> สลับ João Pedro (£7.6m &bull; 20 แต้ม &bull; xGI 1.95) ขึ้นมาเป็นตัวสำรองลำดับที่ 1 (Sub 1) อย่างสมบูรณ์แบบ รับประกันว่าหากมีตัวจริงแนวรุกหรือแดนกลางไม่ได้ลงสนาม แต้มของ Pedro จะถูกดึงลงมาทดแทนทันที กำจัดความเสี่ยงแต้มตกหล่น 100%
+                        </div>
+                        <div class="pros-cons-item">
                             <strong>Premium Aerial Threat &amp; City Fixture (Gabriel £8.0m + Gvardiol £5.6m) :</strong> เสริม Gabriel กองหลังอาวุธอันตรายจากลูกเตะมุมและเกมรับอาร์เซนอล พร้อม Gvardiol ที่ลงเล่นเกมเหย้าพบ Coventry (FDR 2)
                         </div>
                         <div class="pros-cons-item">
@@ -1719,9 +1733,6 @@
                     <!-- Cons -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
-                        <div class="pros-cons-item">
-                            <strong>João Pedro Still Benched at Sub 2 (£7.6m &bull; 20 แต้ม) :</strong> João Pedro กองหน้าที่ทำแต้มสูงสุดของทีม (20 แต้ม / xGI 1.95) ยังคงนั่งสำรองอันดับ 2 หาก 5 กองกลางตัวจริงลงครบ 90 นาที แต้มจะไม่ถูกนำมาคิด
-                        </div>
                         <div class="pros-cons-item">
                             <strong>Goalkeeper Dilemma (Dubravka £4.0m vs Raya £6.0m) :</strong> ตัดสินใจส่ง Dubravka ตัวราคาประหยัดลงตัวจริงเยือนฟอเรสต์ ขณะที่ Raya ค่าตัว £6.0m ต้องนั่งสำรองในเกมพบเชลซี
                         </div>
@@ -1909,19 +1920,19 @@
     </tr>
     
     <tr data-orig-index="12">
-        <td class="tbl-sticky tbl-name" data-val="Egan">Egan</td>
-        <td class="tbl-sticky-2" data-val="HUL">HUL</td>
-        <td class="tbl-sticky-3" data-val="2"><span class="pos-tag-mini pos-DEF">DEF</span></td>
-        <td class="tbl-sticky-4 font-mono" data-val="4.0">£4.0m</td>
-        <td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td>
-    </tr>
-    
-    <tr data-orig-index="13">
         <td class="tbl-sticky tbl-name" data-val="João Pedro">João Pedro</td>
         <td class="tbl-sticky-2" data-val="CHE">CHE</td>
         <td class="tbl-sticky-3" data-val="4"><span class="pos-tag-mini pos-FWD">FWD</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="7.7">£7.7m</td>
         <td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td>
+    </tr>
+    
+    <tr data-orig-index="13">
+        <td class="tbl-sticky tbl-name" data-val="Egan">Egan</td>
+        <td class="tbl-sticky-2" data-val="HUL">HUL</td>
+        <td class="tbl-sticky-3" data-val="2"><span class="pos-tag-mini pos-DEF">DEF</span></td>
+        <td class="tbl-sticky-4 font-mono" data-val="4.0">£4.0m</td>
+        <td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td>
     </tr>
     
     <tr data-orig-index="14">

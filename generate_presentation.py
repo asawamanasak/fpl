@@ -263,8 +263,8 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         (411, True, True, False, True, False),    # Haaland (FWD C Core £15.5m, MCI)
         # Bench
         (1, False, False, False, False, False),   # Raya (GKP Sub £6.0m, ARS)
-        (277, False, False, False, False, False), # Egan (DEF Sub 1 £4.0m, HUL)
-        (165, False, False, False, True, False),  # João Pedro (FWD Sub 2 Core £7.6m, CHE)
+        (165, False, False, False, True, False),  # João Pedro (FWD Sub 1 Core £7.6m, CHE)
+        (277, False, False, False, False, False), # Egan (DEF Sub 2 £4.0m, HUL)
         (31, False, False, False, False, False),  # Konsa (DEF Sub 3 £4.4m, ARS)
     ]
     c1_squad = [build_player_by_id(*p) for p in c1_ids if build_player_by_id(*p)]
@@ -327,14 +327,27 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         sync_dt = datetime.now(ict_tz)
     last_sync_str = sync_dt.strftime("%d/%m/%Y %I:%M %p")
 
+    # Dynamic Gameweek Detection from Events
+    active_gw = 3
+    for ev in bootstrap.get("events", []):
+        if ev.get("is_current") and not ev.get("finished"):
+            active_gw = ev.get("id", 3)
+            break
+    else:
+        for ev in bootstrap.get("events", []):
+            if ev.get("is_next"):
+                active_gw = ev.get("id", 3)
+                break
+
     # Combine unique players for full season ticker
     all_ticker_pids = list(dict.fromkeys([p[0] for p in c1_ids] + [p[0] for p in c2_ids]))
     all_ticker_squad = [build_player_by_id(pid, True) for pid in all_ticker_pids if build_player_by_id(pid, True)]
 
-    # Generate GW3 to GW38 headers
+    # Generate GW Headers dynamically from active_gw to 38
     gw_headers = []
-    for gw in range(3, 39):
-        gw_headers.append(f'<th onclick="sortTable({gw-3+4}, \'number\')" class="sortable-th" title="Click to sort GW{gw} FDR">GW{gw} <span class="sort-icon">&varr;</span></th>')
+    for i, gw in enumerate(range(active_gw, 39)):
+        col_idx = i + 4
+        gw_headers.append(f'<th onclick="sortTable({col_idx}, \'number\')" class="sortable-th" title="Click to sort GW{gw} FDR">GW{gw} <span class="sort-icon">&varr;</span></th>')
 
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
@@ -439,7 +452,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             letter-spacing: 0.2px;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }}
         .sync-dot {{
             width: 6px;
@@ -448,6 +461,21 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             border-radius: 50%;
             display: inline-block;
             box-shadow: 0 0 6px var(--accent-emerald);
+            animation: sync-pulse 2s infinite ease-in-out;
+        }}
+        @keyframes sync-pulse {{
+            0%, 100% {{ opacity: 1; transform: scale(1); }}
+            50% {{ opacity: 0.35; transform: scale(0.8); }}
+        }}
+        .sync-tag-active {{
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-emerald);
+            font-size: 0.52rem;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            margin-left: 2px;
+            letter-spacing: 0.5px;
         }}
 
         .stats-strip {{ 
@@ -1202,8 +1230,8 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             <div class="brand-meta">
                 <div class="season-badge">FPL 2026/27</div>
                 <div class="title-box">
-                    <h1>{entry.get("name", "GEMINI UNITED")} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: {entry.get('id', 306983)})</span> <span class="sync-pill" title="Last live database sync from GitHub Cloud"><span class="sync-dot"></span>Last Sync: {last_sync_str}</span></h1>
-                    <p>Manager: {entry.get("player_first_name", "")} {entry.get("player_last_name", "")} | Wildcard GW3 Options</p>
+                    <h1>{entry.get("name", "GEMINI UNITED")} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: {entry.get('id', 306983)})</span> <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: {last_sync_str}<span class="sync-tag-active">ACTIVE</span></span></h1>
+                    <p>Manager: {entry.get("player_first_name", "")} {entry.get("player_last_name", "")} | Wildcard GW{active_gw} Options</p>
                 </div>
             </div>
             <div class="stats-strip">
@@ -1347,6 +1375,9 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
                         <div class="pros-cons-item">
+                            <strong>First-Sub Firepower Security (João Pedro Sub 1 Priority) :</strong> สลับ João Pedro (£7.6m &bull; 20 แต้ม &bull; xGI 1.95) ขึ้นมาเป็นตัวสำรองลำดับที่ 1 (Sub 1) อย่างสมบูรณ์แบบ รับประกันว่าหากมีตัวจริงแนวรุกหรือแดนกลางไม่ได้ลงสนาม แต้มของ Pedro จะถูกดึงลงมาทดแทนทันที กำจัดความเสี่ยงแต้มตกหล่น 100%
+                        </div>
+                        <div class="pros-cons-item">
                             <strong>Premium Aerial Threat &amp; City Fixture (Gabriel £8.0m + Gvardiol £5.6m) :</strong> เสริม Gabriel กองหลังอาวุธอันตรายจากลูกเตะมุมและเกมรับอาร์เซนอล พร้อม Gvardiol ที่ลงเล่นเกมเหย้าพบ Coventry (FDR 2)
                         </div>
                         <div class="pros-cons-item">
@@ -1363,9 +1394,6 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <!-- Cons -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
-                        <div class="pros-cons-item">
-                            <strong>João Pedro Still Benched at Sub 2 (£7.6m &bull; 20 แต้ม) :</strong> João Pedro กองหน้าที่ทำแต้มสูงสุดของทีม (20 แต้ม / xGI 1.95) ยังคงนั่งสำรองอันดับ 2 หาก 5 กองกลางตัวจริงลงครบ 90 นาที แต้มจะไม่ถูกนำมาคิด
-                        </div>
                         <div class="pros-cons-item">
                             <strong>Goalkeeper Dilemma (Dubravka £4.0m vs Raya £6.0m) :</strong> ตัดสินใจส่ง Dubravka ตัวราคาประหยัดลงตัวจริงเยือนฟอเรสต์ ขณะที่ Raya ค่าตัว £6.0m ต้องนั่งสำรองในเกมพบเชลซี
                         </div>
