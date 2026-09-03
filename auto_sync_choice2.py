@@ -3,14 +3,15 @@
 auto_sync_choice2.py
 --------------------
 Hybrid Autonomous Engine for Choice 2 (The Master Fortress Blueprint).
-Runs every 15 minutes via GitHub Actions.
+Runs on an offset 15-minute schedule via GitHub Actions.
 
-Workflow:
-1. Re-fetches Official FPL API & Quantitative Intelligence Sources.
-2. Identifies current active/next Gameweek and exact deadline.
-3. Dynamically optimizes Choice 2 Starting 11, Captain (C), Vice Captain (VC), and Substitutes Bench (Sub 1, 2, 3).
-4. Synchronizes Plan Summary Pros & Cons, valuations, and FDR ticker.
-5. Re-compiles index.html and fpl_gw3_presentation.html.
+Smart Commit System:
+1. Re-fetches Official FPL API.
+2. Computes an exact cryptographic data fingerprint across player prices (now_cost),
+   injury flags (status/news), points, and fixture progress.
+3. Checks proximity to Gameweek deadline (< 2 hours triggers Final Lockdown mode).
+4. Only compiles presentation and touches files if substantive changes exist or forced,
+   preventing git commit spam and eliminating GitHub Actions queue throttling.
 """
 
 import json
@@ -19,7 +20,57 @@ import ssl
 import sys
 import os
 import subprocess
+import hashlib
 from datetime import datetime, timezone
+
+def extract_data_fingerprint(bs, fix):
+    """
+    Generate a deterministic SHA256 hash of all fields that impact FPL decisions:
+    - Player prices (now_cost)
+    - Injury/availability statuses and news
+    - Player points
+    - Fixture kickoff, scores, and status
+    """
+    elements_sig = [
+        (
+            e.get('id'),
+            e.get('now_cost'),
+            e.get('status'),
+            e.get('chance_of_playing_next_round'),
+            e.get('news'),
+            e.get('total_points')
+        )
+        for e in bs.get('elements', [])
+    ]
+    fixtures_sig = [
+        (
+            f.get('id'),
+            f.get('started'),
+            f.get('finished'),
+            f.get('team_h_score'),
+            f.get('team_a_score')
+        )
+        for f in fix
+    ] if isinstance(fix, list) else []
+
+    payload = json.dumps({'el': elements_sig, 'fix': fixtures_sig}, sort_keys=True)
+    return hashlib.sha256(payload.encode('utf-8')).hexdigest()
+
+def check_deadline_status(bs):
+    """
+    Returns (is_urgent, seconds_remaining, next_gw_id)
+    Urgent if within 2 hours (7200s) of next gameweek deadline.
+    """
+    events = bs.get('events', [])
+    for ev in events:
+        if ev.get('is_next'):
+            deadline_epoch = ev.get('deadline_time_epoch')
+            if deadline_epoch:
+                now_epoch = datetime.now(timezone.utc).timestamp()
+                diff_sec = deadline_epoch - now_epoch
+                is_urgent = (0 <= diff_sec <= 7200)
+                return is_urgent, diff_sec, ev.get('id')
+    return False, None, None
 
 def fetch_live_data():
     ctx = ssl.create_default_context()
@@ -29,57 +80,89 @@ def fetch_live_data():
 
     os.makedirs('data', exist_ok=True)
 
+    bs = None
+    fix = None
+
     # 1. bootstrap-static
     try:
         req = urllib.request.Request('https://fantasy.premierleague.com/api/bootstrap-static/', headers=headers)
         with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
             bs = json.loads(resp.read().decode('utf-8'))
-            with open('data/bootstrap_static.json', 'w', encoding='utf-8') as f:
-                json.dump(bs, f, ensure_ascii=False)
     except Exception as e:
-        print(f"Warning fetching bootstrap-static: {e}")
+        print(f"Warning fetching live bootstrap-static: {e}")
         if os.path.exists('data/bootstrap_static.json'):
             with open('data/bootstrap_static.json', 'r', encoding='utf-8') as f:
                 bs = json.load(f)
 
-    # 2. entry
-    try:
-        req = urllib.request.Request('https://fantasy.premierleague.com/api/entry/306983/', headers=headers)
-        with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
-            entry = json.loads(resp.read().decode('utf-8'))
-            with open('data/entry.json', 'w', encoding='utf-8') as f:
-                json.dump(entry, f, ensure_ascii=False)
-    except Exception as e:
-        print(f"Warning fetching entry: {e}")
-
-    # 3. history
-    try:
-        req = urllib.request.Request('https://fantasy.premierleague.com/api/entry/306983/history/', headers=headers)
-        with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
-            hist = json.loads(resp.read().decode('utf-8'))
-            with open('data/history.json', 'w', encoding='utf-8') as f:
-                json.dump(hist, f, ensure_ascii=False)
-    except Exception as e:
-        print(f"Warning fetching history: {e}")
-
-    # 4. fixtures
+    # 2. fixtures
     try:
         req = urllib.request.Request('https://fantasy.premierleague.com/api/fixtures/', headers=headers)
         with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
             fix = json.loads(resp.read().decode('utf-8'))
-            with open('data/fixtures.json', 'w', encoding='utf-8') as f:
-                json.dump(fix, f, ensure_ascii=False)
     except Exception as e:
-        print(f"Warning fetching fixtures: {e}")
+        print(f"Warning fetching live fixtures: {e}")
         if os.path.exists('data/fixtures.json'):
             with open('data/fixtures.json', 'r', encoding='utf-8') as f:
                 fix = json.load(f)
 
+    # 3. entry & history
+    for endpoint, filename in [('entry/306983/', 'data/entry.json'), ('entry/306983/history/', 'data/history.json')]:
+        try:
+            req = urllib.request.Request(f'https://fantasy.premierleague.com/api/{endpoint}', headers=headers)
+            with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
+                data = json.loads(resp.read().decode('utf-8'))
+                with open(filename, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, ensure_ascii=False)
+        except Exception as e:
+            print(f"Notice fetching {endpoint}: {e}")
+
     return bs, fix
 
 def main():
-    print(f"[{datetime.now(timezone.utc).isoformat()}] Starting Choice 2 Real-Time Optimization Engine...")
+    force_run = '--force' in sys.argv
+    print(f"[{datetime.now(timezone.utc).isoformat()}] Starting Choice 2 Smart Real-Time Engine...")
+    
     bs, fix = fetch_live_data()
+    if not bs:
+        print("Error: Could not retrieve bootstrap-static data. Aborting.")
+        return
+
+    # Check data fingerprint
+    current_fp = extract_data_fingerprint(bs, fix)
+    fp_file = 'data/data_fingerprint.txt'
+    previous_fp = ''
+    if os.path.exists(fp_file):
+        with open(fp_file, 'r', encoding='utf-8') as f:
+            previous_fp = f.read().strip()
+
+    is_urgent, seconds_left, next_gw = check_deadline_status(bs)
+    data_changed = (current_fp != previous_fp)
+
+    if not data_changed and not is_urgent and not force_run:
+        print(f"[Smart Commit] Data identical (Fingerprint: {current_fp[:10]}...). No market price or injury changes detected.")
+        print("[Smart Commit] Skipped presentation compilation to prevent unnecessary git commits and avoid GitHub Actions throttling.")
+        return
+
+    # Data changed or near deadline: Save data files and update fingerprint
+    reason = []
+    if data_changed:
+        reason.append("Substantive market data / price / injury updates")
+    if is_urgent:
+        reason.append(f"Deadline countdown active (GW{next_gw} deadline in {int(seconds_left // 60)} mins)")
+    if force_run:
+        reason.append("Force execution flag passed")
+
+    print(f"[Smart Commit] Proceeding with synchronization: {', '.join(reason)}")
+
+    with open('data/bootstrap_static.json', 'w', encoding='utf-8') as f:
+        json.dump(bs, f, ensure_ascii=False)
+
+    if fix is not None:
+        with open('data/fixtures.json', 'w', encoding='utf-8') as f:
+            json.dump(fix, f, ensure_ascii=False)
+
+    with open(fp_file, 'w', encoding='utf-8') as f:
+        f.write(current_fp)
 
     # Re-run presentation generator
     cmd = [sys.executable, "generate_presentation.py", "--out", "index.html"]

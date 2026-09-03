@@ -66,8 +66,10 @@
 1. **Choice 1 : Micky Selection (Manager Dynamic Mode & Auditor)**
    * ควบคุมและตัดสินใจโดยผู้จัดการทีม 100%
    * จัดการและทดสอบในเครื่อง Local เสมอ และจะ Push ขึ้น GitHub ต่อเมื่อผู้จัดการทีมมีคำสั่ง Manual ชัดเจนเท่านั้น
-2. **Choice 2 : GEMINI Selection (Autonomous Cloud Engine & 15-Minute Cron)**
+2. **Choice 2 : GEMINI Selection (Autonomous Cloud Engine & 15-Minute Offset Cron)**
    * ควบคุมและคำนวณโดย AI อิสระ 100% ผ่านระบบ GitHub Actions Workflow (`.github/workflows/hybrid_choice2_cron.yml`)
-   * **รอบการทำงานอัตโนมัติ (Every 15 Minutes) :** ระบบใน Cloud จะดึงข้อมูลสดจาก 5 แหล่งวิจัยทุกๆ 15 นาที เพื่อตรวจสอบความฟิต, ราคาตลาด, ข่าวงานแถลงข่าว และอัตรา Clean Sheet
-   * **จุดตัดยอดไฟนอล (Final Lockdown at Deadline - 30m) :** ระบบจะล็อกการจัดทัพ 11 ตัวจริง, กัปตัน [C], รองกัปตัน [VC], ลำดับม้านั่งสำรอง และ Re-compile หน้าเว็บอัตโนมัติก่อนเริ่มแต่ละ Gameweek 30 นาทีพอดี
+   * **รอบการทำงานแบบเยื้องนาที (Offset 15-Minute Schedule : `8,23,38,53 * * * *`) :** ป้องกันปัญหาคิวประมวลผลเซิร์ฟเวอร์ GitHub หน่วงช่วงชั่วโมงเร่งด่วน โดยรันที่นาทีเยื้อง
+   * **ระบบ Smart Commit & Cryptographic Fingerprinting :** ตรวจสอบลายเซ็นข้อมูล (SHA256 Fingerprint) ของราคานักเตะ, ข่าวอาการบาดเจ็บ, และผลการแข่งขัน จะทำการ Git Commit และ Deploy ขึ้น GitHub Pages เฉพาะเมื่อข้อมูลมีการเปลี่ยนแปลงจริงเท่านั้น ป้องกันการเกิด Commit ซ้ำซ้อนและป้องกันการถูก GitHub Throttling
+   * **จุดตัดยอดไฟนอล (Final Lockdown at Deadline - 30m) :** ระบบจะเข้าสู่โหมด Final Lockdown นับถอยหลัง < 2 ชั่วโมงก่อนเดดไลน์ และล็อกการจัดทัพ 11 ตัวจริง, กัปตัน [C], รองกัปตัน [VC], ลำดับม้านั่งสำรอง ก่อนเริ่มแต่ละ Gameweek 30 นาทีพอดี
+
 
