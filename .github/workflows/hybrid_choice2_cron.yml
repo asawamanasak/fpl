@@ -2,7 +2,8 @@ name: Hybrid Choice 2 Real-Time Engine
 
 on:
   schedule:
-   - cron: '8,23,38,53 * * * *'
+    # Offset 15-minute schedule (minute 8, 23, 38, 53) to bypass GitHub runner peak queue congestion
+    - cron: '8,23,38,53 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -15,7 +16,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -26,14 +27,15 @@ jobs:
         run: |
           python auto_sync_choice2.py
 
-      - name: Commit and Push Changes if Real-Time Updates Detected
+      - name: Commit and Push Changes with Cloud Rebase Guard
         run: |
           git config --global user.name "Hybrid-Choice2-Bot"
           git config --global user.email "hybrid-bot@gemini-united.local"
-          git add data/ index.html fpl_gw3_presentation.html
+          git add data/ index.html fpl_gw*.html
           if git diff --staged --quiet; then
-            echo "No changes in real-time data or Choice 2 optimization."
+            echo "Smart Commit: No substantive FPL changes detected. Skipped commit to preserve GitHub runner quota."
           else
-            git commit -m "[Hybrid Real-Time Sync] Auto-updated Choice 2 via 15-min autonomous schedule"
+            git commit -m "[Hybrid Real-Time Sync] Live FPL updates detected via offset schedule"
+            git pull --rebase origin main || true
             git push origin main
           fi
