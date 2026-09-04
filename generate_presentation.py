@@ -409,6 +409,26 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>FPL Dashboard | GEMINI UNITED</title>
+    
+    <!-- Open Graph / Facebook / LINE Link Preview Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://asawamanasak.github.io/fpl/">
+    <meta property="og:title" content="FPL Dashboard | GEMINI UNITED (ID: 306983)">
+    <meta property="og:description" content="Tactical Command Center &amp; Autonomous Optimizer &bull; Global Rank: 65,185 (Top 100k: On Track) &bull; Wildcard GW3 Active">
+    <meta property="og:image" content="https://asawamanasak.github.io/fpl/assets/og_preview.png">
+    <meta property="og:image:secure_url" content="https://asawamanasak.github.io/fpl/assets/og_preview.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="GEMINI UNITED FPL Tactical Command Center Dashboard">
+
+    <!-- Twitter / X Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://asawamanasak.github.io/fpl/">
+    <meta name="twitter:title" content="FPL Dashboard | GEMINI UNITED (ID: 306983)">
+    <meta name="twitter:description" content="Tactical Command Center &amp; Autonomous Optimizer &bull; Global Rank: 65,185 (Top 100k: On Track) &bull; Wildcard GW3 Active">
+    <meta name="twitter:image" content="https://asawamanasak.github.io/fpl/assets/og_preview.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
