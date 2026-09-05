@@ -82,5 +82,14 @@
 * `rollback_0` : สภาพแวดล้อมตั้งต้นของระบบ
 * `rollback_1` : ระบบปิด 5 ช่องโหว่ (Resilience Backoff, Sub 1 Priority, Active Pulse Badge)
 * `rollback_2` : ระบบยกระดับความเสถียรเชิงกลยุทธ์ (Press Conference Watcher, Post-GW Archive Automation, Concurrency Safe)
+* `rollback_3` : ระบบเสริม Cloud Rebase Guard, Top 100k Badge, Countdown Timer, Health Widget
+* `rollback_4` : ระบบเสริม Open Graph Social Link Preview (OG Image 1200x630 & Rich Metadata)
 
+---
 
+### 9. กฎความปลอดภัยและความเป็นส่วนตัวขั้นสูงสุด (Strict Security & Privacy Protocol)
+1. **Strict Directory Lock (การล็อกพื้นที่ทำงานเด็ดขาด) :**
+   * พื้นที่การทำงานทั้งหมดของระบบจำกัดอยู่เฉพาะภายในโฟลเดอร์ `/Users/micky/Desktop/Antigravity/FPL` เท่านั้น
+   * ทุกคำสั่ง Terminal (`Cwd`), การอ่านไฟล์, แก้ไขไฟล์ หรือสร้างไฟล์ จะต้องดำเนินการอยู่ภายในขอบเขตของโฟลเดอร์นี้เท่านั้น
+2. **No External Inspection (ห้ามตรวจสอบภายนอกเด็ดขาด) :**
+   * ห้ามสั่งรันคำสั่งลิสต์รายชื่อ (`ls`), ค้นหา (`find`/`grep`) หรือเปิดอ่านไฟล์ใดๆ นอกเหนือจากโฟลเดอร์โปรเจกต์นี้โดยเด็ดขาด 100% เพื่อรักษาความปลอดภัยและความเป็นส่วนตัวสูงสุดของผู้ใช้งาน
