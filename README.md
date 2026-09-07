@@ -1,10 +1,10 @@
-# ⚽ FPL Analytics & Week-by-Week Strategy Dashboard
+# FPL Analytics & Week-by-Week Strategy Dashboard
 
 ระบบวิเคราะห์และวางแผนทีม Fantasy Premier League (FPL) สำหรับทีม **GEMINI UNITED** (Team ID: `306983`)
 
 ---
 
-## 📁 โครงสร้างโปรเจกต์ (Project Structure)
+## โครงสร้างโปรเจกต์ (Project Structure)
 
 ```text
 FPL/
@@ -22,7 +22,7 @@ FPL/
 
 ---
 
-## 🚀 วิธีใช้งานในแต่ละสัปดาห์ (Week-by-Week Workflow)
+## วิธีใช้งานในแต่ละสัปดาห์ (Week-by-Week Workflow)
 
 เมื่อถึงสัปดาห์ใหม่ หรือก่อนเดดไลน์แต่ละ Gameweek:
 

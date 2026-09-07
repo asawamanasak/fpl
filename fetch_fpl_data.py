@@ -30,7 +30,7 @@ def sync_all(team_id: int = TEAM_ID_DEFAULT, data_dir: str = "data"):
     print(f"[+] Fetching Solio Analytics AI projections...")
     try:
         solio = fetch_json("https://fpl.solioanalytics.com/api/data/latest.json", os.path.join(data_dir, "solio_latest.json"))
-        print(f"[✔] Solio Analytics projections updated.")
+        print(f"[OK] Solio Analytics projections updated.")
     except Exception as e:
         print(f"[!] Warning: Could not fetch Solio projections: {e}")
 
@@ -44,7 +44,7 @@ def sync_all(team_id: int = TEAM_ID_DEFAULT, data_dir: str = "data"):
     for gw in range(1, current_event + 1):
         fetch_json(f"{BASE_URL}/entry/{team_id}/event/{gw}/picks/", os.path.join(data_dir, f"picks_gw{gw}.json"))
 
-    print(f"[✔] Successfully synchronized all FPL & research data into '{data_dir}/' folder.")
+    print(f"[OK] Successfully synchronized all FPL & research data into '{data_dir}/' folder.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Fetch FPL Data")

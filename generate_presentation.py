@@ -2296,7 +2296,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print(f"[✔] Generated Presentation with Plan Summary Tab at: {output_file}")
+    print(f"[OK] Generated Presentation with Plan Summary Tab at: {output_file}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate FPL Presentation HTML")
