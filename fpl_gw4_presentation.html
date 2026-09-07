@@ -26,7 +26,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-base: #090c10;
@@ -56,13 +56,14 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Prompt', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-base);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         @media (min-width: 1200px) {
@@ -397,12 +398,25 @@
             font-family: 'JetBrains Mono', monospace;
             letter-spacing: 0.6px;
             box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+            white-space: nowrap;
+        }
+        .gw-banner-title-wrap {
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+            flex-wrap: wrap;
         }
         .gw-banner-title {
             font-size: 0.82rem;
             font-weight: 700;
             color: #ffffff;
             letter-spacing: 0.2px;
+            word-break: keep-all;
+        }
+        .gw-banner-en {
+            font-size: 0.70rem;
+            color: var(--text-muted);
+            font-weight: 500;
         }
         .gw-banner-right {
             display: flex;
@@ -411,8 +425,25 @@
             font-size: 0.68rem;
             color: var(--text-secondary);
         }
-        .gw-sub-info strong {
+        .gw-info-chip {
+            display: flex;
+            align-items: baseline;
+            gap: 0.35rem;
+        }
+        .chip-label {
+            font-size: 0.58rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .chip-val {
             color: #ffffff;
+            font-weight: 700;
+        }
+        .quota-rule {
+            font-weight: 500;
+            color: var(--accent-emerald);
+            font-size: 0.64rem;
         }
         .gw-divider {
             color: var(--border-accent);
@@ -875,6 +906,89 @@
             flex-wrap: wrap;
             gap: 0.25rem;
         }
+        .delta-baseline {
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            background: rgba(15, 23, 42, 0.45) !important;
+        }
+        .dot-baseline {
+            background: var(--text-muted) !important;
+            box-shadow: none !important;
+        }
+        .pill-baseline {
+            background: rgba(255, 255, 255, 0.06) !important;
+            color: var(--text-muted) !important;
+            border: 1px solid var(--border-subtle) !important;
+        }
+        .delta-status-banner {
+            margin-top: 0.35rem;
+            padding: 0.28rem 0.5rem;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .status-lbl {
+            font-size: 0.58rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+        }
+        .status-txt {
+            font-size: 0.64rem;
+            color: var(--text-muted);
+            word-break: keep-all;
+        }
+        .delta-rule-notice {
+            margin-top: 0.35rem;
+            padding: 0.28rem 0.5rem;
+            border-radius: 5px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+        .rule-txt {
+            font-size: 0.64rem;
+            color: var(--accent-emerald);
+            font-weight: 600;
+            word-break: keep-all;
+            line-height: 1.35;
+        }
+        .delta-ledger-strip {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.35rem;
+            padding-top: 0.28rem;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            gap: 0.4rem;
+        }
+        .delta-ledger-cell {
+            display: flex;
+            align-items: baseline;
+            gap: 0.35rem;
+        }
+        .dl-lbl {
+            font-size: 0.58rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .dl-val {
+            font-size: 0.68rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+        .dl-gain {
+            font-size: 0.60rem;
+            color: var(--accent-emerald);
+            margin-left: 2px;
+        }
+        .mobile-vs-divider {
+            display: none;
+        }
 
         .sub-label-badge {
             font-size: 0.52rem;
@@ -1225,41 +1339,301 @@
         }
 
         @media (max-width: 768px) {
-            header { padding: 0.4rem 0.75rem; }
-            main { padding: 0 0.5rem 1rem; }
-            .nav-bar { padding: 0 0.5rem; }
+            html, body {
+                overflow-x: hidden;
+                width: 100%;
+                max-width: 100vw;
+            }
+            main {
+                overflow-x: hidden;
+                width: 100%;
+                max-width: 100vw;
+                padding: 0.4rem 0.5rem 1.5rem;
+            }
+            header { padding: 0.45rem 0.65rem; }
+            .nav-bar { padding: 0.3rem 0.5rem; gap: 0.25rem; }
+            .tab-btn { font-size: 0.70rem; padding: 0.32rem 0.65rem; border-radius: 5px; }
             
-            .header-wrap { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
-            .stats-strip { width: 100%; justify-content: space-between; }
-            .stat-cell { flex: 1; min-width: 65px; padding: 0.18rem 0.35rem; }
+            .header-wrap { flex-direction: column; align-items: stretch; gap: 0.45rem; }
+            .brand-meta { flex-direction: column; align-items: flex-start; gap: 0.35rem; width: 100%; }
+            .title-box { width: 100%; }
+            .title-box h1 { font-size: 0.95rem; line-height: 1.25; }
+            .team-name { display: inline-block; }
+            .team-id-tag { font-size: 0.68rem; color: var(--text-muted); font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+            .sync-pill { margin-left: 0; margin-top: 3px; font-size: 0.58rem; display: inline-flex; }
+            .manager-meta-line { font-size: 0.66rem; line-height: 1.4; color: var(--text-secondary); margin-top: 2px; word-break: keep-all; }
+            .deadline-pill { font-size: 0.56rem; padding: 2px 7px; flex-wrap: wrap; width: 100%; line-height: 1.35; gap: 4px; }
             
-            .starter-card { width: 74px; padding: 0.2rem 0.22rem; }
-            .starter-photo-wrap { width: 100%; height: 38px; }
-            .starter-shirt-img { width: 34px; height: 34px; }
-            .starter-info-card { width: 100%; padding: 0.15rem 0.1rem; }
-            .starter-name { font-size: 0.62rem; }
-            .starter-meta { font-size: 0.5rem; }
-            .starter-fix-row { font-size: 0.48rem; }
+            .stats-strip { 
+                display: grid; 
+                grid-template-columns: 1fr 1fr; 
+                gap: 0.35rem; 
+                width: 100%; 
+                margin-top: 0.2rem; 
+            }
+            .stat-cell { min-width: 0; padding: 0.32rem 0.5rem; }
+            .stat-cell .lbl { font-size: 0.52rem; letter-spacing: 0.4px; }
+            .stat-cell .val { font-size: 0.86rem; }
+            .rank-trajectory-tag { font-size: 0.50rem; padding: 1px 4px; }
             
-            .bench-card { width: 74px; padding: 0.2rem 0.22rem; }
-            .bench-photo-wrap { width: 100%; height: 38px; }
-            .bench-shirt-img { width: 34px; height: 34px; }
-            .bench-info-card { width: 100%; padding: 0.15rem 0.1rem; }
-            .bench-name { font-size: 0.62rem; }
-            .bench-meta { font-size: 0.5rem; }
-            .bench-fix-row { font-size: 0.48rem; }
-
-            .pitch-row { gap: 0.3rem; }
-            .compact-pitch { padding: 0.45rem 0.25rem; min-height: 410px; }
-
-            .summary-metrics-strip {
-                grid-template-columns: repeat(2, 1fr);
+            .gw-target-banner {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.45rem;
+                padding: 0.55rem 0.65rem;
+            }
+            .gw-banner-left {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.45rem;
+            }
+            .gw-badge-pill {
+                font-size: 0.58rem;
+                padding: 0.14rem 0.45rem;
+                flex-shrink: 0;
+            }
+            .gw-banner-title {
+                font-size: 0.76rem;
+                font-weight: 700;
+                color: #ffffff;
+                line-height: 1.3;
+                word-break: keep-all;
+            }
+            .gw-banner-en {
+                font-size: 0.62rem;
+                color: var(--text-muted);
+                display: block;
+                margin-top: 1px;
+            }
+            .gw-banner-right {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+                padding-top: 0.35rem;
+                border-top: 1px dashed rgba(255, 255, 255, 0.08);
+                font-size: 0.64rem;
+            }
+            .gw-divider { display: none; }
+            .gw-info-chip {
+                display: flex;
+                align-items: baseline;
+                gap: 0.35rem;
+                flex-wrap: wrap;
+            }
+            .chip-label {
+                font-size: 0.56rem;
+                font-weight: 700;
+                color: var(--text-muted);
+                font-family: 'JetBrains Mono', monospace;
+            }
+            .chip-val {
+                font-size: 0.66rem;
+                color: #ffffff;
+            }
+            .quota-rule {
+                font-size: 0.58rem;
+                color: var(--accent-emerald);
+                font-weight: 600;
             }
 
+            .lineup-split-grid, .summary-split-grid { 
+                grid-template-columns: minmax(0, 1fr) !important; 
+                width: 100%;
+                gap: 0.85rem; 
+            }
+            .plan-column { 
+                min-width: 0;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 0.5rem 0.45rem; 
+                border-radius: 9px; 
+            }
+            .plan-col-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.35rem;
+            }
+            .plan-title { font-size: 0.82rem; }
+            .fin-badge { font-size: 0.60rem; padding: 0.15rem 0.42rem; align-self: flex-start; }
+            
+            .compact-pitch { 
+                min-width: 0;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 0.45rem 0.15rem; 
+                min-height: 400px; 
+                gap: 0.35rem; 
+                overflow: hidden;
+            }
+            .pitch-row { 
+                min-width: 0;
+                width: 100%;
+                gap: 0.2rem; 
+                justify-content: center; 
+                box-sizing: border-box;
+            }
+            
+            .starter-card { 
+                width: 70px; 
+                max-width: 72px;
+                min-width: 0;
+                flex-shrink: 1;
+                padding: 0.18rem 0.16rem 0.14rem; 
+                border-radius: 6px; 
+                box-sizing: border-box;
+            }
+            .starter-card-top { min-height: 13px; }
+            .pos-tag-mini { font-size: 0.46rem; padding: 0.03rem 0.16rem; border-radius: 2px; }
+            .role-badge-cap, .role-badge-vc { font-size: 0.50rem; padding: 0.03rem 0.2rem; }
+            .core-tag-mini, .enabler-tag-mini, .transfer-in-tag-mini { font-size: 0.44rem; padding: 0.03rem 0.15rem; }
+            .starter-photo-wrap { height: 34px; margin: 0; }
+            .starter-shirt-img { width: 30px; height: 30px; }
+            .starter-info-card { padding-top: 2px; }
+            .starter-name { font-size: 0.60rem; letter-spacing: -0.2px; line-height: 1.1; }
+            .starter-meta { font-size: 0.48rem; margin: 1px 0; }
+            .starter-fix-row { font-size: 0.45rem; padding-top: 1px; margin-top: 1px; }
+            .starter-fix-text { font-weight: 600; }
+            .fdr-pill { font-size: 0.46rem; padding: 0.02rem 0.16rem; }
+
+            .compact-bench-strip { 
+                min-width: 0;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 0.35rem 0.3rem; 
+                margin-top: 0.4rem; 
+                border-radius: 7px; 
+                overflow-x: auto;
+            }
+            .bench-header-bar { margin-bottom: 0.2rem; padding-bottom: 0.15rem; }
+            .bench-lbl { font-size: 0.56rem; }
+            .bench-count-tag { font-size: 0.48rem; padding: 0.03rem 0.25rem; }
+            .bench-row { 
+                min-width: 0;
+                width: 100%;
+                gap: 0.2rem; 
+                justify-content: center; 
+                box-sizing: border-box;
+            }
+            .bench-card { 
+                width: 70px; 
+                max-width: 72px;
+                min-width: 0;
+                flex-shrink: 1;
+                padding: 0.18rem 0.16rem 0.14rem; 
+                border-radius: 6px; 
+                box-sizing: border-box;
+            }
+            .bench-card-top { min-height: 13px; }
+            .sub-label-badge { font-size: 0.46rem; padding: 0.03rem 0.18rem; }
+            .bench-photo-wrap { height: 34px; margin: 0; }
+            .bench-shirt-img { width: 30px; height: 30px; }
+            .bench-info-card { padding-top: 2px; }
+            .bench-name { font-size: 0.60rem; letter-spacing: -0.2px; line-height: 1.1; }
+            .bench-meta { font-size: 0.48rem; margin: 1px 0; }
+            .bench-fix-row { font-size: 0.45rem; padding-top: 1px; margin-top: 1px; }
+
+            /* Tactical Mobile Transition Divider */
+            .mobile-vs-divider {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                margin: 0.65rem 0;
+                width: 100%;
+            }
+            .vs-line {
+                flex: 1;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.4), transparent);
+            }
+            .vs-badge {
+                background: #0b1120;
+                border: 1px solid rgba(16, 185, 129, 0.5);
+                border-radius: 9999px;
+                padding: 0.22rem 0.65rem;
+                font-size: 0.58rem;
+                font-weight: 800;
+                color: var(--accent-emerald);
+                font-family: 'JetBrains Mono', monospace;
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+            }
+
+            /* Transfers Delta Box */
+            .transfers-delta-box { padding: 0.45rem 0.55rem; margin-top: 0.4rem; border-radius: 7px; }
+            .delta-header-strip { margin-bottom: 0.25rem; padding-bottom: 0.2rem; }
+            .delta-title { font-size: 0.68rem; }
+            .delta-count-pill { font-size: 0.52rem; padding: 1px 5px; }
+            .delta-group-label { font-size: 0.54rem; min-width: 62px; }
+            .delta-pill { font-size: 0.58rem; padding: 1px 5px; }
+            .delta-status-banner, .delta-rule-notice { font-size: 0.58rem; line-height: 1.35; padding: 0.25rem 0.45rem; }
+            .status-lbl { font-size: 0.54rem; }
+            .status-txt, .rule-txt { font-size: 0.58rem; word-break: keep-all; }
+            .delta-ledger-strip {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.25rem;
+                margin-top: 0.35rem;
+                padding-top: 0.3rem;
+            }
+            .delta-ledger-cell {
+                padding: 0.25rem 0.15rem;
+                background: rgba(0, 0, 0, 0.3);
+                border-radius: 4px;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 2px;
+            }
+            .dl-lbl { font-size: 0.48rem; text-transform: uppercase; color: var(--text-muted); }
+            .dl-val { font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #ffffff; }
+            .dl-gain { display: block; font-size: 0.52rem; margin-left: 0; }
+
+            /* Tab 2 Plan Summary Mobile */
+            .summary-metrics-strip {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.35rem;
+            }
+            .summary-metric-card { padding: 0.4rem 0.5rem; }
+            .summary-metric-title { font-size: 0.56rem; }
+            .metric-sub-val { font-size: 0.76rem; }
+            .squad-health-widget { padding: 0.65rem 0.75rem; margin-bottom: 0.75rem; border-radius: 8px; }
+            .health-heading { font-size: 0.78rem; }
+            .health-detail-text { font-size: 0.70rem; line-height: 1.45; word-break: keep-all; }
+            .summary-plan-panel { padding: 0.65rem; border-radius: 8px; gap: 0.55rem; }
+            .pros-cons-item { font-size: 0.68rem; line-height: 1.4; padding: 0.35rem 0.5rem; word-break: keep-all; }
+            .roadmap-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 0.5rem; }
+            .roadmap-table { min-width: 580px; }
+
+            /* Tab 3 FDR Ticker Mobile Sticky Columns */
+            .tbl-sticky { min-width: 82px; font-size: 0.68rem; padding: 0.35rem 0.25rem; }
+            .tbl-sticky-2 { left: 82px; min-width: 42px; font-size: 0.68rem; padding: 0.35rem 0.25rem; }
+            .tbl-sticky-3 { left: 124px; min-width: 40px; font-size: 0.68rem; padding: 0.35rem 0.25rem; }
+            .tbl-sticky-4 { left: 164px; min-width: 45px; font-size: 0.68rem; padding: 0.35rem 0.25rem; }
+            .fdr-box-lg { min-width: 48px; font-size: 0.60rem; padding: 0.18rem 0.3rem; }
+            .ticker-scroll-pane { max-height: calc(100vh - 210px); }
+
+            /* Tab 4 Research Sources Mobile */
             .source-ledger-row {
                 grid-template-columns: 1fr;
                 gap: 0.35rem;
+                padding: 0.65rem 0.3rem;
             }
+            .source-main-name { font-size: 0.82rem; }
+            .source-link-url { font-size: 0.65rem; }
+            .source-feature-text { font-size: 0.72rem; line-height: 1.4; word-break: keep-all; }
+        }
+
+        @media (max-width: 380px) {
+            .starter-card, .bench-card { width: 70px; padding: 0.15rem 0.14rem; }
+            .pitch-row, .bench-row { gap: 0.18rem; }
+            .starter-name, .bench-name { font-size: 0.58rem; }
+            .starter-photo-wrap, .bench-photo-wrap { height: 32px; }
+            .starter-shirt-img, .bench-shirt-img { width: 28px; height: 28px; }
+            .compact-pitch { padding: 0.35rem 0.12rem; }
         }
     </style>
 </head>
@@ -1272,8 +1646,16 @@
                 <div class="season-badge">FPL 2026/27</div>
                 <div class="gw-top-badge">GW4</div>
                 <div class="title-box">
-                    <h1>GEMINI UNITED <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: 306983)</span> <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 08/09/2026 01:17 AM<span class="sync-tag-active">ACTIVE</span></span></h1>
-                    <p>Manager: Micky Asawamanasak &bull; จัดทีมสำหรับสัปดาห์ที่ 4 (Gameweek 4)</p>
+                    <h1>
+                        <span class="team-name">GEMINI UNITED</span> 
+                        <span class="team-id-tag">(ID: 306983)</span> 
+                        <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 08/09/2026 01:17 AM<span class="sync-tag-active">ACTIVE</span></span>
+                    </h1>
+                    <p class="manager-meta-line">
+                        <span class="manager-name">Manager: Micky Asawamanasak</span> 
+                        <span class="header-dot">&bull;</span> 
+                        <span class="gw-target-txt">จัดทีมสำหรับสัปดาห์ที่ 4 (Gameweek 4)</span>
+                    </p>
                     <div class="deadline-pill" title="Official Gameweek 4 Deadline">
                         <span class="deadline-tag-prefix">DEADLINE</span> Sat 12 Sep, 19:30 ICT &bull; <span id="countdownTimer" class="countdown-clock">--h --m --s</span> <span class="lockdown-badge">LOCKDOWN AT -30M</span>
                     </div>
@@ -1317,12 +1699,21 @@
             <div class="gw-target-banner">
                 <div class="gw-banner-left">
                     <span class="gw-badge-pill">GAMEWEEK 4</span>
-                    <span class="gw-banner-title">การจัดทีมสำหรับสัปดาห์ที่ 4 (Gameweek 4 Lineup &amp; Strategy)</span>
+                    <div class="gw-banner-title-wrap">
+                        <span class="gw-banner-title">การจัดทีมสำหรับสัปดาห์ที่ 4</span>
+                        <span class="gw-banner-en">(Gameweek 4 Lineup &amp; Strategy)</span>
+                    </div>
                 </div>
                 <div class="gw-banner-right">
-                    <span class="gw-sub-info">DEADLINE: <strong>Sat 12 Sep, 19:30 ICT</strong></span>
+                    <div class="gw-info-chip">
+                        <span class="chip-label">DEADLINE:</span>
+                        <strong class="chip-val">Sat 12 Sep, 19:30 ICT</strong>
+                    </div>
                     <span class="gw-divider">&bull;</span>
-                    <span class="gw-sub-info">QUOTA: <strong style="color:var(--accent-emerald);">2 Free Transfers (ห้ามเปลี่ยนตัวติดลบ: Cost 0 pts)</strong></span>
+                    <div class="gw-info-chip">
+                        <span class="chip-label">QUOTA:</span>
+                        <strong class="chip-val" style="color:var(--accent-emerald);">2 Free Transfers <span class="quota-rule">(ห้ามเปลี่ยนตัวติดลบ: Cost 0 pts)</span></strong>
+                    </div>
                 </div>
             </div>
 
@@ -1648,7 +2039,7 @@
                         </div>
                     </div>
 
-                    <div class="compact-bench-strip">
+                    <div class="compact-bench-strip" id="c1-bench">
                         <div class="bench-header-bar">
                             <span class="bench-lbl">DUGOUT &bull; SUBSTITUTES BENCH</span>
                             <span class="bench-count-tag">4 RESERVES</span>
@@ -1763,30 +2154,46 @@
                     </div>
 
                     <!-- Choice 1 Baseline Box -->
-                    <div class="transfers-delta-box" style="border-color: rgba(255, 255, 255, 0.12); background: rgba(15, 23, 42, 0.45);">
+                    <div class="transfers-delta-box delta-baseline">
                         <div class="delta-header-strip">
                             <div class="delta-title-wrap">
-                                <span class="delta-indicator-dot" style="background:var(--text-muted); box-shadow:none;"></span>
+                                <span class="delta-indicator-dot dot-baseline"></span>
                                 <span class="delta-title" style="color:var(--text-secondary);">Transfers (Choice 1 Baseline)</span>
                             </div>
-                            <span class="delta-count-pill" style="background:rgba(255,255,255,0.06); color:var(--text-muted); border:1px solid var(--border-subtle);">0 TRANSFERS &bull; 2 FTs BANKED</span>
+                            <span class="delta-count-pill pill-baseline">0 TRANSFERS &bull; 2 FTs BANKED</span>
                         </div>
-                        <div class="delta-list-grid">
-                            <div class="delta-group">
-                                <div class="delta-group-label" style="color:var(--text-muted);">STATUS</div>
-                                <div class="delta-tags">
-                                    <span style="font-size:0.62rem; color:var(--text-muted);">ไม่มีรายการย้ายตัวเข้า-ออก (Baseline Squad &bull; เก็บ 2 FTs ไว้ใช้ GW5 &bull; ค่าปรับ 0 แต้ม)</span>
-                                </div>
+                        <div class="delta-status-banner">
+                            <span class="status-lbl">STATUS:</span>
+                            <span class="status-txt">ไม่มีรายการย้ายตัวเข้า-ออก (Baseline Squad &bull; เก็บ 2 FTs ไว้ใช้ GW5 &bull; ค่าปรับ 0 แต้ม)</span>
+                        </div>
+                        <div class="delta-ledger-strip">
+                            <div class="delta-ledger-cell">
+                                <span class="dl-lbl">Starting Points</span>
+                                <span class="dl-val">174 pts</span>
                             </div>
-                        </div>
-                        <div class="delta-footer">
-                            <span>Starting Points: <strong>174 pts</strong></span> &bull; <span>Cost Hits: <strong>0 pts</strong></span> &bull; <span>Bank: <strong>£0.0m</strong></span>
+                            <div class="delta-ledger-cell">
+                                <span class="dl-lbl">Cost Hits</span>
+                                <span class="dl-val" style="color:var(--accent-emerald);">0 pts</span>
+                            </div>
+                            <div class="delta-ledger-cell">
+                                <span class="dl-lbl">Remaining Bank</span>
+                                <span class="dl-val" style="color:var(--accent-sky);">£0.0m</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- MOBILE TRANSITION DIVIDER (VISIBLE ONLY ON MOBILE) -->
+                <div class="mobile-vs-divider">
+                    <div class="vs-line"></div>
+                    <div class="vs-badge">
+                        <span>VS</span> &bull; <span>GEMINI REFINED BLUEPRINT</span>
+                    </div>
+                    <div class="vs-line"></div>
+                </div>
+
                 <!-- RIGHT COLUMN: CHOICE 2 (GEMINI SELECTION) -->
-                <div class="plan-column plan-c2">
+                <div class="plan-column plan-c2" id="choice-2">
                     <div class="plan-col-header">
                         <div>
                             <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint (GW4)</div>
@@ -2242,8 +2649,22 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="delta-footer">
-                            <span style="color:var(--accent-emerald); font-weight:700;">เงื่อนไข: ห้ามเปลี่ยนตัวติดลบ (Cost: 0 pts &bull; ใช้ 1 จาก 2 FTs &bull; เหลือสะสม 1 FT ไป GW5)</span> &bull; <span>Starting Points: <strong>182 pts (+8 pts)</strong></span> &bull; <span>Bank: <strong>+£0.4m</strong></span>
+                        <div class="delta-rule-notice">
+                            <span class="rule-txt">เงื่อนไข: ห้ามเปลี่ยนตัวติดลบ (Cost 0 pts &bull; ใช้ 1/2 FTs &bull; สะสม 1 FT ไป GW5)</span>
+                        </div>
+                        <div class="delta-ledger-strip">
+                            <div class="delta-ledger-cell">
+                                <span class="dl-lbl">Starting Points</span>
+                                <span class="dl-val">182 pts <span class="dl-gain">+8 pts</span></span>
+                            </div>
+                            <div class="delta-ledger-cell">
+                                <span class="dl-lbl">Cost Hits</span>
+                                <span class="dl-val" style="color:var(--accent-emerald);">0 pts</span>
+                            </div>
+                            <div class="delta-ledger-cell">
+                                <span class="dl-lbl">Remaining Bank</span>
+                                <span class="dl-val" style="color:var(--accent-sky);">+£0.4m</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2345,8 +2766,8 @@
                     </div>
                     <span class="health-status-badge health-badge-ok">ACTIVE WEAPONS: TC1 &amp; FH1 READY</span>
                 </div>
-                <div style="overflow-x:auto; margin-top:0.6rem;">
-                    <table style="width:100%; border-collapse:collapse; font-size:0.75rem; text-align:left;">
+                <div class="roadmap-table-wrap">
+                    <table class="roadmap-table" style="width:100%; border-collapse:collapse; font-size:0.75rem; text-align:left;">
                         <thead>
                             <tr style="border-bottom:1px solid var(--border-main); color:var(--text-muted);">
                                 <th style="padding:6px 10px;">Gameweek</th>
@@ -2752,6 +3173,18 @@
                 window.event.currentTarget.classList.add('active');
             }
         }
+
+        // Support direct tab deep-linking via URL hash (e.g. #summary, #ticker, #sources)
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '');
+            const tabMap = { 'comparison': 0, 'summary': 1, 'ticker': 2, 'sources': 3 };
+            if (hash in tabMap) {
+                const btns = document.querySelectorAll('.tab-btn');
+                if (btns[tabMap[hash]]) {
+                    switchTab(hash, btns[tabMap[hash]]);
+                }
+            }
+        });
 
         // Multi-Column Sorting & Reset Functionality
         let sortAsc = true;
