@@ -330,9 +330,15 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     # Total Team Budget dynamically derived from Choice 1 and FPL Entry data
     total_budget = round(max(c1_cost, (entry.get("last_deadline_value", 1000) + entry.get("last_deadline_bank", 0)) / 10.0), 1)
 
+    # Official User Transfer State (Confirmed from official FPL transfers page):
+    # Under modern 2024/25-2026/27 rules, saved transfers carry over through Wildcards (accumulating up to 5 FTs).
+    # Since 0 transfers were made in GW1 & GW2, the user holds exactly 2 Free Transfers (2 FTs) for GW4.
+    user_free_transfers = 2
+
     # CHOICE 2: Antigravity's Refined Choice 1 Blueprint
-    # Constraint Enforced: "ห้ามเปลี่ยนตัวติดลบ" (Strict 0 Transfer Hits / 1 Free Transfer Only / 0 pt penalty)
-    # 1 Free Transfer: Foden (MCI £7.0m, MUN A FDR 4) -> Martin Ødegaard (ARS £6.6m, 24 pts, form 8.0, SUN A FDR 2)
+    # Constraint Enforced: "ห้ามเปลี่ยนตัวติดลบ" (Strict 0 Transfer Hits / Cost: 0 pts)
+    # Strategy: Uses 1 of 2 available FTs (Foden £7.0m -> Martin Ødegaard £6.6m), saving 1 FT for GW5 (ARS vs MCI)
+    # Free Transfers Used: 1 / 2 | Retained: 1 FT | Hits: 0 pts
     # Bank Reserve: +£0.4m
     c2_ids = [
         (496, True, False, False, False, False),  # Kinsky (GKP Slot 1 - MATCHES C1)
@@ -1805,7 +1811,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                 <div class="gw-banner-right">
                     <span class="gw-sub-info">DEADLINE: <strong>{deadline_str}</strong></span>
                     <span class="gw-divider">&bull;</span>
-                    <span class="gw-sub-info">QUOTA: <strong style="color:var(--accent-emerald);">1 Free Transfer (ห้ามเปลี่ยนตัวติดลบ)</strong></span>
+                    <span class="gw-sub-info">QUOTA: <strong style="color:var(--accent-emerald);">{user_free_transfers} Free Transfers (ห้ามเปลี่ยนตัวติดลบ: Cost 0 pts)</strong></span>
                 </div>
             </div>
 
@@ -1859,13 +1865,13 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                                 <span class="delta-indicator-dot" style="background:var(--text-muted); box-shadow:none;"></span>
                                 <span class="delta-title" style="color:var(--text-secondary);">Transfers (Choice 1 Baseline)</span>
                             </div>
-                            <span class="delta-count-pill" style="background:rgba(255,255,255,0.06); color:var(--text-muted); border:1px solid var(--border-subtle);">0 TRANSFERS &bull; 1 FT BANKED</span>
+                            <span class="delta-count-pill" style="background:rgba(255,255,255,0.06); color:var(--text-muted); border:1px solid var(--border-subtle);">0 TRANSFERS &bull; {user_free_transfers} FTs BANKED</span>
                         </div>
                         <div class="delta-list-grid">
                             <div class="delta-group">
                                 <div class="delta-group-label" style="color:var(--text-muted);">STATUS</div>
                                 <div class="delta-tags">
-                                    <span style="font-size:0.62rem; color:var(--text-muted);">ไม่มีรายการย้ายตัวเข้า-ออก (Baseline Squad &bull; ค่าปรับ 0 แต้ม)</span>
+                                    <span style="font-size:0.62rem; color:var(--text-muted);">ไม่มีรายการย้ายตัวเข้า-ออก (Baseline Squad &bull; เก็บ {user_free_transfers} FTs ไว้ใช้ GW5 &bull; ค่าปรับ 0 แต้ม)</span>
                                 </div>
                             </div>
                         </div>
@@ -1882,7 +1888,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                             <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint (GW{active_gw})</div>
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">3-4-3</span>
-                                <span class="active-chip-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">GW{active_gw} &bull; 1 FT &bull; ZERO HIT</span>
+                                <span class="active-chip-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">GW{active_gw} &bull; {transfers_count}/{user_free_transfers} FTs &bull; ZERO HIT</span>
                             </div>
                         </div>
                         <div class="fin-badge" style="border-color:var(--accent-emerald);">
@@ -1923,7 +1929,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                                 <span class="delta-indicator-dot"></span>
                                 <span class="delta-title">Transfers vs Choice 1</span>
                             </div>
-                            <span class="delta-count-pill">{transfers_count} IN &bull; {transfers_count} OUT &bull; 0 PT HIT (1 FT)</span>
+                            <span class="delta-count-pill">{transfers_count} IN &bull; {transfers_count} OUT &bull; 0 PT HIT ({transfers_count}/{user_free_transfers} FTs)</span>
                         </div>
                         <div class="delta-list-grid">
                             <div class="delta-group">
@@ -1940,7 +1946,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                             </div>
                         </div>
                         <div class="delta-footer">
-                            <span style="color:var(--accent-emerald); font-weight:700;">เงื่อนไข: ห้ามเปลี่ยนตัวติดลบ (Cost: 0 pts &bull; 1 FT Only)</span> &bull; <span>Starting Points: <strong>{c2_start_pts} pts (+{c2_start_pts - c1_start_pts} pts)</strong></span> &bull; <span>Bank: <strong>{c2_bank_str}</strong></span>
+                            <span style="color:var(--accent-emerald); font-weight:700;">เงื่อนไข: ห้ามเปลี่ยนตัวติดลบ (Cost: 0 pts &bull; ใช้ {transfers_count} จาก {user_free_transfers} FTs &bull; เหลือสะสม {user_free_transfers - transfers_count} FT ไป GW5)</span> &bull; <span>Starting Points: <strong>{c2_start_pts} pts (+{c2_start_pts - c1_start_pts} pts)</strong></span> &bull; <span>Bank: <strong>{c2_bank_str}</strong></span>
                         </div>
                     </div>
                 </div>
@@ -2023,13 +2029,13 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                         <tbody>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW4 (สัปดาห์นี้)</td>
-                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">1 FT &bull; ZERO HIT</span></td>
+                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">{user_free_transfers} FTs &bull; ZERO HIT</span></td>
                                 <td style="padding:8px 10px;">CHE vs HUL (H), LIV vs FUL (H), SUN vs ARS (A), MUN vs MCI (A)</td>
-                                <td style="padding:8px 10px;">ใช้ 1 FT ย้าย Foden (£7.0m สำรองดาร์บี้) &rarr; Martin Ødegaard (£6.6m กัปตันปืนใหญ่ 24 แต้ม เยือนซันเดอร์แลนด์ FDR 2) ลงตัวจริงทันที พร้อมเหลือเงินสดสำรอง <strong>{c2_bank_str}</strong> ใน Bank โดยแต้มลบเป็น 0 pts (ห้ามเปลี่ยนตัวติดลบ 100%)</td>
+                                <td style="padding:8px 10px;">มีโควตา <strong>{user_free_transfers} FTs เต็ม</strong> (จากกฎ FPL ใหม่ Wildcard ไม่ล้างสิทธิ์สะสม): แนะนำใช้ 1 FT ย้าย Foden (£7.0m) &rarr; Martin Ødegaard (£6.6m) และเก็บสำรองอีก 1 FT ไว้รับมือ GW5 (อาร์เซนอลพบแมนฯ ซิตี้) หรือใช้ครบทั้ง 2 FTs เสริมแนวรับควบคู่กันได้ โดยแต้มลบเป็น 0 pts (ห้ามเปลี่ยนตัวติดลบ 100%)</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW5</td>
-                                <td style="padding:8px 10px;"><strong>1 Free Transfer</strong> (สะสมได้)</td>
+                                <td style="padding:8px 10px;"><strong>1-2 Free Transfers</strong> (สะสมได้)</td>
                                 <td style="padding:8px 10px;"><strong>Arsenal vs Man City (MCI H)</strong>, LIV vs CRY (H)</td>
                                 <td style="padding:8px 10px;">อาร์เซนอลชนแมนฯ ซิตี้: สามารถโรเตชันแนวรับ หรือใช้ 1 FT ปรับทัพด้วยเงินสดสำรอง {c2_bank_str} โดยไม่ต้องเสียแต้มลบ</td>
                             </tr>
@@ -2058,7 +2064,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="summary-panel-header">
                         <div>
                             <div class="plan-title">Choice 1 &bull; Micky Selection</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-4-3 Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m</span>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-4-3 Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m &bull; Quota: {user_free_transfers} FTs</span>
                         </div>
                         <span class="source-pill">Audit Mode</span>
                     </div>
@@ -2112,19 +2118,19 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
                         <div class="pros-cons-item">
-                            <strong>Zero-Hit Rule Enforced (ห้ามเปลี่ยนตัวติดลบ 0 pts) :</strong> ย้ายตัวด้วย 1 Free Transfer ตามโควตาปกติ ไม่โดนตัดแต้มลบแม้แต่แต้มเดียว (Penalty: 0 pts) ปลอดภัยต่อคะแนนสะสม Overall Rank 100%
+                            <strong>Zero-Hit Rule Enforced (ห้ามเปลี่ยนตัวติดลบ 0 pts) :</strong> ย้ายตัวภายใต้โควตาทางการ {user_free_transfers} Free Transfers (ใช้ {transfers_count} FT, เหลือสะสม {user_free_transfers - transfers_count} FT) ไม่โดนตัดแต้มลบแม้แต่แต้มเดียว (Penalty: 0 pts)
                         </div>
                         <div class="pros-cons-item">
                             <strong>Arsenal Talisman Upgrade (Martin Ødegaard &bull; 24 แต้ม &bull; Form 8.0 &bull; xGI 2.06) :</strong> แปลงมูลค่า Foden (£7.0m) ที่ต้องนั่งสำรองในศึกแมนเชสเตอร์ดาร์บี้เยือนโอลด์ แทรฟฟอร์ด มาเป็น Martin Ødegaard (£6.6m) กัปตันอาร์เซนอลที่กำลังท็อปฟอร์ม ลุยซันเดอร์แลนด์ (FDR 2)
                         </div>
                         <div class="pros-cons-item">
+                            <strong>Retained 1 FT for GW5 Tactical Flexibility :</strong> การเลือกใช้เพียง 1 จาก {user_free_transfers} FTs ในสัปดาห์นี้ ทำให้ยังมีโควตา Free Transfer สำรองติดตัวสะสมต่อไปยัง GW5 (อาร์เซนอลชนแมนฯ ซิตี้) ได้อย่างยอดเยี่ยม
+                        </div>
+                        <div class="pros-cons-item">
                             <strong>14 Core Assets Perfectly Preserved (Choice 1 Alignment) :</strong> คงขุมกำลังเดิมถึง 14 จาก 15 คนเหมือน Choice 1 ทุกตำแหน่ง สลับและเปรียบเทียบใน Slot เดียวกันได้สะดวก 100%
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Financial Buffer &amp; Liquidity ({c2_bank_str} in Bank) :</strong> เหลือเงินสดสำรอง {c2_bank_str} ไว้ในธนาคาร เปิดทางให้บริหาร Free Transfer ใน GW5 (อาร์เซนอลชนแมนฯ ซิตี้) ได้อย่างคล่องตัว
-                        </div>
-                        <div class="pros-cons-item">
-                            <strong>Active Bench Security (Groß &bull; Gvardiol &bull; Egan) :</strong> ม้านั่งสำรองแข็งแกร่ง นำโดย Pascal Groß (£5.5m &bull; 16 แต้ม) และ Gvardiol (£5.6m &bull; 22 แต้ม) สแตนด์บายพร้อมลงสนามหากเกิดเหตุฉุกเฉิน
+                            <strong>Financial Buffer &amp; Liquidity ({c2_bank_str} in Bank) :</strong> เหลือเงินสดสำรอง {c2_bank_str} ไว้ในธนาคาร เปิดทางให้บริหาร Free Transfer ใน GW5 ได้อย่างคล่องตัว
                         </div>
                     </div>
 
@@ -2135,7 +2141,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                             <strong>No Man City Midfield Coverage :</strong> การขาย Foden จะทำให้ไม่มีตัวรุกแมนฯ ซิตี้ นอกเหนือจาก Erling Haaland ในสองสัปดาห์หนัก (เยือนแมนฯ ยูไนเต็ด และเยือนเอมิเรตส์)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Depleted Free Transfer for GW4 :</strong> ใช้โควตา 1 FT ไปแล้ว หากมีข่าวนักเตะบาดเจ็บกะทันหันก่อนเดดไลน์ จะไม่สามารถเปลี่ยนตัวฟรีได้อีกในสัปดาห์นี้
+                            <strong>1 FT Banked Instead of Immediate Double Move :</strong> แผนนี้เลือกเก็บ 1 FT ไว้สำหรับ GW5 หากคุณต้องการยกระดับแนวรับทันทีใน GW4 สามารถใช้สิทธิ์ครบทั้ง 2 FTs (เช่น Konsa &rarr; De Cuyper) ได้ทันทีโดยไม่เสียแต้มลบ
                         </div>
                     </div>
                 </div>
