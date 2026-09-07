@@ -122,6 +122,55 @@ def render_bench_list(bench_players):
             outfield_idx += 1
     return "".join(cards)
 
+def align_pitch_players(c1_starters, c2_starters, pos):
+    """
+    Given c1_starters and c2_starters for a given position (pos),
+    order c2_starters so that any player shared with c1_starters
+    occupies the exact same slot index as in c1_starters.
+    """
+    c1_pos = [p for p in c1_starters if p["pos"] == pos]
+    c2_pos = [p for p in c2_starters if p["pos"] == pos]
+    
+    if len(c1_pos) != len(c2_pos):
+        return c2_pos
+        
+    aligned = [None] * len(c1_pos)
+    c2_remaining = list(c2_pos)
+    
+    # First pass: Place exact matching players in their exact c1 index
+    for i, p1 in enumerate(c1_pos):
+        for p2 in c2_remaining:
+            if p2["id"] == p1["id"]:
+                aligned[i] = p2
+                c2_remaining.remove(p2)
+                break
+                
+    # Second pass: Fill vacant slots with remaining c2 players
+    for i in range(len(aligned)):
+        if aligned[i] is None and c2_remaining:
+            aligned[i] = c2_remaining.pop(0)
+            
+    return aligned
+
+def align_bench_players(c1_bench, c2_bench):
+    """
+    Align bench so that identical players occupy the same sub index.
+    """
+    if len(c1_bench) != len(c2_bench):
+        return c2_bench
+    aligned = [None] * len(c1_bench)
+    c2_remaining = list(c2_bench)
+    for i, p1 in enumerate(c1_bench):
+        for p2 in c2_remaining:
+            if p2["id"] == p1["id"]:
+                aligned[i] = p2
+                c2_remaining.remove(p2)
+                break
+    for i in range(len(aligned)):
+        if aligned[i] is None and c2_remaining:
+            aligned[i] = c2_remaining.pop(0)
+    return aligned
+
 def render_ticker_row_full_season(p, team_fixtures, start_gw=3, end_gw=38, orig_idx=0):
     t_id = p.get("team_id", 1)
     fix_dict = team_fixtures.get(t_id, {})
@@ -283,22 +332,22 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     # Upgrades Starting DEF & MID with De Cuyper £4.7m (21 pts, xGI 1.90), Dedić £4.5m, Rogers £7.6m (19 pts, xGI 2.32)
     # Adds Dubravka £4.0m backup GKP, leaving +£0.6m in Bank for GW5 Free Transfers
     c2_ids = [
-        (496, True, False, False, False, False),  # Kinsky (GKP £4.5m)
-        (4, True, False, False, True, False),     # Gabriel (DEF Core £8.0m)
-        (115, True, False, False, False, False),  # De Cuyper (DEF £4.7m - xGI 1.90)
-        (593, True, False, False, False, False),  # Amar Dedić (DEF £4.5m - BOU H)
-        (154, True, True, False, False, False),   # Palmer (MID C £9.6m)
-        (367, True, False, False, True, False),   # Gakpo (MID Core £7.2m)
-        (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m)
-        (40, True, False, False, False, False),   # Rogers (MID £7.6m)
-        (411, True, False, False, True, False),   # Haaland (FWD Core £15.5m)
-        (165, True, False, True, True, False),    # João Pedro (FWD VC Core £7.7m)
-        (464, True, False, False, False, False),  # Wissa (FWD £6.2m)
-        # Bench (High-Value 90-Min Rotation)
-        (497, False, False, False, False, False), # Dubravka (GKP Sub £4.0m)
-        (277, False, False, False, False, False), # Egan (DEF Sub 1 £4.1m - 23 pts)
-        (304, False, False, False, False, False), # O'Shea (DEF Sub 2 £4.0m - 7 pts)
-        (249, False, False, False, False, True),  # Louie Barry (FWD Sub 3 £5.6m - 12 pts)
+        (496, True, False, False, False, False),  # Kinsky (GKP Slot 1 - MATCHES C1)
+        (115, True, False, False, False, False),  # De Cuyper (DEF Slot 1 - replaces O'Shea)
+        (593, True, False, False, False, False),  # Amar Dedić (DEF Slot 2 - replaces Konsa)
+        (4, True, False, False, True, False),     # Gabriel (DEF Core Slot 3 - MATCHES C1)
+        (40, True, False, False, False, False),   # Rogers (MID Slot 1 - replaces Groß)
+        (367, True, False, False, True, False),   # Gakpo (MID Core Slot 2 - MATCHES C1)
+        (368, True, False, False, True, False),   # Szoboszlai (MID Core Slot 3 - MATCHES C1)
+        (154, True, True, False, False, False),   # Palmer (MID C Slot 4 - MATCHES C1)
+        (165, True, False, True, True, False),    # João Pedro (FWD VC Core Slot 1 - MATCHES C1)
+        (464, True, False, False, False, False),  # Wissa (FWD Slot 2 - MATCHES C1)
+        (411, True, False, False, True, False),   # Haaland (FWD Core Slot 3 - MATCHES C1)
+        # Bench (Symmetrically aligned with C1: GKP, Sub 1, Sub 2, Sub 3)
+        (497, False, False, False, False, False), # Dubravka (GKP Sub - replaces Verbruggen)
+        (249, False, False, False, False, True),  # Louie Barry (Sub 1 - replaces Gvardiol)
+        (304, False, False, False, False, False), # O'Shea (Sub 2 - replaces Foden)
+        (277, False, False, False, False, False), # Egan (Sub 3 - MATCHES C1)
     ]
     c2_squad = [build_player_by_id(*p) for p in c2_ids if build_player_by_id(*p)]
     c2_starters = [p for p in c2_squad if p["is_starter"]]
@@ -1621,26 +1670,26 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="compact-pitch">
                         <!-- FWD (3) -->
                         <div class="pitch-row">
-                            {"".join([render_starter_card(p) for p in c2_starters if p["pos"] == "FWD"])}
+                            {"".join([render_starter_card(p) for p in align_pitch_players(c1_starters, c2_starters, "FWD")])}
                         </div>
                         <!-- MID (4) -->
                         <div class="pitch-row">
-                            {"".join([render_starter_card(p) for p in c2_starters if p["pos"] == "MID"])}
+                            {"".join([render_starter_card(p) for p in align_pitch_players(c1_starters, c2_starters, "MID")])}
                         </div>
                         <!-- DEF (3) -->
                         <div class="pitch-row">
-                            {"".join([render_starter_card(p) for p in c2_starters if p["pos"] == "DEF"])}
+                            {"".join([render_starter_card(p) for p in align_pitch_players(c1_starters, c2_starters, "DEF")])}
                         </div>
                         <!-- GKP (1) -->
                         <div class="pitch-row">
-                            {"".join([render_starter_card(p) for p in c2_starters if p["pos"] == "GKP"])}
+                            {"".join([render_starter_card(p) for p in align_pitch_players(c1_starters, c2_starters, "GKP")])}
                         </div>
                     </div>
 
                     <div class="compact-bench-strip">
                         <div class="bench-lbl">Substitutes Bench (100% 90-Min Regulars)</div>
                         <div class="bench-row">
-                            {render_bench_list(c2_bench)}
+                            {render_bench_list(align_bench_players(c1_bench, c2_bench))}
                         </div>
                     </div>
                 </div>
