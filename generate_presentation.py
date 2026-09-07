@@ -402,6 +402,76 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             items.append(f'<div class="health-alert-pill"><strong>{alt["web_name"]}</strong>: โอกาสลงสนาม {alt.get("chance", "???")}% &bull; {alt.get("news", "No news")}</div>')
         health_alerts_html = '<div class="health-alerts-box">' + "".join(items) + '</div>'
 
+    # Dynamic 2026/27 FPL Chip Inventory Computation from Official API Rules
+    all_chips_meta = bootstrap.get("chips", [])
+    used_chips_history = history.get("chips", []) if history and isinstance(history, dict) else []
+
+    chip_names_display = {
+        "wildcard": "Wildcard",
+        "freehit": "Free Hit",
+        "bboost": "Bench Boost",
+        "3xc": "Triple Captain"
+    }
+
+    half1_cards_html = []
+    half2_cards_html = []
+    remaining_chips_count = 0
+    total_chips_count = len(all_chips_meta)
+
+    for c in all_chips_meta:
+        c_name = c.get("name")
+        s_ev = c.get("start_event", 1)
+        e_ev = c.get("stop_event", 38)
+        c_num = c.get("number", 1)
+        used_entry = next((u for u in used_chips_history if u.get("name") == c_name and s_ev <= u.get("event", 0) <= e_ev), None)
+        is_used = used_entry is not None
+        used_gw = used_entry.get("event") if used_entry else None
+        
+        display_title = f"{chip_names_display.get(c_name, c_name)} #{c_num}"
+        if e_ev <= 19:
+            # Half 1 (GW1-19)
+            if is_used:
+                status_badge = f"USED (GW{used_gw})"
+                status_color = "var(--text-muted)"
+                border_color = "var(--border-subtle)"
+                note = f"ใช้งานแล้วใน GW{used_gw}"
+            else:
+                remaining_chips_count += 1
+                status_badge = "AVAILABLE"
+                status_color = "var(--accent-emerald)"
+                border_color = "rgba(16, 185, 129, 0.4)"
+                note = "พร้อมใช้ทันที (หมดอายุสิ้น GW19)"
+            
+            card = f'''<div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid {border_color}; border-radius:6px; padding:0.5rem 0.75rem;">
+                <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">{display_title} &bull; GW{s_ev}-{e_ev}</div>
+                <div style="font-size:0.85rem; font-weight:700; color:{status_color}; margin-top:2px;">{status_badge}</div>
+                <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">{note}</div>
+            </div>'''
+            half1_cards_html.append(card)
+        else:
+            # Half 2 (GW20-38)
+            if is_used:
+                status_badge = f"USED (GW{used_gw})"
+                status_color = "var(--text-muted)"
+                border_color = "var(--border-subtle)"
+                note = f"ใช้งานแล้วใน GW{used_gw}"
+            else:
+                remaining_chips_count += 1
+                status_badge = "AVAILABLE (GW20+)"
+                status_color = "var(--accent-sky)"
+                border_color = "rgba(56, 189, 248, 0.4)"
+                note = "ปลดล็อกครึ่งฤดูกาลหลัง"
+            
+            card = f'''<div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid {border_color}; border-radius:6px; padding:0.5rem 0.75rem;">
+                <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">{display_title} &bull; GW{s_ev}-{e_ev}</div>
+                <div style="font-size:0.85rem; font-weight:700; color:{status_color}; margin-top:2px;">{status_badge}</div>
+                <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">{note}</div>
+            </div>'''
+            half2_cards_html.append(card)
+
+    chips_half1_str = "".join(half1_cards_html)
+    chips_half2_str = "".join(half2_cards_html)
+
     # Combine unique players for full season ticker
     all_ticker_pids = list(dict.fromkeys([p[0] for p in c1_ids] + [p[0] for p in c2_ids]))
     all_ticker_squad = [build_player_by_id(pid, True) for pid in all_ticker_pids if build_player_by_id(pid, True)]
@@ -1600,33 +1670,33 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                 <div class="health-top-bar">
                     <div class="health-meta">
                         <span class="health-dot-active" style="background:var(--accent-sky); box-shadow:0 0 8px var(--accent-sky);"></span>
-                        <span class="health-heading">FPL Chip Inventory &amp; Medium-Term Strategic Horizon (GW4 - GW8)</span>
+                        <span class="health-heading">Official FPL 2026/27 Chip Inventory &amp; Dual-Half Architecture</span>
                     </div>
-                    <span class="health-status-badge" style="background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.35);">HORIZON: FREE TRANSFERS ONLY (GW5-19)</span>
+                    <span class="health-status-badge" style="background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.35);">CHIP REMAINING: {remaining_chips_count} / {total_chips_count} (6 AVAILABLE)</span>
                 </div>
                 <div class="health-detail-text" style="margin-bottom:0.75rem;">
-                    เนื่องจากคุณได้ใช้งาน <strong>Wildcard ครั้งที่ 1</strong> ไปแล้วในสัปดาห์นี้ ทำให้ตั้งแต่ GW5 ถึง GW19 จะต้องบริหารขุมกำลังด้วย <strong>Free Transfer (1 สิทธิ์ต่อสัปดาห์)</strong> แผน Choice 2 จึงถูกออกแบบให้มี <strong>Future-Proofing</strong> สูงสุด คงแกนหลัก Choice 1 ไว้ 100% พร้อมเก็บเงินสำรองใน Bank ({c2_bank_str}) เพื่อรับมือโปรแกรมเตะสลับ (Fixture Swings) ได้ทันทีโดยไม่ต้องเสียแต้มลบ (-4)
+                    ในฤดูกาล 2026/27 กฎ FPL แบ่งชิปการเล่นออกเป็น <strong>2 ครึ่งฤดูกาล (รวมทั้งหมด 8 ชิป)</strong> โดยแต่ละครึ่งฤดูกาลจะมีชิป 4 ใบ (Wildcard, Free Hit, Bench Boost, Triple Captain) แยกจากกันอย่างอิสระ:
                 </div>
-                <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
-                    <div style="flex:1; min-width:140px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
-                        <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Triple Captain</div>
-                        <div style="font-size:0.85rem; font-weight:700; color:var(--accent-emerald);">AVAILABLE</div>
-                        <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">เป้าหมาย: Double Gameweek (GW25-37)</div>
+                
+                <!-- Half 1 Chips (GW1 - GW19) -->
+                <div style="margin-bottom:0.75rem;">
+                    <div style="font-size:0.7rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
+                        <span>ครึ่งแรก (Half 1: GW1 - GW19)</span>
+                        <span style="font-size:0.6rem; padding:1px 6px; border-radius:3px; background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.3);">เตือน: ชิปที่เหลือจะหมดอายุสิ้น GW19</span>
                     </div>
-                    <div style="flex:1; min-width:140px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
-                        <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Free Hit</div>
-                        <div style="font-size:0.85rem; font-weight:700; color:var(--accent-emerald);">AVAILABLE</div>
-                        <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">เป้าหมาย: Blank Gameweek (FA Cup Clashes)</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                        {chips_half1_str}
                     </div>
-                    <div style="flex:1; min-width:140px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
-                        <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Wildcard #2</div>
-                        <div style="font-size:0.85rem; font-weight:700; color:var(--accent-sky);">AVAILABLE (GW20+)</div>
-                        <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">เป้าหมาย: ครึ่งฤดูกาลหลัง</div>
+                </div>
+
+                <!-- Half 2 Chips (GW20 - GW38) -->
+                <div>
+                    <div style="font-size:0.7rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
+                        <span>ครึ่งหลัง (Half 2: GW20 - GW38)</span>
+                        <span style="font-size:0.6rem; padding:1px 6px; border-radius:3px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">ปลดล็อกชุดที่ 2 เต็มอัตราศึก 4 ชิป</span>
                     </div>
-                    <div style="flex:1; min-width:140px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
-                        <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Bench Boost</div>
-                        <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">USED (GW1 - 78 PTS)</div>
-                        <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">ใช้งานสำเร็จในนัดเปิดสนาม</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                        {chips_half2_str}
                     </div>
                 </div>
             </div>
@@ -1636,16 +1706,16 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                 <div class="health-top-bar">
                     <div class="health-meta">
                         <span class="health-dot-active" style="background:var(--accent-emerald); box-shadow:0 0 8px var(--accent-emerald);"></span>
-                        <span class="health-heading">Multi-Week Transfer Roadmap &amp; Fixture Transition (GW4 - GW7)</span>
+                        <span class="health-heading">Multi-Week Strategic Transfer &amp; Chip Roadmap (GW4 - GW7)</span>
                     </div>
-                    <span class="health-status-badge health-badge-ok">STRATEGY: ZERO-HIT PROGRESSION</span>
+                    <span class="health-status-badge health-badge-ok">ACTIVE WEAPONS: TC1 &amp; FH1 READY</span>
                 </div>
                 <div style="overflow-x:auto; margin-top:0.6rem;">
                     <table style="width:100%; border-collapse:collapse; font-size:0.75rem; text-align:left;">
                         <thead>
                             <tr style="border-bottom:1px solid var(--border-main); color:var(--text-muted);">
                                 <th style="padding:6px 10px;">Gameweek</th>
-                                <th style="padding:6px 10px;">สถานะโควตา Free Transfer</th>
+                                <th style="padding:6px 10px;">สถานะโควตา Free Transfer / ชิปเลกแรก</th>
                                 <th style="padding:6px 10px;">โปรแกรมสำคัญ &amp; ปัจจัยวิกฤต</th>
                                 <th style="padding:6px 10px;">ข้อแนะนำเชิงกลยุทธ์ (Choice 2 Roadmap)</th>
                             </tr>
@@ -1653,27 +1723,27 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                         <tbody>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW4 (สัปดาห์นี้)</td>
-                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">Wildcard Active</span> (ย้ายฟรีไม่จำกัด)</td>
+                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">Wildcard #1 Active</span></td>
                                 <td style="padding:8px 10px;">CHE vs HUL (H), LIV vs FUL (H), SUN vs ARS (A)</td>
-                                <td style="padding:8px 10px;">ล็อก 7 เสาหลัก Choice 1 + ดึงเงินจากม้านั่ง £12.6m มาเสริมตัวจริง + เก็บเงินคงเหลือไว้ใน Bank <strong>{c2_bank_str}</strong></td>
+                                <td style="padding:8px 10px;">ล็อก 7 เสาหลัก Choice 1 + ปลดล็อกงบม้านั่ง £12.6m + เก็บเงินสดสำรอง <strong>{c2_bank_str}</strong> ใน Bank</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW5</td>
                                 <td style="padding:8px 10px;"><strong>1 Free Transfer</strong> (สะสมได้)</td>
                                 <td style="padding:8px 10px;"><strong>Arsenal vs Man City (MCI H)</strong>, LIV vs CRY (H)</td>
-                                <td style="padding:8px 10px;">อาร์เซนอลชนแมนฯ ซิตี้: โรเตชันใช้ De Cuyper / Dedić / Egan หรือใช้ 1 FT ปรับกองหลังได้สบายเพราะมีเงินใน Bank {c2_bank_str} รองรับ</td>
+                                <td style="padding:8px 10px;">อาร์เซนอลชนแมนฯ ซิตี้: โรเตชันใช้ De Cuyper / Dedić / Egan หรือใช้ 1 FT ปรับกองหลังด้วยเงินสดสำรอง {c2_bank_str} โดยไม่ต้องเสียแต้มลบ</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW6</td>
-                                <td style="padding:8px 10px;"><strong>1-2 Free Transfers</strong></td>
+                                <td style="padding:8px 10px;"><strong>1-2 FTs &bull; จุดพิจารณา Triple Captain #1</strong></td>
                                 <td style="padding:8px 10px;">Man City vs Burnley (H) - <em>โปรแกรมเรือใบเข้าโซนเขียว</em></td>
-                                <td style="padding:8px 10px;">พิจารณาเติมผู้เล่นแนวรุกหรือแนวรับแมนฯ ซิตี้รอบสอง เมื่อโปรแกรมผ่านช่วงบิ๊กแมตช์เข้าสู่ช่วงทำแต้มยาว</td>
+                                <td style="padding:8px 10px;"><strong>โอกาสทองใช้ Triple Captain #1 :</strong> Haaland เฝ้ารังพบเบิร์นลีย์ เป็นจังหวะระเบิดแต้ม 3 เท่าชั้นเลิศ ก่อนที่ TC1 จะหมดอายุใน GW19</td>
                             </tr>
                             <tr>
                                 <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW7</td>
-                                <td style="padding:8px 10px;"><strong>1-2 Free Transfers</strong></td>
+                                <td style="padding:8px 10px;"><strong>1-2 Free Transfers</strong> (หรือถือ FH1 ไว้สำรอง)</td>
                                 <td style="padding:8px 10px;">LIV vs BOU (H), CHE vs NFO (A)</td>
-                                <td style="padding:8px 10px;">กอบโกยแต้มจาก Double Liverpool (Gakpo + Szoboszlai) และ Palmer ในสัปดาห์เหย้าต่อเนื่อง</td>
+                                <td style="padding:8px 10px;">กอบโกยแต้มจาก Double Liverpool (Gakpo + Szoboszlai) และ Palmer ในสัปดาห์เหย้าต่อเนื่อง พร้อมถือ Free Hit #1 ไว้แก้ทางฉุกเฉิน</td>
                             </tr>
                         </tbody>
                     </table>
