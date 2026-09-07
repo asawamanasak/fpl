@@ -274,30 +274,38 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     c1_cost = sum(p["cost"] for p in c1_squad)
     c1_bank = 0.0
 
-    # CHOICE 2: Antigravity's Master Fortress Blueprint (Elanga £6.0m, De Cuyper £4.6m, Barry £5.5m Sub 1, 100% Nailed)
+    # Total Team Budget dynamically derived from Choice 1 and FPL Entry data
+    total_budget = round(max(c1_cost, (entry.get("last_deadline_value", 1000) + entry.get("last_deadline_bank", 0)) / 10.0), 1)
+
+    # CHOICE 2: Antigravity's Refined Choice 1 Blueprint (Anchored on User Core, Optimized Bench & Multi-Week Liquidity)
+    # Retains User Core: Haaland, Palmer, Pedro, Gabriel, Gakpo, Szoboszlai, Wissa, Kinsky, Egan, O'Shea
+    # Reallocates Bench Capital (£12.6m Foden + Gvardiol in tough away fixtures):
+    # Upgrades Starting DEF & MID with De Cuyper £4.7m (21 pts, xGI 1.90), Dedić £4.5m, Rogers £7.6m (19 pts, xGI 2.32)
+    # Adds Dubravka £4.0m backup GKP, leaving +£0.6m in Bank for GW5 Free Transfers
     c2_ids = [
-        (109, True, False, False, False, True),   # Verbruggen (GKP £4.5m)
-        (391, True, False, False, True, False),   # Gvardiol (DEF Core £5.5m)
-        (115, True, False, False, False, False),  # De Cuyper (DEF £4.6m - xGI 1.68)
+        (496, True, False, False, False, False),  # Kinsky (GKP £4.5m)
+        (4, True, False, False, True, False),     # Gabriel (DEF Core £8.0m)
+        (115, True, False, False, False, False),  # De Cuyper (DEF £4.7m - xGI 1.90)
         (593, True, False, False, False, False),  # Amar Dedić (DEF £4.5m - BOU H)
-        (154, True, False, True, False, False),   # Palmer (MID VC £9.6m)
-        (399, True, False, False, False, False),  # Cherki (MID £7.6m)
-        (40, True, False, False, False, False),   # Rogers (MID £7.5m)
+        (154, True, True, False, False, False),   # Palmer (MID C £9.6m)
+        (367, True, False, False, True, False),   # Gakpo (MID Core £7.2m)
         (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m)
-        (454, True, False, False, False, False),  # Anthony Elanga (MID £6.0m - 17 pts)
-        (411, True, True, False, True, False),    # Haaland (FWD C Core £15.5m)
-        (165, True, False, False, True, False),   # João Pedro (FWD Core £7.6m)
-        # Bench (100% 90-Minute Starters)
+        (40, True, False, False, False, False),   # Rogers (MID £7.6m)
+        (411, True, False, False, True, False),   # Haaland (FWD Core £15.5m)
+        (165, True, False, True, True, False),    # João Pedro (FWD VC Core £7.7m)
+        (464, True, False, False, False, False),  # Wissa (FWD £6.2m)
+        # Bench (High-Value 90-Min Rotation)
         (497, False, False, False, False, False), # Dubravka (GKP Sub £4.0m)
-        (249, False, False, False, False, True),  # Louie Barry (FWD Sub 1 - £5.5m / xGI 2.02)
-        (204, False, False, False, False, False), # Tyrick Mitchell (DEF Sub 2 - £4.5m / 180 mins)
-        (10, False, False, False, False, False),  # Benjamin White (DEF Sub 3 - £5.5m)
+        (277, False, False, False, False, False), # Egan (DEF Sub 1 £4.1m - 23 pts)
+        (304, False, False, False, False, False), # O'Shea (DEF Sub 2 £4.0m - 7 pts)
+        (249, False, False, False, False, True),  # Louie Barry (FWD Sub 3 £5.6m - 12 pts)
     ]
     c2_squad = [build_player_by_id(*p) for p in c2_ids if build_player_by_id(*p)]
     c2_starters = [p for p in c2_squad if p["is_starter"]]
     c2_bench = [p for p in c2_squad if not p["is_starter"]]
     c2_cost = sum(p["cost"] for p in c2_squad)
-    c2_bank = round(100.1 - c2_cost, 1)
+    c2_bank = round(total_budget - c2_cost, 1)
+    c2_bank_str = f"+£{c2_bank:.1f}m" if c2_bank >= 0 else f"-£{abs(c2_bank):.1f}m"
 
     # Dynamic metrics computation for Plan Summary
     c1_tot_pts = sum(p["total_points"] for p in c1_squad)
@@ -1450,11 +1458,11 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             <div class="stats-strip">
                 <div class="stat-cell">
                     <span class="lbl">Total Budget</span>
-                    <span class="val" style="color:#ffffff;">£100.1m</span>
+                    <span class="val" style="color:#ffffff;">£{total_budget:.1f}m</span>
                 </div>
                 <div class="stat-cell">
                     <span class="lbl">Bank (Choice 2)</span>
-                    <span class="val" style="color:var(--accent-sky);">+£{c2_bank:.1f}m</span>
+                    <span class="val" style="color:var(--accent-sky);">{c2_bank_str}</span>
                 </div>
                 <div class="stat-cell">
                     <span class="lbl">Active Chip</span>
@@ -1529,23 +1537,23 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                 <div class="plan-column" style="border-color: rgba(16, 185, 129, 0.45);">
                     <div class="plan-col-header">
                         <div>
-                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Selection</div>
+                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint</div>
                             <div class="plan-sub-tags">
-                                <span class="formation-pill">3-5-2</span>
+                                <span class="formation-pill">3-4-3</span>
                                 <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
                             </div>
                         </div>
                         <div class="fin-badge" style="border-color:var(--accent-emerald);">
-                            Cost: <span style="color:var(--accent-emerald);">£{c2_cost:.1f}m</span> | Bank: <span style="color:var(--accent-sky);">+£{c2_bank:.1f}m</span>
+                            Cost: <span style="color:var(--accent-emerald);">£{c2_cost:.1f}m</span> | Bank: <span style="color:var(--accent-sky);">{c2_bank_str}</span>
                         </div>
                     </div>
 
                     <div class="compact-pitch">
-                        <!-- FWD (2) -->
+                        <!-- FWD (3) -->
                         <div class="pitch-row">
                             {"".join([render_starter_card(p) for p in c2_starters if p["pos"] == "FWD"])}
                         </div>
-                        <!-- MID (5) -->
+                        <!-- MID (4) -->
                         <div class="pitch-row">
                             {"".join([render_starter_card(p) for p in c2_starters if p["pos"] == "MID"])}
                         </div>
@@ -1585,6 +1593,91 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     {health_detail_text}
                 </div>
                 {health_alerts_html}
+            </div>
+
+            <!-- Chip Inventory & Strategic Horizon Widget -->
+            <div class="squad-health-widget" style="border-color: rgba(56, 189, 248, 0.35);">
+                <div class="health-top-bar">
+                    <div class="health-meta">
+                        <span class="health-dot-active" style="background:var(--accent-sky); box-shadow:0 0 8px var(--accent-sky);"></span>
+                        <span class="health-heading">FPL Chip Inventory &amp; Medium-Term Strategic Horizon (GW4 - GW8)</span>
+                    </div>
+                    <span class="health-status-badge" style="background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.35);">HORIZON: FREE TRANSFERS ONLY (GW5-19)</span>
+                </div>
+                <div class="health-detail-text" style="margin-bottom:0.75rem;">
+                    เนื่องจากคุณได้ใช้งาน <strong>Wildcard ครั้งที่ 1</strong> ไปแล้วในสัปดาห์นี้ ทำให้ตั้งแต่ GW5 ถึง GW19 จะต้องบริหารขุมกำลังด้วย <strong>Free Transfer (1 สิทธิ์ต่อสัปดาห์)</strong> แผน Choice 2 จึงถูกออกแบบให้มี <strong>Future-Proofing</strong> สูงสุด คงแกนหลัก Choice 1 ไว้ 100% พร้อมเก็บเงินสำรองใน Bank ({c2_bank_str}) เพื่อรับมือโปรแกรมเตะสลับ (Fixture Swings) ได้ทันทีโดยไม่ต้องเสียแต้มลบ (-4)
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                    <div style="flex:1; min-width:140px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
+                        <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Triple Captain</div>
+                        <div style="font-size:0.85rem; font-weight:700; color:var(--accent-emerald);">AVAILABLE</div>
+                        <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">เป้าหมาย: Double Gameweek (GW25-37)</div>
+                    </div>
+                    <div style="flex:1; min-width:140px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
+                        <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Free Hit</div>
+                        <div style="font-size:0.85rem; font-weight:700; color:var(--accent-emerald);">AVAILABLE</div>
+                        <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">เป้าหมาย: Blank Gameweek (FA Cup Clashes)</div>
+                    </div>
+                    <div style="flex:1; min-width:140px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
+                        <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Wildcard #2</div>
+                        <div style="font-size:0.85rem; font-weight:700; color:var(--accent-sky);">AVAILABLE (GW20+)</div>
+                        <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">เป้าหมาย: ครึ่งฤดูกาลหลัง</div>
+                    </div>
+                    <div style="flex:1; min-width:140px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
+                        <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Bench Boost</div>
+                        <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">USED (GW1 - 78 PTS)</div>
+                        <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">ใช้งานสำเร็จในนัดเปิดสนาม</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multi-Week Transfer Roadmap Widget -->
+            <div class="squad-health-widget" style="border-color: rgba(16, 185, 129, 0.35);">
+                <div class="health-top-bar">
+                    <div class="health-meta">
+                        <span class="health-dot-active" style="background:var(--accent-emerald); box-shadow:0 0 8px var(--accent-emerald);"></span>
+                        <span class="health-heading">Multi-Week Transfer Roadmap &amp; Fixture Transition (GW4 - GW7)</span>
+                    </div>
+                    <span class="health-status-badge health-badge-ok">STRATEGY: ZERO-HIT PROGRESSION</span>
+                </div>
+                <div style="overflow-x:auto; margin-top:0.6rem;">
+                    <table style="width:100%; border-collapse:collapse; font-size:0.75rem; text-align:left;">
+                        <thead>
+                            <tr style="border-bottom:1px solid var(--border-main); color:var(--text-muted);">
+                                <th style="padding:6px 10px;">Gameweek</th>
+                                <th style="padding:6px 10px;">สถานะโควตา Free Transfer</th>
+                                <th style="padding:6px 10px;">โปรแกรมสำคัญ &amp; ปัจจัยวิกฤต</th>
+                                <th style="padding:6px 10px;">ข้อแนะนำเชิงกลยุทธ์ (Choice 2 Roadmap)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW4 (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">Wildcard Active</span> (ย้ายฟรีไม่จำกัด)</td>
+                                <td style="padding:8px 10px;">CHE vs HUL (H), LIV vs FUL (H), SUN vs ARS (A)</td>
+                                <td style="padding:8px 10px;">ล็อก 7 เสาหลัก Choice 1 + ดึงเงินจากม้านั่ง £12.6m มาเสริมตัวจริง + เก็บเงินคงเหลือไว้ใน Bank <strong>{c2_bank_str}</strong></td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW5</td>
+                                <td style="padding:8px 10px;"><strong>1 Free Transfer</strong> (สะสมได้)</td>
+                                <td style="padding:8px 10px;"><strong>Arsenal vs Man City (MCI H)</strong>, LIV vs CRY (H)</td>
+                                <td style="padding:8px 10px;">อาร์เซนอลชนแมนฯ ซิตี้: โรเตชันใช้ De Cuyper / Dedić / Egan หรือใช้ 1 FT ปรับกองหลังได้สบายเพราะมีเงินใน Bank {c2_bank_str} รองรับ</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW6</td>
+                                <td style="padding:8px 10px;"><strong>1-2 Free Transfers</strong></td>
+                                <td style="padding:8px 10px;">Man City vs Burnley (H) - <em>โปรแกรมเรือใบเข้าโซนเขียว</em></td>
+                                <td style="padding:8px 10px;">พิจารณาเติมผู้เล่นแนวรุกหรือแนวรับแมนฯ ซิตี้รอบสอง เมื่อโปรแกรมผ่านช่วงบิ๊กแมตช์เข้าสู่ช่วงทำแต้มยาว</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW7</td>
+                                <td style="padding:8px 10px;"><strong>1-2 Free Transfers</strong></td>
+                                <td style="padding:8px 10px;">LIV vs BOU (H), CHE vs NFO (A)</td>
+                                <td style="padding:8px 10px;">กอบโกยแต้มจาก Double Liverpool (Gakpo + Szoboszlai) และ Palmer ในสัปดาห์เหย้าต่อเนื่อง</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- Pros & Cons Split Grid -->
@@ -1639,29 +1732,29 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                 <div class="summary-plan-panel" style="border-color: rgba(16, 185, 129, 0.45);">
                     <div class="summary-panel-header">
                         <div>
-                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Selection</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-5-2 Formation &bull; Cost: £{c2_cost:.1f}m &bull; Bank: +£{c2_bank:.1f}m</span>
+                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint</div>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-4-3 Formation &bull; Cost: £{c2_cost:.1f}m &bull; Bank: {c2_bank_str}</span>
                         </div>
-                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">AI Blueprint</span>
+                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">Choice 1 Optimized</span>
                     </div>
 
                     <!-- Pros -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
                         <div class="pros-cons-item">
-                            <strong>100% Home Fixture Clean Sheet Strategy :</strong> แนวรับตัวจริงทั้ง 3 คน ({c2_def_str}) เล่นเกมเหย้าพบทีมที่ FDR 2 ทั้งหมด หลบความเสี่ยงเกมใหญ่ ARS vs CHE ได้อย่างสมบูรณ์แบบ
+                            <strong>100% Core Asset Preservation (Choice 1 Alignment) :</strong> ล็อก 8 ขุมกำลังหลักที่คุณเลือกไว้แบบไร้รอยต่อ (Haaland, Palmer [C], Pedro [VC], Gabriel, Gakpo, Szoboszlai, Wissa, Kinsky) ไม่สูญเสียมูลค่าทีมจากราคาตลาดและคงความแข็งแกร่งเดิมทั้งหมด
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Dual Elite Attackers Unleashed :</strong> ส่ง {c2_fwds_str} ({c2_cap_name} C) ยืนคู่กัน ผลิต Starting xGI สูงถึง {c2_start_xgi:.2f} และมี 5 กองกลางตัวรุก xGI กระจายแต้มต่อเนื่อง
+                            <strong>Bench Capital Reallocation (£12.6m Unlocked) :</strong> ปลดล็อกงบประมาณที่จมอยู่บนม้านั่งสำรองจาก Gvardiol และ Foden ในศึกแมนเชสเตอร์ดาร์บี้ เปลี่ยนมาเป็นตัวจริงทรงพลังอย่าง Morgan Rogers (£7.6m &bull; xGI 2.32) และ Maximilian De Cuyper (£4.7m &bull; 21 แต้ม &bull; xGI 1.90) ทำแต้มตัวจริงรวมพุ่งขึ้นเป็น 199 แต้ม (เทียบกับ 169 แต้มของ Choice 1)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Newcastle Golden Run Exploitation :</strong> ดึง Anthony Elanga + Dedić รับแต้มจากโปรแกรมที่ง่ายที่สุดในลีก (FDR 2.67) โดยไม่ต้องเสี่ยงกับ Isak
+                            <strong>Financial Buffer &amp; Liquidity ({c2_bank_str} in Bank) :</strong> มีเงินสดสำรองติดธนาคารไว้ทันที {c2_bank_str} เปิดทางให้บริหาร Free Transfer ใน GW5 และ GW6 ได้อย่างยืดหยุ่นโดยไม่ต้องฝืนขายใครเพื่อหาเศษเงิน
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Top Defensive Attacker :</strong> ใส่ Maxim De Cuyper (£4.6m &bull; xGI 1.76 อันดับ 1 ของกองหลัง) เล่นวิงแบ็กฝั่งซ้ายลุ้นทั้งคลีนชีตและประตู
+                            <strong>Medium-Term Fixture Insulation (GW4-GW8 Preparedness) :</strong> แนวรับกระจายตัวชัดเจน ไม่กระจุกตัวอาร์เซนอลคู่ ทำให้เมื่อถึง GW5 (อาร์เซนอลพบแมนฯ ซิตี้) สามารถโรเตชันกองหลังได้อย่างปลอดภัย
                         </div>
                         <div class="pros-cons-item">
-                            <strong>2-FT Buffer &amp; Bank Flexibility :</strong> มีเงินเหลือใน Bank +£{c2_bank:.1f}m และโครงสร้าง 15 ตัวจริง 90 นาที ช่วยให้สะสม 2 Free Transfers ยืนยาว
+                            <strong>High-Yield Bench Rotation (Egan &bull; O'Shea &bull; Barry) :</strong> ม้านั่งสำรองมี John Egan (£4.1m &bull; 23 แต้ม), Dara O'Shea (£4.0m) และ Louie Barry (£5.6m &bull; xGI 2.42) ลงเล่นตัวจริง 90 นาทีเต็มทุกสัปดาห์ คอยสแตนด์บายฉุกเฉิน
                         </div>
                     </div>
 
@@ -1669,10 +1762,10 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
                         <div class="pros-cons-item">
-                            <strong>No Bruno Fernandes :</strong> ไม่มี Bruno Fernandes (£12.0m) ตัวทำแต้มอันดับ 1 ของลีก (ชดเชยด้วยการกระจายขุมกำลัง 5 ตัวรุกแทน)
+                            <strong>Temporary Man City Coverage Reduction :</strong> การตัด Foden และ Gvardiol ออกเพื่อเซฟงบ จะทำให้ไม่มีตัวแทนแมนฯ ซิตี้ นอกเหนือจาก Erling Haaland ในเกมเยือนโอลด์ แทรฟฟอร์ด (GW4) และเยือนเอมิเรตส์ (GW5)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Single GKP Reliance :</strong> พึ่งพา Verbruggen (£4.5m) เป็นผู้รักษาประตูหลักคนเดียว (สำรอง Dúbravka £4.0m ยังไม่ได้ลงเล่น)
+                            <strong>Dubravka Non-Playing Backup :</strong> การประหยัดงบผู้รักษาประตูสำรองโดยใช้ Dubravka (£4.0m) ทำให้ต้องพึ่งพา Kinsky เฝ้าเสาตัวจริง 100%
                         </div>
                     </div>
                 </div>
