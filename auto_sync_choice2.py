@@ -5,13 +5,13 @@ auto_sync_choice2.py
 Hybrid Autonomous Engine for Choice 2 (The Master Fortress Blueprint).
 Runs on an offset 15-minute schedule via GitHub Actions.
 
-Hardened Strategic & Resilience Architecture (Rollback 2):
+Hardened Strategic & Resilience Architecture (Rollback 6):
 1. Resilient HTTP fetcher with Exponential Backoff & Retry (handles network latency and rate limits).
 2. Cryptographic Fingerprint Verification (SHA256) across player prices, injury flags, and fixtures.
-3. Friday Press Conference & Injury Watcher: Actively monitors squad health and flags tactical alerts.
-4. Post-Gameweek Archive Automation: Tracks actual performance, rank trajectory, and Top 100k pacing.
+3. Friday Press Conference & Injury Watcher with Content-Aware Caching (avoids spurious timestamp writes).
+4. Post-Gameweek Archive Automation with Milestone Delta Detection.
 5. Final Lockdown Engine (< 30 minutes to Gameweek deadline).
-6. Smart Commit Decision Gate: Skips redundant commits to preserve GitHub Actions quotas and avoid throttling.
+6. Smart Commit Decision Gate: Skips redundant commits to preserve GitHub Actions quotas and prevent git conflicts.
 """
 
 import json
@@ -150,13 +150,30 @@ def monitor_press_conferences_and_injuries(bs):
             })
             print(f"[PRESS CONF ALERT] {el.get('web_name')} flagged: {chance}% chance - {news}")
 
-    os.makedirs('data', exist_ok=True)
-    with open('data/tactical_alerts.json', 'w', encoding='utf-8') as f:
-        json.dump({
-            "last_checked": datetime.now(timezone.utc).isoformat(),
-            "total_alerts": len(alerts),
-            "alerts": alerts
-        }, f, indent=2, ensure_ascii=False)
+    tactical_file = 'data/tactical_alerts.json'
+    existing_alerts = []
+    if os.path.exists(tactical_file):
+        try:
+            with open(tactical_file, 'r', encoding='utf-8') as f:
+                prev_data = json.load(f)
+                existing_alerts = prev_data.get('alerts', [])
+        except Exception:
+            existing_alerts = []
+
+    def alert_key(a):
+        return (a.get('id'), a.get('status'), a.get('chance'), a.get('news'))
+
+    existing_keys = sorted([alert_key(a) for a in existing_alerts])
+    new_keys = sorted([alert_key(a) for a in alerts])
+
+    if existing_keys != new_keys or not os.path.exists(tactical_file):
+        os.makedirs('data', exist_ok=True)
+        with open(tactical_file, 'w', encoding='utf-8') as f:
+            json.dump({
+                "last_checked": datetime.now(timezone.utc).isoformat(),
+                "total_alerts": len(alerts),
+                "alerts": alerts
+            }, f, indent=2, ensure_ascii=False)
     
     return alerts
 
@@ -164,6 +181,7 @@ def evaluate_and_archive_gameweek_performance(bs):
     """
     Post-Gameweek Archive Automation:
     Reads official history and records performance trajectory towards Top 100k.
+    Only writes to disk when completed gameweeks count or performance trajectory changes.
     """
     history_file = 'data/history.json'
     if not os.path.exists(history_file):
@@ -174,22 +192,38 @@ def evaluate_and_archive_gameweek_performance(bs):
             hist_data = json.load(f)
         
         current_gws = hist_data.get('current', [])
-        archive = {
-            "updated_at": datetime.now(timezone.utc).isoformat(),
-            "completed_gameweeks": len(current_gws),
-            "trajectory": [
-                {
-                    "gw": gw.get('event'),
-                    "points": gw.get('points'),
-                    "total_points": gw.get('total_points'),
-                    "overall_rank": gw.get('overall_rank'),
-                    "in_top_100k": (gw.get('overall_rank', 9999999) <= 100000)
-                }
-                for gw in current_gws
-            ]
-        }
-        with open('data/gw_performance_archive.json', 'w', encoding='utf-8') as f:
-            json.dump(archive, f, indent=2, ensure_ascii=False)
+        new_trajectory = [
+            {
+                "gw": gw.get('event'),
+                "points": gw.get('points'),
+                "total_points": gw.get('total_points'),
+                "overall_rank": gw.get('overall_rank'),
+                "in_top_100k": (gw.get('overall_rank', 9999999) <= 100000)
+            }
+            for gw in current_gws
+        ]
+
+        archive_file = 'data/gw_performance_archive.json'
+        existing_trajectory = []
+        existing_gws_count = -1
+        if os.path.exists(archive_file):
+            try:
+                with open(archive_file, 'r', encoding='utf-8') as f:
+                    prev_arch = json.load(f)
+                    existing_gws_count = prev_arch.get('completed_gameweeks', -1)
+                    existing_trajectory = prev_arch.get('trajectory', [])
+            except Exception:
+                pass
+
+        if len(current_gws) != existing_gws_count or new_trajectory != existing_trajectory or not os.path.exists(archive_file):
+            archive = {
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+                "completed_gameweeks": len(current_gws),
+                "trajectory": new_trajectory
+            }
+            os.makedirs('data', exist_ok=True)
+            with open(archive_file, 'w', encoding='utf-8') as f:
+                json.dump(archive, f, indent=2, ensure_ascii=False)
     except Exception as e:
         print(f"Notice generating GW performance archive: {e}")
 
