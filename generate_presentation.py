@@ -906,6 +906,67 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         .tab-content {{ display: none; }}
         .tab-content.active {{ display: flex; flex-direction: column; flex: 1; min-height: 0; }}
 
+        .gw-top-badge {{
+            background: rgba(56, 189, 248, 0.16);
+            color: var(--accent-sky);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            font-weight: 800;
+            font-size: 0.72rem;
+            padding: 0.16rem 0.48rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.5px;
+        }}
+
+        /* Gameweek Target Banner on Front Page */
+        .gw-target-banner {{
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85));
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            padding: 0.42rem 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            flex-shrink: 0;
+        }}
+        .gw-banner-left {{
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }}
+        .gw-badge-pill {{
+            background: var(--accent-sky);
+            color: #032b43;
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 0.15rem 0.48rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.5px;
+        }}
+        .gw-banner-title {{
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.2px;
+        }}
+        .gw-banner-right {{
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.68rem;
+            color: var(--text-secondary);
+        }}
+        .gw-sub-info strong {{
+            color: #ffffff;
+        }}
+        .gw-divider {{
+            color: var(--border-accent);
+        }}
+
         /* Responsive Side-by-Side Lineup Split Grid */
         .lineup-split-grid {{
             display: grid;
@@ -1692,9 +1753,10 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         <div class="header-wrap">
             <div class="brand-meta">
                 <div class="season-badge">FPL 2026/27</div>
+                <div class="gw-top-badge">GW{active_gw}</div>
                 <div class="title-box">
                     <h1>{entry.get("name", "GEMINI UNITED")} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: {entry.get('id', 306983)})</span> <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: {last_sync_str}<span class="sync-tag-active">ACTIVE</span></span></h1>
-                    <p>Manager: {entry.get("player_first_name", "")} {entry.get("player_last_name", "")} | Wildcard GW{active_gw} Options</p>
+                    <p>Manager: {entry.get("player_first_name", "")} {entry.get("player_last_name", "")} &bull; จัดทีมสำหรับสัปดาห์ที่ {active_gw} (Gameweek {active_gw})</p>
                     <div class="deadline-pill" title="Official Gameweek {active_gw} Deadline">
                         <span class="deadline-tag-prefix">DEADLINE</span> {deadline_str} &bull; <span id="countdownTimer" class="countdown-clock">--h --m --s</span> <span class="lockdown-badge">LOCKDOWN AT -30M</span>
                     </div>
@@ -1709,9 +1771,9 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <span class="lbl">Bank (Choice 2)</span>
                     <span class="val" style="color:var(--accent-sky);">{c2_bank_str}</span>
                 </div>
-                <div class="stat-cell">
-                    <span class="lbl">Active Chip</span>
-                    <span class="val">WILDCARD</span>
+                <div class="stat-cell" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08);">
+                    <span class="lbl" style="color:var(--accent-sky); font-weight:700;">Target Gameweek</span>
+                    <span class="val" style="color:var(--accent-sky); font-weight:800; font-size:0.95rem;">GW{active_gw}</span>
                 </div>
                 <div class="stat-cell stat-rank-cell">
                     <span class="lbl">Global Rank</span>
@@ -1724,7 +1786,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
     <!-- Navigation (4 Clean Tabs) -->
     <nav class="nav-bar">
-        <button class="tab-btn active" onclick="switchTab('comparison', this)">Plan Lineup</button>
+        <button class="tab-btn active" onclick="switchTab('comparison', this)">Plan Lineup (GW{active_gw})</button>
         <button class="tab-btn" onclick="switchTab('summary', this)">Plan Summary</button>
         <button class="tab-btn" onclick="switchTab('ticker', this)">FDR Ticker</button>
         <button class="tab-btn" onclick="switchTab('sources', this)">Research Sources</button>
@@ -1734,16 +1796,29 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     <main>
         <!-- TAB 1: PLAN LINEUP -->
         <section id="tab-comparison" class="tab-content active">
+            <!-- Gameweek Target Banner on Front Page -->
+            <div class="gw-target-banner">
+                <div class="gw-banner-left">
+                    <span class="gw-badge-pill">GAMEWEEK {active_gw}</span>
+                    <span class="gw-banner-title">การจัดทีมสำหรับสัปดาห์ที่ {active_gw} (Gameweek {active_gw} Lineup &amp; Strategy)</span>
+                </div>
+                <div class="gw-banner-right">
+                    <span class="gw-sub-info">DEADLINE: <strong>{deadline_str}</strong></span>
+                    <span class="gw-divider">&bull;</span>
+                    <span class="gw-sub-info">QUOTA: <strong style="color:var(--accent-emerald);">1 Free Transfer (ห้ามเปลี่ยนตัวติดลบ)</strong></span>
+                </div>
+            </div>
+
             <div class="lineup-split-grid">
                 
                 <!-- LEFT COLUMN: CHOICE 1 (MICKY SELECTION) -->
                 <div class="plan-column">
                     <div class="plan-col-header">
                         <div>
-                            <div class="plan-title">Choice 1 &bull; Micky Selection</div>
+                            <div class="plan-title">Choice 1 &bull; Micky Selection (GW{active_gw})</div>
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">3-4-3</span>
-                                <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
+                                <span class="active-chip-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.3);">GW{active_gw} &bull; BASELINE</span>
                             </div>
                         </div>
                         <div class="fin-badge">
@@ -1804,10 +1879,10 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                 <div class="plan-column" style="border-color: rgba(16, 185, 129, 0.45);">
                     <div class="plan-col-header">
                         <div>
-                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint</div>
+                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint (GW{active_gw})</div>
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">3-4-3</span>
-                                <span class="active-chip-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">1 FT &bull; ZERO HIT</span>
+                                <span class="active-chip-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">GW{active_gw} &bull; 1 FT &bull; ZERO HIT</span>
                             </div>
                         </div>
                         <div class="fin-badge" style="border-color:var(--accent-emerald);">
