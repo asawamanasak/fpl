@@ -84,6 +84,8 @@
 * `rollback_2` : ระบบยกระดับความเสถียรเชิงกลยุทธ์ (Press Conference Watcher, Post-GW Archive Automation, Concurrency Safe)
 * `rollback_3` : ระบบเสริม Cloud Rebase Guard, Top 100k Badge, Countdown Timer, Health Widget
 * `rollback_4` : ระบบเสริม Open Graph Social Link Preview (OG Image 1200x630 & Rich Metadata)
+* `rollback_5` : ฐานข้อมูลสถิติ FPL สด และระบบรักษาความปลอดภัยเด็ดขาด
+* `rollback_6` : ระบบ Content-Aware Fingerprinting และซิงค์ FDR Ticker สอดคล้องตาม Gameweek ปัจจุบัน
 
 ---
 

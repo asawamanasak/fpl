@@ -181,7 +181,7 @@ def align_bench_players(c1_bench, c2_bench):
             aligned[i] = c2_remaining.pop(0)
     return aligned
 
-def render_ticker_row_full_season(p, team_fixtures, start_gw=3, end_gw=38, orig_idx=0):
+def render_ticker_row_full_season(p, team_fixtures, start_gw=4, end_gw=38, orig_idx=0):
     t_id = p.get("team_id", 1)
     fix_dict = team_fixtures.get(t_id, {})
     
@@ -191,10 +191,14 @@ def render_ticker_row_full_season(p, team_fixtures, start_gw=3, end_gw=38, orig_
         if not gw_fixes:
             cells.append('<td data-val="99"><span class="fdr-box-lg fdr-3">-</span></td>')
         else:
-            f0 = gw_fixes[0]
-            loc = "H" if f0["is_home"] else "A"
-            diff = f0["diff"]
-            cells.append(f'<td data-val="{diff}"><span class="fdr-box-lg fdr-{diff}">{f0["opp"]}({loc})</span></td>')
+            chips = []
+            max_diff = 0
+            for f in gw_fixes:
+                loc = "H" if f["is_home"] else "A"
+                diff = f["diff"]
+                max_diff = max(max_diff, diff)
+                chips.append(f'<span class="fdr-box-lg fdr-{diff}">{f["opp"]}({loc})</span>')
+            cells.append(f'<td data-val="{max_diff}">{" ".join(chips)}</td>')
 
     pos_order = {"GKP": 1, "DEF": 2, "MID": 3, "FWD": 4}.get(p['pos'], 99)
 
@@ -208,7 +212,7 @@ def render_ticker_row_full_season(p, team_fixtures, start_gw=3, end_gw=38, orig_
     </tr>
     """
 
-def generate_html_report(data_dir="data", output_file="index.html"):
+def generate_html_report(data_dir="data", output_file="index.html", target_gw=None):
     bootstrap = load_json(os.path.join(data_dir, "bootstrap_static.json"))
     entry = load_json(os.path.join(data_dir, "entry.json"))
     fixtures = load_json(os.path.join(data_dir, "fixtures.json"))
@@ -405,19 +409,20 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     last_sync_str = sync_dt.strftime("%d/%m/%Y %I:%M %p")
 
     # Dynamic Gameweek Detection from Events
-    active_gw = 4
+    active_gw = target_gw or 4
     deadline_epoch = 1789216200
     deadline_str = "Sat 12 Sep, 19:30 ICT"
     now_epoch = datetime.now(timezone.utc).timestamp()
-    for ev in bootstrap.get("events", []):
-        if ev.get("is_current") and not ev.get("finished") and ev.get("deadline_time_epoch", 0) > now_epoch:
-            active_gw = ev.get("id", 4)
-            break
-    else:
+    if not target_gw:
         for ev in bootstrap.get("events", []):
-            if ev.get("is_next"):
+            if ev.get("is_current") and not ev.get("finished") and ev.get("deadline_time_epoch", 0) > now_epoch:
                 active_gw = ev.get("id", 4)
                 break
+        else:
+            for ev in bootstrap.get("events", []):
+                if ev.get("is_next"):
+                    active_gw = ev.get("id", 4)
+                    break
 
     for ev in bootstrap.get("events", []):
         if ev.get("id") == active_gw:
@@ -2237,7 +2242,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             <div class="ticker-container">
                 <div class="ticker-header-bar">
                     <div>
-                        <h2 style="font-size:0.95rem; font-weight:700; color:#ffffff;">Full Season Fixture Difficulty &amp; Sorting (GW3 &ndash; GW38)</h2>
+                        <h2 style="font-size:0.95rem; font-weight:700; color:#ffffff;">Full Season Fixture Difficulty &amp; Sorting (GW{active_gw} &ndash; GW38)</h2>
                         <div class="fdr-legend-strip">
                             <span class="fdr-legend-label">FDR Scale:</span>
                             <span class="fdr-legend-item fdr-2">FDR 2 &bull; Easy</span>
@@ -2248,7 +2253,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     </div>
                     <div style="display:flex; gap:0.5rem; align-items:center;">
                         <button class="reset-btn" onclick="resetTableSort()">Reset Sort</button>
-                        <span style="font-size:0.65rem; color:var(--text-muted);">Scroll &rarr; to view GW3-38</span>
+                        <span style="font-size:0.65rem; color:var(--text-muted);">Scroll &rarr; to view GW{active_gw}-38</span>
                     </div>
                 </div>
                 
@@ -2264,7 +2269,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                             </tr>
                         </thead>
                         <tbody>
-                            {"".join([render_ticker_row_full_season(p, team_fixtures, 3, 38, i) for i, p in enumerate(all_ticker_squad)])}
+                            {"".join([render_ticker_row_full_season(p, team_fixtures, active_gw, 38, i) for i, p in enumerate(all_ticker_squad)])}
                         </tbody>
                     </table>
                 </div>
@@ -2466,5 +2471,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate FPL Presentation HTML")
     parser.add_argument("--dir", type=str, default="data", help="Data directory")
     parser.add_argument("--out", type=str, default="index.html", help="Output HTML file")
+    parser.add_argument("--gw", type=int, default=None, help="Target Gameweek override (optional)")
     args = parser.parse_args()
-    generate_html_report(args.dir, args.out)
+    generate_html_report(args.dir, args.out, target_gw=args.gw)
