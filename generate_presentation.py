@@ -521,6 +521,17 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     chips_half1_str = "".join(half1_cards_html)
     chips_half2_str = "".join(half2_cards_html)
 
+    # Dynamic Transfers In / Out Computation (Choice 2 vs Choice 1)
+    c1_pids = [p[0] for p in c1_ids]
+    c2_pids = [p[0] for p in c2_ids]
+    
+    transfers_out_players = [p for p in c1_squad if p["id"] not in c2_pids]
+    transfers_in_players = [p for p in c2_squad if p["id"] not in c1_pids]
+    
+    c2_delta_in_pills = "".join([f'<span class="delta-pill pill-in">{p["web_name"]} <small>£{p["cost"]:.1f}m</small></span>' for p in transfers_in_players])
+    c2_delta_out_pills = "".join([f'<span class="delta-pill pill-out">{p["web_name"]} <small>£{p["cost"]:.1f}m</small></span>' for p in transfers_out_players])
+    transfers_count = len(transfers_in_players)
+
     # Combine unique players for full season ticker
     all_ticker_pids = list(dict.fromkeys([p[0] for p in c1_ids] + [p[0] for p in c2_ids]))
     all_ticker_squad = [build_player_by_id(pid, True) for pid in all_ticker_pids if build_player_by_id(pid, True)]
@@ -1115,6 +1126,113 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             min-width: max-content; 
         }}
 
+        /* Small Transfers In/Out Delta Box */
+        .transfers-delta-box {{
+            margin-top: 0.4rem;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-radius: 7px;
+            padding: 0.4rem 0.55rem;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }}
+        .delta-header-strip {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.3rem;
+            padding-bottom: 0.2rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }}
+        .delta-title-wrap {{
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }}
+        .delta-indicator-dot {{
+            width: 6px;
+            height: 6px;
+            background: var(--accent-emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--accent-emerald);
+        }}
+        .delta-title {{
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 0.7rem;
+            letter-spacing: 0.3px;
+        }}
+        .delta-count-pill {{
+            font-size: 0.56rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            font-family: 'JetBrains Mono', monospace;
+        }}
+        .delta-list-grid {{
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }}
+        .delta-group {{
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            flex-wrap: wrap;
+        }}
+        .delta-group-label {{
+            font-size: 0.58rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            min-width: 68px;
+        }}
+        .delta-group-label.in-lbl {{ color: var(--accent-emerald); }}
+        .delta-group-label.out-lbl {{ color: var(--accent-rose); }}
+        .delta-tags {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            flex: 1;
+        }}
+        .delta-pill {{
+            font-size: 0.6rem;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }}
+        .delta-pill small {{
+            opacity: 0.8;
+            font-weight: 400;
+        }}
+        .delta-pill.pill-in {{
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }}
+        .delta-pill.pill-out {{
+            background: rgba(244, 63, 94, 0.12);
+            color: var(--accent-rose);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+        }}
+        .delta-footer {{
+            margin-top: 0.3rem;
+            padding-top: 0.2rem;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.2rem;
+        }}
+
         .bench-card {{
             background: rgba(15, 20, 28, 0.95);
             border: 1px solid var(--border-main);
@@ -1650,6 +1768,34 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                             {render_bench_list(c1_bench)}
                         </div>
                     </div>
+
+                    <!-- Choice 1 Baseline Box -->
+                    <div class="transfers-delta-box" style="border-color: rgba(56, 189, 248, 0.25);">
+                        <div class="delta-header-strip">
+                            <div class="delta-title-wrap">
+                                <span class="delta-indicator-dot" style="background:var(--accent-sky); box-shadow:0 0 6px var(--accent-sky);"></span>
+                                <span class="delta-title">Baseline Squad Blueprint</span>
+                            </div>
+                            <span class="delta-count-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.3);">15 PLAYERS &bull; USER BASELINE</span>
+                        </div>
+                        <div class="delta-list-grid">
+                            <div class="delta-group">
+                                <div class="delta-group-label" style="color:var(--accent-emerald);">8 CORE ANCHORS</div>
+                                <div class="delta-tags">
+                                    <span class="delta-pill" style="background:rgba(16,185,129,0.1); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.25);">Haaland, Palmer, Pedro, Gakpo, Szobo, Gabriel, Wissa, Kinsky</span>
+                                </div>
+                            </div>
+                            <div class="delta-group">
+                                <div class="delta-group-label" style="color:var(--accent-amber);">BENCH ASSETS</div>
+                                <div class="delta-tags">
+                                    <span class="delta-pill" style="background:rgba(245,158,11,0.1); color:var(--accent-amber); border:1px solid rgba(245,158,11,0.25);">Gvardiol (£5.6m) &bull; Foden (£7.0m) on bench (£12.6m tied)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="delta-footer">
+                            <span>Starting Points: <strong>{c1_start_pts} pts</strong></span> &bull; <span>Bench Cost: <strong>£{sum(p["cost"] for p in c1_bench):.1f}m</strong></span> &bull; <span>Bank: <strong>£0.0m</strong></span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- RIGHT COLUMN: CHOICE 2 (GEMINI SELECTION) -->
@@ -1690,6 +1836,34 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                         <div class="bench-lbl">Substitutes Bench (100% 90-Min Regulars)</div>
                         <div class="bench-row">
                             {render_bench_list(align_bench_players(c1_bench, c2_bench))}
+                        </div>
+                    </div>
+
+                    <!-- Choice 2 Transfer Delta Box -->
+                    <div class="transfers-delta-box">
+                        <div class="delta-header-strip">
+                            <div class="delta-title-wrap">
+                                <span class="delta-indicator-dot"></span>
+                                <span class="delta-title">Transfers vs Choice 1</span>
+                            </div>
+                            <span class="delta-count-pill">{transfers_count} IN &bull; {transfers_count} OUT</span>
+                        </div>
+                        <div class="delta-list-grid">
+                            <div class="delta-group">
+                                <div class="delta-group-label in-lbl">PLAYERS IN</div>
+                                <div class="delta-tags">
+                                    {c2_delta_in_pills}
+                                </div>
+                            </div>
+                            <div class="delta-group">
+                                <div class="delta-group-label out-lbl">PLAYERS OUT</div>
+                                <div class="delta-tags">
+                                    {c2_delta_out_pills}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="delta-footer">
+                            <span>O'Shea rotated to Sub 2</span> &bull; <span>Starting Points: <strong>{c2_start_pts} pts (+{c2_start_pts - c1_start_pts} pts)</strong></span> &bull; <span>Bank: <strong>{c2_bank_str}</strong></span>
                         </div>
                     </div>
                 </div>

@@ -582,6 +582,113 @@
             min-width: max-content; 
         }
 
+        /* Small Transfers In/Out Delta Box */
+        .transfers-delta-box {
+            margin-top: 0.4rem;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-radius: 7px;
+            padding: 0.4rem 0.55rem;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+        .delta-header-strip {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.3rem;
+            padding-bottom: 0.2rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .delta-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .delta-indicator-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--accent-emerald);
+        }
+        .delta-title {
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 0.7rem;
+            letter-spacing: 0.3px;
+        }
+        .delta-count-pill {
+            font-size: 0.56rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .delta-list-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .delta-group {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            flex-wrap: wrap;
+        }
+        .delta-group-label {
+            font-size: 0.58rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            min-width: 68px;
+        }
+        .delta-group-label.in-lbl { color: var(--accent-emerald); }
+        .delta-group-label.out-lbl { color: var(--accent-rose); }
+        .delta-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            flex: 1;
+        }
+        .delta-pill {
+            font-size: 0.6rem;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .delta-pill small {
+            opacity: 0.8;
+            font-weight: 400;
+        }
+        .delta-pill.pill-in {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+        .delta-pill.pill-out {
+            background: rgba(244, 63, 94, 0.12);
+            color: var(--accent-rose);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+        }
+        .delta-footer {
+            margin-top: 0.3rem;
+            padding-top: 0.2rem;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.2rem;
+        }
+
         .bench-card {
             background: rgba(15, 20, 28, 0.95);
             border: 1px solid var(--border-main);
@@ -1034,7 +1141,7 @@
             <div class="brand-meta">
                 <div class="season-badge">FPL 2026/27</div>
                 <div class="title-box">
-                    <h1>GEMINI UNITED <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: 306983)</span> <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 07/09/2026 08:52 PM<span class="sync-tag-active">ACTIVE</span></span></h1>
+                    <h1>GEMINI UNITED <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: 306983)</span> <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 07/09/2026 08:57 PM<span class="sync-tag-active">ACTIVE</span></span></h1>
                     <p>Manager: Micky Asawamanasak | Wildcard GW4 Options</p>
                     <div class="deadline-pill" title="Official Gameweek 4 Deadline">
                         <span class="deadline-tag-prefix">DEADLINE</span> Sat 12 Sep, 19:30 ICT &bull; <span id="countdownTimer" class="countdown-clock">--h --m --s</span> <span class="lockdown-badge">LOCKDOWN AT -30M</span>
@@ -1462,6 +1569,34 @@
     
                         </div>
                     </div>
+
+                    <!-- Choice 1 Baseline Box -->
+                    <div class="transfers-delta-box" style="border-color: rgba(56, 189, 248, 0.25);">
+                        <div class="delta-header-strip">
+                            <div class="delta-title-wrap">
+                                <span class="delta-indicator-dot" style="background:var(--accent-sky); box-shadow:0 0 6px var(--accent-sky);"></span>
+                                <span class="delta-title">Baseline Squad Blueprint</span>
+                            </div>
+                            <span class="delta-count-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.3);">15 PLAYERS &bull; USER BASELINE</span>
+                        </div>
+                        <div class="delta-list-grid">
+                            <div class="delta-group">
+                                <div class="delta-group-label" style="color:var(--accent-emerald);">8 CORE ANCHORS</div>
+                                <div class="delta-tags">
+                                    <span class="delta-pill" style="background:rgba(16,185,129,0.1); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.25);">Haaland, Palmer, Pedro, Gakpo, Szobo, Gabriel, Wissa, Kinsky</span>
+                                </div>
+                            </div>
+                            <div class="delta-group">
+                                <div class="delta-group-label" style="color:var(--accent-amber);">BENCH ASSETS</div>
+                                <div class="delta-tags">
+                                    <span class="delta-pill" style="background:rgba(245,158,11,0.1); color:var(--accent-amber); border:1px solid rgba(245,158,11,0.25);">Gvardiol (£5.6m) &bull; Foden (£7.0m) on bench (£12.6m tied)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="delta-footer">
+                            <span>Starting Points: <strong>174 pts</strong></span> &bull; <span>Bench Cost: <strong>£21.2m</strong></span> &bull; <span>Bank: <strong>£0.0m</strong></span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- RIGHT COLUMN: CHOICE 2 (GEMINI SELECTION) -->
@@ -1847,6 +1982,34 @@
         </div>
     </div>
     
+                        </div>
+                    </div>
+
+                    <!-- Choice 2 Transfer Delta Box -->
+                    <div class="transfers-delta-box">
+                        <div class="delta-header-strip">
+                            <div class="delta-title-wrap">
+                                <span class="delta-indicator-dot"></span>
+                                <span class="delta-title">Transfers vs Choice 1</span>
+                            </div>
+                            <span class="delta-count-pill">5 IN &bull; 5 OUT</span>
+                        </div>
+                        <div class="delta-list-grid">
+                            <div class="delta-group">
+                                <div class="delta-group-label in-lbl">PLAYERS IN</div>
+                                <div class="delta-tags">
+                                    <span class="delta-pill pill-in">De Cuyper <small>£4.7m</small></span><span class="delta-pill pill-in">Dedić <small>£4.5m</small></span><span class="delta-pill pill-in">Rogers <small>£7.6m</small></span><span class="delta-pill pill-in">Dubravka <small>£4.0m</small></span><span class="delta-pill pill-in">Barry <small>£5.6m</small></span>
+                                </div>
+                            </div>
+                            <div class="delta-group">
+                                <div class="delta-group-label out-lbl">PLAYERS OUT</div>
+                                <div class="delta-tags">
+                                    <span class="delta-pill pill-out">Konsa <small>£4.4m</small></span><span class="delta-pill pill-out">Groß <small>£5.5m</small></span><span class="delta-pill pill-out">Verbruggen <small>£4.5m</small></span><span class="delta-pill pill-out">Gvardiol <small>£5.6m</small></span><span class="delta-pill pill-out">Foden <small>£7.0m</small></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="delta-footer">
+                            <span>O'Shea rotated to Sub 2</span> &bull; <span>Starting Points: <strong>199 pts (+25 pts)</strong></span> &bull; <span>Bank: <strong>+£0.6m</strong></span>
                         </div>
                     </div>
                 </div>
