@@ -101,21 +101,23 @@ def check_deadline_status(bs):
 def get_active_gameweek(bs):
     """
     Detect the active Gameweek for squad planning:
-    1. If a gameweek is currently in play (is_current=True and finished=False), use it.
+    1. If a gameweek is currently in play (is_current=True and finished=False), check if deadline has passed. If passed, use upcoming gameweek (is_next=True).
     2. Otherwise, use the upcoming deadline gameweek (is_next=True).
-    3. Fallback to is_current.
+    3. Fallback to is_current or 4.
     """
     events = bs.get('events', []) if isinstance(bs, dict) else []
+    now_epoch = datetime.now(timezone.utc).timestamp()
     for ev in events:
         if ev.get('is_current') and not ev.get('finished'):
-            return ev.get('id', 3)
+            if ev.get('deadline_time_epoch', 0) > now_epoch:
+                return ev.get('id', 4)
     for ev in events:
         if ev.get('is_next'):
-            return ev.get('id', 3)
+            return ev.get('id', 4)
     for ev in events:
         if ev.get('is_current'):
-            return ev.get('id', 3)
-    return 3
+            return ev.get('id', 4)
+    return 4
 
 def monitor_press_conferences_and_injuries(bs):
     """

@@ -249,24 +249,24 @@ def generate_html_report(data_dir="data", output_file="index.html"):
             "minutes": mins
         }
 
-    # CHOICE 1: User's Dynamic Selection from Screenshot (3-5-2 Formation, Wildcard Active)
+    # CHOICE 1: User's Dynamic Selection from Screenshot (3-4-3 Formation, Wildcard Active)
     c1_ids = [
-        (109, True, False, False, False, False),  # Verbruggen (GKP £4.5m, BHA)
-        (391, True, False, False, True, False),   # Gvardiol (DEF Core £5.6m, MCI)
-        (277, True, False, False, False, False),  # Egan (DEF £4.0m, HUL)
+        (496, True, False, False, False, False),  # Kinsky (GKP £4.5m, TOT)
+        (304, True, False, False, False, False),  # O'Shea (DEF £4.0m, IPS)
+        (31, True, False, False, False, False),   # Konsa (DEF £4.4m, ARS)
         (4, True, False, False, True, False),     # Gabriel (DEF Core £8.0m, ARS)
         (124, True, False, False, False, False),  # Groß (MID £5.5m, BHA)
-        (367, True, False, False, True, False),   # Gakpo (MID Core £7.0m, LIV)
-        (398, True, False, True, False, False),   # Foden (MID VC £7.0m, MCI)
+        (367, True, False, False, True, False),   # Gakpo (MID Core £7.2m, LIV)
         (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m, LIV)
-        (154, True, False, False, False, False),  # Palmer (MID £9.6m, CHE)
-        (464, True, False, False, False, False),  # Wissa (FWD £6.1m, NEW)
-        (411, True, True, False, True, False),    # Haaland (FWD C Core £15.5m, MCI)
+        (154, True, True, False, False, False),   # Palmer (MID C £9.6m, CHE)
+        (165, True, False, True, True, False),    # João Pedro (FWD VC Core £7.7m, CHE)
+        (464, True, False, False, False, False),  # Wissa (FWD £6.2m, NEW)
+        (411, True, False, False, True, False),   # Haaland (FWD Core £15.5m, MCI)
         # Bench
-        (496, False, False, False, False, False), # Kinsky (GKP Sub £4.5m, TOT)
-        (165, False, False, False, True, False),  # João Pedro (FWD Sub 1 Core £7.7m, CHE)
-        (304, False, False, False, False, False), # O'Shea (DEF Sub 2 £4.0m, IPS)
-        (31, False, False, False, False, False),  # Konsa (DEF Sub 3 £4.4m, ARS)
+        (109, False, False, False, False, False), # Verbruggen (GKP Sub £4.5m, BHA)
+        (391, False, False, False, True, False),  # Gvardiol (DEF Sub 1 Core £5.6m, MCI)
+        (398, False, False, False, False, False), # Foden (MID Sub 2 £7.0m, MCI)
+        (277, False, False, False, False, False), # Egan (DEF Sub 3 £4.1m, HUL)
     ]
     c1_squad = [build_player_by_id(*p) for p in c1_ids if build_player_by_id(*p)]
     c1_starters = [p for p in c1_squad if p["is_starter"]]
@@ -329,22 +329,23 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     last_sync_str = sync_dt.strftime("%d/%m/%Y %I:%M %p")
 
     # Dynamic Gameweek Detection from Events
-    active_gw = 3
-    deadline_epoch = 1788543000
-    deadline_str = "Sat 05 Sep, 00:30 ICT"
+    active_gw = 4
+    deadline_epoch = 1789216200
+    deadline_str = "Sat 12 Sep, 19:30 ICT"
+    now_epoch = datetime.now(timezone.utc).timestamp()
     for ev in bootstrap.get("events", []):
-        if ev.get("is_current") and not ev.get("finished"):
-            active_gw = ev.get("id", 3)
+        if ev.get("is_current") and not ev.get("finished") and ev.get("deadline_time_epoch", 0) > now_epoch:
+            active_gw = ev.get("id", 4)
             break
     else:
         for ev in bootstrap.get("events", []):
             if ev.get("is_next"):
-                active_gw = ev.get("id", 3)
+                active_gw = ev.get("id", 4)
                 break
 
     for ev in bootstrap.get("events", []):
         if ev.get("id") == active_gw:
-            deadline_epoch = ev.get("deadline_time_epoch", 1788543000)
+            deadline_epoch = ev.get("deadline_time_epoch", 1789216200)
             if ev.get("deadline_time"):
                 try:
                     dt = datetime.fromisoformat(ev["deadline_time"].replace("Z", "+00:00")).astimezone(ict_tz)
@@ -1488,7 +1489,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                         <div>
                             <div class="plan-title">Choice 1 &bull; Micky Selection</div>
                             <div class="plan-sub-tags">
-                                <span class="formation-pill">3-5-2</span>
+                                <span class="formation-pill">3-4-3</span>
                                 <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
                             </div>
                         </div>
@@ -1498,11 +1499,11 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     </div>
 
                     <div class="compact-pitch">
-                        <!-- FWD (2) -->
+                        <!-- FWD (3) -->
                         <div class="pitch-row">
                             {"".join([render_starter_card(p) for p in c1_starters if p["pos"] == "FWD"])}
                         </div>
-                        <!-- MID (5) -->
+                        <!-- MID (4) -->
                         <div class="pitch-row">
                             {"".join([render_starter_card(p) for p in c1_starters if p["pos"] == "MID"])}
                         </div>
@@ -1594,7 +1595,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="summary-panel-header">
                         <div>
                             <div class="plan-title">Choice 1 &bull; Micky Selection</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-5-2 Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m</span>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-4-3 Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m</span>
                         </div>
                         <span class="source-pill">Audit Mode</span>
                     </div>
@@ -1603,19 +1604,19 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
                         <div class="pros-cons-item">
-                            <strong>Double Liverpool Midfield Stack (Gakpo £7.0m + Szoboszlai £7.0m) :</strong> ซ้อน 2 ขุมกำลังตัวรุกตัวเก่งลิเวอร์พูลเยือน Ipswich Town (FDR 2) ยกระดับเพดานทำแต้มแดนกลางอย่างมหาศาล มีโอกาสลุ้นทั้งประตูและแอสซิสต์คู่
+                            <strong>Cole Palmer Captaincy [C] vs Hull City (H - FDR 2) :</strong> มอบปลอกแขนกัปตันให้ Cole Palmer (£9.6m) เฝ้ารังรับมือ ฮัลล์ ซิตี้ ทีมเพิ่งเลื่อนชั้น มีโอกาสสร้างเพดานแต้มระเบิด (Explosive Ceiling) สูงสุดประจำสัปดาห์จากทั้งจุดโทษ ฟรีคิก และโอเพ่นเพลย์
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Verbruggen Home Fixture Advantage (LEE Home FDR 2) :</strong> ดึง Bart Verbruggen (£4.5m) กลับมาเฝ้าเสาตัวจริงในบ้านรับมือ Leeds เพิ่มโอกาสเก็บคลีนชีตและแต้มเซฟ
+                            <strong>João Pedro Front-3 Promotion &amp; Vice Captain [VC] vs Hull City (H - FDR 2) :</strong> ดัน João Pedro (£7.7m) ขึ้นมายืน 3 ประสานแดนหน้าตัวจริงพร้อมสวมปลอกแขนรองกัปตัน [VC] เพื่อทำ Double Attack ฝั่งเชลซีรับมือฮัลล์ ซิตี้ เต็มสูบ
                         </div>
                         <div class="pros-cons-item">
-                            <strong>First-Sub Firepower Security (João Pedro Sub 1 Priority) :</strong> ล็อก João Pedro (£7.7m &bull; 20 แต้ม &bull; xGI 1.95) ยืนเป็นตัวสำรองลำดับที่ 1 (Sub 1) อย่างสมบูรณ์แบบ รับประกันว่าหากมีตัวจริงแนวรุกหรือแดนกลางไม่ได้ลงสนาม แต้มของ Pedro จะถูกดึงลงมาทดแทนทันที
+                            <strong>Kinsky Home Goalkeeper Selection vs Everton (H - FDR 2) :</strong> ปรับ Antonín Kinsky (£4.5m) ลงเฝ้าเสาตัวจริงในบ้านรับมือเอฟเวอร์ตัน อาศัยความได้เปรียบเกมเหย้าและลุ้นคลีนชีตแรก แทนการส่ง Verbruggen ที่ต้องออกไปเยือนโคเวนทรี
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Triple Man City Core Retained :</strong> รักษาแกนหลัก 3 ตัวแมนฯ ซิตี้ (Haaland C + Foden VC + Gvardiol) ลุ้นแต้มกัปตันสูงสุดในเกมเหย้าพบ Coventry
+                            <strong>Arsenal Double Defensive Block (Gabriel £8.0m + Konsa £4.4m vs Sunderland Away FDR 2) :</strong> ผนึกกำลังแนวรับอาร์เซนอลคู่ บุกเยือนซันเดอร์แลนด์ เพิ่มโอกาสกวาดคลีนชีต 4-6 แต้มคูณสอง พร้อมทีเด็ดลุ้นลูกเตะมุมของ Gabriel
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Groß Creative Engine Integration (LEE Home FDR 2) :</strong> ส่ง Pascal Groß (£5.5m) ผู้รับหน้าที่สัมปทานเตะมุมและฟรีคิกของไบรท์ตัน เล่นเกมเหย้าพบ Leeds เพิ่มมิติการทำแอสซิสต์
+                            <strong>Triple Front-3 Firepower (Haaland + João Pedro + Wissa) :</strong> ปรับโครงสร้างเป็นหน้าสาม 3-4-3 ยืนครบทั้ง Haaland ล่าตาข่ายในศึกแมนเชสเตอร์ดาร์บี้, Pedro รับมือฮัลล์ และ Wissa เยือนลีดส์ ยูไนเต็ด ครอบคลุมโอกาสทำประตูทุกคู่
                         </div>
                     </div>
 
@@ -1623,13 +1624,13 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
                         <div class="pros-cons-item">
-                            <strong>Double Liverpool Away Fixture Dependency :</strong> การพึ่งพา 2 กองกลางลิเวอร์พูลพร้อมกัน หากเกมเยือนอิปสวิชเกิดจังหวะตื้อ แต้มแดนกลางจะหายไปพร้อมกันทั้ง Gakpo และ Szoboszlai
+                            <strong>Heavy Bench Capital &amp; Manchester Derby Benched (£12.6m on Bench) :</strong> พัก Gvardiol (£5.6m - Sub 1) และ Foden (£7.0m - Sub 2) ไว้บนม้านั่งสำรองในเกมแมนเชสเตอร์ดาร์บี้เยือนโอลด์ แทรฟฟอร์ด ทำให้มีมูลค่าทรัพยากรจมบนม้านั่งสูงถึง £12.6m ซึ่งหากแมนฯ ซิตี้ ชนะถล่มทลาย แต้มสำคัญอาจค้างอยู่ข้างสนาม
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Arsenal vs Chelsea Derby Exposure :</strong> มี Gabriel ยืนแนวรับอาร์เซนอล ขณะที่ Cole Palmer ยืนตัวจริงฝั่งตรงข้ามในศึกลอนดอนดาร์บี้
+                            <strong>O'Shea Difficult Away Matchup (CRY Away FDR 3) :</strong> การส่ง Dara O'Shea (£4.0m) ยืนตัวจริงในเกมเยือนคริสตัล พาเลซ มีความเสี่ยงต่อการเสียคลีนชีตจากเกมรุกริมเส้นของพาเลซ
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Egan Matchup vs Aston Villa :</strong> ส่ง John Egan (£4.0m) ยืนตัวจริงรับมือเกมรุกแอสตัน วิลลา มีความเสี่ยงต่อการเสียคลีนชีต
+                            <strong>No Man City Captaincy Ceiling Risk :</strong> การโยกปลอกแขนกัปตันจาก Erling Haaland ไปให้ Cole Palmer หาก Haaland ระเบิดแฮตทริกในแมนเชสเตอร์ดาร์บี้ อาจส่งผลต่ออันดับ Overall Rank ได้ทันที
                         </div>
                     </div>
                 </div>
