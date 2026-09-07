@@ -37,6 +37,7 @@ def render_starter_card(p):
     fdr_class = f"fdr-{p['next_fdr']}"
     core_tag = '<span class="core-tag-mini">CORE</span>' if p.get("is_core") else ''
     enabler_tag = '<span class="enabler-tag-mini">VALUE</span>' if p.get("is_enabler") else ''
+    transfer_tag = '<span class="transfer-in-tag-mini">IN</span>' if p.get("is_transfer_in") else ''
 
     t_code = p.get("official_team_code", 43)
     is_gkp = p.get("pos") == "GKP"
@@ -50,6 +51,7 @@ def render_starter_card(p):
         <div class="starter-card-top">
             <span class="pos-tag-mini {pos_class}">{p['pos']}</span>
             {cap_marker}
+            {transfer_tag}
             {core_tag}
             {enabler_tag}
         </div>
@@ -75,6 +77,7 @@ def render_bench_card(p, sub_idx=1):
     fdr_class = f"fdr-{p['next_fdr']}"
     core_tag = '<span class="core-tag-mini">CORE</span>' if p.get("is_core") else ''
     enabler_tag = '<span class="enabler-tag-mini">VALUE</span>' if p.get("is_enabler") else ''
+    transfer_tag = '<span class="transfer-in-tag-mini">IN</span>' if p.get("is_transfer_in") else ''
     
     is_gkp = p.get("pos") == "GKP"
     sub_label = "GKP SUB" if is_gkp else f"SUB {sub_idx}"
@@ -91,6 +94,7 @@ def render_bench_card(p, sub_idx=1):
         <div class="bench-card-top">
             <span class="pos-tag-mini {pos_class}">{p['pos']}</span>
             {sub_tag}
+            {transfer_tag}
             {core_tag}
             {enabler_tag}
         </div>
@@ -326,17 +330,16 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     # Total Team Budget dynamically derived from Choice 1 and FPL Entry data
     total_budget = round(max(c1_cost, (entry.get("last_deadline_value", 1000) + entry.get("last_deadline_bank", 0)) / 10.0), 1)
 
-    # CHOICE 2: Antigravity's Refined Choice 1 Blueprint (Anchored on User Core, Optimized Bench & Multi-Week Liquidity)
-    # Retains User Core: Haaland, Palmer, Pedro, Gabriel, Gakpo, Szoboszlai, Wissa, Kinsky, Egan, O'Shea
-    # Reallocates Bench Capital (£12.6m Foden + Gvardiol in tough away fixtures):
-    # Upgrades Starting DEF & MID with De Cuyper £4.7m (21 pts, xGI 1.90), Dedić £4.5m, Rogers £7.6m (19 pts, xGI 2.32)
-    # Adds Dubravka £4.0m backup GKP, leaving +£0.6m in Bank for GW5 Free Transfers
+    # CHOICE 2: Antigravity's Refined Choice 1 Blueprint
+    # Constraint Enforced: "ห้ามเปลี่ยนตัวติดลบ" (Strict 0 Transfer Hits / 1 Free Transfer Only / 0 pt penalty)
+    # 1 Free Transfer: Foden (MCI £7.0m, MUN A FDR 4) -> Martin Ødegaard (ARS £6.6m, 24 pts, form 8.0, SUN A FDR 2)
+    # Bank Reserve: +£0.4m
     c2_ids = [
         (496, True, False, False, False, False),  # Kinsky (GKP Slot 1 - MATCHES C1)
-        (115, True, False, False, False, False),  # De Cuyper (DEF Slot 1 - replaces O'Shea)
-        (593, True, False, False, False, False),  # Amar Dedić (DEF Slot 2 - replaces Konsa)
+        (304, True, False, False, False, False),  # O'Shea (DEF Slot 1 - MATCHES C1)
+        (31, True, False, False, False, False),   # Konsa (DEF Slot 2 - MATCHES C1)
         (4, True, False, False, True, False),     # Gabriel (DEF Core Slot 3 - MATCHES C1)
-        (40, True, False, False, False, False),   # Rogers (MID Slot 1 - replaces Groß)
+        (15, True, False, False, False, False),   # Ødegaard (MID Slot 1 - TRANSFER IN, replaces Groß in XI)
         (367, True, False, False, True, False),   # Gakpo (MID Core Slot 2 - MATCHES C1)
         (368, True, False, False, True, False),   # Szoboszlai (MID Core Slot 3 - MATCHES C1)
         (154, True, True, False, False, False),   # Palmer (MID C Slot 4 - MATCHES C1)
@@ -344,12 +347,16 @@ def generate_html_report(data_dir="data", output_file="index.html"):
         (464, True, False, False, False, False),  # Wissa (FWD Slot 2 - MATCHES C1)
         (411, True, False, False, True, False),   # Haaland (FWD Core Slot 3 - MATCHES C1)
         # Bench (Symmetrically aligned with C1: GKP, Sub 1, Sub 2, Sub 3)
-        (497, False, False, False, False, False), # Dubravka (GKP Sub - replaces Verbruggen)
-        (249, False, False, False, False, True),  # Louie Barry (Sub 1 - replaces Gvardiol)
-        (304, False, False, False, False, False), # O'Shea (Sub 2 - replaces Foden)
+        (109, False, False, False, False, False), # Verbruggen (GKP Sub - MATCHES C1)
+        (391, False, False, False, True, False),  # Gvardiol (Sub 1 - MATCHES C1)
+        (124, False, False, False, False, False), # Groß (Sub 2 - rotated from XI to bench)
         (277, False, False, False, False, False), # Egan (Sub 3 - MATCHES C1)
     ]
+    c1_pids_set = set(p[0] for p in c1_ids)
     c2_squad = [build_player_by_id(*p) for p in c2_ids if build_player_by_id(*p)]
+    for p in c2_squad:
+        if p["id"] not in c1_pids_set:
+            p["is_transfer_in"] = True
     c2_starters = [p for p in c2_squad if p["is_starter"]]
     c2_bench = [p for p in c2_squad if not p["is_starter"]]
     c2_cost = sum(p["cost"] for p in c2_squad)
@@ -528,8 +535,8 @@ def generate_html_report(data_dir="data", output_file="index.html"):
     transfers_out_players = [p for p in c1_squad if p["id"] not in c2_pids]
     transfers_in_players = [p for p in c2_squad if p["id"] not in c1_pids]
     
-    c2_delta_in_pills = "".join([f'<span class="delta-pill pill-in">{p["web_name"]} <small>£{p["cost"]:.1f}m</small></span>' for p in transfers_in_players])
-    c2_delta_out_pills = "".join([f'<span class="delta-pill pill-out">{p["web_name"]} <small>£{p["cost"]:.1f}m</small></span>' for p in transfers_out_players])
+    c2_delta_in_pills = "".join([f'<span class="delta-pill pill-in">{p["web_name"]} <small>£{p["cost"]:.1f}m &bull; {p["next_fix"].split(" ")[0]} &bull; {p["total_points"]} pts</small></span>' for p in transfers_in_players])
+    c2_delta_out_pills = "".join([f'<span class="delta-pill pill-out">{p["web_name"]} <small>£{p["cost"]:.1f}m &bull; {p["next_fix"].split(" ")[0]} &bull; {p["total_points"]} pts</small></span>' for p in transfers_out_players])
     transfers_count = len(transfers_in_players)
 
     # Combine unique players for full season ticker
@@ -1321,6 +1328,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
 
         .core-tag-mini {{ font-size: 0.48rem; font-weight: 800; background: #0f766e; color: #ccfbf1; padding: 0.04rem 0.18rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }}
         .enabler-tag-mini {{ font-size: 0.48rem; font-weight: 800; background: #78350f; color: #fef3c7; padding: 0.04rem 0.18rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }}
+        .transfer-in-tag-mini {{ font-size: 0.48rem; font-weight: 800; background: #065f46; color: #6ee7b7; border: 1px solid #10b981; padding: 0.04rem 0.22rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }}
 
         .fdr-pill {{ font-size: 0.56rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.04rem 0.2rem; border-radius: 2px; }}
         .fdr-pill.fdr-2 {{ background: rgba(2, 132, 199, 0.25); color: #38bdf8; }}
@@ -1770,30 +1778,24 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     </div>
 
                     <!-- Choice 1 Baseline Box -->
-                    <div class="transfers-delta-box" style="border-color: rgba(56, 189, 248, 0.25);">
+                    <div class="transfers-delta-box" style="border-color: rgba(255, 255, 255, 0.12); background: rgba(15, 23, 42, 0.45);">
                         <div class="delta-header-strip">
                             <div class="delta-title-wrap">
-                                <span class="delta-indicator-dot" style="background:var(--accent-sky); box-shadow:0 0 6px var(--accent-sky);"></span>
-                                <span class="delta-title">Baseline Squad Blueprint</span>
+                                <span class="delta-indicator-dot" style="background:var(--text-muted); box-shadow:none;"></span>
+                                <span class="delta-title" style="color:var(--text-secondary);">Transfers (Choice 1 Baseline)</span>
                             </div>
-                            <span class="delta-count-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.3);">15 PLAYERS &bull; USER BASELINE</span>
+                            <span class="delta-count-pill" style="background:rgba(255,255,255,0.06); color:var(--text-muted); border:1px solid var(--border-subtle);">0 TRANSFERS &bull; 1 FT BANKED</span>
                         </div>
                         <div class="delta-list-grid">
                             <div class="delta-group">
-                                <div class="delta-group-label" style="color:var(--accent-emerald);">8 CORE ANCHORS</div>
+                                <div class="delta-group-label" style="color:var(--text-muted);">STATUS</div>
                                 <div class="delta-tags">
-                                    <span class="delta-pill" style="background:rgba(16,185,129,0.1); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.25);">Haaland, Palmer, Pedro, Gakpo, Szobo, Gabriel, Wissa, Kinsky</span>
-                                </div>
-                            </div>
-                            <div class="delta-group">
-                                <div class="delta-group-label" style="color:var(--accent-amber);">BENCH ASSETS</div>
-                                <div class="delta-tags">
-                                    <span class="delta-pill" style="background:rgba(245,158,11,0.1); color:var(--accent-amber); border:1px solid rgba(245,158,11,0.25);">Gvardiol (£5.6m) &bull; Foden (£7.0m) on bench (£12.6m tied)</span>
+                                    <span style="font-size:0.62rem; color:var(--text-muted);">ไม่มีรายการย้ายตัวเข้า-ออก (Baseline Squad &bull; ค่าปรับ 0 แต้ม)</span>
                                 </div>
                             </div>
                         </div>
                         <div class="delta-footer">
-                            <span>Starting Points: <strong>{c1_start_pts} pts</strong></span> &bull; <span>Bench Cost: <strong>£{sum(p["cost"] for p in c1_bench):.1f}m</strong></span> &bull; <span>Bank: <strong>£0.0m</strong></span>
+                            <span>Starting Points: <strong>{c1_start_pts} pts</strong></span> &bull; <span>Cost Hits: <strong>0 pts</strong></span> &bull; <span>Bank: <strong>£0.0m</strong></span>
                         </div>
                     </div>
                 </div>
@@ -1805,7 +1807,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                             <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint</div>
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">3-4-3</span>
-                                <span class="active-chip-pill chip-wildcard">CHIP : WILDCARD</span>
+                                <span class="active-chip-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">1 FT &bull; ZERO HIT</span>
                             </div>
                         </div>
                         <div class="fin-badge" style="border-color:var(--accent-emerald);">
@@ -1833,7 +1835,7 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     </div>
 
                     <div class="compact-bench-strip">
-                        <div class="bench-lbl">Substitutes Bench (100% 90-Min Regulars)</div>
+                        <div class="bench-lbl">Substitutes Bench</div>
                         <div class="bench-row">
                             {render_bench_list(align_bench_players(c1_bench, c2_bench))}
                         </div>
@@ -1846,24 +1848,24 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                                 <span class="delta-indicator-dot"></span>
                                 <span class="delta-title">Transfers vs Choice 1</span>
                             </div>
-                            <span class="delta-count-pill">{transfers_count} IN &bull; {transfers_count} OUT</span>
+                            <span class="delta-count-pill">{transfers_count} IN &bull; {transfers_count} OUT &bull; 0 PT HIT (1 FT)</span>
                         </div>
                         <div class="delta-list-grid">
                             <div class="delta-group">
-                                <div class="delta-group-label in-lbl">PLAYERS IN</div>
+                                <div class="delta-group-label in-lbl">TRANSFER IN</div>
                                 <div class="delta-tags">
                                     {c2_delta_in_pills}
                                 </div>
                             </div>
                             <div class="delta-group">
-                                <div class="delta-group-label out-lbl">PLAYERS OUT</div>
+                                <div class="delta-group-label out-lbl">TRANSFER OUT</div>
                                 <div class="delta-tags">
                                     {c2_delta_out_pills}
                                 </div>
                             </div>
                         </div>
                         <div class="delta-footer">
-                            <span>O'Shea rotated to Sub 2</span> &bull; <span>Starting Points: <strong>{c2_start_pts} pts (+{c2_start_pts - c1_start_pts} pts)</strong></span> &bull; <span>Bank: <strong>{c2_bank_str}</strong></span>
+                            <span style="color:var(--accent-emerald); font-weight:700;">เงื่อนไข: ห้ามเปลี่ยนตัวติดลบ (Cost: 0 pts &bull; 1 FT Only)</span> &bull; <span>Starting Points: <strong>{c2_start_pts} pts (+{c2_start_pts - c1_start_pts} pts)</strong></span> &bull; <span>Bank: <strong>{c2_bank_str}</strong></span>
                         </div>
                     </div>
                 </div>
@@ -1946,15 +1948,15 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                         <tbody>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW4 (สัปดาห์นี้)</td>
-                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">Wildcard #1 Active</span></td>
-                                <td style="padding:8px 10px;">CHE vs HUL (H), LIV vs FUL (H), SUN vs ARS (A)</td>
-                                <td style="padding:8px 10px;">ล็อก 7 เสาหลัก Choice 1 + ปลดล็อกงบม้านั่ง £12.6m + เก็บเงินสดสำรอง <strong>{c2_bank_str}</strong> ใน Bank</td>
+                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">1 FT &bull; ZERO HIT</span></td>
+                                <td style="padding:8px 10px;">CHE vs HUL (H), LIV vs FUL (H), SUN vs ARS (A), MUN vs MCI (A)</td>
+                                <td style="padding:8px 10px;">ใช้ 1 FT ย้าย Foden (£7.0m สำรองดาร์บี้) &rarr; Martin Ødegaard (£6.6m กัปตันปืนใหญ่ 24 แต้ม เยือนซันเดอร์แลนด์ FDR 2) ลงตัวจริงทันที พร้อมเหลือเงินสดสำรอง <strong>{c2_bank_str}</strong> ใน Bank โดยแต้มลบเป็น 0 pts (ห้ามเปลี่ยนตัวติดลบ 100%)</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW5</td>
                                 <td style="padding:8px 10px;"><strong>1 Free Transfer</strong> (สะสมได้)</td>
                                 <td style="padding:8px 10px;"><strong>Arsenal vs Man City (MCI H)</strong>, LIV vs CRY (H)</td>
-                                <td style="padding:8px 10px;">อาร์เซนอลชนแมนฯ ซิตี้: โรเตชันใช้ De Cuyper / Dedić / Egan หรือใช้ 1 FT ปรับกองหลังด้วยเงินสดสำรอง {c2_bank_str} โดยไม่ต้องเสียแต้มลบ</td>
+                                <td style="padding:8px 10px;">อาร์เซนอลชนแมนฯ ซิตี้: สามารถโรเตชันแนวรับ หรือใช้ 1 FT ปรับทัพด้วยเงินสดสำรอง {c2_bank_str} โดยไม่ต้องเสียแต้มลบ</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW6</td>
@@ -2026,28 +2028,28 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="summary-panel-header">
                         <div>
                             <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-4-3 Formation &bull; Cost: £{c2_cost:.1f}m &bull; Bank: {c2_bank_str}</span>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-4-3 Formation &bull; Cost: £{c2_cost:.1f}m &bull; Bank: {c2_bank_str} &bull; Hits: 0 pts</span>
                         </div>
-                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">Choice 1 Optimized</span>
+                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">Zero-Hit Optimized</span>
                     </div>
 
                     <!-- Pros -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
                         <div class="pros-cons-item">
-                            <strong>100% Core Asset Preservation (Choice 1 Alignment) :</strong> ล็อก 8 ขุมกำลังหลักที่คุณเลือกไว้แบบไร้รอยต่อ (Haaland, Palmer [C], Pedro [VC], Gabriel, Gakpo, Szoboszlai, Wissa, Kinsky) ไม่สูญเสียมูลค่าทีมจากราคาตลาดและคงความแข็งแกร่งเดิมทั้งหมด
+                            <strong>Zero-Hit Rule Enforced (ห้ามเปลี่ยนตัวติดลบ 0 pts) :</strong> ย้ายตัวด้วย 1 Free Transfer ตามโควตาปกติ ไม่โดนตัดแต้มลบแม้แต่แต้มเดียว (Penalty: 0 pts) ปลอดภัยต่อคะแนนสะสม Overall Rank 100%
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Bench Capital Reallocation (£12.6m Unlocked) :</strong> ปลดล็อกงบประมาณที่จมอยู่บนม้านั่งสำรองจาก Gvardiol และ Foden ในศึกแมนเชสเตอร์ดาร์บี้ เปลี่ยนมาเป็นตัวจริงทรงพลังอย่าง Morgan Rogers (£7.6m &bull; xGI 2.32) และ Maximilian De Cuyper (£4.7m &bull; 21 แต้ม &bull; xGI 1.90) ทำแต้มตัวจริงรวมพุ่งขึ้นเป็น 199 แต้ม (เทียบกับ 169 แต้มของ Choice 1)
+                            <strong>Arsenal Talisman Upgrade (Martin Ødegaard &bull; 24 แต้ม &bull; Form 8.0 &bull; xGI 2.06) :</strong> แปลงมูลค่า Foden (£7.0m) ที่ต้องนั่งสำรองในศึกแมนเชสเตอร์ดาร์บี้เยือนโอลด์ แทรฟฟอร์ด มาเป็น Martin Ødegaard (£6.6m) กัปตันอาร์เซนอลที่กำลังท็อปฟอร์ม ลุยซันเดอร์แลนด์ (FDR 2)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Financial Buffer &amp; Liquidity ({c2_bank_str} in Bank) :</strong> มีเงินสดสำรองติดธนาคารไว้ทันที {c2_bank_str} เปิดทางให้บริหาร Free Transfer ใน GW5 และ GW6 ได้อย่างยืดหยุ่นโดยไม่ต้องฝืนขายใครเพื่อหาเศษเงิน
+                            <strong>14 Core Assets Perfectly Preserved (Choice 1 Alignment) :</strong> คงขุมกำลังเดิมถึง 14 จาก 15 คนเหมือน Choice 1 ทุกตำแหน่ง สลับและเปรียบเทียบใน Slot เดียวกันได้สะดวก 100%
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Medium-Term Fixture Insulation (GW4-GW8 Preparedness) :</strong> แนวรับกระจายตัวชัดเจน ไม่กระจุกตัวอาร์เซนอลคู่ ทำให้เมื่อถึง GW5 (อาร์เซนอลพบแมนฯ ซิตี้) สามารถโรเตชันกองหลังได้อย่างปลอดภัย
+                            <strong>Financial Buffer &amp; Liquidity ({c2_bank_str} in Bank) :</strong> เหลือเงินสดสำรอง {c2_bank_str} ไว้ในธนาคาร เปิดทางให้บริหาร Free Transfer ใน GW5 (อาร์เซนอลชนแมนฯ ซิตี้) ได้อย่างคล่องตัว
                         </div>
                         <div class="pros-cons-item">
-                            <strong>High-Yield Bench Rotation (Egan &bull; O'Shea &bull; Barry) :</strong> ม้านั่งสำรองมี John Egan (£4.1m &bull; 23 แต้ม), Dara O'Shea (£4.0m) และ Louie Barry (£5.6m &bull; xGI 2.42) ลงเล่นตัวจริง 90 นาทีเต็มทุกสัปดาห์ คอยสแตนด์บายฉุกเฉิน
+                            <strong>Active Bench Security (Groß &bull; Gvardiol &bull; Egan) :</strong> ม้านั่งสำรองแข็งแกร่ง นำโดย Pascal Groß (£5.5m &bull; 16 แต้ม) และ Gvardiol (£5.6m &bull; 22 แต้ม) สแตนด์บายพร้อมลงสนามหากเกิดเหตุฉุกเฉิน
                         </div>
                     </div>
 
@@ -2055,10 +2057,10 @@ def generate_html_report(data_dir="data", output_file="index.html"):
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
                         <div class="pros-cons-item">
-                            <strong>Temporary Man City Coverage Reduction :</strong> การตัด Foden และ Gvardiol ออกเพื่อเซฟงบ จะทำให้ไม่มีตัวแทนแมนฯ ซิตี้ นอกเหนือจาก Erling Haaland ในเกมเยือนโอลด์ แทรฟฟอร์ด (GW4) และเยือนเอมิเรตส์ (GW5)
+                            <strong>No Man City Midfield Coverage :</strong> การขาย Foden จะทำให้ไม่มีตัวรุกแมนฯ ซิตี้ นอกเหนือจาก Erling Haaland ในสองสัปดาห์หนัก (เยือนแมนฯ ยูไนเต็ด และเยือนเอมิเรตส์)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Dubravka Non-Playing Backup :</strong> การประหยัดงบผู้รักษาประตูสำรองโดยใช้ Dubravka (£4.0m) ทำให้ต้องพึ่งพา Kinsky เฝ้าเสาตัวจริง 100%
+                            <strong>Depleted Free Transfer for GW4 :</strong> ใช้โควตา 1 FT ไปแล้ว หากมีข่าวนักเตะบาดเจ็บกะทันหันก่อนเดดไลน์ จะไม่สามารถเปลี่ยนตัวฟรีได้อีกในสัปดาห์นี้
                         </div>
                     </div>
                 </div>

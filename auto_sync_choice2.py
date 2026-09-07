@@ -127,7 +127,7 @@ def monitor_press_conferences_and_injuries(bs):
     """
     elements_map = {e['id']: e for e in bs.get('elements', [])}
     # Monitored Core Targets (Choice 1 & Choice 2 Key Players)
-    monitored_pids = [109, 391, 277, 4, 124, 367, 398, 368, 154, 464, 411, 496, 165, 304, 31]
+    monitored_pids = [109, 391, 277, 4, 124, 367, 398, 368, 154, 464, 411, 496, 165, 304, 31, 15]
     
     alerts = []
     for pid in monitored_pids:
