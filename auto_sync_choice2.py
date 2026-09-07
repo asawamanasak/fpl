@@ -265,7 +265,7 @@ def fetch_live_data():
 
 def main():
     force_run = '--force' in sys.argv
-    print(f"[{datetime.now(timezone.utc).isoformat()}] Starting Choice 2 Smart Real-Time Engine (Rollback 2 Architecture)...")
+    print(f"[{datetime.now(timezone.utc).isoformat()}] Starting Choice 2 Smart Real-Time Engine (Rollback 6 Architecture)...")
 
     bs, fix = fetch_live_data()
     if not bs:
