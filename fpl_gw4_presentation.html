@@ -67,8 +67,9 @@
 
         @media (min-width: 1200px) {
             body {
-                height: 100vh;
-                overflow: hidden; /* App view on large desktop */
+                min-height: 100vh;
+                height: auto;
+                overflow-y: auto; /* Allow natural scrolling so all content is reachable */
             }
         }
 
@@ -345,15 +346,14 @@
         main {
             max-width: 1680px;
             margin: 0.3rem auto 0;
-            padding: 0 1rem 0.65rem;
+            padding: 0 1rem 2rem;
             flex: 1;
             width: 100%;
             display: flex;
             flex-direction: column;
-            min-height: 0;
         }
         .tab-content { display: none; }
-        .tab-content.active { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+        .tab-content.active { display: flex; flex-direction: column; flex: 1; }
 
         .gw-top-badge {
             background: rgba(56, 189, 248, 0.16);
@@ -424,7 +424,6 @@
             grid-template-columns: 1fr 1fr;
             gap: 0.95rem;
             flex: 1;
-            min-height: 0;
         }
 
         .plan-column {
@@ -435,7 +434,7 @@
             padding: 0.65rem;
             display: flex;
             flex-direction: column;
-            min-height: 0;
+            gap: 0.6rem;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
         }
 
@@ -531,15 +530,13 @@
                 );
             border: 1px solid rgba(16, 185, 129, 0.3);
             border-radius: 10px;
-            padding: 0.75rem 0.4rem;
-            flex: 1;
+            padding: 0.65rem 0.4rem 0.75rem;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            gap: 0.55rem;
-            min-height: 470px;
+            gap: 0.5rem;
+            min-height: 520px;
             box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.8), 0 4px 18px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
         }
         /* Pitch Tactical Markings (Midfield line & center circle) */
         .compact-pitch::before {
@@ -581,8 +578,8 @@
             background: linear-gradient(180deg, rgba(30, 41, 59, 0.86) 0%, rgba(15, 23, 42, 0.96) 100%);
             border: 1px solid rgba(255, 255, 255, 0.09);
             border-radius: 8px;
-            padding: 0.28rem 0.35rem 0.24rem;
-            width: 98px;
+            padding: 0.22rem 0.32rem 0.2rem;
+            width: 95px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -644,7 +641,7 @@
         }
         .starter-photo-wrap, .bench-photo-wrap {
             width: 100%;
-            height: 48px;
+            height: 42px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -653,8 +650,8 @@
             border-radius: 4px;
         }
         .starter-shirt-img, .bench-shirt-img {
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
             object-fit: contain;
             filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.65));
             transition: transform 0.2s ease;
@@ -1275,7 +1272,7 @@
                 <div class="season-badge">FPL 2026/27</div>
                 <div class="gw-top-badge">GW4</div>
                 <div class="title-box">
-                    <h1>GEMINI UNITED <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: 306983)</span> <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 08/09/2026 01:13 AM<span class="sync-tag-active">ACTIVE</span></span></h1>
+                    <h1>GEMINI UNITED <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500; font-family:'JetBrains Mono', monospace;">(ID: 306983)</span> <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 08/09/2026 01:17 AM<span class="sync-tag-active">ACTIVE</span></span></h1>
                     <p>Manager: Micky Asawamanasak &bull; จัดทีมสำหรับสัปดาห์ที่ 4 (Gameweek 4)</p>
                     <div class="deadline-pill" title="Official Gameweek 4 Deadline">
                         <span class="deadline-tag-prefix">DEADLINE</span> Sat 12 Sep, 19:30 ICT &bull; <span id="countdownTimer" class="countdown-clock">--h --m --s</span> <span class="lockdown-badge">LOCKDOWN AT -30M</span>

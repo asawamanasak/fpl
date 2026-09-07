@@ -635,8 +635,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         @media (min-width: 1200px) {{
             body {{
-                height: 100vh;
-                overflow: hidden; /* App view on large desktop */
+                min-height: 100vh;
+                height: auto;
+                overflow-y: auto; /* Allow natural scrolling so all content is reachable */
             }}
         }}
 
@@ -913,15 +914,14 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         main {{
             max-width: 1680px;
             margin: 0.3rem auto 0;
-            padding: 0 1rem 0.65rem;
+            padding: 0 1rem 2rem;
             flex: 1;
             width: 100%;
             display: flex;
             flex-direction: column;
-            min-height: 0;
         }}
         .tab-content {{ display: none; }}
-        .tab-content.active {{ display: flex; flex-direction: column; flex: 1; min-height: 0; }}
+        .tab-content.active {{ display: flex; flex-direction: column; flex: 1; }}
 
         .gw-top-badge {{
             background: rgba(56, 189, 248, 0.16);
@@ -992,7 +992,6 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             grid-template-columns: 1fr 1fr;
             gap: 0.95rem;
             flex: 1;
-            min-height: 0;
         }}
 
         .plan-column {{
@@ -1003,7 +1002,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             padding: 0.65rem;
             display: flex;
             flex-direction: column;
-            min-height: 0;
+            gap: 0.6rem;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
         }}
 
@@ -1099,15 +1098,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 );
             border: 1px solid rgba(16, 185, 129, 0.3);
             border-radius: 10px;
-            padding: 0.75rem 0.4rem;
-            flex: 1;
+            padding: 0.65rem 0.4rem 0.75rem;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            gap: 0.55rem;
-            min-height: 470px;
+            gap: 0.5rem;
+            min-height: 520px;
             box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.8), 0 4px 18px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
         }}
         /* Pitch Tactical Markings (Midfield line & center circle) */
         .compact-pitch::before {{
@@ -1149,8 +1146,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             background: linear-gradient(180deg, rgba(30, 41, 59, 0.86) 0%, rgba(15, 23, 42, 0.96) 100%);
             border: 1px solid rgba(255, 255, 255, 0.09);
             border-radius: 8px;
-            padding: 0.28rem 0.35rem 0.24rem;
-            width: 98px;
+            padding: 0.22rem 0.32rem 0.2rem;
+            width: 95px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1212,7 +1209,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .starter-photo-wrap, .bench-photo-wrap {{
             width: 100%;
-            height: 48px;
+            height: 42px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1221,8 +1218,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             border-radius: 4px;
         }}
         .starter-shirt-img, .bench-shirt-img {{
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
             object-fit: contain;
             filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.65));
             transition: transform 0.2s ease;
