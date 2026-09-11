@@ -5,13 +5,15 @@ auto_sync_choice2.py
 Hybrid Autonomous Engine for Choice 2 (The Master Fortress Blueprint).
 Runs on an offset 15-minute schedule via GitHub Actions.
 
-Hardened Strategic & Resilience Architecture (Rollback 6):
+Hardened Strategic & Resilience Architecture (Rollback 7):
 1. Resilient HTTP fetcher with Exponential Backoff & Retry (handles network latency and rate limits).
 2. Cryptographic Fingerprint Verification (SHA256) across player prices, injury flags, and fixtures.
 3. Friday Press Conference & Injury Watcher with Content-Aware Caching (avoids spurious timestamp writes).
-4. Post-Gameweek Archive Automation with Milestone Delta Detection.
-5. Final Lockdown Engine (< 30 minutes to Gameweek deadline).
-6. Smart Commit Decision Gate: Skips redundant commits to preserve GitHub Actions quotas and prevent git conflicts.
+4. Dynamic Fixture & FDR Verification: Automatically binds official fixtures to tactical roadmap and prevents stale fixture assumptions.
+5. Autonomous Dual-Half Chip Engine: Dynamically maps, plans, and schedules remaining chips across GW4-38.
+6. Post-Gameweek Archive Automation with Milestone Delta Detection.
+7. Final Lockdown Engine (< 30 minutes to Gameweek deadline).
+8. Smart Commit Decision Gate: Skips redundant commits to preserve GitHub Actions quotas and prevent git conflicts.
 """
 
 import json
@@ -265,7 +267,7 @@ def fetch_live_data():
 
 def main():
     force_run = '--force' in sys.argv
-    print(f"[{datetime.now(timezone.utc).isoformat()}] Starting Choice 2 Smart Real-Time Engine (Rollback 6 Architecture)...")
+    print(f"[{datetime.now(timezone.utc).isoformat()}] Starting Choice 2 Smart Real-Time Engine (Rollback 7 Architecture)...")
 
     bs, fix = fetch_live_data()
     if not bs:

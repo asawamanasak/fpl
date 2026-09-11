@@ -545,6 +545,59 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     chips_half1_str = "".join(half1_cards_html)
     chips_half2_str = "".join(half2_cards_html)
 
+    # Dynamic Fixture Lookup Helper based on real data/fixtures.json
+    teams_by_id = {t["id"]: t for t in bootstrap.get("teams", [])}
+    def get_fixture_desc(team_short, gw_num):
+        t_obj = next((t for t in bootstrap.get("teams", []) if t["short_name"] == team_short), None)
+        if not t_obj:
+            return ""
+        tid = t_obj["id"]
+        for fix in (fixtures or []):
+            if fix.get("event") == gw_num:
+                th = fix.get("team_h")
+                ta = fix.get("team_a")
+                if th == tid:
+                    opp = teams_by_id.get(ta, {}).get("short_name", "")
+                    diff = fix.get("team_h_difficulty")
+                    return f"{team_short} vs {opp} (H - FDR {diff})"
+                elif ta == tid:
+                    opp = teams_by_id.get(th, {}).get("short_name", "")
+                    diff = fix.get("team_a_difficulty")
+                    return f"{team_short} @ {opp} (A - FDR {diff})"
+        return ""
+
+    # Build dynamic multi-week roadmap rows for GW4 - GW7 from real official fixtures
+    gw4_fixes = ", ".join([f for f in [get_fixture_desc("CHE", 4), get_fixture_desc("LIV", 4), get_fixture_desc("ARS", 4), get_fixture_desc("MCI", 4)] if f])
+    gw5_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 5), get_fixture_desc("CHE", 5), get_fixture_desc("LIV", 5), get_fixture_desc("ARS", 5)] if f])
+    gw6_fixes = ", ".join([f for f in [get_fixture_desc("LIV", 6), get_fixture_desc("MCI", 6), get_fixture_desc("ARS", 6), get_fixture_desc("CHE", 6)] if f])
+    gw7_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 7), get_fixture_desc("CHE", 7), get_fixture_desc("LIV", 7), get_fixture_desc("ARS", 7)] if f])
+
+    dynamic_roadmap_rows_html = f'''
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW4 (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">{user_free_transfers} FTs &bull; ZERO HIT</span></td>
+                                <td style="padding:8px 10px;">{gw4_fixes}</td>
+                                <td style="padding:8px 10px;">มีโควตา <strong>{user_free_transfers} FTs เต็ม</strong>: แนะนำใช้ 1 FT ย้าย Foden (£7.0m) &rarr; Martin Ødegaard (£6.6m) ปรับทัพตัวจริงลุยซันเดอร์แลนด์ และเก็บสะสม 1 FT สำรองไว้ใช้ต่อเนื่อง โดยแต้มลบเป็น 0 pts (ห้ามเปลี่ยนตัวติดลบ 100%)</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW5</td>
+                                <td style="padding:8px 10px;"><strong>1-2 FTs &bull; จุดพิจารณา Triple Captain #1 ตัวเลือกที่ 1</strong></td>
+                                <td style="padding:8px 10px;">{gw5_fixes}</td>
+                                <td style="padding:8px 10px;"><strong>โอกาสทองใช้ Triple Captain #1 (ตัวเลือกที่ 1):</strong> Man City vs Sunderland (H - FDR 2 โซนเขียว) ฮาแลนด์เฝ้ารังพบซันเดอร์แลนด์ เหมาะแก่การระเบิดแต้ม 3 เท่า หรือเก็บชิปไว้ลุย GW7 หากต้องการถือ 2 FTs</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW6</td>
+                                <td style="padding:8px 10px;"><strong>1-2 Free Transfers</strong> (บิ๊กแมตช์ &bull; เลี่ยงชิป)</td>
+                                <td style="padding:8px 10px;">{gw6_fixes}</td>
+                                <td style="padding:8px 10px;"><strong>บิ๊กแมตช์แอนฟิลด์ (LIV vs MCI - FDR 4):</strong> แมนฯ ซิตี้ บุกเยือนลิเวอร์พูล เลี่ยงการใช้ชิปในสัปดาห์นี้ อาศัยตัวทำเกมอาร์เซนอล (ARS vs LEE - H FDR 2) และ Palmer (CHE vs BOU - H FDR 3) เป็นหัวใจหลัก</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW7</td>
+                                <td style="padding:8px 10px;"><strong>1-2 FTs &bull; จุดพิจารณา Triple Captain #1 ตัวเลือกที่ 2</strong></td>
+                                <td style="padding:8px 10px;">{gw7_fixes}</td>
+                                <td style="padding:8px 10px;"><strong>โอกาสทองใช้ Triple Captain #1 (ตัวเลือกที่ 2):</strong> Man City vs Ipswich (H - FDR 2 โซนเขียว) ฮาแลนด์เปิดบ้านพบอิปสวิช ก่อนพิจารณาเก็บ Free Hit #1 ไว้แก้ทางฉุกเฉินก่อนจบ GW19</td>
+                            </tr>'''
+
     # Dynamic Transfers In / Out Computation (Choice 2 vs Choice 1)
     c1_pids = [p[0] for p in c1_ids]
     c2_pids = [p[0] for p in c2_ids]
@@ -2533,30 +2586,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             </tr>
                         </thead>
                         <tbody>
-                            <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW4 (สัปดาห์นี้)</td>
-                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">{user_free_transfers} FTs &bull; ZERO HIT</span></td>
-                                <td style="padding:8px 10px;">CHE vs HUL (H), LIV vs FUL (H), SUN vs ARS (A), MUN vs MCI (A)</td>
-                                <td style="padding:8px 10px;">มีโควตา <strong>{user_free_transfers} FTs เต็ม</strong> (จากกฎ FPL ใหม่ Wildcard ไม่ล้างสิทธิ์สะสม): แนะนำใช้ 1 FT ย้าย Foden (£7.0m) &rarr; Martin Ødegaard (£6.6m) และเก็บสำรองอีก 1 FT ไว้รับมือ GW5 (อาร์เซนอลพบแมนฯ ซิตี้) หรือใช้ครบทั้ง 2 FTs เสริมแนวรับควบคู่กันได้ โดยแต้มลบเป็น 0 pts (ห้ามเปลี่ยนตัวติดลบ 100%)</td>
-                            </tr>
-                            <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW5</td>
-                                <td style="padding:8px 10px;"><strong>1-2 Free Transfers</strong> (สะสมได้)</td>
-                                <td style="padding:8px 10px;"><strong>Arsenal vs Man City (MCI H)</strong>, LIV vs CRY (H)</td>
-                                <td style="padding:8px 10px;">อาร์เซนอลชนแมนฯ ซิตี้: สามารถโรเตชันแนวรับ หรือใช้ 1 FT ปรับทัพด้วยเงินสดสำรอง {c2_bank_str} โดยไม่ต้องเสียแต้มลบ</td>
-                            </tr>
-                            <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW6</td>
-                                <td style="padding:8px 10px;"><strong>1-2 FTs &bull; จุดพิจารณา Triple Captain #1</strong></td>
-                                <td style="padding:8px 10px;">Man City vs Burnley (H) - <em>โปรแกรมเรือใบเข้าโซนเขียว</em></td>
-                                <td style="padding:8px 10px;"><strong>โอกาสทองใช้ Triple Captain #1 :</strong> Haaland เฝ้ารังพบเบิร์นลีย์ เป็นจังหวะระเบิดแต้ม 3 เท่าชั้นเลิศ ก่อนที่ TC1 จะหมดอายุใน GW19</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW7</td>
-                                <td style="padding:8px 10px;"><strong>1-2 Free Transfers</strong> (หรือถือ FH1 ไว้สำรอง)</td>
-                                <td style="padding:8px 10px;">LIV vs BOU (H), CHE vs NFO (A)</td>
-                                <td style="padding:8px 10px;">กอบโกยแต้มจาก Double Liverpool (Gakpo + Szoboszlai) และ Palmer ในสัปดาห์เหย้าต่อเนื่อง พร้อมถือ Free Hit #1 ไว้แก้ทางฉุกเฉิน</td>
-                            </tr>
+{dynamic_roadmap_rows_html}
                         </tbody>
                     </table>
                 </div>
@@ -2630,7 +2660,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             <strong>Arsenal Talisman Upgrade (Martin Ødegaard &bull; 24 แต้ม &bull; Form 8.0 &bull; xGI 2.06) :</strong> แปลงมูลค่า Foden (£7.0m) ที่ต้องนั่งสำรองในศึกแมนเชสเตอร์ดาร์บี้เยือนโอลด์ แทรฟฟอร์ด มาเป็น Martin Ødegaard (£6.6m) กัปตันอาร์เซนอลที่กำลังท็อปฟอร์ม ลุยซันเดอร์แลนด์ (FDR 2)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Retained 1 FT for GW5 Tactical Flexibility :</strong> การเลือกใช้เพียง 1 จาก {user_free_transfers} FTs ในสัปดาห์นี้ ทำให้ยังมีโควตา Free Transfer สำรองติดตัวสะสมต่อไปยัง GW5 (อาร์เซนอลชนแมนฯ ซิตี้) ได้อย่างยอดเยี่ยม
+                            <strong>Retained 1 FT for GW5 Tactical Flexibility :</strong> การเลือกใช้เพียง 1 จาก {user_free_transfers} FTs ในสัปดาห์นี้ ทำให้ยังมีโควตา Free Transfer สำรองติดตัวสะสมต่อไปยัง GW5 (แมนฯ ซิตี้ พบ ซันเดอร์แลนด์ FDR 2) ได้อย่างยอดเยี่ยม
                         </div>
                         <div class="pros-cons-item">
                             <strong>14 Core Assets Perfectly Preserved (Choice 1 Alignment) :</strong> คงขุมกำลังเดิมถึง 14 จาก 15 คนเหมือน Choice 1 ทุกตำแหน่ง สลับและเปรียบเทียบใน Slot เดียวกันได้สะดวก 100%
@@ -2644,7 +2674,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
                         <div class="pros-cons-item">
-                            <strong>No Man City Midfield Coverage :</strong> การขาย Foden จะทำให้ไม่มีตัวรุกแมนฯ ซิตี้ นอกเหนือจาก Erling Haaland ในสองสัปดาห์หนัก (เยือนแมนฯ ยูไนเต็ด และเยือนเอมิเรตส์)
+                            <strong>No Man City Midfield Coverage :</strong> การขาย Foden จะทำให้ไม่มีตัวรุกแมนฯ ซิตี้ นอกเหนือจาก Erling Haaland ในเกมเยือนโอลด์ แทรฟฟอร์ด และเกมเยือนแอนฟิลด์ใน GW6
                         </div>
                         <div class="pros-cons-item">
                             <strong>1 FT Banked Instead of Immediate Double Move :</strong> แผนนี้เลือกเก็บ 1 FT ไว้สำหรับ GW5 หากคุณต้องการยกระดับแนวรับทันทีใน GW4 สามารถใช้สิทธิ์ครบทั้ง 2 FTs (เช่น Konsa &rarr; De Cuyper) ได้ทันทีโดยไม่เสียแต้มลบ
