@@ -350,24 +350,72 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     # Strategy: Uses 1 of 2 available FTs (Foden £7.0m -> Martin Ødegaard £6.6m), saving 1 FT for GW5 (ARS vs MCI)
     # Free Transfers Used: 1 / 2 | Retained: 1 FT | Hits: 0 pts
     # Bank Reserve: +£0.4m
-    c2_ids = [
-        (496, True, False, False, False, False),  # Kinsky (GKP Slot 1 - MATCHES C1)
-        (304, True, False, False, False, False),  # O'Shea (DEF Slot 1 - MATCHES C1)
-        (31, True, False, False, False, False),   # Konsa (DEF Slot 2 - MATCHES C1)
-        (4, True, False, False, True, False),     # Gabriel (DEF Core Slot 3 - MATCHES C1)
-        (15, True, False, False, False, False),   # Ødegaard (MID Slot 1 - TRANSFER IN, replaces Groß in XI)
-        (367, True, False, False, True, False),   # Gakpo (MID Core Slot 2 - MATCHES C1)
-        (368, True, False, False, True, False),   # Szoboszlai (MID Core Slot 3 - MATCHES C1)
-        (154, True, True, False, False, False),   # Palmer (MID C Slot 4 - MATCHES C1)
-        (165, True, False, True, True, False),    # João Pedro (FWD VC Core Slot 1 - MATCHES C1)
-        (464, True, False, False, False, False),  # Wissa (FWD Slot 2 - MATCHES C1)
-        (411, True, False, False, True, False),   # Haaland (FWD Core Slot 3 - MATCHES C1)
-        # Bench (Symmetrically aligned with C1: GKP, Sub 1, Sub 2, Sub 3)
-        (109, False, False, False, False, False), # Verbruggen (GKP Sub - MATCHES C1)
-        (391, False, False, False, True, False),  # Gvardiol (Sub 1 - MATCHES C1)
-        (124, False, False, False, False, False), # Groß (Sub 2 - rotated from XI to bench)
-        (277, False, False, False, False, False), # Egan (Sub 3 - MATCHES C1)
-    ]
+    # Dynamic Transfer Optimizer for Choice 2:
+    # Autonomous Engine: Checks if primary target (Ødegaard £6.7m) is fully match fit (status=='a' and chance is None or 100).
+    # If injured/flagged, automatically re-computes best candidate in market under available budget.
+    # If no upgrade outperforms baseline, automatically pivots to Option B: 0 Transfers (Hold & Bank 2 FTs).
+    foden_el = elements_map.get(398, {})
+    foden_cost = (foden_el.get("now_cost", 70)) / 10.0
+    transfer_budget = foden_cost + c1_bank
+
+    target_mid = None
+    # Check Ødegaard (PID: 15) first
+    odegaard_el = elements_map.get(15, {})
+    odegaard_status = odegaard_el.get("status", "a")
+    odegaard_chance = odegaard_el.get("chance_of_playing_next_round")
+    odegaard_fit = (odegaard_status == "a") and (odegaard_chance is None or odegaard_chance == 100)
+
+    if odegaard_fit and ((odegaard_el.get("now_cost", 67) / 10.0) <= transfer_budget):
+        target_mid = odegaard_el
+    else:
+        # Ødegaard injured or out of budget: Evaluate best alternative midfielders dynamically
+        market_candidates = []
+        for e in bootstrap.get("elements", []):
+            if e.get("element_type") == 3 and e.get("id") not in [p[0] for p in c1_ids]:
+                c_cost = e.get("now_cost", 0) / 10.0
+                c_status = e.get("status", "a")
+                c_chance = e.get("chance_of_playing_next_round")
+                if c_cost <= transfer_budget and c_status == "a" and (c_chance is None or c_chance == 100):
+                    c_form = float(e.get("form", 0) or 0)
+                    c_ep = float(e.get("ep_next", 0) or 0)
+                    c_xgi = float(e.get("expected_goal_involvements", 0) or 0)
+                    # Composite score: Expected points (3.0) + Form (2.0) + xGI (1.5)
+                    c_score = (c_ep * 3.0) + (c_form * 2.0) + (c_xgi * 1.5)
+                    if c_form >= 5.5: # Quality threshold
+                        market_candidates.append((c_score, e))
+        
+        if market_candidates:
+            market_candidates.sort(key=lambda x: x[0], reverse=True)
+            target_mid = market_candidates[0][1]
+        else:
+            target_mid = None # Pivot to 0 Transfers (Hold & Roll)
+
+    if target_mid:
+        target_mid_id = target_mid["id"]
+        target_mid_name = target_mid["web_name"]
+        target_mid_cost = target_mid["now_cost"] / 10.0
+        c2_ids = [
+            (496, True, False, False, False, False),  # Kinsky
+            (304, True, False, False, False, False),  # O'Shea
+            (31, True, False, False, False, False),   # Konsa
+            (4, True, False, False, True, False),     # Gabriel
+            (target_mid_id, True, False, False, False, False), # DYNAMIC TRANSFER IN (Replaces Groß in XI)
+            (367, True, False, False, True, False),   # Gakpo
+            (368, True, False, False, True, False),   # Szoboszlai
+            (154, True, True, False, False, False),   # Palmer (C)
+            (165, True, False, True, True, False),    # João Pedro (VC)
+            (464, True, False, False, False, False),  # Wissa
+            (411, True, False, False, True, False),   # Haaland
+            # Bench
+            (109, False, False, False, False, False), # Verbruggen
+            (391, False, False, False, True, False),  # Gvardiol (Sub 1)
+            (124, False, False, False, False, False), # Groß (Sub 2)
+            (277, False, False, False, False, False), # Egan (Sub 3)
+        ]
+    else:
+        # Autonomous Fallback: 0 Transfers (Hold & Bank 2 FTs, perfectly match Choice 1)
+        c2_ids = list(c1_ids)
+
     c1_pids_set = set(p[0] for p in c1_ids)
     c2_squad = [build_player_by_id(*p) for p in c2_ids if build_player_by_id(*p)]
     for p in c2_squad:
@@ -393,11 +441,18 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     c1_nailed_count = sum(1 for p in c1_squad if p["minutes"] >= 90)
     c2_nailed_count = sum(1 for p in c2_squad if p["minutes"] >= 90)
 
-    # Dynamic Choice 2 Analysis Generation
-    c2_def_str = ", ".join([f"{p['web_name']} {p['next_fix'].split(' ')[0]}" for p in c2_starters if p['pos'] == 'DEF'])
-    c2_cap_name = next((p['web_name'] for p in c2_starters if p['is_captain']), "Haaland")
-    c2_vc_name = next((p['web_name'] for p in c2_starters if p['is_vice_captain']), "Palmer")
-    c2_fwds_str = " + ".join([p['web_name'] for p in c2_starters if p['pos'] == 'FWD'])
+    # Dynamic Pros & Cons for Choice 2:
+    if target_mid:
+        t_name = target_mid["web_name"]
+        t_cost = target_mid["now_cost"] / 10.0
+        t_pts = target_mid.get("total_points", 0)
+        t_form = target_mid.get("form", 0)
+        t_xgi = target_mid.get("expected_goal_involvements", 0)
+        c2_pro_upgrade = f"<strong>Tactical Talisman Upgrade ({t_name} &bull; {t_pts} แต้ม &bull; Form {t_form} &bull; xGI {t_xgi}) :</strong> คัดเลือกตัวย้ายเข้าที่ความฟิต 100% และฟอร์มดีที่สุด แปลงมูลค่า Foden (£{foden_cost:.1f}m) มาเป็น {t_name} (£{t_cost:.1f}m) เสริมแดนกลางตัวจริงเต็มสูบ"
+        c2_con_transfer = f"<strong>1 FT Banked Instead of Immediate Double Move :</strong> แผนนี้เลือกใช้ 1 FT ดึง {t_name} และเก็บ 1 FT ไว้สำหรับ GW5 หากคุณต้องการยกระดับแนวรับทันทีใน GW4 สามารถใช้สิทธิ์ครบทั้ง 2 FTs ได้ทันทีโดยไม่เสียแต้มลบ"
+    else:
+        c2_pro_upgrade = "<strong>Autonomous Capital Preservation (Hold & Bank 2 FTs) :</strong> เนื่องจากตัวเลือกย้ายเข้าหลักไม่ผ่านเกณฑ์ความฟิต 100% ระบบตัดสินใจคงขุมกำลังเดิม (0 Transfers) ไม่เสี่ยงดึงตัวเจ็บ และสะสมโควตา 2 FTs เต็มไปลุยสัปดาห์ถัดไป"
+        c2_con_transfer = "<strong>No Market Reinforcement This Week :</strong> เลือกไม่ทำการย้ายตัวในสัปดาห์นี้เพื่อรักษาโควตาสะสมสูงสุด ทำให้ขุมกำลังชุดตัวจริงเหมือนกับ Choice 1 ทุกตำแหน่ง"
 
     # Dynamic Last Sync Timestamp from GitHub Cloud / Live API (ICT / UTC+7)
     ict_tz = timezone(timedelta(hours=7))
@@ -572,12 +627,17 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     gw6_fixes = ", ".join([f for f in [get_fixture_desc("LIV", 6), get_fixture_desc("MCI", 6), get_fixture_desc("ARS", 6), get_fixture_desc("CHE", 6)] if f])
     gw7_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 7), get_fixture_desc("CHE", 7), get_fixture_desc("LIV", 7), get_fixture_desc("ARS", 7)] if f])
 
+    if target_mid:
+        gw4_roadmap_rec = f"มีโควตา <strong>{user_free_transfers} FTs เต็ม</strong>: แนะนำใช้ 1 FT ย้าย Foden (£7.0m) &rarr; {target_mid['web_name']} (£{target_mid['now_cost']/10.0:.1f}m) ปรับทัพตัวจริงลุยสัปดาห์นี้ และเก็บสะสม 1 FT สำรองไว้ใช้ต่อเนื่อง โดยแต้มลบเป็น 0 pts (ห้ามเปลี่ยนตัวติดลบ 100%)"
+    else:
+        gw4_roadmap_rec = f"โควตา <strong>{user_free_transfers} FTs เต็ม</strong>: เนื่องจากตัวเลือกย้ายเข้าหลักไม่ผ่านความฟิต 100% ระบบตัดสินใจ <strong>ไม่ทำการย้ายตัว (Hold & Bank 2 FTs)</strong> ใช้ไลน์อัปเดียวกับ Choice 1 และสะสมโควตาย้ายตัวเต็มพิกัดไปลุยสัปดาห์ถัดไป"
+
     dynamic_roadmap_rows_html = f'''
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW4 (สัปดาห์นี้)</td>
                                 <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">{user_free_transfers} FTs &bull; ZERO HIT</span></td>
                                 <td style="padding:8px 10px;">{gw4_fixes}</td>
-                                <td style="padding:8px 10px;">มีโควตา <strong>{user_free_transfers} FTs เต็ม</strong>: แนะนำใช้ 1 FT ย้าย Foden (£7.0m) &rarr; Martin Ødegaard (£6.6m) ปรับทัพตัวจริงลุยซันเดอร์แลนด์ และเก็บสะสม 1 FT สำรองไว้ใช้ต่อเนื่อง โดยแต้มลบเป็น 0 pts (ห้ามเปลี่ยนตัวติดลบ 100%)</td>
+                                <td style="padding:8px 10px;">{gw4_roadmap_rec}</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW5</td>
@@ -2657,10 +2717,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             <strong>Zero-Hit Rule Enforced (ห้ามเปลี่ยนตัวติดลบ 0 pts) :</strong> ย้ายตัวภายใต้โควตาทางการ {user_free_transfers} Free Transfers (ใช้ {transfers_count} FT, เหลือสะสม {user_free_transfers - transfers_count} FT) ไม่โดนตัดแต้มลบแม้แต่แต้มเดียว (Penalty: 0 pts)
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Arsenal Talisman Upgrade (Martin Ødegaard &bull; 24 แต้ม &bull; Form 8.0 &bull; xGI 2.06) :</strong> แปลงมูลค่า Foden (£7.0m) ที่ต้องนั่งสำรองในศึกแมนเชสเตอร์ดาร์บี้เยือนโอลด์ แทรฟฟอร์ด มาเป็น Martin Ødegaard (£6.6m) กัปตันอาร์เซนอลที่กำลังท็อปฟอร์ม ลุยซันเดอร์แลนด์ (FDR 2)
+                            {c2_pro_upgrade}
                         </div>
                         <div class="pros-cons-item">
-                            <strong>Retained 1 FT for GW5 Tactical Flexibility :</strong> การเลือกใช้เพียง 1 จาก {user_free_transfers} FTs ในสัปดาห์นี้ ทำให้ยังมีโควตา Free Transfer สำรองติดตัวสะสมต่อไปยัง GW5 (แมนฯ ซิตี้ พบ ซันเดอร์แลนด์ FDR 2) ได้อย่างยอดเยี่ยม
+                            <strong>Retained 1 FT for GW5 Tactical Flexibility :</strong> การเลือกใช้เพียง {transfers_count} จาก {user_free_transfers} FTs ในสัปดาห์นี้ ทำให้ยังมีโควตา Free Transfer สำรองติดตัวสะสมต่อไปยัง GW5 (แมนฯ ซิตี้ พบ ซันเดอร์แลนด์ FDR 2) ได้อย่างยอดเยี่ยม
                         </div>
                         <div class="pros-cons-item">
                             <strong>14 Core Assets Perfectly Preserved (Choice 1 Alignment) :</strong> คงขุมกำลังเดิมถึง 14 จาก 15 คนเหมือน Choice 1 ทุกตำแหน่ง สลับและเปรียบเทียบใน Slot เดียวกันได้สะดวก 100%
@@ -2677,7 +2737,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             <strong>No Man City Midfield Coverage :</strong> การขาย Foden จะทำให้ไม่มีตัวรุกแมนฯ ซิตี้ นอกเหนือจาก Erling Haaland ในเกมเยือนโอลด์ แทรฟฟอร์ด และเกมเยือนแอนฟิลด์ใน GW6
                         </div>
                         <div class="pros-cons-item">
-                            <strong>1 FT Banked Instead of Immediate Double Move :</strong> แผนนี้เลือกเก็บ 1 FT ไว้สำหรับ GW5 หากคุณต้องการยกระดับแนวรับทันทีใน GW4 สามารถใช้สิทธิ์ครบทั้ง 2 FTs (เช่น Konsa &rarr; De Cuyper) ได้ทันทีโดยไม่เสียแต้มลบ
+                            {c2_con_transfer}
                         </div>
                     </div>
                 </div>
