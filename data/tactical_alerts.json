@@ -1,14 +1,5 @@
 {
-  "last_checked": "2026-09-09T18:36:41.601620+00:00",
-  "total_alerts": 1,
-  "alerts": [
-    {
-      "id": 367,
-      "web_name": "Gakpo",
-      "status": "d",
-      "chance": 75,
-      "news": "Thigh injury - 75% chance of playing",
-      "timestamp": "2026-09-09T18:36:41.601462+00:00"
-    }
-  ]
+  "last_checked": "2026-09-12T14:16:15.197792+00:00",
+  "total_alerts": 0,
+  "alerts": []
 }
