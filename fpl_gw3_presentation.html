@@ -1396,10 +1396,193 @@
         .font-mono { font-family: 'JetBrains Mono', monospace; }
 
         /* =========================================================
+           TAB 5: GW3 POST-MATCH REVIEW & COMPARISON STYLING
+           ========================================================= */
+        .gw3-review-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 0.25rem;
+        }
+        .gw3-hero-banner {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 22, 0.95));
+            border: 1px solid var(--border-accent);
+            border-radius: 12px;
+            padding: 1.1rem 1.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: relative;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+        }
+        .gw3-hero-left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+        .gw3-result-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            padding: 0.28rem 0.85rem;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            width: fit-content;
+        }
+        .gw3-result-pill.winner-c1 {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.45);
+            box-shadow: 0 0 16px rgba(16, 185, 129, 0.3);
+        }
+        .gw3-result-pill.winner-c2 {
+            background: rgba(56, 189, 248, 0.2);
+            color: var(--accent-sky);
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+        }
+        .gw3-result-pill.winner-draw {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-amber);
+            border: 1px solid rgba(245, 158, 11, 0.45);
+        }
+        .gw3-hero-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.2px;
+        }
+        .gw3-hero-subtitle {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .gw3-scoreboard {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            background: rgba(15, 20, 28, 0.85);
+            border: 1px solid var(--border-muted);
+            border-radius: 10px;
+            padding: 0.6rem 1.2rem;
+        }
+        .score-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        .score-lbl {
+            font-size: 0.64rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .score-lbl.lbl-c1 { color: var(--accent-emerald); }
+        .score-lbl.lbl-c2 { color: var(--accent-sky); }
+        .score-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+        .score-val.val-c1 { color: var(--accent-emerald); }
+        .score-val.val-c2 { color: var(--accent-sky); }
+        .score-divider {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-muted);
+        }
+
+        .gw3-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .gw3-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-main);
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .gw3-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-main);
+        }
+        .gw3-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.78rem;
+        }
+        .gw3-table th {
+            padding: 6px 10px;
+            background: rgba(15, 20, 28, 0.8);
+            border-bottom: 1px solid var(--border-main);
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .gw3-table td {
+            border-bottom: 1px solid var(--border-muted);
+            vertical-align: middle;
+        }
+        .gw3-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .gw3-table tr.is-benched td {
+            opacity: 0.65;
+        }
+        .gw3-subhead {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.4rem 0.2rem 0.2rem;
+        }
+        .gw3-decider-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-main);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+        .gw3-decider-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-muted);
+            border-radius: 6px;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.82rem;
+            line-height: 1.65;
+            color: var(--text-secondary);
+        }
+        .gw3-decider-item strong {
+            color: #ffffff;
+        }
+
+        /* =========================================================
            MOBILE & TABLET RESPONSIVE STYLING (< 1024px & < 768px)
            ========================================================= */
         @media (max-width: 1024px) {
-            .lineup-split-grid, .summary-split-grid {
+            .lineup-split-grid, .summary-split-grid, .gw3-grid-2 {
                 grid-template-columns: 1fr;
                 gap: 1.25rem;
             }
@@ -1720,7 +1903,7 @@
         <div class="header-wrap">
             <div class="brand-meta">
                 <div class="season-badge">FPL 2026/27</div>
-                <div class="gw-top-badge">GW3</div>
+                <div class="gw-top-badge">GW4</div>
                 <div class="title-box">
                     <h1>
                         <span class="team-name">GEMINI UNITED</span> 
@@ -1730,10 +1913,10 @@
                     <p class="manager-meta-line">
                         <span class="manager-name">Manager: Micky Asawamanasak</span> 
                         <span class="header-dot">&bull;</span> 
-                        <span class="gw-target-txt">จัดทีมสำหรับสัปดาห์ที่ 3 (Gameweek 3)</span>
+                        <span class="gw-target-txt">จัดทีมสำหรับสัปดาห์ที่ 4 (Gameweek 4)</span>
                     </p>
-                    <div class="deadline-pill" title="Official Gameweek 3 Deadline">
-                        <span class="deadline-tag-prefix">DEADLINE</span> Sat 05 Sep, 00:30 ICT &bull; <span id="countdownTimer" class="countdown-clock">--h --m --s</span> <span class="lockdown-badge">LOCKDOWN AT -30M</span>
+                    <div class="deadline-pill" title="Official Gameweek 4 Deadline">
+                        <span class="deadline-tag-prefix">DEADLINE</span> Sat 12 Sep, 19:30 ICT &bull; <span id="countdownTimer" class="countdown-clock">--h --m --s</span> <span class="lockdown-badge">LOCKDOWN AT -30M</span>
                     </div>
                 </div>
             </div>
@@ -1748,7 +1931,7 @@
                 </div>
                 <div class="stat-cell" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08);">
                     <span class="lbl" style="color:var(--accent-sky); font-weight:700;">Target Gameweek</span>
-                    <span class="val" style="color:var(--accent-sky); font-weight:800; font-size:0.95rem;">GW3</span>
+                    <span class="val" style="color:var(--accent-sky); font-weight:800; font-size:0.95rem;">GW4</span>
                 </div>
                 <div class="stat-cell stat-rank-cell">
                     <span class="lbl">Global Rank</span>
@@ -1759,12 +1942,13 @@
         </div>
     </header>
 
-    <!-- Navigation (4 Clean Tabs) -->
+    <!-- Navigation (5 Clean Tabs) -->
     <nav class="nav-bar">
-        <button class="tab-btn active" onclick="switchTab('comparison', this)">Plan Lineup (GW3)</button>
+        <button class="tab-btn active" onclick="switchTab('comparison', this)">Plan Lineup (GW4)</button>
         <button class="tab-btn" onclick="switchTab('summary', this)">Plan Summary</button>
         <button class="tab-btn" onclick="switchTab('ticker', this)">FDR Ticker</button>
         <button class="tab-btn" onclick="switchTab('sources', this)">Research Sources</button>
+        <button class="tab-btn" onclick="switchTab('gw3-review', this)">GW3 Review</button>
     </nav>
 
     <!-- Main Content Area -->
@@ -1774,16 +1958,16 @@
             <!-- Gameweek Target Banner on Front Page -->
             <div class="gw-target-banner">
                 <div class="gw-banner-left">
-                    <span class="gw-badge-pill">GAMEWEEK 3</span>
+                    <span class="gw-badge-pill">GAMEWEEK 4</span>
                     <div class="gw-banner-title-wrap">
-                        <span class="gw-banner-title">การจัดทีมสำหรับสัปดาห์ที่ 3</span>
-                        <span class="gw-banner-en">(Gameweek 3 Lineup &amp; Strategy)</span>
+                        <span class="gw-banner-title">การจัดทีมสำหรับสัปดาห์ที่ 4</span>
+                        <span class="gw-banner-en">(Gameweek 4 Lineup &amp; Strategy)</span>
                     </div>
                 </div>
                 <div class="gw-banner-right">
                     <div class="gw-info-chip">
                         <span class="chip-label">DEADLINE:</span>
-                        <strong class="chip-val">Sat 05 Sep, 00:30 ICT</strong>
+                        <strong class="chip-val">Sat 12 Sep, 19:30 ICT</strong>
                     </div>
                     <span class="gw-divider">&bull;</span>
                     <div class="gw-info-chip">
@@ -1799,10 +1983,10 @@
                 <div class="plan-column">
                     <div class="plan-col-header">
                         <div>
-                            <div class="plan-title">Choice 1 &bull; Micky Selection (GW3)</div>
+                            <div class="plan-title">Choice 1 &bull; Micky Selection (GW4)</div>
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">3-4-3</span>
-                                <span class="active-chip-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.3);">GW3 &bull; BASELINE</span>
+                                <span class="active-chip-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.3);">GW4 &bull; BASELINE</span>
                             </div>
                         </div>
                         <div class="fin-badge">
@@ -2272,10 +2456,10 @@
                 <div class="plan-column plan-c2" id="choice-2">
                     <div class="plan-col-header">
                         <div>
-                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint (GW3)</div>
+                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint (GW4)</div>
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">3-4-3</span>
-                                <span class="active-chip-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">GW3 &bull; 0/2 FTs &bull; ZERO HIT</span>
+                                <span class="active-chip-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">GW4 &bull; 0/2 FTs &bull; ZERO HIT</span>
                             </div>
                         </div>
                         <div class="fin-badge" style="border-color:var(--accent-emerald);">
@@ -2984,7 +3168,7 @@
             <div class="ticker-container">
                 <div class="ticker-header-bar">
                     <div>
-                        <h2 style="font-size:0.95rem; font-weight:700; color:#ffffff;">Full Season Fixture Difficulty &amp; Sorting (GW3 &ndash; GW38)</h2>
+                        <h2 style="font-size:0.95rem; font-weight:700; color:#ffffff;">Full Season Fixture Difficulty &amp; Sorting (GW4 &ndash; GW38)</h2>
                         <div class="fdr-legend-strip">
                             <span class="fdr-legend-label">FDR Scale:</span>
                             <span class="fdr-legend-item fdr-2">FDR 2 &bull; Easy</span>
@@ -2995,7 +3179,7 @@
                     </div>
                     <div style="display:flex; gap:0.5rem; align-items:center;">
                         <button class="reset-btn" onclick="resetTableSort()">Reset Sort</button>
-                        <span style="font-size:0.65rem; color:var(--text-muted);">Scroll &rarr; to view GW3-38</span>
+                        <span style="font-size:0.65rem; color:var(--text-muted);">Scroll &rarr; to view GW4-38</span>
                     </div>
                 </div>
                 
@@ -3007,7 +3191,7 @@
                                 <th class="tbl-sticky-2 sortable-th" onclick="sortTable(1, 'text')" title="Sort by Club">Club <span class="sort-icon">&varr;</span></th>
                                 <th class="tbl-sticky-3 sortable-th" onclick="sortTable(2, 'number')" title="Sort by Position">Pos <span class="sort-icon">&varr;</span></th>
                                 <th class="tbl-sticky-4 sortable-th" onclick="sortTable(3, 'number')" title="Sort by Cost">Cost <span class="sort-icon">&varr;</span></th>
-                                <th onclick="sortTable(4, 'number')" class="sortable-th" title="Click to sort GW3 FDR">GW3 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(5, 'number')" class="sortable-th" title="Click to sort GW4 FDR">GW4 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(6, 'number')" class="sortable-th" title="Click to sort GW5 FDR">GW5 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(7, 'number')" class="sortable-th" title="Click to sort GW6 FDR">GW6 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(8, 'number')" class="sortable-th" title="Click to sort GW7 FDR">GW7 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(9, 'number')" class="sortable-th" title="Click to sort GW8 FDR">GW8 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(10, 'number')" class="sortable-th" title="Click to sort GW9 FDR">GW9 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(11, 'number')" class="sortable-th" title="Click to sort GW10 FDR">GW10 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(12, 'number')" class="sortable-th" title="Click to sort GW11 FDR">GW11 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(13, 'number')" class="sortable-th" title="Click to sort GW12 FDR">GW12 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(14, 'number')" class="sortable-th" title="Click to sort GW13 FDR">GW13 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(15, 'number')" class="sortable-th" title="Click to sort GW14 FDR">GW14 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(16, 'number')" class="sortable-th" title="Click to sort GW15 FDR">GW15 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(17, 'number')" class="sortable-th" title="Click to sort GW16 FDR">GW16 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(18, 'number')" class="sortable-th" title="Click to sort GW17 FDR">GW17 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(19, 'number')" class="sortable-th" title="Click to sort GW18 FDR">GW18 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(20, 'number')" class="sortable-th" title="Click to sort GW19 FDR">GW19 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(21, 'number')" class="sortable-th" title="Click to sort GW20 FDR">GW20 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(22, 'number')" class="sortable-th" title="Click to sort GW21 FDR">GW21 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(23, 'number')" class="sortable-th" title="Click to sort GW22 FDR">GW22 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(24, 'number')" class="sortable-th" title="Click to sort GW23 FDR">GW23 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(25, 'number')" class="sortable-th" title="Click to sort GW24 FDR">GW24 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(26, 'number')" class="sortable-th" title="Click to sort GW25 FDR">GW25 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(27, 'number')" class="sortable-th" title="Click to sort GW26 FDR">GW26 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(28, 'number')" class="sortable-th" title="Click to sort GW27 FDR">GW27 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(29, 'number')" class="sortable-th" title="Click to sort GW28 FDR">GW28 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(30, 'number')" class="sortable-th" title="Click to sort GW29 FDR">GW29 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(31, 'number')" class="sortable-th" title="Click to sort GW30 FDR">GW30 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(32, 'number')" class="sortable-th" title="Click to sort GW31 FDR">GW31 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(33, 'number')" class="sortable-th" title="Click to sort GW32 FDR">GW32 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(34, 'number')" class="sortable-th" title="Click to sort GW33 FDR">GW33 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(35, 'number')" class="sortable-th" title="Click to sort GW34 FDR">GW34 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(36, 'number')" class="sortable-th" title="Click to sort GW35 FDR">GW35 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(37, 'number')" class="sortable-th" title="Click to sort GW36 FDR">GW36 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(38, 'number')" class="sortable-th" title="Click to sort GW37 FDR">GW37 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(39, 'number')" class="sortable-th" title="Click to sort GW38 FDR">GW38 <span class="sort-icon">&varr;</span></th>
+                                <th onclick="sortTable(4, 'number')" class="sortable-th" title="Click to sort GW4 FDR">GW4 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(5, 'number')" class="sortable-th" title="Click to sort GW5 FDR">GW5 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(6, 'number')" class="sortable-th" title="Click to sort GW6 FDR">GW6 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(7, 'number')" class="sortable-th" title="Click to sort GW7 FDR">GW7 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(8, 'number')" class="sortable-th" title="Click to sort GW8 FDR">GW8 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(9, 'number')" class="sortable-th" title="Click to sort GW9 FDR">GW9 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(10, 'number')" class="sortable-th" title="Click to sort GW10 FDR">GW10 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(11, 'number')" class="sortable-th" title="Click to sort GW11 FDR">GW11 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(12, 'number')" class="sortable-th" title="Click to sort GW12 FDR">GW12 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(13, 'number')" class="sortable-th" title="Click to sort GW13 FDR">GW13 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(14, 'number')" class="sortable-th" title="Click to sort GW14 FDR">GW14 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(15, 'number')" class="sortable-th" title="Click to sort GW15 FDR">GW15 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(16, 'number')" class="sortable-th" title="Click to sort GW16 FDR">GW16 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(17, 'number')" class="sortable-th" title="Click to sort GW17 FDR">GW17 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(18, 'number')" class="sortable-th" title="Click to sort GW18 FDR">GW18 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(19, 'number')" class="sortable-th" title="Click to sort GW19 FDR">GW19 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(20, 'number')" class="sortable-th" title="Click to sort GW20 FDR">GW20 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(21, 'number')" class="sortable-th" title="Click to sort GW21 FDR">GW21 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(22, 'number')" class="sortable-th" title="Click to sort GW22 FDR">GW22 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(23, 'number')" class="sortable-th" title="Click to sort GW23 FDR">GW23 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(24, 'number')" class="sortable-th" title="Click to sort GW24 FDR">GW24 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(25, 'number')" class="sortable-th" title="Click to sort GW25 FDR">GW25 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(26, 'number')" class="sortable-th" title="Click to sort GW26 FDR">GW26 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(27, 'number')" class="sortable-th" title="Click to sort GW27 FDR">GW27 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(28, 'number')" class="sortable-th" title="Click to sort GW28 FDR">GW28 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(29, 'number')" class="sortable-th" title="Click to sort GW29 FDR">GW29 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(30, 'number')" class="sortable-th" title="Click to sort GW30 FDR">GW30 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(31, 'number')" class="sortable-th" title="Click to sort GW31 FDR">GW31 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(32, 'number')" class="sortable-th" title="Click to sort GW32 FDR">GW32 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(33, 'number')" class="sortable-th" title="Click to sort GW33 FDR">GW33 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(34, 'number')" class="sortable-th" title="Click to sort GW34 FDR">GW34 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(35, 'number')" class="sortable-th" title="Click to sort GW35 FDR">GW35 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(36, 'number')" class="sortable-th" title="Click to sort GW36 FDR">GW36 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(37, 'number')" class="sortable-th" title="Click to sort GW37 FDR">GW37 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(38, 'number')" class="sortable-th" title="Click to sort GW38 FDR">GW38 <span class="sort-icon">&varr;</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -3017,7 +3201,7 @@
         <td class="tbl-sticky-2" data-val="BHA">BHA</td>
         <td class="tbl-sticky-3" data-val="1"><span class="pos-tag-mini pos-GKP">GKP</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="4.5">£4.5m</td>
-        <td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td>
+        <td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td>
     </tr>
     
     <tr data-orig-index="1">
@@ -3025,7 +3209,7 @@
         <td class="tbl-sticky-2" data-val="IPS">IPS</td>
         <td class="tbl-sticky-3" data-val="2"><span class="pos-tag-mini pos-DEF">DEF</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="4.0">£4.0m</td>
-        <td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td>
+        <td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td>
     </tr>
     
     <tr data-orig-index="2">
@@ -3033,7 +3217,7 @@
         <td class="tbl-sticky-2" data-val="ARS">ARS</td>
         <td class="tbl-sticky-3" data-val="2"><span class="pos-tag-mini pos-DEF">DEF</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="4.5">£4.5m</td>
-        <td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td>
+        <td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td>
     </tr>
     
     <tr data-orig-index="3">
@@ -3041,7 +3225,7 @@
         <td class="tbl-sticky-2" data-val="ARS">ARS</td>
         <td class="tbl-sticky-3" data-val="2"><span class="pos-tag-mini pos-DEF">DEF</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="8.0">£8.0m</td>
-        <td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td>
+        <td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td>
     </tr>
     
     <tr data-orig-index="4">
@@ -3049,7 +3233,7 @@
         <td class="tbl-sticky-2" data-val="BHA">BHA</td>
         <td class="tbl-sticky-3" data-val="3"><span class="pos-tag-mini pos-MID">MID</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="5.6">£5.6m</td>
-        <td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td>
+        <td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td>
     </tr>
     
     <tr data-orig-index="5">
@@ -3057,7 +3241,7 @@
         <td class="tbl-sticky-2" data-val="ARS">ARS</td>
         <td class="tbl-sticky-3" data-val="3"><span class="pos-tag-mini pos-MID">MID</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="6.7">£6.7m</td>
-        <td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td>
+        <td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td>
     </tr>
     
     <tr data-orig-index="6">
@@ -3065,7 +3249,7 @@
         <td class="tbl-sticky-2" data-val="LIV">LIV</td>
         <td class="tbl-sticky-3" data-val="3"><span class="pos-tag-mini pos-MID">MID</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="7.0">£7.0m</td>
-        <td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td>
+        <td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td>
     </tr>
     
     <tr data-orig-index="7">
@@ -3073,7 +3257,7 @@
         <td class="tbl-sticky-2" data-val="CHE">CHE</td>
         <td class="tbl-sticky-3" data-val="3"><span class="pos-tag-mini pos-MID">MID</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="9.7">£9.7m</td>
-        <td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td>
+        <td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td>
     </tr>
     
     <tr data-orig-index="8">
@@ -3081,7 +3265,7 @@
         <td class="tbl-sticky-2" data-val="CHE">CHE</td>
         <td class="tbl-sticky-3" data-val="4"><span class="pos-tag-mini pos-FWD">FWD</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="7.7">£7.7m</td>
-        <td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td>
+        <td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td>
     </tr>
     
     <tr data-orig-index="9">
@@ -3089,7 +3273,7 @@
         <td class="tbl-sticky-2" data-val="NEW">NEW</td>
         <td class="tbl-sticky-3" data-val="4"><span class="pos-tag-mini pos-FWD">FWD</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="6.2">£6.2m</td>
-        <td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td>
+        <td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td>
     </tr>
     
     <tr data-orig-index="10">
@@ -3097,7 +3281,7 @@
         <td class="tbl-sticky-2" data-val="MCI">MCI</td>
         <td class="tbl-sticky-3" data-val="4"><span class="pos-tag-mini pos-FWD">FWD</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="15.5">£15.5m</td>
-        <td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td>
+        <td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td>
     </tr>
     
     <tr data-orig-index="11">
@@ -3105,7 +3289,7 @@
         <td class="tbl-sticky-2" data-val="TOT">TOT</td>
         <td class="tbl-sticky-3" data-val="1"><span class="pos-tag-mini pos-GKP">GKP</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="4.5">£4.5m</td>
-        <td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td>
+        <td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td>
     </tr>
     
     <tr data-orig-index="12">
@@ -3113,7 +3297,7 @@
         <td class="tbl-sticky-2" data-val="MCI">MCI</td>
         <td class="tbl-sticky-3" data-val="3"><span class="pos-tag-mini pos-MID">MID</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="7.0">£7.0m</td>
-        <td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td>
+        <td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td>
     </tr>
     
     <tr data-orig-index="13">
@@ -3121,7 +3305,7 @@
         <td class="tbl-sticky-2" data-val="MCI">MCI</td>
         <td class="tbl-sticky-3" data-val="2"><span class="pos-tag-mini pos-DEF">DEF</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="5.6">£5.6m</td>
-        <td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td>
+        <td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td>
     </tr>
     
     <tr data-orig-index="14">
@@ -3129,7 +3313,7 @@
         <td class="tbl-sticky-2" data-val="HUL">HUL</td>
         <td class="tbl-sticky-3" data-val="2"><span class="pos-tag-mini pos-DEF">DEF</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="4.1">£4.1m</td>
-        <td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td>
+        <td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">AVL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">NEW(H)</span></td>
     </tr>
     
                         </tbody>
@@ -3229,6 +3413,457 @@
                 </div>
             </div>
         </section>
+        
+        <!-- TAB 5: GW3 POST-MATCH REVIEW & COMPARISON -->
+        <section id="tab-gw3-review" class="tab-content">
+            <div class="gw3-review-container">
+                <!-- HERO WINNER & SCORE BANNER -->
+                <div class="gw3-hero-banner">
+                    <div class="gw3-hero-left">
+                        <span class="gw3-result-pill winner-c1">🏆 CHOICE 1 WINS</span>
+                        <h2 class="gw3-hero-title">สรุปผลการแข่งขัน &amp; เปรียบเทียบคะแนนสัปดาห์ที่ผ่านมา (GW3 Review)</h2>
+                        <p class="gw3-hero-subtitle">Choice 1 ชนะด้วยผลต่าง +2 คะแนน (55 vs 53 pts) &bull; ค่าเฉลี่ยผู้เล่นทั่วโลก (World Average): <strong>51 pts</strong> &bull; อันดับประจำสัปดาห์: <strong>3,758,653</strong> &bull; อันดับรวมทั่วโลก: <strong>59,630</strong></p>
+                    </div>
+                    <div class="gw3-scoreboard">
+                        <div class="score-box">
+                            <span class="score-lbl lbl-c1">Choice 1 (Actual)</span>
+                            <span class="score-val val-c1">55</span>
+                            <span style="font-size:0.62rem; color:var(--text-muted);">Bench: 14 pts</span>
+                        </div>
+                        <div class="score-divider">VS</div>
+                        <div class="score-box">
+                            <span class="score-lbl lbl-c2">Choice 2 (Variant)</span>
+                            <span class="score-val val-c2">53</span>
+                            <span style="font-size:0.62rem; color:var(--text-muted);">Bench: 16 pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SIDE-BY-SIDE SQUAD BREAKDOWN -->
+                <div class="gw3-grid-2">
+                    <!-- LEFT: CHOICE 1 BREAKDOWN -->
+                    <div class="gw3-panel" style="border-color: rgba(16, 185, 129, 0.35);">
+                        <div class="gw3-panel-header">
+                            <div>
+                                <span class="plan-title" style="color:var(--accent-emerald);">Choice 1 &bull; Micky Actual Squad (GW3 Wildcard)</span>
+                                <div style="font-size:0.68rem; color:var(--text-secondary);">ตัวจริง 11 คน &bull; กัปตัน Erling Haaland (18 pts)</div>
+                            </div>
+                            <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald); font-size:0.7rem; font-weight:800;">
+                                55 PTS
+                            </span>
+                        </div>
+
+                        <div class="gw3-subhead">11 ผู้เล่นตัวจริง (Starters XI): 55 คะแนน</div>
+                        <table class="gw3-table">
+                            <thead>
+                                <tr>
+                                    <th>นักเตะ</th>
+                                    <th>สโมสร</th>
+                                    <th style="text-align:right;">คะแนน</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-GKP">GKP</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Verbruggen</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">BHA</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:#ffffff; font-size:0.85rem;">
+                    3
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-DEF">DEF</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Gvardiol</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">MCI</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald); font-size:0.85rem;">
+                    8
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-DEF">DEF</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Egan</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">HUL</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald); font-size:0.85rem;">
+                    6
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-DEF">DEF</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Gabriel</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">ARS</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted); font-size:0.85rem;">
+                    2
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-MID">MID</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Groß</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">BHA</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted); font-size:0.85rem;">
+                    1
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-MID">MID</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Gakpo</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">LIV</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald); font-size:0.85rem;">
+                    11
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-MID">MID</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Foden</span>
+                    <span class="role-badge-vc" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px;">V</span>
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">MCI</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted); font-size:0.85rem;">
+                    1
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-MID">MID</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Szoboszlai</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">LIV</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:#ffffff; font-size:0.85rem;">
+                    3
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-MID">MID</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Palmer</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">CHE</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted); font-size:0.85rem;">
+                    1
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-FWD">FWD</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Wissa</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">NEW</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted); font-size:0.85rem;">
+                    1
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-FWD">FWD</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Haaland</span>
+                    <span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px;">C</span>
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">MCI</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald); font-size:0.85rem;">
+                    18 <small class="font-mono" style="color:var(--text-muted); font-size:0.65rem;">(9x2)</small>
+                </td>
+            </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="gw3-subhead" style="margin-top:0.4rem; border-top:1px dashed var(--border-muted); padding-top:0.5rem;">
+                            ตัวสำรองบนม้านั่ง (Bench Reserves): 14 คะแนน
+                        </div>
+                        <table class="gw3-table">
+                            <tbody>
+                                
+            <tr class="gw3-row is-benched">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-GKP">GKP</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Kinsky</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">TOT</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-amber); font-size:0.85rem;">
+                    6 <small style="color:var(--text-muted); font-size:0.65rem;">(bench)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row is-benched">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-FWD">FWD</span>
+                    <span style="color:var(--text-main); margin-left:4px;">João Pedro</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">CHE</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-secondary); font-size:0.85rem;">
+                    1 <small style="color:var(--text-muted); font-size:0.65rem;">(bench)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row is-benched">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-DEF">DEF</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Konsa</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">ARS</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-secondary); font-size:0.85rem;">
+                    4 <small style="color:var(--text-muted); font-size:0.65rem;">(bench)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row is-benched">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-DEF">DEF</span>
+                    <span style="color:var(--text-main); margin-left:4px;">O'Shea</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">IPS</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-secondary); font-size:0.85rem;">
+                    3 <small style="color:var(--text-muted); font-size:0.65rem;">(bench)</small>
+                </td>
+            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- RIGHT: CHOICE 2 BREAKDOWN -->
+                    <div class="gw3-panel" style="border-color: rgba(56, 189, 248, 0.35);">
+                        <div class="gw3-panel-header">
+                            <div>
+                                <span class="plan-title" style="color:var(--accent-sky);">Choice 2 &bull; Tactical Variant Setup</span>
+                                <div style="font-size:0.68rem; color:var(--text-secondary);">ตัวจริง 11 คน &bull; สลับ Konsa ลงแทน Egan / Pedro แทน Wissa</div>
+                            </div>
+                            <span class="source-pill" style="border-color:var(--accent-sky); color:var(--accent-sky); font-size:0.7rem; font-weight:800;">
+                                53 PTS
+                            </span>
+                        </div>
+
+                        <div class="gw3-subhead">11 ผู้เล่นตัวจริง (Starters XI): 53 คะแนน</div>
+                        <table class="gw3-table">
+                            <thead>
+                                <tr>
+                                    <th>นักเตะ</th>
+                                    <th>สโมสร</th>
+                                    <th style="text-align:right;">คะแนน</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-GKP">GKP</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Verbruggen</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">BHA</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:#ffffff; font-size:0.85rem;">
+                    3
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-DEF">DEF</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Gvardiol</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">MCI</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald); font-size:0.85rem;">
+                    8
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-DEF">DEF</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Konsa</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">ARS</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:#ffffff; font-size:0.85rem;">
+                    4
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-DEF">DEF</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Gabriel</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">ARS</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted); font-size:0.85rem;">
+                    2
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-MID">MID</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Groß</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">BHA</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted); font-size:0.85rem;">
+                    1
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-MID">MID</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Gakpo</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">LIV</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald); font-size:0.85rem;">
+                    11
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-MID">MID</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Foden</span>
+                    <span class="role-badge-vc" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px;">V</span>
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">MCI</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted); font-size:0.85rem;">
+                    1
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-MID">MID</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Szoboszlai</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">LIV</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:#ffffff; font-size:0.85rem;">
+                    3
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-MID">MID</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Palmer</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">CHE</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted); font-size:0.85rem;">
+                    1
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-FWD">FWD</span>
+                    <span style="color:var(--text-main); margin-left:4px;">João Pedro</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">CHE</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted); font-size:0.85rem;">
+                    1
+                </td>
+            </tr>
+            <tr class="gw3-row ">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-FWD">FWD</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Haaland</span>
+                    <span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px;">C</span>
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">MCI</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald); font-size:0.85rem;">
+                    18 <small class="font-mono" style="color:var(--text-muted); font-size:0.65rem;">(9x2)</small>
+                </td>
+            </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="gw3-subhead" style="margin-top:0.4rem; border-top:1px dashed var(--border-muted); padding-top:0.5rem;">
+                            ตัวสำรองบนม้านั่ง (Bench Reserves): 16 คะแนน
+                        </div>
+                        <table class="gw3-table">
+                            <tbody>
+                                
+            <tr class="gw3-row is-benched">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-GKP">GKP</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Kinsky</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">TOT</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-amber); font-size:0.85rem;">
+                    6 <small style="color:var(--text-muted); font-size:0.65rem;">(bench)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row is-benched">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-FWD">FWD</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Wissa</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">NEW</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-secondary); font-size:0.85rem;">
+                    1 <small style="color:var(--text-muted); font-size:0.65rem;">(bench)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row is-benched">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-DEF">DEF</span>
+                    <span style="color:var(--text-main); margin-left:4px;">Egan</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">HUL</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-amber); font-size:0.85rem;">
+                    6 <small style="color:var(--text-muted); font-size:0.65rem;">(bench)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row is-benched">
+                <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
+                    <span class="pos-tag-mini pos-DEF">DEF</span>
+                    <span style="color:var(--text-main); margin-left:4px;">O'Shea</span>
+                    
+                </td>
+                <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">IPS</td>
+                <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-secondary); font-size:0.85rem;">
+                    3 <small style="color:var(--text-muted); font-size:0.65rem;">(bench)</small>
+                </td>
+            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TACTICAL DECIDERS AUDIT -->
+                <div class="gw3-decider-box">
+                    <div style="font-size:0.85rem; font-weight:700; color:#ffffff; display:flex; align-items:center; gap:6px;">
+                        <span>จุดชี้ขาดสำคัญของการแข่งขันสัปดาห์ที่ 3 (Key Tactical Match Deciders)</span>
+                    </div>
+                    <div class="gw3-decider-item">
+                        <strong>1. The Cody Gakpo Masterstroke (11 คะแนน):</strong> การตัดสินใจคว้าตัวและส่ง Cody Gakpo (£7.2m) ยืนตัวจริงในแดนกลางสร้างผลลัพธ์มหาศาล โดยเจ้าตัวระเบิดฟอร์มโกยถึง 11 คะแนน เป็นผู้เล่นแดนกลางที่ทำแต้มสูงสุดของทั้งสองทีม
+                    </div>
+                    <div class="gw3-decider-item">
+                        <strong>2. John Egan Differential (+2 คะแนนเหนือ Choice 2):</strong> Choice 1 ส่ง John Egan (£4.1m) ลงสนามตัวจริงและเก็บได้ 6 คะแนน ขณะที่ Choice 2 เลือกลงสนาม Ezri Konsa (£4.4m) ที่ได้ 4 คะแนน ส่งผลให้ Choice 1 เก็บความได้เปรียบเฉือนชนะไป +2 แต้มอย่างเด็ดขาด
+                    </div>
+                    <div class="gw3-decider-item">
+                        <strong>3. Erling Haaland Captaincy Foundation (18 คะแนน):</strong> ทั้งสองตัวเลือกวาง Erling Haaland เป็นกัปตันคูณสองอย่างเฉียบคม ผลงานยิงประตูช่วยเก็บ 9x2 = 18 แต้ม การันตีฐานคะแนนนำค่าเฉลี่ยทั่วโลก (51 pts) ได้อย่างปลอดภัย
+                    </div>
+                    <div class="gw3-decider-item">
+                        <strong>4. Bench Points Reflection (แต้มบนม้านั่งสำรอง):</strong> ทั้งสองทีมมีแต้มค้างอยู่บนม้านั่งสำรองในระดับ 14-16 คะแนน โดยเฉพาะ Antonín Kinsky (£4.5m) ผู้รักษาประตูที่เก็บคลีนชีตทำได้ถึง 6 คะแนนบนม้านั่งสำรอง
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <script>
@@ -3246,10 +3881,10 @@
             }
         }
 
-        // Support direct tab deep-linking via URL hash (e.g. #summary, #ticker, #sources)
+        // Support direct tab deep-linking via URL hash (e.g. #summary, #ticker, #sources, #gw3-review)
         window.addEventListener('DOMContentLoaded', () => {
             const hash = window.location.hash.replace('#', '');
-            const tabMap = { 'comparison': 0, 'summary': 1, 'ticker': 2, 'sources': 3 };
+            const tabMap = { 'comparison': 0, 'summary': 1, 'ticker': 2, 'sources': 3, 'gw3-review': 4 };
             if (hash in tabMap) {
                 const btns = document.querySelectorAll('.tab-btn');
                 if (btns[tabMap[hash]]) {
@@ -3314,7 +3949,7 @@
         }
 
         // Feature 5: Real-Time Deadline Countdown Timer
-        const deadlineEpoch = 1788543000;
+        const deadlineEpoch = 1789216200;
         function updateDeadlineCountdown() {
             const now = Math.floor(Date.now() / 1000);
             const diff = deadlineEpoch - now;
