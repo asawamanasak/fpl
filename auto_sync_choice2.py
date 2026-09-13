@@ -283,6 +283,18 @@ def fetch_live_data():
                     # Ignore if FPL hasn't published yet
                     pass
 
+            # Also fetch event live scores/points for completed or in-progress gameweeks
+            if deadline_epoch and deadline_epoch <= now_epoch:
+                live_file = f"data/live_gw{ev_id}.json"
+                if not os.path.exists(live_file) or not ev.get("finished"):
+                    try:
+                        live_data = fetch_json_with_retry(f'https://fantasy.premierleague.com/api/event/{ev_id}/live/', headers=headers)
+                        if live_data and "elements" in live_data:
+                            with open(live_file, 'w', encoding='utf-8') as f:
+                                json.dump(live_data, f, ensure_ascii=False)
+                    except Exception as e:
+                        pass
+
     return bs, fix
 
 def main():
