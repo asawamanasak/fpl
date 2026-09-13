@@ -312,48 +312,127 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             "minutes": mins
         }
 
-    # CHOICE 1: User's Final Official Lockdown Squad (GW4 Verified from Screenshot)
-    # Formation: 3-4-3 | Captain: Cole Palmer [C] | Vice-Captain: João Pedro [V]
-    # Transfer Executed: Cody Gakpo (£7.2m) -> Martin Ødegaard (£6.7m) (1 FT Used, 0 Pt Hit)
-    # Bank Reserve: +£0.5m | Remaining FTs: 1 FT (Saved for GW5)
-    c1_ids = [
-        (109, True, False, False, False, False),  # Verbruggen (GKP £4.5m, BHA @ COV A)
-        (304, True, False, False, False, False),  # O'Shea (DEF £4.0m, IPS @ CRY A)
-        (31, True, False, False, False, False),   # Konsa (DEF £4.4m, AVL @ SUN A)
-        (4, True, False, False, True, False),     # Gabriel (DEF Core £8.0m, ARS @ SUN A)
-        (124, True, False, False, False, False),  # Groß (MID £5.5m, BHA @ COV A)
-        (15, True, False, False, False, False),   # Ødegaard (MID Transfer In £6.7m, ARS @ SUN A)
-        (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m, LIV vs FUL H)
-        (154, True, True, False, False, False),   # Palmer (MID C £9.6m, CHE vs HUL H)
-        (165, True, False, True, True, False),    # João Pedro (FWD VC Core £7.7m, CHE vs HUL H)
-        (464, True, False, False, False, False),  # Wissa (FWD £6.2m, NEW @ LEE A)
-        (411, True, False, False, True, False),   # Haaland (FWD Core £15.5m, MCI @ MUN A)
-        # Bench
-        (496, False, False, False, False, False), # Kinsky (GKP Sub £4.5m, TOT vs EVE H)
-        (398, False, False, False, False, False), # Foden (MID Sub 1 £7.0m, MCI @ MUN A)
-        (391, False, False, False, True, False),  # Gvardiol (DEF Sub 2 Core £5.6m, MCI @ MUN A)
-        (277, False, False, False, False, False), # Egan (DEF Sub 3 £4.1m, HUL @ CHE A)
-    ]
+    # Dynamic Gameweek Detection from Events
+    ict_tz = timezone(timedelta(hours=7))
+    if os.path.exists("data/bootstrap_static.json"):
+        mtime = os.path.getmtime("data/bootstrap_static.json")
+        sync_dt = datetime.fromtimestamp(mtime, tz=timezone.utc).astimezone(ict_tz)
+    else:
+        sync_dt = datetime.now(ict_tz)
+    last_sync_str = sync_dt.strftime("%d/%m/%Y %I:%M %p")
+
+    now_epoch = datetime.now(timezone.utc).timestamp()
+    active_gw = target_gw
+    if not active_gw:
+        # 1. If currently inside a gameweek that has passed deadline but not finished:
+        for ev in bootstrap.get("events", []):
+            if ev.get("deadline_time_epoch", 0) <= now_epoch and not ev.get("finished"):
+                active_gw = ev.get("id")
+                break
+        # 2. Otherwise upcoming deadline (is_next):
+        if not active_gw:
+            for ev in bootstrap.get("events", []):
+                if ev.get("is_next"):
+                    active_gw = ev.get("id")
+                    break
+        # 3. Fallback to is_current or default 4:
+        if not active_gw:
+            for ev in bootstrap.get("events", []):
+                if ev.get("is_current"):
+                    active_gw = ev.get("id")
+                    break
+        active_gw = active_gw or 4
+
+    deadline_epoch = 1789216200
+    deadline_str = "Sat 12 Sep, 19:30 ICT"
+    for ev in bootstrap.get("events", []):
+        if ev.get("id") == active_gw:
+            deadline_epoch = ev.get("deadline_time_epoch", 1789216200)
+            if ev.get("deadline_time"):
+                try:
+                    dt = datetime.fromisoformat(ev["deadline_time"].replace("Z", "+00:00")).astimezone(ict_tz)
+                    deadline_str = dt.strftime("%a %d %b, %H:%M ICT")
+                except Exception:
+                    pass
+            break
+
+    # CHOICE 1: Dynamic Ingestion from Official FPL Picks (Team ID: 306983)
+    # If deadline has passed, picks_gw{active_gw}.json is available and used 100% automatically.
+    picks_file_path = os.path.join(data_dir, f"picks_gw{active_gw}.json")
+    loaded_from_official_picks = False
+    c1_ids = []
+    c1_bank = 0.5
+
+    if os.path.exists(picks_file_path):
+        try:
+            picks_data = load_json(picks_file_path)
+            if picks_data and "picks" in picks_data:
+                eh = picks_data.get("entry_history", {})
+                c1_bank = eh.get("bank", 0) / 10.0
+                for p in picks_data["picks"]:
+                    pid = p["element"]
+                    pos_idx = p["position"]
+                    is_starter = (pos_idx <= 11)
+                    is_cap = p.get("is_captain", False)
+                    is_vc = p.get("is_vice_captain", False)
+                    c1_ids.append((pid, is_starter, is_cap, is_vc, False, False))
+                if len(c1_ids) == 15:
+                    loaded_from_official_picks = True
+        except Exception as e:
+            print(f"Notice loading official picks for GW{active_gw}: {e}")
+
+    if not loaded_from_official_picks:
+        # Fallback Baseline Lockdown Squad if pre-deadline / picks API not yet available
+        c1_ids = [
+            (109, True, False, False, False, False),  # Verbruggen (GKP £4.5m)
+            (304, True, False, False, False, False),  # O'Shea (DEF £4.0m)
+            (31, True, False, False, False, False),   # Konsa (DEF £4.4m)
+            (4, True, False, False, True, False),     # Gabriel (DEF Core £8.0m)
+            (124, True, False, False, False, False),  # Groß (MID £5.5m)
+            (15, True, False, False, False, False),   # Ødegaard (MID £6.7m)
+            (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m)
+            (154, True, True, False, False, False),   # Palmer (MID C £9.6m)
+            (165, True, False, True, True, False),    # João Pedro (FWD VC Core £7.7m)
+            (464, True, False, False, False, False),  # Wissa (FWD £6.2m)
+            (411, True, False, False, True, False),   # Haaland (FWD Core £15.5m)
+            # Bench
+            (496, False, False, False, False, False), # Kinsky (GKP Sub £4.5m)
+            (398, False, False, False, False, False), # Foden (MID Sub 1 £7.0m)
+            (391, False, False, False, True, False),  # Gvardiol (DEF Sub 2 £5.6m)
+            (277, False, False, False, False, False), # Egan (DEF Sub 3 £4.1m)
+        ]
+        c1_bank = 0.5
+
+    # Detect transfers dynamically if available
+    transfers_file_path = os.path.join(data_dir, "transfers.json")
+    transfers_history = load_json(transfers_file_path) if os.path.exists(transfers_file_path) else []
+    gw_transfers = [t for t in (transfers_history or []) if t.get("event") == active_gw] if isinstance(transfers_history, list) else []
+    transferred_in_ids = set(t.get("element_in") for t in gw_transfers)
+    if not transferred_in_ids and 15 in [p[0] for p in c1_ids]:
+        transferred_in_ids.add(15)
+
     c1_squad = [build_player_by_id(*p) for p in c1_ids if build_player_by_id(*p)]
     for p in c1_squad:
-        if p["id"] == 15:
+        if p["id"] in transferred_in_ids:
             p["is_transfer_in"] = True
     c1_starters = [p for p in c1_squad if p["is_starter"]]
     c1_bench = [p for p in c1_squad if not p["is_starter"]]
     c1_cost = sum(p["cost"] for p in c1_squad)
-    c1_bank = 0.5
+
+    # Dynamic formation detection for Choice 1
+    c1_def_count = sum(1 for p in c1_starters if p["pos"] == "DEF")
+    c1_mid_count = sum(1 for p in c1_starters if p["pos"] == "MID")
+    c1_fwd_count = sum(1 for p in c1_starters if p["pos"] == "FWD")
+    c1_formation_str = f"{c1_def_count}-{c1_mid_count}-{c1_fwd_count}"
 
     # Total Team Budget dynamically derived from Choice 1 and FPL Entry data
     total_budget = round(max(c1_cost + c1_bank, (entry.get("last_deadline_value", 1000) + entry.get("last_deadline_bank", 0)) / 10.0), 1)
 
-    # Official User Transfer State (Confirmed from official FPL transfers page):
-    # 1 Transfer executed (Gakpo -> Ødegaard), 1 Free Transfer remaining banked for GW5. Penalty: 0 pts.
     user_free_transfers = 2
-    transfers_count = 1
+    transfers_count = max(1, len(gw_transfers))
 
-    # CHOICE 2: GEMINI Autonomous Derby Attack Variant (3-5-2 Formation, 0 Hits)
-    # Tactical Variant: Starts Antonín Kinsky at home vs Everton, and deploys Phil Foden in 3-5-2
-    # to unlock high explosive ceiling in the Manchester Derby, benching O'Shea vs Crystal Palace.
+    # CHOICE 2: GEMINI Autonomous Tactical Variant (0 Hits)
+    # Starts Antonín Kinsky (H vs EVE) and deploys Phil Foden in 3-5-2
     c2_ids = [
         (496, True, False, False, False, False),  # Kinsky (GKP Starter vs Everton H)
         (31, True, False, False, False, False),   # Konsa (DEF @ Sunderland A)
@@ -375,13 +454,18 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     c2_squad = [build_player_by_id(*p) for p in c2_ids if build_player_by_id(*p)]
     for p in c2_squad:
-        if p["id"] == 15:
+        if p["id"] in transferred_in_ids:
             p["is_transfer_in"] = True
     c2_starters = [p for p in c2_squad if p["is_starter"]]
     c2_bench = [p for p in c2_squad if not p["is_starter"]]
     c2_cost = sum(p["cost"] for p in c2_squad)
     c2_bank = c1_bank
     c2_bank_str = f"+£{c2_bank:.1f}m"
+
+    c2_def_count = sum(1 for p in c2_starters if p["pos"] == "DEF")
+    c2_mid_count = sum(1 for p in c2_starters if p["pos"] == "MID")
+    c2_fwd_count = sum(1 for p in c2_starters if p["pos"] == "FWD")
+    c2_formation_str = f"{c2_def_count}-{c2_mid_count}-{c2_fwd_count}"
 
     # Dynamic metrics computation for Plan Summary
     c1_tot_pts = sum(p["total_points"] for p in c1_squad)
@@ -400,42 +484,6 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     # Dynamic Pros & Cons for Choice 2:
     c2_pro_upgrade = "<strong>Manchester Derby Ceiling Exploitation (Foden Started in 3-5-2):</strong> ส่ง Phil Foden ลงตัวจริงในแดนกลาง 5 คน ลุ้นเพดานแต้มระเบิดจากศึกแมนเชสเตอร์ดาร์บี้เต็มสูบ แทนการส่ง Dara O'Shea ที่ต้องออกไปเยือนคริสตัล พาเลซ"
     c2_con_transfer = "<strong>Leeds Away Striker Sacrifice (Wissa Benched as Sub 1):</strong> การปรับทัพเป็น 3-5-2 ทำให้ต้องพัก Yoane Wissa เป็นตัวสำรองอันดับ 1 แม้ฟอร์มกำลังร้อนแรงและมีโปรแกรมเยือนลีดส์ ยูไนเต็ด"
-
-    # Dynamic Last Sync Timestamp from GitHub Cloud / Live API (ICT / UTC+7)
-    ict_tz = timezone(timedelta(hours=7))
-    if os.path.exists("data/bootstrap_static.json"):
-        mtime = os.path.getmtime("data/bootstrap_static.json")
-        sync_dt = datetime.fromtimestamp(mtime, tz=timezone.utc).astimezone(ict_tz)
-    else:
-        sync_dt = datetime.now(ict_tz)
-    last_sync_str = sync_dt.strftime("%d/%m/%Y %I:%M %p")
-
-    # Dynamic Gameweek Detection from Events
-    active_gw = target_gw or 4
-    deadline_epoch = 1789216200
-    deadline_str = "Sat 12 Sep, 19:30 ICT"
-    now_epoch = datetime.now(timezone.utc).timestamp()
-    if not target_gw:
-        for ev in bootstrap.get("events", []):
-            if ev.get("is_current") and not ev.get("finished") and ev.get("deadline_time_epoch", 0) > now_epoch:
-                active_gw = ev.get("id", 4)
-                break
-        else:
-            for ev in bootstrap.get("events", []):
-                if ev.get("is_next"):
-                    active_gw = ev.get("id", 4)
-                    break
-
-    for ev in bootstrap.get("events", []):
-        if ev.get("id") == active_gw:
-            deadline_epoch = ev.get("deadline_time_epoch", 1789216200)
-            if ev.get("deadline_time"):
-                try:
-                    dt = datetime.fromisoformat(ev["deadline_time"].replace("Z", "+00:00")).astimezone(ict_tz)
-                    deadline_str = dt.strftime("%a %d %b, %H:%M ICT")
-                except Exception:
-                    pass
-            break
 
     # Global Rank Trajectory & Top 100k Tracker
     overall_rank = 65185
@@ -2732,7 +2780,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <div>
                             <div class="plan-title">Choice 1 &bull; Micky Selection (GW{active_gw})</div>
                             <div class="plan-sub-tags">
-                                <span class="formation-pill">3-4-3</span>
+                                <span class="formation-pill">{c1_formation_str}</span>
                                 <span class="active-chip-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.3);">GW{active_gw} &bull; BASELINE</span>
                             </div>
                         </div>
@@ -2815,7 +2863,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <div>
                             <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint (GW{active_gw})</div>
                             <div class="plan-sub-tags">
-                                <span class="formation-pill">3-4-3</span>
+                                <span class="formation-pill">{c2_formation_str}</span>
                                 <span class="active-chip-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">GW{active_gw} &bull; {transfers_count}/{user_free_transfers} FTs &bull; ZERO HIT</span>
                             </div>
                         </div>
@@ -2986,7 +3034,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <div class="summary-panel-header">
                         <div>
                             <div class="plan-title">Choice 1 &bull; Micky Final Lockdown Squad</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-4-3 Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m &bull; Quota: {user_free_transfers} FTs</span>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">{c1_formation_str} Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m &bull; Quota: {user_free_transfers} FTs</span>
                         </div>
                         <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">Lockdown Active</span>
                     </div>

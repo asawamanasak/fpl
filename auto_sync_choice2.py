@@ -109,13 +109,15 @@ def get_active_gameweek(bs):
     """
     events = bs.get('events', []) if isinstance(bs, dict) else []
     now_epoch = datetime.now(timezone.utc).timestamp()
+    # 1. Currently active in-play gameweek (deadline has passed, but matches not finished)
     for ev in events:
-        if ev.get('is_current') and not ev.get('finished'):
-            if ev.get('deadline_time_epoch', 0) > now_epoch:
-                return ev.get('id', 4)
+        if ev.get('deadline_time_epoch', 0) <= now_epoch and not ev.get('finished'):
+            return ev.get('id', 4)
+    # 2. Upcoming gameweek (before deadline)
     for ev in events:
         if ev.get('is_next'):
             return ev.get('id', 4)
+    # 3. Fallback to is_current
     for ev in events:
         if ev.get('is_current'):
             return ev.get('id', 4)
@@ -254,14 +256,32 @@ def fetch_live_data():
             with open('data/fixtures.json', 'r', encoding='utf-8') as f:
                 fix = json.load(f)
 
-    # 3. entry & history
-    for endpoint, filename in [('entry/306983/', 'data/entry.json'), ('entry/306983/history/', 'data/history.json')]:
+    # 3. entry, history & transfers
+    for endpoint, filename in [('entry/306983/', 'data/entry.json'), ('entry/306983/history/', 'data/history.json'), ('entry/306983/transfers/', 'data/transfers.json')]:
         try:
             data = fetch_json_with_retry(f'https://fantasy.premierleague.com/api/{endpoint}', headers=headers)
             with open(filename, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False)
         except Exception as e:
             print(f"Notice fetching {endpoint}: {e}")
+
+    # 4. Autonomous Official Picks Ingestion (GW1 up to latest past deadline GW)
+    if bs and "events" in bs:
+        now_epoch = datetime.now(timezone.utc).timestamp()
+        for ev in bs["events"]:
+            ev_id = ev.get("id")
+            deadline_epoch = ev.get("deadline_time_epoch", 0)
+            # Only fetch picks if the deadline has passed (FPL API unlocks picks only after deadline)
+            if deadline_epoch and deadline_epoch <= now_epoch:
+                picks_file = f"data/picks_gw{ev_id}.json"
+                try:
+                    picks_data = fetch_json_with_retry(f'https://fantasy.premierleague.com/api/entry/306983/event/{ev_id}/picks/', headers=headers)
+                    if picks_data and "picks" in picks_data:
+                        with open(picks_file, 'w', encoding='utf-8') as f:
+                            json.dump(picks_data, f, ensure_ascii=False)
+                except Exception as e:
+                    # Ignore if FPL hasn't published yet
+                    pass
 
     return bs, fix
 
@@ -339,6 +359,10 @@ def main():
 
     cmd_dyn = [sys.executable, "generate_presentation.py", "--out", f"fpl_gw{active_gw}_presentation.html"]
     subprocess.run(cmd_dyn, check=True)
+
+    if active_gw != 4:
+        cmd_gw4 = [sys.executable, "generate_presentation.py", "--out", "fpl_gw4_presentation.html"]
+        subprocess.run(cmd_gw4, check=True)
 
     if active_gw != 3:
         cmd_gw3 = [sys.executable, "generate_presentation.py", "--out", "fpl_gw3_presentation.html"]
