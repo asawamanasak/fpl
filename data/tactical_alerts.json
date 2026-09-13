@@ -1,5 +1,14 @@
 {
-  "last_checked": "2026-09-12T14:16:15.197792+00:00",
-  "total_alerts": 0,
-  "alerts": []
+  "last_checked": "2026-09-13T17:15:41.760149+00:00",
+  "total_alerts": 1,
+  "alerts": [
+    {
+      "id": 398,
+      "web_name": "Foden",
+      "status": "s",
+      "chance": 0,
+      "news": "Suspended until 17 Oct",
+      "timestamp": "2026-09-13T17:15:41.759945+00:00"
+    }
+  ]
 }
