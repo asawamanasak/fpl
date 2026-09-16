@@ -1,6 +1,6 @@
 {
-  "last_checked": "2026-09-13T17:15:41.760149+00:00",
-  "total_alerts": 1,
+  "last_checked": "2026-09-16T19:16:55.987589+00:00",
+  "total_alerts": 2,
   "alerts": [
     {
       "id": 398,
@@ -8,7 +8,15 @@
       "status": "s",
       "chance": 0,
       "news": "Suspended until 17 Oct",
-      "timestamp": "2026-09-13T17:15:41.759945+00:00"
+      "timestamp": "2026-09-16T19:16:55.987423+00:00"
+    },
+    {
+      "id": 165,
+      "web_name": "João Pedro",
+      "status": "d",
+      "chance": 75,
+      "news": "Unspecified injury - 75% chance of playing",
+      "timestamp": "2026-09-16T19:16:55.987450+00:00"
     }
   ]
 }
