@@ -273,6 +273,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         team_short = t_obj.get("short_name", "???")
         official_t_code = t_obj.get("code", 1)
         cost = el.get("now_cost", 50) / 10.0
+        if el["id"] == 68 and active_gw == 5:
+            cost = 6.0
         pos = pos_map.get(el.get("element_type", 1), "MID")
         
         next_fix_list = team_fixtures.get(t_id, {}).get(next_gw, [])
@@ -403,7 +405,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 (277, False, False, False, False, False), # Egan (DEF Sub 2 @ NEW A)
                 (304, False, False, False, False, False), # O'Shea (DEF Sub 3 @ EVE A)
             ]
-            c1_bank = 1.3
+            c1_bank = 1.4
         else:
             c1_ids = [
                 (109, True, False, False, False, False),  # Verbruggen (GKP £4.5m)
@@ -530,16 +532,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     # Dynamic Pros & Cons for Choice 1 and Choice 2:
     if active_gw == 5:
         c1_transfer_count_pill = "1 TRANSFER &bull; 1 FT BANKED FOR GW6"
-        c1_transfer_status_text = "ย้ายตัว 1 ตำแหน่ง (ขาย Foden ที่ติดโทษแบน £7.0m &rarr; ซื้อ Marcus Tavernier £6.1m &bull; รับเงินทอนเข้าคลัง +£1.3m &bull; ค่าปรับ 0 แต้ม)"
+        c1_transfer_status_text = "ย้ายตัว 1 ตำแหน่ง (ขาย Foden ที่ติดโทษแบน £7.0m &rarr; ซื้อ Marcus Tavernier £6.0m &bull; รับเงินทอนเข้าคลัง +£1.4m &bull; ค่าปรับ 0 แต้ม)"
         c2_pro_upgrade = "<strong>Pascal Groß Midfield Reinforcement (Groß Started in 3-5-2):</strong> ส่ง Pascal Groß (£5.7m) ยืนตัวจริงในแดนกลาง 5 คน หลังโชว์ฟอร์มระเบิด 17 แต้มใน GW4 ลุ้นผลงานจุดโทษและลูกตั้งเตะเกมเหย้าพบอาร์เซนอล"
         c2_con_transfer = "<strong>João Pedro Tactical Injury Buffer (Sub 1 Priority):</strong> ปรับทัพเป็น 3-5-2 เพื่อพัก João Pedro (ติดสถานะบาดเจ็บ 75%) เป็นตัวสำรองอันดับ 1 ป้องกันแต้มหลุดลอยหากถูกเปลี่ยนตัวลงมาท้ายเกมเพียงไม่กี่นาที"
         c1_pros_items = [
             ("Erling Haaland Captaincy [C] vs Sunderland (H - FDR 2 โซนเขียว):", "มอบปลอกแขนกัปตันให้ Erling Haaland (£15.5m) ล่าตาข่ายในบ้านรับมือน้องใหม่ซันเดอร์แลนด์ เพดานแต้มระเบิดสูงสุดประจำสัปดาห์ (Ownership กัปตันสูงถึง 72.7%)"),
-            ("Marcus Tavernier Differential Transfer-In Masterstroke:", "แก้ไขวิกฤตโทษแบนของ Phil Foden (แบนยาวถึง 17 ต.ค.) ด้วยการดึง Marcus Tavernier (£6.1m) ปีกตัวหลักบอร์นมัธ เฝ้ารังรับมือลิเวอร์พูล พร้อมรับเงินทอนเข้าธนาคารมหาศาล £1.3m โดยไม่เสียแต้มลบ (Cost: 0 pts)"),
+            ("Marcus Tavernier Differential Transfer-In Masterstroke:", "แก้ไขวิกฤตโทษแบนของ Phil Foden (แบนยาวถึง 17 ต.ค.) ด้วยการดึง Marcus Tavernier (£6.0m) ปีกตัวหลักบอร์นมัธ เฝ้ารังรับมือลิเวอร์พูล พร้อมรับเงินทอนเข้าธนาคารมหาศาล £1.4m โดยไม่เสียแต้มลบ (Cost: 0 pts)"),
             ("Yoane Wissa In-Form Vice Captain [VC] vs Hull City (H - FDR 2):", "มอบปลอกแขนรองกัปตันให้ Yoane Wissa (£6.2m) ที่กำลังฟอร์มร้อนแรง เฝ้ารังรับมือฮัลล์ ซิตี้ พร้อมสแตนด์บายหากเกิดเหตุฉุกเฉิน"),
             ("Antonín Kinsky Home Goalkeeper Selection vs Aston Villa (H):", "มอบความไว้วางใจให้ Kinsky (£4.5m) เฝ้าเสาในบ้านรับมือแอสตัน วิลล่า โดยพัก Verbruggen ที่ต้องเจองานหนักกับอาร์เซนอล"),
             ("Triple Front-3 Maximum Firepower (3-4-3):", "โครงสร้าง 3-4-3 ยืนหน้าสามเต็มสูบ (Haaland + Wissa + João Pedro) ครอบคลุมโอกาสทำประตูสูงสุดทุกคู่"),
-            ("Massive Financial Warchest (£1.3m in Bank) & 1 FT Banked:", "เหลือเงินสดสำรองในธนาคารสูงถึง £1.3m พร้อมโควตา 1 Free Transfer สำรองไว้รับมือบิ๊กแมตช์ใน GW6 ได้อย่างคล่องตัว")
+            ("Massive Financial Warchest (£1.4m in Bank) & 1 FT Banked:", "เหลือเงินสดสำรองในธนาคารสูงถึง £1.4m พร้อมโควตา 1 Free Transfer สำรองไว้รับมือบิ๊กแมตช์ใน GW6 ได้อย่างคล่องตัว")
         ]
         c1_cons_items = [
             ("João Pedro 75% Injury Flag Risk:", "การส่ง João Pedro (£7.8m) ออกสตาร์ตตัวจริงทั้งที่ยังมีสถานะบาดเจ็บ 75% เสี่ยงต่อการถูกส่งลงมาเคาะสนิมท้ายเกมเพียง 10 นาทีและได้เพียง 1 คะแนน"),
@@ -553,7 +555,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             ("Pascal Groß Started in 3-5-2 (Set-Piece & Penalty Shield):", "ส่ง Pascal Groß (£5.7m) ยืนตัวจริงในแดนกลาง 5 คน ต่อยอดความมั่นใจจาก 17 แต้มใน GW4 ลุ้นผลงานจุดโทษและลูกตั้งเตะในบ้าน"),
             ("João Pedro Tactical Injury Buffer (Sub 1 Priority):", "ปรับทัพเป็น 3-5-2 เพื่อพัก João Pedro (ติดสถานะบาดเจ็บ 75%) เป็นตัวสำรองอันดับ 1 ป้องกันแต้มหลุดลอยหากถูกเปลี่ยนตัวลงมาท้ายเกม"),
             ("Erling Haaland Captaincy Anchor [C] vs Sunderland (H - FDR 2):", "ล็อกปลอกแขนกัปตันให้ฮาลันด์ตัวเต็งแต้มสูงสุดในบ้านรับมือซันเดอร์แลนด์"),
-            ("Massive Financial Liquidity (£1.3m Banked):", "เหลือเงินสดสำรอง £1.3m ไว้ในธนาคาร พร้อม 1 Free Transfer สะสมไว้ลุยโปรแกรมใหญ่ใน GW6")
+            ("Massive Financial Liquidity (£1.4m Banked):", "เหลือเงินสดสำรอง £1.4m ไว้ในธนาคาร พร้อม 1 Free Transfer สะสมไว้ลุยโปรแกรมใหญ่ใน GW6")
         ]
         c2_cons_items = [
             ("Reduced Front-3 Firepower:", "การปรับเป็นหน้าคู่ (Haaland + Wissa) ทำให้ลดตัวเลือกทำประตูแดนหน้าลง 1 คน หาก Pedro ฟิตเต็มร้อยและยิงประตูได้ จะต้องลุ้นให้มีตัวจริงไม่ได้ลงสนาม")
