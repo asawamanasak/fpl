@@ -383,33 +383,58 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     if not loaded_from_official_picks:
         # Fallback Baseline Lockdown Squad if pre-deadline / picks API not yet available
-        c1_ids = [
-            (109, True, False, False, False, False),  # Verbruggen (GKP £4.5m)
-            (304, True, False, False, False, False),  # O'Shea (DEF £4.0m)
-            (31, True, False, False, False, False),   # Konsa (DEF £4.4m)
-            (4, True, False, False, True, False),     # Gabriel (DEF Core £8.0m)
-            (124, True, False, False, False, False),  # Groß (MID £5.5m)
-            (15, True, False, False, False, False),   # Ødegaard (MID £6.7m)
-            (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m)
-            (154, True, True, False, False, False),   # Palmer (MID C £9.6m)
-            (165, True, False, True, True, False),    # João Pedro (FWD VC Core £7.7m)
-            (464, True, False, False, False, False),  # Wissa (FWD £6.2m)
-            (411, True, False, False, True, False),   # Haaland (FWD Core £15.5m)
-            # Bench
-            (496, False, False, False, False, False), # Kinsky (GKP Sub £4.5m)
-            (398, False, False, False, False, False), # Foden (MID Sub 1 £7.0m)
-            (391, False, False, False, True, False),  # Gvardiol (DEF Sub 2 £5.6m)
-            (277, False, False, False, False, False), # Egan (DEF Sub 3 £4.1m)
-        ]
-        c1_bank = 0.5
+        if active_gw == 5:
+            # GW5 Squad from Micky Official Lineup (Foden -> Tavernier, Haaland [C], Wissa [VC], Kinsky in Goal)
+            c1_ids = [
+                (496, True, False, False, False, False),  # Kinsky (GKP Starter vs AVL H)
+                (391, True, False, False, True, False),   # Gvardiol (DEF vs SUN H)
+                (31, True, False, False, False, False),   # Konsa (DEF @ BHA A)
+                (4, True, False, False, True, False),     # Gabriel (DEF @ BHA A)
+                (68, True, False, False, False, False),   # Tavernier (MID vs LIV H - Transfer In)
+                (15, True, False, False, False, False),   # Ødegaard (MID @ BHA A)
+                (368, True, False, False, True, False),   # Szoboszlai (MID @ BOU A)
+                (154, True, False, False, False, False),  # Palmer (MID @ BRE A)
+                (165, True, False, False, True, False),   # João Pedro (FWD @ BRE A - 75% injury flag)
+                (464, True, False, True, False, False),   # Wissa (FWD VC vs HUL H)
+                (411, True, True, False, True, False),    # Haaland (FWD C vs SUN H)
+                # Bench
+                (109, False, False, False, False, False), # Verbruggen (GKP Sub vs ARS H)
+                (124, False, False, False, False, False), # Groß (MID Sub 1 vs ARS H)
+                (277, False, False, False, False, False), # Egan (DEF Sub 2 @ NEW A)
+                (304, False, False, False, False, False), # O'Shea (DEF Sub 3 @ EVE A)
+            ]
+            c1_bank = 1.3
+        else:
+            c1_ids = [
+                (109, True, False, False, False, False),  # Verbruggen (GKP £4.5m)
+                (304, True, False, False, False, False),  # O'Shea (DEF £4.0m)
+                (31, True, False, False, False, False),   # Konsa (DEF £4.4m)
+                (4, True, False, False, True, False),     # Gabriel (DEF Core £8.0m)
+                (124, True, False, False, False, False),  # Groß (MID £5.5m)
+                (15, True, False, False, False, False),   # Ødegaard (MID £6.7m)
+                (368, True, False, False, True, False),   # Szoboszlai (MID Core £7.0m)
+                (154, True, True, False, False, False),   # Palmer (MID C £9.6m)
+                (165, True, False, True, True, False),    # João Pedro (FWD VC Core £7.7m)
+                (464, True, False, False, False, False),  # Wissa (FWD £6.2m)
+                (411, True, False, False, True, False),   # Haaland (FWD Core £15.5m)
+                # Bench
+                (496, False, False, False, False, False), # Kinsky (GKP Sub £4.5m)
+                (398, False, False, False, False, False), # Foden (MID Sub 1 £7.0m)
+                (391, False, False, False, True, False),  # Gvardiol (DEF Sub 2 £5.6m)
+                (277, False, False, False, False, False), # Egan (DEF Sub 3 £4.1m)
+            ]
+            c1_bank = 0.5
 
     # Detect transfers dynamically if available
     transfers_file_path = os.path.join(data_dir, "transfers.json")
     transfers_history = load_json(transfers_file_path) if os.path.exists(transfers_file_path) else []
     gw_transfers = [t for t in (transfers_history or []) if t.get("event") == active_gw] if isinstance(transfers_history, list) else []
     transferred_in_ids = set(t.get("element_in") for t in gw_transfers)
-    if not transferred_in_ids and 15 in [p[0] for p in c1_ids]:
-        transferred_in_ids.add(15)
+    if not transferred_in_ids:
+        if active_gw == 5:
+            transferred_in_ids.add(68)
+        elif 15 in [p[0] for p in c1_ids]:
+            transferred_in_ids.add(15)
 
     c1_squad = [build_player_by_id(*p) for p in c1_ids if build_player_by_id(*p)]
     for p in c1_squad:
@@ -429,28 +454,49 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     total_budget = round(max(c1_cost + c1_bank, (entry.get("last_deadline_value", 1000) + entry.get("last_deadline_bank", 0)) / 10.0), 1)
 
     user_free_transfers = 2
-    transfers_count = max(1, len(gw_transfers))
+    transfers_count = 1
 
     # CHOICE 2: GEMINI Autonomous Tactical Variant (0 Hits)
-    # Starts Antonín Kinsky (H vs EVE) and deploys Phil Foden in 3-5-2
-    c2_ids = [
-        (496, True, False, False, False, False),  # Kinsky (GKP Starter vs Everton H)
-        (31, True, False, False, False, False),   # Konsa (DEF @ Sunderland A)
-        (4, True, False, False, True, False),     # Gabriel (DEF @ Sunderland A)
-        (304, True, False, False, False, False),  # O'Shea (DEF @ Crystal Palace A)
-        (124, True, False, False, False, False),  # Groß (MID @ Coventry A)
-        (15, True, False, False, False, False),   # Ødegaard (MID @ Sunderland A)
-        (368, True, False, False, True, False),   # Szoboszlai (MID vs Fulham H)
-        (154, True, True, False, False, False),   # Palmer (MID C vs Hull City H)
-        (398, True, False, False, False, False),  # Foden (MID Starter in 3-5-2 @ Man United A)
-        (165, True, False, True, True, False),    # João Pedro (FWD VC vs Hull City H)
-        (411, True, False, False, True, False),   # Haaland (FWD @ Man United A)
-        # Bench
-        (109, False, False, False, False, False), # Verbruggen (GKP Sub)
-        (464, False, False, False, False, False), # Wissa (FWD Sub 1)
-        (391, False, False, False, True, False),  # Gvardiol (DEF Sub 2)
-        (277, False, False, False, False, False), # Egan (DEF Sub 3)
-    ]
+    if active_gw == 5:
+        # Midfield Shield Variant (3-5-2): Starts Pascal Groß in 5-man midfield, benches João Pedro (75% flag) as Sub 1
+        c2_ids = [
+            (496, True, False, False, False, False),  # Kinsky (GKP Starter vs AVL H)
+            (391, True, False, False, True, False),   # Gvardiol (DEF vs SUN H)
+            (31, True, False, False, False, False),   # Konsa (DEF @ BHA A)
+            (4, True, False, False, True, False),     # Gabriel (DEF @ BHA A)
+            (68, True, False, False, False, False),   # Tavernier (MID vs LIV H)
+            (15, True, False, False, False, False),   # Ødegaard (MID @ BHA A)
+            (368, True, False, False, True, False),   # Szoboszlai (MID @ BOU A)
+            (154, True, False, False, False, False),  # Palmer (MID @ BRE A)
+            (124, True, False, False, False, False),  # Groß (MID Starter in 3-5-2 vs ARS H)
+            (464, True, False, True, False, False),   # Wissa (FWD VC vs HUL H)
+            (411, True, True, False, True, False),    # Haaland (FWD C vs SUN H)
+            # Bench
+            (109, False, False, False, False, False), # Verbruggen (GKP Sub vs ARS H)
+            (165, False, False, False, True, False),  # João Pedro (FWD Sub 1 - 75% Injury Buffer)
+            (277, False, False, False, False, False), # Egan (DEF Sub 2 @ NEW A)
+            (304, False, False, False, False, False), # O'Shea (DEF Sub 3 @ EVE A)
+        ]
+    else:
+        # GW4 Derby Attack Variant (3-5-2)
+        c2_ids = [
+            (496, True, False, False, False, False),  # Kinsky (GKP Starter vs Everton H)
+            (31, True, False, False, False, False),   # Konsa (DEF @ Sunderland A)
+            (4, True, False, False, True, False),     # Gabriel (DEF @ Sunderland A)
+            (304, True, False, False, False, False),  # O'Shea (DEF @ Crystal Palace A)
+            (124, True, False, False, False, False),  # Groß (MID @ Coventry A)
+            (15, True, False, False, False, False),   # Ødegaard (MID @ Sunderland A)
+            (368, True, False, False, True, False),   # Szoboszlai (MID vs Fulham H)
+            (154, True, True, False, False, False),   # Palmer (MID C vs Hull City H)
+            (398, True, False, False, False, False),  # Foden (MID Starter in 3-5-2 @ Man United A)
+            (165, True, False, True, True, False),    # João Pedro (FWD VC vs Hull City H)
+            (411, True, False, False, True, False),   # Haaland (FWD @ Man United A)
+            # Bench
+            (109, False, False, False, False, False), # Verbruggen (GKP Sub)
+            (464, False, False, False, False, False), # Wissa (FWD Sub 1)
+            (391, False, False, False, True, False),  # Gvardiol (DEF Sub 2)
+            (277, False, False, False, False, False), # Egan (DEF Sub 3)
+        ]
 
     c2_squad = [build_player_by_id(*p) for p in c2_ids if build_player_by_id(*p)]
     for p in c2_squad:
@@ -481,9 +527,73 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     c1_nailed_count = sum(1 for p in c1_squad if p["minutes"] >= 90)
     c2_nailed_count = sum(1 for p in c2_squad if p["minutes"] >= 90)
 
-    # Dynamic Pros & Cons for Choice 2:
-    c2_pro_upgrade = "<strong>Manchester Derby Ceiling Exploitation (Foden Started in 3-5-2):</strong> ส่ง Phil Foden ลงตัวจริงในแดนกลาง 5 คน ลุ้นเพดานแต้มระเบิดจากศึกแมนเชสเตอร์ดาร์บี้เต็มสูบ แทนการส่ง Dara O'Shea ที่ต้องออกไปเยือนคริสตัล พาเลซ"
-    c2_con_transfer = "<strong>Leeds Away Striker Sacrifice (Wissa Benched as Sub 1):</strong> การปรับทัพเป็น 3-5-2 ทำให้ต้องพัก Yoane Wissa เป็นตัวสำรองอันดับ 1 แม้ฟอร์มกำลังร้อนแรงและมีโปรแกรมเยือนลีดส์ ยูไนเต็ด"
+    # Dynamic Pros & Cons for Choice 1 and Choice 2:
+    if active_gw == 5:
+        c1_transfer_count_pill = "1 TRANSFER &bull; 1 FT BANKED FOR GW6"
+        c1_transfer_status_text = "ย้ายตัว 1 ตำแหน่ง (ขาย Foden ที่ติดโทษแบน £7.0m &rarr; ซื้อ Marcus Tavernier £6.1m &bull; รับเงินทอนเข้าคลัง +£1.3m &bull; ค่าปรับ 0 แต้ม)"
+        c2_pro_upgrade = "<strong>Pascal Groß Midfield Reinforcement (Groß Started in 3-5-2):</strong> ส่ง Pascal Groß (£5.7m) ยืนตัวจริงในแดนกลาง 5 คน หลังโชว์ฟอร์มระเบิด 17 แต้มใน GW4 ลุ้นผลงานจุดโทษและลูกตั้งเตะเกมเหย้าพบอาร์เซนอล"
+        c2_con_transfer = "<strong>João Pedro Tactical Injury Buffer (Sub 1 Priority):</strong> ปรับทัพเป็น 3-5-2 เพื่อพัก João Pedro (ติดสถานะบาดเจ็บ 75%) เป็นตัวสำรองอันดับ 1 ป้องกันแต้มหลุดลอยหากถูกเปลี่ยนตัวลงมาท้ายเกมเพียงไม่กี่นาที"
+        c1_pros_items = [
+            ("Erling Haaland Captaincy [C] vs Sunderland (H - FDR 2 โซนเขียว):", "มอบปลอกแขนกัปตันให้ Erling Haaland (£15.5m) ล่าตาข่ายในบ้านรับมือน้องใหม่ซันเดอร์แลนด์ เพดานแต้มระเบิดสูงสุดประจำสัปดาห์ (Ownership กัปตันสูงถึง 72.7%)"),
+            ("Marcus Tavernier Differential Transfer-In Masterstroke:", "แก้ไขวิกฤตโทษแบนของ Phil Foden (แบนยาวถึง 17 ต.ค.) ด้วยการดึง Marcus Tavernier (£6.1m) ปีกตัวหลักบอร์นมัธ เฝ้ารังรับมือลิเวอร์พูล พร้อมรับเงินทอนเข้าธนาคารมหาศาล £1.3m โดยไม่เสียแต้มลบ (Cost: 0 pts)"),
+            ("Yoane Wissa In-Form Vice Captain [VC] vs Hull City (H - FDR 2):", "มอบปลอกแขนรองกัปตันให้ Yoane Wissa (£6.2m) ที่กำลังฟอร์มร้อนแรง เฝ้ารังรับมือฮัลล์ ซิตี้ พร้อมสแตนด์บายหากเกิดเหตุฉุกเฉิน"),
+            ("Antonín Kinsky Home Goalkeeper Selection vs Aston Villa (H):", "มอบความไว้วางใจให้ Kinsky (£4.5m) เฝ้าเสาในบ้านรับมือแอสตัน วิลล่า โดยพัก Verbruggen ที่ต้องเจองานหนักกับอาร์เซนอล"),
+            ("Triple Front-3 Maximum Firepower (3-4-3):", "โครงสร้าง 3-4-3 ยืนหน้าสามเต็มสูบ (Haaland + Wissa + João Pedro) ครอบคลุมโอกาสทำประตูสูงสุดทุกคู่"),
+            ("Massive Financial Warchest (£1.3m in Bank) & 1 FT Banked:", "เหลือเงินสดสำรองในธนาคารสูงถึง £1.3m พร้อมโควตา 1 Free Transfer สำรองไว้รับมือบิ๊กแมตช์ใน GW6 ได้อย่างคล่องตัว")
+        ]
+        c1_cons_items = [
+            ("João Pedro 75% Injury Flag Risk:", "การส่ง João Pedro (£7.8m) ออกสตาร์ตตัวจริงทั้งที่ยังมีสถานะบาดเจ็บ 75% เสี่ยงต่อการถูกส่งลงมาเคาะสนิมท้ายเกมเพียง 10 นาทีและได้เพียง 1 คะแนน"),
+            ("Pascal Groß 17-Pt Form Benched as Sub 1:", "การดร็อป Pascal Groß (£5.7m) ไว้เป็นตัวสำรองอันดับ 1 หลังจากเพิ่งทำ 17 แต้มใน GW4 มีความเสี่ยงหากไบรท์ตันได้จุดโทษหรือลูกตั้งเตะ"),
+            ("Goalkeeper Difficult Matchup (AVL H / ARS H):", "ทั้ง Kinsky และ Verbruggen ต่างเจอกับคู่แข่งที่มีเกมรุกอันตราย โอกาสเก็บคลีนชีตต้องอาศัยการเซฟแต้มเป็นหลัก")
+        ]
+        c2_plan_title = "Choice 2 &bull; Midfield Shield Variant (3-5-2)"
+        c2_plan_pill = "Midfield High-Ceiling"
+        c2_pros_items = [
+            ("Zero-Hit Rule Enforced (ห้ามเปลี่ยนตัวติดลบ 0 pts):", "ใช้โครงสร้างขุมกำลัง 15 คนชุดเดียวกัน 100% ภายใต้โควตา Free Transfer เดิมโดยไม่เสียแต้มลบแม้แต่แต้มเดียว (Penalty: 0 pts)"),
+            ("Pascal Groß Started in 3-5-2 (Set-Piece & Penalty Shield):", "ส่ง Pascal Groß (£5.7m) ยืนตัวจริงในแดนกลาง 5 คน ต่อยอดความมั่นใจจาก 17 แต้มใน GW4 ลุ้นผลงานจุดโทษและลูกตั้งเตะในบ้าน"),
+            ("João Pedro Tactical Injury Buffer (Sub 1 Priority):", "ปรับทัพเป็น 3-5-2 เพื่อพัก João Pedro (ติดสถานะบาดเจ็บ 75%) เป็นตัวสำรองอันดับ 1 ป้องกันแต้มหลุดลอยหากถูกเปลี่ยนตัวลงมาท้ายเกม"),
+            ("Erling Haaland Captaincy Anchor [C] vs Sunderland (H - FDR 2):", "ล็อกปลอกแขนกัปตันให้ฮาลันด์ตัวเต็งแต้มสูงสุดในบ้านรับมือซันเดอร์แลนด์"),
+            ("Massive Financial Liquidity (£1.3m Banked):", "เหลือเงินสดสำรอง £1.3m ไว้ในธนาคาร พร้อม 1 Free Transfer สะสมไว้ลุยโปรแกรมใหญ่ใน GW6")
+        ]
+        c2_cons_items = [
+            ("Reduced Front-3 Firepower:", "การปรับเป็นหน้าคู่ (Haaland + Wissa) ทำให้ลดตัวเลือกทำประตูแดนหน้าลง 1 คน หาก Pedro ฟิตเต็มร้อยและยิงประตูได้ จะต้องลุ้นให้มีตัวจริงไม่ได้ลงสนาม")
+        ]
+    else:
+        c1_transfer_count_pill = "1 TRANSFER &bull; 1 FT BANKED FOR GW5"
+        c1_transfer_status_text = "ย้ายตัว 1 ตำแหน่ง (ขาย Gakpo £7.1m &rarr; ซื้อ Martin Ødegaard £6.7m &bull; เก็บ 1 FT ไว้ใช้ GW5 &bull; ค่าปรับ 0 แต้ม)"
+        c2_pro_upgrade = "<strong>Manchester Derby Ceiling Exploitation (Foden Started in 3-5-2):</strong> ส่ง Phil Foden ลงตัวจริงในแดนกลาง 5 คน ลุ้นเพดานแต้มระเบิดจากศึกแมนเชสเตอร์ดาร์บี้เต็มสูบ แทนการส่ง Dara O'Shea ที่ต้องออกไปเยือนคริสตัล พาเลซ"
+        c2_con_transfer = "<strong>Leeds Away Striker Sacrifice (Wissa Benched as Sub 1):</strong> การปรับทัพเป็น 3-5-2 ทำให้ต้องพัก Yoane Wissa เป็นตัวสำรองอันดับ 1 แม้ฟอร์มกำลังร้อนแรงและมีโปรแกรมเยือนลีดส์ ยูไนเต็ด"
+        c1_pros_items = [
+            ("Cole Palmer Captaincy [C] vs Hull City (H - FDR 2):", "มอบปลอกแขนกัปตันให้ Cole Palmer (£9.7m) เฝ้ารังรับมือ ฮัลล์ ซิตี้ ทีมเพิ่งเลื่อนชั้น มีโอกาสสร้างเพดานแต้มระเบิด (Explosive Ceiling) สูงสุดประจำสัปดาห์จากทั้งจุดโทษ ฟรีคิก และโอเพ่นเพลย์"),
+            ("Martin Ødegaard Transfer-In Masterstroke:", "ปลดล็อกความเสี่ยงอาการบาดเจ็บของ Cody Gakpo (โอกาสลงสนาม 75% จากงานแถลงข่าว) ด้วยการย้ายตัวดึง Martin Ødegaard (£6.7m) จอมทัพอาร์เซนอลความฟิต 100% บุกเยือนซันเดอร์แลนด์ (FDR 2) พร้อมเก็บเงินสดสำรองเข้าธนาคาร +£0.5m โดยไม่เสียแต้มลบ (Cost: 0 pts)"),
+            ("Phil Foden Tactical Bench Buffer (Sub 1 Priority):", "เก็บรักษา Phil Foden (£7.0m) ไว้ในทีมแทนการเทขายทิ้ง จัดวางเป็นตัวสำรองอันดับ 1 (Sub 1) พร้อมเสียบลงสนามทันทีหากแนวรุกคนใดไม่ลงเล่น และพร้อมใช้งานเต็มพิกัดในโปรแกรม GW5 (แมนฯ ซิตี้ พบ ซันเดอร์แลนด์ FDR 2)"),
+            ("João Pedro Front-3 Promotion & Vice Captain [VC] vs Hull City (H - FDR 2):", "ดัน João Pedro (£7.7m) ยืนแดนหน้าตัวจริงพร้อมสวมปลอกแขนรองกัปตัน [VC] เพื่อทำ Double Attack ฝั่งเชลซีรับมือฮัลล์ ซิตี้ เต็มสูบ"),
+            ("Bart Verbruggen Away Goalkeeper Selection vs Coventry (A - FDR 2):", "มอบความไว้วางใจให้ Verbruggen (£4.5m) บุกเยือนโคเวนทรี เพื่อลุ้นคลีนชีตนอกบ้าน ขณะที่ Antonín Kinsky สแตนด์บายพร้อมเป็นสำรองที่เชื่อถือได้"),
+            ("Triple Front-3 Firepower (Haaland + João Pedro + Wissa):", "โครงสร้าง 3-4-3 ยืนหน้าสามครบถ้วน Haaland ล่าตาข่ายในศึกแมนเชสเตอร์ดาร์บี้, Pedro รับมือฮัลล์ และ Wissa เยือนลีดส์ ยูไนเต็ด ครอบคลุมโอกาสทำประตูทุกคู่")
+        ]
+        c1_cons_items = [
+            ("Heavy Bench Capital & Manchester Derby Benched (£12.6m on Bench):", "พัก Foden (£7.0m - Sub 1) และ Gvardiol (£5.6m - Sub 2) ไว้บนม้านั่งสำรองในเกมแมนเชสเตอร์ดาร์บี้เยือนโอลด์ แทรฟฟอร์ด ทำให้มีมูลค่าทรัพยากรบนม้านั่งสูงถึง £12.6m ซึ่งหากแมนฯ ซิตี้ ชนะถล่มทลาย แต้มสำคัญอาจค้างอยู่ข้างสนาม"),
+            ("O'Shea Difficult Away Matchup (CRY Away FDR 3):", "การส่ง Dara O'Shea (£4.0m) ยืนตัวจริงในเกมเยือนคริสตัล พาเลซ มีความเสี่ยงต่อการเสียคลีนชีตจากเกมรุกริมเส้นของพาเลซ"),
+            ("No Man City Captaincy Ceiling Risk:", "การโยกปลอกแขนกัปตันจาก Erling Haaland ไปให้ Cole Palmer หาก Haaland ระเบิดแฮตทริกในแมนเชสเตอร์ดาร์บี้ อาจส่งผลต่ออันดับ Overall Rank ได้ทันที")
+        ]
+        c2_plan_title = "Choice 2 &bull; Derby Attack Variant (3-5-2)"
+        c2_plan_pill = "Derby High-Ceiling"
+        c2_pros_items = [
+            ("Zero-Hit Rule Enforced (ห้ามเปลี่ยนตัวติดลบ 0 pts):", "ใช้โครงสร้างขุมกำลังชุดเดียวกัน 100% ภายใต้โควตา Free Transfer เดิมโดยไม่เสียแต้มลบแม้แต่แต้มเดียว (Penalty: 0 pts)"),
+            ("Manchester Derby Ceiling Exploitation (Foden Started in 3-5-2):", "ส่ง Phil Foden ลงตัวจริงในแดนกลาง 5 คน ลุ้นเพดานแต้มระเบิดจากศึกแมนเชสเตอร์ดาร์บี้เต็มสูบ แทนการส่ง Dara O'Shea ที่ต้องออกไปเยือนคริสตัล พาเลซ"),
+            ("Antonín Kinsky Home Clean Sheet Edge vs Everton (H - FDR 2):", "อาศัยความได้เปรียบเกมเหย้าของสเปอร์สรับมือเอฟเวอร์ตันเพื่อลุ้นคลีนชีตแรกในบ้าน"),
+            ("Retained 1 FT for GW5 Tactical Flexibility:", "การใช้เพียง 1 จาก 2 FTs ในสัปดาห์นี้ ทำให้ยังมีโควตา Free Transfer สำรองติดตัวสะสมต่อไปยัง GW5 (แมนฯ ซิตี้ พบ ซันเดอร์แลนด์ FDR 2) ได้อย่างยอดเยี่ยม"),
+            ("Financial Buffer & Liquidity (in Bank):", f"เหลือเงินสดสำรอง {c2_bank_str} ไว้ในธนาคาร เปิดทางให้บริหาร Free Transfer ใน GW5 ได้อย่างคล่องตัว")
+        ]
+        c2_cons_items = [
+            ("Leeds Away Striker Sacrifice (Wissa Benched as Sub 1):", "การปรับทัพเป็น 3-5-2 ทำให้ต้องพัก Yoane Wissa เป็นตัวสำรองอันดับ 1 แม้ฟอร์มกำลังร้อนแรงและมีโปรแกรมเยือนลีดส์ ยูไนเต็ด"),
+            ("Manchester Derby Exposure Risk:", "การออกสตาร์ตทั้ง Haaland และ Foden พร้อมกัน ทำให้ต้องแบกรับความผันผวนสูงจากเกมดาร์บี้แมตช์นอกบ้าน")
+        ]
+
+    c1_pros_rendered = "".join([f'<div class="pros-cons-item"><strong>{h}</strong> {b}</div>' for h, b in c1_pros_items])
+    c1_cons_rendered = "".join([f'<div class="pros-cons-item"><strong>{h}</strong> {b}</div>' for h, b in c1_cons_items])
+    c2_pros_rendered = "".join([f'<div class="pros-cons-item"><strong>{h}</strong> {b}</div>' for h, b in c2_pros_items])
+    c2_cons_rendered = "".join([f'<div class="pros-cons-item"><strong>{h}</strong> {b}</div>' for h, b in c2_cons_items])
 
     # Global Rank Trajectory & Top 100k Tracker
     overall_rank = 65185
@@ -2855,11 +2965,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                                 <span class="delta-indicator-dot dot-baseline"></span>
                                 <span class="delta-title" style="color:var(--text-secondary);">Transfers (Choice 1 Baseline)</span>
                             </div>
-                            <span class="delta-count-pill pill-baseline">0 TRANSFERS &bull; {user_free_transfers} FTs BANKED</span>
+                            <span class="delta-count-pill pill-baseline">{c1_transfer_count_pill}</span>
                         </div>
                         <div class="delta-status-banner">
                             <span class="status-lbl">STATUS:</span>
-                            <span class="status-txt">ไม่มีรายการย้ายตัวเข้า-ออก (Baseline Squad &bull; เก็บ {user_free_transfers} FTs ไว้ใช้ GW5 &bull; ค่าปรับ 0 แต้ม)</span>
+                            <span class="status-txt">{c1_transfer_status_text}</span>
                         </div>
                         <div class="delta-ledger-strip">
                             <div class="delta-ledger-cell">
@@ -2872,7 +2982,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             </div>
                             <div class="delta-ledger-cell">
                                 <span class="dl-lbl">Remaining Bank</span>
-                                <span class="dl-val" style="color:var(--accent-sky);">£0.0m</span>
+                                <span class="dl-val" style="color:var(--accent-sky);">£{c1_bank:.1f}m</span>
                             </div>
                         </div>
                     </div>
@@ -3072,38 +3182,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <!-- Pros -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
-                        <div class="pros-cons-item">
-                            <strong>Cole Palmer Captaincy [C] vs Hull City (H - FDR 2):</strong> มอบปลอกแขนกัปตันให้ Cole Palmer (£9.7m) เฝ้ารังรับมือ ฮัลล์ ซิตี้ ทีมเพิ่งเลื่อนชั้น มีโอกาสสร้างเพดานแต้มระเบิด (Explosive Ceiling) สูงสุดประจำสัปดาห์จากทั้งจุดโทษ ฟรีคิก และโอเพ่นเพลย์
-                        </div>
-                        <div class="pros-cons-item">
-                            <strong>Martin Ødegaard Transfer-In Masterstroke:</strong> ปลดล็อกความเสี่ยงอาการบาดเจ็บของ Cody Gakpo (โอกาสลงสนาม 75% จากงานแถลงข่าว) ด้วยการย้ายตัวดึง Martin Ødegaard (£6.7m) จอมทัพอาร์เซนอลความฟิต 100% บุกเยือนซันเดอร์แลนด์ (FDR 2) พร้อมเก็บเงินสดสำรองเข้าธนาคาร +£0.5m โดยไม่เสียแต้มลบ (Cost: 0 pts)
-                        </div>
-                        <div class="pros-cons-item">
-                            <strong>Phil Foden Tactical Bench Buffer (Sub 1 Priority):</strong> เก็บรักษา Phil Foden (£7.0m) ไว้ในทีมแทนการเทขายทิ้ง จัดวางเป็นตัวสำรองอันดับ 1 (Sub 1) พร้อมเสียบลงสนามทันทีหากแนวรุกคนใดไม่ลงเล่น และพร้อมใช้งานเต็มพิกัดในโปรแกรม GW5 (แมนฯ ซิตี้ พบ ซันเดอร์แลนด์ FDR 2)
-                        </div>
-                        <div class="pros-cons-item">
-                            <strong>João Pedro Front-3 Promotion &amp; Vice Captain [VC] vs Hull City (H - FDR 2):</strong> ดัน João Pedro (£7.7m) ยืนแดนหน้าตัวจริงพร้อมสวมปลอกแขนรองกัปตัน [VC] เพื่อทำ Double Attack ฝั่งเชลซีรับมือฮัลล์ ซิตี้ เต็มสูบ
-                        </div>
-                        <div class="pros-cons-item">
-                            <strong>Bart Verbruggen Away Goalkeeper Selection vs Coventry (A - FDR 2):</strong> มอบความไว้วางใจให้ Verbruggen (£4.5m) บุกเยือนโคเวนทรี เพื่อลุ้นคลีนชีตนอกบ้าน ขณะที่ Antonín Kinsky สแตนด์บายพร้อมเป็นสำรองที่เชื่อถือได้
-                        </div>
-                        <div class="pros-cons-item">
-                            <strong>Triple Front-3 Firepower (Haaland + João Pedro + Wissa):</strong> โครงสร้าง 3-4-3 ยืนหน้าสามครบถ้วน Haaland ล่าตาข่ายในศึกแมนเชสเตอร์ดาร์บี้, Pedro รับมือฮัลล์ และ Wissa เยือนลีดส์ ยูไนเต็ด ครอบคลุมโอกาสทำประตูทุกคู่
-                        </div>
+                        {c1_pros_rendered}
                     </div>
 
                     <!-- Cons -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
-                        <div class="pros-cons-item">
-                            <strong>Heavy Bench Capital &amp; Manchester Derby Benched (£12.6m on Bench):</strong> พัก Foden (£7.0m - Sub 1) และ Gvardiol (£5.6m - Sub 2) ไว้บนม้านั่งสำรองในเกมแมนเชสเตอร์ดาร์บี้เยือนโอลด์ แทรฟฟอร์ด ทำให้มีมูลค่าทรัพยากรบนม้านั่งสูงถึง £12.6m ซึ่งหากแมนฯ ซิตี้ ชนะถล่มทลาย แต้มสำคัญอาจค้างอยู่ข้างสนาม
-                        </div>
-                        <div class="pros-cons-item">
-                            <strong>O'Shea Difficult Away Matchup (CRY Away FDR 3):</strong> การส่ง Dara O'Shea (£4.0m) ยืนตัวจริงในเกมเยือนคริสตัล พาเลซ มีความเสี่ยงต่อการเสียคลีนชีตจากเกมรุกริมเส้นของพาเลซ
-                        </div>
-                        <div class="pros-cons-item">
-                            <strong>No Man City Captaincy Ceiling Risk:</strong> การโยกปลอกแขนกัปตันจาก Erling Haaland ไปให้ Cole Palmer หาก Haaland ระเบิดแฮตทริกในแมนเชสเตอร์ดาร์บี้ อาจส่งผลต่ออันดับ Overall Rank ได้ทันที
-                        </div>
+                        {c1_cons_rendered}
                     </div>
                 </div>
 
@@ -3111,41 +3196,22 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 <div class="summary-plan-panel" style="border-color: rgba(16, 185, 129, 0.45);">
                     <div class="summary-panel-header">
                         <div>
-                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; Derby Attack Variant (3-5-2)</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">3-5-2 Formation &bull; Cost: £{c2_cost:.1f}m &bull; Bank: {c2_bank_str} &bull; Hits: 0 pts</span>
+                            <div class="plan-title" style="color:var(--accent-emerald);">{c2_plan_title}</div>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">{c2_formation_str} Formation &bull; Cost: £{c2_cost:.1f}m &bull; Bank: {c2_bank_str} &bull; Hits: 0 pts</span>
                         </div>
-                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">Derby High-Ceiling</span>
+                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">{c2_plan_pill}</span>
                     </div>
 
                     <!-- Pros -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
-                        <div class="pros-cons-item">
-                            <strong>Zero-Hit Rule Enforced (ห้ามเปลี่ยนตัวติดลบ 0 pts):</strong> ใช้โครงสร้างขุมกำลังชุดเดียวกัน 100% ภายใต้โควตา Free Transfer เดิมโดยไม่เสียแต้มลบแม้แต่แต้มเดียว (Penalty: 0 pts)
-                        </div>
-                        <div class="pros-cons-item">
-                            {c2_pro_upgrade}
-                        </div>
-                        <div class="pros-cons-item">
-                            <strong>Antonín Kinsky Home Clean Sheet Edge vs Everton (H - FDR 2):</strong> อาศัยความได้เปรียบเกมเหย้าของสเปอร์สรับมือเอฟเวอร์ตันเพื่อลุ้นคลีนชีตแรกในบ้าน
-                        </div>
-                        <div class="pros-cons-item">
-                            <strong>Retained 1 FT for GW5 Tactical Flexibility:</strong> การใช้เพียง 1 จาก 2 FTs ในสัปดาห์นี้ ทำให้ยังมีโควตา Free Transfer สำรองติดตัวสะสมต่อไปยัง GW5 (แมนฯ ซิตี้ พบ ซันเดอร์แลนด์ FDR 2) ได้อย่างยอดเยี่ยม
-                        </div>
-                        <div class="pros-cons-item">
-                            <strong>Financial Buffer &amp; Liquidity ({c2_bank_str} in Bank):</strong> เหลือเงินสดสำรอง {c2_bank_str} ไว้ในธนาคาร เปิดทางให้บริหาร Free Transfer ใน GW5 ได้อย่างคล่องตัว
-                        </div>
+                        {c2_pros_rendered}
                     </div>
 
                     <!-- Cons -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
-                        <div class="pros-cons-item">
-                            {c2_con_transfer}
-                        </div>
-                        <div class="pros-cons-item">
-                            <strong>Manchester Derby Exposure Risk:</strong> การออกสตาร์ตทั้ง Haaland และ Foden พร้อมกัน ทำให้ต้องแบกรับความผันผวนสูงจากเกมดาร์บี้แมตช์นอกบ้าน
-                        </div>
+                        {c2_cons_rendered}
                     </div>
                 </div>
 
