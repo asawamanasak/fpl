@@ -15,6 +15,7 @@ FPL Presentation Generator
 import json
 import os
 import argparse
+import re
 from datetime import datetime, timezone, timedelta
 
 def load_json(filepath):
@@ -325,6 +326,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     now_epoch = datetime.now(timezone.utc).timestamp()
     active_gw = target_gw
+    if not active_gw:
+        m = re.search(r'fpl_gw(\d+)_presentation\.html', output_file)
+        if m:
+            active_gw = int(m.group(1))
     if not active_gw:
         # 1. If currently inside a gameweek that has passed deadline but not finished:
         for ev in bootstrap.get("events", []):
@@ -788,81 +793,77 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         gw_headers.append(f'<th onclick="sortTable({col_idx}, \'number\')" class="sortable-th" title="Click to sort GW{gw} FDR">GW{gw} <span class="sort-icon">&varr;</span></th>')
 
     # =========================================================
-    # TAB 5: GW3 POST-MATCH REVIEW & COMPARISON COMPUTATION
+    # TAB 5: GAMEWEEK POST-MATCH REVIEW & COMPARISON COMPUTATION
     # =========================================================
-    # Choice 1 (Official Micky Wildcard XI):
-    gw3_c1_lineup = [
-        (109, True, False, False), # Verbruggen (GKP - 3 pts)
-        (391, True, False, False), # Gvardiol (DEF - 8 pts)
-        (277, True, False, False), # Egan (DEF - 6 pts)
-        (4, True, False, False),   # Gabriel (DEF - 2 pts)
-        (124, True, False, False), # Groß (MID - 1 pt)
-        (367, True, False, False), # Gakpo (MID - 11 pts)
-        (398, True, False, True),  # Foden (MID VC - 1 pt)
-        (368, True, False, False), # Szoboszlai (MID - 3 pts)
-        (154, True, False, False), # Palmer (MID - 1 pt)
-        (464, True, False, False), # Wissa (FWD - 1 pt)
-        (411, True, True, False),  # Haaland (FWD C - 9x2 = 18 pts)
-        # Reserves
-        (496, False, False, False),# Kinsky (GKP - 6 pts)
-        (165, False, False, False),# João Pedro (FWD - 1 pt)
-        (31, False, False, False), # Konsa (DEF - 4 pts)
-        (304, False, False, False) # O'Shea (DEF - 3 pts)
-    ]
+    review_gw = active_gw - 1 if active_gw > 1 else 1
+    review_tab_name = f"GW{review_gw} Review"
 
-    # Choice 2 (Tactical Variant Setup with Konsa in XI, Egan Benched, Pedro in XI, Wissa Benched):
-    gw3_c2_lineup = [
-        (109, True, False, False), # Verbruggen (GKP - 3 pts)
-        (391, True, False, False), # Gvardiol (DEF - 8 pts)
-        (31, True, False, False),  # Konsa (DEF - 4 pts)
-        (4, True, False, False),   # Gabriel (DEF - 2 pts)
-        (124, True, False, False), # Groß (MID - 1 pt)
-        (367, True, False, False), # Gakpo (MID - 11 pts)
-        (398, True, False, True),  # Foden (MID VC - 1 pt)
-        (368, True, False, False), # Szoboszlai (MID - 3 pts)
-        (154, True, False, False), # Palmer (MID - 1 pt)
-        (165, True, False, False), # João Pedro (FWD - 1 pt)
-        (411, True, True, False),  # Haaland (FWD C - 9x2 = 18 pts)
-        # Reserves
-        (496, False, False, False),# Kinsky (GKP - 6 pts)
-        (464, False, False, False),# Wissa (FWD - 1 pt)
-        (277, False, False, False),# Egan (DEF - 6 pts)
-        (304, False, False, False) # O'Shea (DEF - 3 pts)
-    ]
+    # Load GW live event points helper
+    def load_live_gw_points(gw):
+        pts = {}
+        path = f"data/live_gw{gw}.json"
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    for el in data.get("elements", []):
+                        pts[el["id"]] = el.get("stats", {}).get("total_points", 0)
+            except Exception:
+                pass
+        return pts
 
-    # Load GW3 live event points if available
-    gw3_live_points = {}
-    if os.path.exists("data/live_gw3.json"):
-        try:
-            with open("data/live_gw3.json", "r", encoding="utf-8") as f:
-                l3 = json.load(f)
-                for el in l3.get("elements", []):
-                    gw3_live_points[el["id"]] = el.get("stats", {}).get("total_points", 0)
-        except Exception:
-            pass
+    gw3_live_points = load_live_gw_points(3)
+    gw4_live_points = load_live_gw_points(4)
 
-    # Official GW3 verified player scores fallback (matches official FPL entry 306983):
+    # Official fallback player scores
     gw3_fallback_pts = {
-        109: 3,   # Verbruggen
-        391: 8,   # Gvardiol
-        277: 6,   # Egan
-        4: 2,     # Gabriel
-        124: 1,   # Groß
-        367: 11,  # Gakpo
-        398: 1,   # Foden
-        368: 3,   # Szoboszlai
-        154: 1,   # Palmer
-        464: 1,   # Wissa
-        411: 9,   # Haaland
-        496: 6,   # Kinsky
-        165: 1,   # João Pedro
-        31: 4,    # Konsa
-        304: 3    # O'Shea
+        109: 3, 391: 8, 277: 6, 4: 2, 124: 1, 367: 11, 398: 1, 368: 3,
+        154: 1, 464: 1, 411: 9, 496: 6, 165: 1, 31: 4, 304: 3
+    }
+    gw4_fallback_pts = {
+        109: 8, 304: 1, 31: 6, 4: 9, 124: 17, 15: 3, 368: 3, 154: 5,
+        165: 12, 464: 2, 411: 9, 496: 7, 398: -2, 391: 11, 277: 2
     }
 
-    def build_gw3_player_data(pid, is_starter, is_c, is_vc):
+    # GW3 Lineups:
+    gw3_c1_lineup = [
+        (109, True, False, False), (391, True, False, False), (277, True, False, False),
+        (4, True, False, False), (124, True, False, False), (367, True, False, False),
+        (398, True, False, True), (368, True, False, False), (154, True, False, False),
+        (464, True, False, False), (411, True, True, False),
+        (496, False, False, False), (165, False, False, False), (31, False, False, False),
+        (304, False, False, False)
+    ]
+    gw3_c2_lineup = [
+        (109, True, False, False), (391, True, False, False), (31, True, False, False),
+        (4, True, False, False), (124, True, False, False), (367, True, False, False),
+        (398, True, False, True), (368, True, False, False), (154, True, False, False),
+        (165, True, False, False), (411, True, True, False),
+        (496, False, False, False), (464, False, False, False), (277, False, False, False),
+        (304, False, False, False)
+    ]
+
+    # GW4 Lineups:
+    gw4_c1_lineup = [
+        (109, True, False, False), (304, True, False, False), (31, True, False, False),
+        (4, True, False, False), (124, True, False, False), (15, True, False, False),
+        (368, True, False, False), (154, True, True, False), (165, True, False, True),
+        (464, True, False, False), (411, True, False, False),
+        (496, False, False, False), (398, False, False, False), (391, False, False, False),
+        (277, False, False, False)
+    ]
+    gw4_c2_lineup = [
+        (496, True, False, False), (304, True, False, False), (31, True, False, False),
+        (4, True, False, False), (124, True, False, False), (15, True, False, False),
+        (368, True, False, False), (154, True, True, False), (398, True, False, False),
+        (165, True, False, True), (411, True, False, False),
+        (109, False, False, False), (464, False, False, False), (391, False, False, False),
+        (277, False, False, False)
+    ]
+
+    def build_review_player_data(pid, is_starter, is_c, is_vc, live_pts, fallback_pts):
         el = elements_map.get(pid, {})
-        ev_pts = gw3_live_points.get(pid, gw3_fallback_pts.get(pid, 0))
+        ev_pts = live_pts.get(pid, fallback_pts.get(pid, 0))
         mult = 2 if is_c else (1 if is_starter else 0)
         earned_pts = ev_pts * mult
         pos_id = el.get("element_type", 1)
@@ -885,29 +886,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             "earned_pts": earned_pts
         }
 
-    gw3_c1_players = [build_gw3_player_data(*p) for p in gw3_c1_lineup]
-    gw3_c2_players = [build_gw3_player_data(*p) for p in gw3_c2_lineup]
-
-    gw3_c1_start_pts = sum(p["earned_pts"] for p in gw3_c1_players if p["is_starter"])
-    gw3_c1_bench_pts = sum(p["raw_pts"] for p in gw3_c1_players if not p["is_starter"])
-    gw3_c2_start_pts = sum(p["earned_pts"] for p in gw3_c2_players if p["is_starter"])
-    gw3_c2_bench_pts = sum(p["raw_pts"] for p in gw3_c2_players if not p["is_starter"])
-
-    gw3_score_diff = gw3_c1_start_pts - gw3_c2_start_pts
-    if gw3_score_diff > 0:
-        gw3_result_badge = "🏆 CHOICE 1 WINS"
-        gw3_result_class = "winner-c1"
-        gw3_result_desc = f"Choice 1 ชนะด้วยผลต่าง +{gw3_score_diff} คะแนน ({gw3_c1_start_pts} vs {gw3_c2_start_pts} pts)"
-    elif gw3_score_diff < 0:
-        gw3_result_badge = "🏆 CHOICE 2 WINS"
-        gw3_result_class = "winner-c2"
-        gw3_result_desc = f"Choice 2 ชนะด้วยผลต่าง +{abs(gw3_score_diff)} คะแนน ({gw3_c2_start_pts} vs {gw3_c1_start_pts} pts)"
-    else:
-        gw3_result_badge = "🤝 MATCH DRAW"
-        gw3_result_class = "winner-draw"
-        gw3_result_desc = f"ทั้งสองทีมเสมอกันด้วยคะแนน {gw3_c1_start_pts} pts เท่ากัน"
-
-    def render_gw3_player_row(p):
+    def render_review_player_row(p):
         cap_badge = ""
         if p["is_captain"]:
             cap_badge = '<span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px;">C</span>'
@@ -916,10 +895,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         if p["is_starter"]:
             pts_display = f'{p["earned_pts"]} <small class="font-mono" style="color:var(--text-muted); font-size:0.65rem;">({p["raw_pts"]}x{p["multiplier"]})</small>' if p["is_captain"] else f'{p["earned_pts"]}'
-            pts_color = "var(--accent-emerald)" if p["earned_pts"] >= 6 else ("#ffffff" if p["earned_pts"] >= 3 else "var(--text-muted)")
+            pts_color = "var(--accent-emerald)" if p["earned_pts"] >= 6 else ("#ffffff" if p["earned_pts"] >= 3 else ("var(--accent-rose)" if p["earned_pts"] < 0 else "var(--text-muted)"))
         else:
             pts_display = f'{p["raw_pts"]} <small style="color:var(--text-muted); font-size:0.65rem;">(bench)</small>'
-            pts_color = "var(--accent-amber)" if p["raw_pts"] >= 6 else "var(--text-secondary)"
+            pts_color = "var(--accent-amber)" if p["raw_pts"] >= 6 else ("var(--accent-rose)" if p["raw_pts"] < 0 else "var(--text-secondary)")
 
         return f'''
             <tr class="gw3-row {'is-benched' if not p['is_starter'] else ''}">
@@ -934,10 +913,231 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 </td>
             </tr>'''
 
-    gw3_c1_starters_html = "".join([render_gw3_player_row(p) for p in gw3_c1_players if p["is_starter"]])
-    gw3_c1_bench_html = "".join([render_gw3_player_row(p) for p in gw3_c1_players if not p["is_starter"]])
-    gw3_c2_starters_html = "".join([render_gw3_player_row(p) for p in gw3_c2_players if p["is_starter"]])
-    gw3_c2_bench_html = "".join([render_gw3_player_row(p) for p in gw3_c2_players if not p["is_starter"]])
+    def generate_gw_review_block(gw_num, c1_lineup, c2_lineup, live_pts, fallback_pts, world_avg, c1_title, c1_sub, c2_title, c2_sub, deciders, gw_rank, overall_rank):
+        c1_players = [build_review_player_data(*p, live_pts, fallback_pts) for p in c1_lineup]
+        c2_players = [build_review_player_data(*p, live_pts, fallback_pts) for p in c2_lineup]
+
+        c1_start_pts = sum(p["earned_pts"] for p in c1_players if p["is_starter"])
+        c1_bench_pts = sum(p["raw_pts"] for p in c1_players if not p["is_starter"])
+        c2_start_pts = sum(p["earned_pts"] for p in c2_players if p["is_starter"])
+        c2_bench_pts = sum(p["raw_pts"] for p in c2_players if not p["is_starter"])
+
+        score_diff = c1_start_pts - c2_start_pts
+        if score_diff > 0:
+            result_badge = "🏆 CHOICE 1 WINS"
+            result_class = "winner-c1"
+            result_desc = f"Choice 1 ชนะด้วยผลต่าง +{score_diff} คะแนน ({c1_start_pts} vs {c2_start_pts} pts)"
+        elif score_diff < 0:
+            result_badge = "🏆 CHOICE 2 WINS"
+            result_class = "winner-c2"
+            result_desc = f"Choice 2 ชนะด้วยผลต่าง +{abs(score_diff)} คะแนน ({c2_start_pts} vs {c1_start_pts} pts)"
+        else:
+            result_badge = "🤝 MATCH DRAW"
+            result_class = "winner-draw"
+            result_desc = f"ทั้งสองทีมเสมอกันด้วยคะแนน {c1_start_pts} pts เท่ากัน"
+
+        c1_starters_html = "".join([render_review_player_row(p) for p in c1_players if p["is_starter"]])
+        c1_bench_html = "".join([render_review_player_row(p) for p in c1_players if not p["is_starter"]])
+        c2_starters_html = "".join([render_review_player_row(p) for p in c2_players if p["is_starter"]])
+        c2_bench_html = "".join([render_review_player_row(p) for p in c2_players if not p["is_starter"]])
+
+        deciders_html = "".join([
+            f'<div class="gw3-decider-item"><strong>{d[0]}</strong> {d[1]}</div>'
+            for d in deciders
+        ])
+
+        return f'''
+            <div class="gw3-hero-banner">
+                <div class="gw3-hero-left">
+                    <span class="gw3-result-pill {result_class}">{result_badge}</span>
+                    <h2 class="gw3-hero-title">สรุปผลการแข่งขัน &amp; เปรียบเทียบคะแนนสัปดาห์ที่ผ่านมา (GW{gw_num} Review)</h2>
+                    <p class="gw3-hero-subtitle">{result_desc} &bull; ค่าเฉลี่ยผู้เล่นทั่วโลก (World Average): <strong>{world_avg} pts</strong> &bull; อันดับประจำสัปดาห์: <strong>{gw_rank:,}</strong> &bull; อันดับรวมทั่วโลก: <strong>{overall_rank:,}</strong></p>
+                </div>
+                <div class="gw3-scoreboard">
+                    <div class="score-box">
+                        <span class="score-lbl lbl-c1">Choice 1 (Actual)</span>
+                        <span class="score-val val-c1">{c1_start_pts}</span>
+                        <span style="font-size:0.62rem; color:var(--text-muted);">Bench: {c1_bench_pts} pts</span>
+                    </div>
+                    <div class="score-divider">VS</div>
+                    <div class="score-box">
+                        <span class="score-lbl lbl-c2">Choice 2 (Variant)</span>
+                        <span class="score-val val-c2">{c2_start_pts}</span>
+                        <span style="font-size:0.62rem; color:var(--text-muted);">Bench: {c2_bench_pts} pts</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gw3-grid-2">
+                <!-- LEFT: CHOICE 1 BREAKDOWN -->
+                <div class="gw3-panel" style="border-color: rgba(16, 185, 129, 0.35);">
+                    <div class="gw3-panel-header">
+                        <div>
+                            <span class="plan-title" style="color:var(--accent-emerald);">{c1_title}</span>
+                            <div style="font-size:0.68rem; color:var(--text-secondary);">{c1_sub}</div>
+                        </div>
+                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald); font-size:0.7rem; font-weight:800;">
+                            {c1_start_pts} PTS
+                        </span>
+                    </div>
+
+                    <div class="gw3-subhead">11 ผู้เล่นตัวจริง (Starters XI): {c1_start_pts} คะแนน</div>
+                    <table class="gw3-table">
+                        <thead>
+                            <tr>
+                                <th>นักเตะ</th>
+                                <th>สโมสร</th>
+                                <th style="text-align:right;">คะแนน</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {c1_starters_html}
+                        </tbody>
+                    </table>
+
+                    <div class="gw3-subhead" style="margin-top:0.4rem; border-top:1px dashed var(--border-muted); padding-top:0.5rem;">
+                        ตัวสำรองบนม้านั่ง (Bench Reserves): {c1_bench_pts} คะแนน
+                    </div>
+                    <table class="gw3-table">
+                        <tbody>
+                            {c1_bench_html}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- RIGHT: CHOICE 2 BREAKDOWN -->
+                <div class="gw3-panel" style="border-color: rgba(56, 189, 248, 0.35);">
+                    <div class="gw3-panel-header">
+                        <div>
+                            <span class="plan-title" style="color:var(--accent-sky);">{c2_title}</span>
+                            <div style="font-size:0.68rem; color:var(--text-secondary);">{c2_sub}</div>
+                        </div>
+                        <span class="source-pill" style="border-color:var(--accent-sky); color:var(--accent-sky); font-size:0.7rem; font-weight:800;">
+                            {c2_start_pts} PTS
+                        </span>
+                    </div>
+
+                    <div class="gw3-subhead">11 ผู้เล่นตัวจริง (Starters XI): {c2_start_pts} คะแนน</div>
+                    <table class="gw3-table">
+                        <thead>
+                            <tr>
+                                <th>นักเตะ</th>
+                                <th>สโมสร</th>
+                                <th style="text-align:right;">คะแนน</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {c2_starters_html}
+                        </tbody>
+                    </table>
+
+                    <div class="gw3-subhead" style="margin-top:0.4rem; border-top:1px dashed var(--border-muted); padding-top:0.5rem;">
+                        ตัวสำรองบนม้านั่ง (Bench Reserves): {c2_bench_pts} คะแนน
+                    </div>
+                    <table class="gw3-table">
+                        <tbody>
+                            {c2_bench_html}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="gw3-decider-box">
+                <div style="font-size:0.85rem; font-weight:700; color:#ffffff; display:flex; align-items:center; gap:6px;">
+                    <span>จุดชี้ขาดสำคัญของการแข่งขันสัปดาห์ที่ {gw_num} (Key Tactical Match Deciders)</span>
+                </div>
+                {deciders_html}
+            </div>
+        '''
+
+    gw4_deciders = [
+        ("1. The Phil Foden Red Card Dodge (+4 คะแนนเหนือ Choice 2):",
+         "Choice 1 ตัดสินใจดร็อป Phil Foden (£7.0m) ไปนั่งสำรอง และส่ง Yoane Wissa (£6.2m) ลงเป็นตัวจริงในแดนหน้า (ระบบ 3-4-3) ทำให้รอดพ้นจากผลงานติดลบ -2 คะแนนของ Foden ที่โดนใบแดงไล่ออก ในขณะที่ Choice 2 จัดทัพ 3-5-2 โดยส่ง Foden ลงตัวจริง ทำให้เสียแต้มติดลบไปเต็มๆ สวิตช์นี้สร้างความต่างถึง +4 คะแนนให้ Choice 1"),
+        ("2. Bart Verbruggen Clean Sheet & Bonus (+1 คะแนนเหนือ Choice 2):",
+         "Choice 1 เลือกส่ง Bart Verbruggen (£4.5m) เฝ้าเสาตัวจริงและเก็บได้ถึง 8 คะแนน (คลีนชีต + โบนัส) ขณะที่ Choice 2 ไว้วางใจ Antonín Kinsky (£4.5m) ที่ทำได้ 7 คะแนน ส่งผลให้ Choice 1 ได้เปรียบเพิ่มอีก +1 คะแนน"),
+        ("3. The Pascal Groß Masterstroke (17 คะแนน):",
+         "ทั้งสองทีมได้รับผลตอบแทนมหาศาลจากการวางใจส่ง Pascal Groß (£5.7m) ลงสนามตัวจริง โดยเจ้าตัวระเบิดฟอร์มยิงและจ่ายโกยแต้มสูงสุดของสัปดาห์ถึง 17 คะแนน"),
+        ("4. Cole Palmer Captaincy (10 คะแนน) & Triple Attack Returns:",
+         "การมอบปลอกแขนกัปตันให้ Cole Palmer (£9.6m) ทำได้ 5x2 = 10 คะแนน ผสานกับผลงานของ João Pedro (12 คะแนน - VC) และ Erling Haaland (9 คะแนน) ส่งผลให้ Choice 1 ทำคะแนนรวมพุ่งสูงถึง 80 คะแนน ทิ้งห่างค่าเฉลี่ยโลก (69 คะแนน) อย่างงดงาม"),
+        ("5. แต้มบนม้านั่งสำรอง (Bench Points 18 pts vs 23 pts):",
+         "ม้านั่งสำรองของ Choice 1 มีแต้มค้าง 18 คะแนน (Gvardiol 11 pts, Kinsky 7 pts, Egan 2 pts, Foden -2 pts) ขณะที่ Choice 2 มีแต้มค้าง 23 คะแนน (Gvardiol 11 pts, Verbruggen 8 pts, Wissa 2 pts, Egan 2 pts)")
+    ]
+
+    gw3_deciders = [
+        ("1. The Cody Gakpo Masterstroke (11 คะแนน):",
+         "การตัดสินใจคว้าตัวและส่ง Cody Gakpo (£7.2m) ยืนตัวจริงในแดนกลางสร้างผลลัพธ์มหาศาล โดยเจ้าตัวระเบิดฟอร์มโกยถึง 11 คะแนน เป็นผู้เล่นแดนกลางที่ทำแต้มสูงสุดของทั้งสองทีม"),
+        ("2. John Egan Differential (+2 คะแนนเหนือ Choice 2):",
+         "Choice 1 ส่ง John Egan (£4.1m) ลงสนามตัวจริงและเก็บได้ 6 คะแนน ขณะที่ Choice 2 เลือกลงสนาม Ezri Konsa (£4.4m) ที่ได้ 4 คะแนน ส่งผลให้ Choice 1 เก็บความได้เปรียบเฉือนชนะไป +2 แต้มอย่างเด็ดขาด"),
+        ("3. Erling Haaland Captaincy Foundation (18 คะแนน):",
+         "ทั้งสองตัวเลือกวาง Erling Haaland เป็นกัปตันคูณสองอย่างเฉียบคม ผลงานยิงประตูช่วยเก็บ 9x2 = 18 แต้ม การันตีฐานคะแนนนำค่าเฉลี่ยทั่วโลก (51 pts) ได้อย่างปลอดภัย"),
+        ("4. Bench Points Reflection (แต้มบนม้านั่งสำรอง):",
+         "ทั้งสองทีมมีแต้มค้างอยู่บนม้านั่งสำรองในระดับ 14-16 คะแนน โดยเฉพาะ Antonín Kinsky (£4.5m) ผู้รักษาประตูที่เก็บคลีนชีตทำได้ถึง 6 คะแนนบนม้านั่งสำรอง")
+    ]
+
+    gw4_review_html = generate_gw_review_block(
+        4, gw4_c1_lineup, gw4_c2_lineup, gw4_live_points, gw4_fallback_pts,
+        world_avg=69,
+        c1_title="Choice 1 &bull; Micky Actual Squad (GW4)",
+        c1_sub="ตัวจริง 11 คน &bull; กัปตัน Cole Palmer (10 pts) &bull; แผน 3-4-3",
+        c2_title="Choice 2 &bull; GEMINI Refined Blueprint (GW4)",
+        c2_sub="ตัวจริง 11 คน &bull; แผน 3-5-2 (Foden ลงตัวจริง / Wissa สำรอง)",
+        deciders=gw4_deciders,
+        gw_rank=2511013,
+        overall_rank=129877
+    )
+
+    gw3_review_html = generate_gw_review_block(
+        3, gw3_c1_lineup, gw3_c2_lineup, gw3_live_points, gw3_fallback_pts,
+        world_avg=51,
+        c1_title="Choice 1 &bull; Micky Actual Squad (GW3 Wildcard)",
+        c1_sub="ตัวจริง 11 คน &bull; กัปตัน Erling Haaland (18 pts)",
+        c2_title="Choice 2 &bull; Tactical Variant Setup",
+        c2_sub="ตัวจริง 11 คน &bull; สลับ Konsa ลงแทน Egan / Pedro แทน Wissa",
+        deciders=gw3_deciders,
+        gw_rank=3758653,
+        overall_rank=59630
+    )
+
+    if active_gw >= 5:
+        review_section_html = f'''
+        <!-- TAB 5: POST-MATCH REVIEW & COMPARISON -->
+        <section id="tab-review" class="tab-content">
+            <div class="gw3-review-container">
+                <!-- Gameweek Archive Selector -->
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem; background:rgba(15,23,42,0.65); padding:0.65rem 1rem; border-radius:10px; border:1px solid var(--border-accent); box-shadow:0 4px 12px rgba(0,0,0,0.25);">
+                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:flex; align-items:center; gap:8px;">
+                        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-emerald);"></span>
+                        <span>เลือกรอบการแข่งขันที่ต้องการดูผลเปรียบเทียบ (Review Archive):</span>
+                    </div>
+                    <div class="review-gw-selector" style="display:flex; gap:8px;">
+                        <button id="btn-review-gw4" class="source-pill review-gw-btn" onclick="switchReviewGw(4, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--accent-emerald); color:var(--accent-emerald); background:rgba(16,185,129,0.15); transition:all 0.2s ease;">GW4 Review (ล่าสุด)</button>
+                        <button id="btn-review-gw3" class="source-pill review-gw-btn" onclick="switchReviewGw(3, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW3 Review</button>
+                    </div>
+                </div>
+
+                <!-- REVIEW GW4 CONTENT -->
+                <div id="review-content-gw4" class="review-gw-panel">
+                    {gw4_review_html}
+                </div>
+
+                <!-- REVIEW GW3 CONTENT -->
+                <div id="review-content-gw3" class="review-gw-panel" style="display:none;">
+                    {gw3_review_html}
+                </div>
+            </div>
+        </section>
+        '''
+    else:
+        review_section_html = f'''
+        <!-- TAB 5: POST-MATCH REVIEW & COMPARISON -->
+        <section id="tab-review" class="tab-content">
+            <div class="gw3-review-container">
+                <div id="review-content-gw3" class="review-gw-panel">
+                    {gw3_review_html}
+                </div>
+            </div>
+        </section>
+        '''
 
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
@@ -2889,7 +3089,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         <button class="tab-btn" onclick="switchTab('summary', this)">Plan Summary</button>
         <button class="tab-btn" onclick="switchTab('ticker', this)">FDR Ticker</button>
         <button class="tab-btn" onclick="switchTab('sources', this)">Research Sources</button>
-        <button class="tab-btn" onclick="switchTab('gw3-review', this)">GW3 Review</button>
+        <button class="tab-btn" onclick="switchTab('review', this)">{review_tab_name}</button>
     </nav>
 
     <!-- Main Content Area -->
@@ -3355,126 +3555,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             </div>
         </section>
         
-        <!-- TAB 5: GW3 POST-MATCH REVIEW & COMPARISON -->
-        <section id="tab-gw3-review" class="tab-content">
-            <div class="gw3-review-container">
-                <!-- HERO WINNER & SCORE BANNER -->
-                <div class="gw3-hero-banner">
-                    <div class="gw3-hero-left">
-                        <span class="gw3-result-pill {gw3_result_class}">{gw3_result_badge}</span>
-                        <h2 class="gw3-hero-title">สรุปผลการแข่งขัน &amp; เปรียบเทียบคะแนนสัปดาห์ที่ผ่านมา (GW3 Review)</h2>
-                        <p class="gw3-hero-subtitle">{gw3_result_desc} &bull; ค่าเฉลี่ยผู้เล่นทั่วโลก (World Average): <strong>51 pts</strong> &bull; อันดับประจำสัปดาห์: <strong>3,758,653</strong> &bull; อันดับรวมทั่วโลก: <strong>59,630</strong></p>
-                    </div>
-                    <div class="gw3-scoreboard">
-                        <div class="score-box">
-                            <span class="score-lbl lbl-c1">Choice 1 (Actual)</span>
-                            <span class="score-val val-c1">{gw3_c1_start_pts}</span>
-                            <span style="font-size:0.62rem; color:var(--text-muted);">Bench: {gw3_c1_bench_pts} pts</span>
-                        </div>
-                        <div class="score-divider">VS</div>
-                        <div class="score-box">
-                            <span class="score-lbl lbl-c2">Choice 2 (Variant)</span>
-                            <span class="score-val val-c2">{gw3_c2_start_pts}</span>
-                            <span style="font-size:0.62rem; color:var(--text-muted);">Bench: {gw3_c2_bench_pts} pts</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SIDE-BY-SIDE SQUAD BREAKDOWN -->
-                <div class="gw3-grid-2">
-                    <!-- LEFT: CHOICE 1 BREAKDOWN -->
-                    <div class="gw3-panel" style="border-color: rgba(16, 185, 129, 0.35);">
-                        <div class="gw3-panel-header">
-                            <div>
-                                <span class="plan-title" style="color:var(--accent-emerald);">Choice 1 &bull; Micky Actual Squad (GW3 Wildcard)</span>
-                                <div style="font-size:0.68rem; color:var(--text-secondary);">ตัวจริง 11 คน &bull; กัปตัน Erling Haaland (18 pts)</div>
-                            </div>
-                            <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald); font-size:0.7rem; font-weight:800;">
-                                {gw3_c1_start_pts} PTS
-                            </span>
-                        </div>
-
-                        <div class="gw3-subhead">11 ผู้เล่นตัวจริง (Starters XI): {gw3_c1_start_pts} คะแนน</div>
-                        <table class="gw3-table">
-                            <thead>
-                                <tr>
-                                    <th>นักเตะ</th>
-                                    <th>สโมสร</th>
-                                    <th style="text-align:right;">คะแนน</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {gw3_c1_starters_html}
-                            </tbody>
-                        </table>
-
-                        <div class="gw3-subhead" style="margin-top:0.4rem; border-top:1px dashed var(--border-muted); padding-top:0.5rem;">
-                            ตัวสำรองบนม้านั่ง (Bench Reserves): {gw3_c1_bench_pts} คะแนน
-                        </div>
-                        <table class="gw3-table">
-                            <tbody>
-                                {gw3_c1_bench_html}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- RIGHT: CHOICE 2 BREAKDOWN -->
-                    <div class="gw3-panel" style="border-color: rgba(56, 189, 248, 0.35);">
-                        <div class="gw3-panel-header">
-                            <div>
-                                <span class="plan-title" style="color:var(--accent-sky);">Choice 2 &bull; Tactical Variant Setup</span>
-                                <div style="font-size:0.68rem; color:var(--text-secondary);">ตัวจริง 11 คน &bull; สลับ Konsa ลงแทน Egan / Pedro แทน Wissa</div>
-                            </div>
-                            <span class="source-pill" style="border-color:var(--accent-sky); color:var(--accent-sky); font-size:0.7rem; font-weight:800;">
-                                {gw3_c2_start_pts} PTS
-                            </span>
-                        </div>
-
-                        <div class="gw3-subhead">11 ผู้เล่นตัวจริง (Starters XI): {gw3_c2_start_pts} คะแนน</div>
-                        <table class="gw3-table">
-                            <thead>
-                                <tr>
-                                    <th>นักเตะ</th>
-                                    <th>สโมสร</th>
-                                    <th style="text-align:right;">คะแนน</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {gw3_c2_starters_html}
-                            </tbody>
-                        </table>
-
-                        <div class="gw3-subhead" style="margin-top:0.4rem; border-top:1px dashed var(--border-muted); padding-top:0.5rem;">
-                            ตัวสำรองบนม้านั่ง (Bench Reserves): {gw3_c2_bench_pts} คะแนน
-                        </div>
-                        <table class="gw3-table">
-                            <tbody>
-                                {gw3_c2_bench_html}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- TACTICAL DECIDERS AUDIT -->
-                <div class="gw3-decider-box">
-                    <div style="font-size:0.85rem; font-weight:700; color:#ffffff; display:flex; align-items:center; gap:6px;">
-                        <span>จุดชี้ขาดสำคัญของการแข่งขันสัปดาห์ที่ 3 (Key Tactical Match Deciders)</span>
-                    </div>
-                    <div class="gw3-decider-item">
-                        <strong>1. The Cody Gakpo Masterstroke (11 คะแนน):</strong> การตัดสินใจคว้าตัวและส่ง Cody Gakpo (£7.2m) ยืนตัวจริงในแดนกลางสร้างผลลัพธ์มหาศาล โดยเจ้าตัวระเบิดฟอร์มโกยถึง 11 คะแนน เป็นผู้เล่นแดนกลางที่ทำแต้มสูงสุดของทั้งสองทีม
-                    </div>
-                    <div class="gw3-decider-item">
-                        <strong>2. John Egan Differential (+2 คะแนนเหนือ Choice 2):</strong> Choice 1 ส่ง John Egan (£4.1m) ลงสนามตัวจริงและเก็บได้ 6 คะแนน ขณะที่ Choice 2 เลือกลงสนาม Ezri Konsa (£4.4m) ที่ได้ 4 คะแนน ส่งผลให้ Choice 1 เก็บความได้เปรียบเฉือนชนะไป +2 แต้มอย่างเด็ดขาด
-                    </div>
-                    <div class="gw3-decider-item">
-                        <strong>3. Erling Haaland Captaincy Foundation (18 คะแนน):</strong> ทั้งสองตัวเลือกวาง Erling Haaland เป็นกัปตันคูณสองอย่างเฉียบคม ผลงานยิงประตูช่วยเก็บ 9x2 = 18 แต้ม การันตีฐานคะแนนนำค่าเฉลี่ยทั่วโลก (51 pts) ได้อย่างปลอดภัย
-                    </div>
-                    <div class="gw3-decider-item">
-                        <strong>4. Bench Points Reflection (แต้มบนม้านั่งสำรอง):</strong> ทั้งสองทีมมีแต้มค้างอยู่บนม้านั่งสำรองในระดับ 14-16 คะแนน โดยเฉพาะ Antonín Kinsky (£4.5m) ผู้รักษาประตูที่เก็บคลีนชีตทำได้ถึง 6 คะแนนบนม้านั่งสำรอง
-                    </div>
-                </div>
-            </div>
-        </section>
+        {review_section_html}
     </main>
 
     <script>
@@ -3482,7 +3563,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
-            const target = document.getElementById('tab-' + tabId);
+            let target = document.getElementById('tab-' + tabId);
+            if (!target && (tabId === 'gw-review' || tabId === 'review' || tabId === 'gw4-review' || tabId === 'gw3-review')) {{
+                target = document.getElementById('tab-review') || document.getElementById('tab-gw4-review') || document.getElementById('tab-gw3-review');
+            }}
             if (target) target.classList.add('active');
             
             if (btn) {{
@@ -3492,14 +3576,37 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
         }}
 
-        // Support direct tab deep-linking via URL hash (e.g. #summary, #ticker, #sources, #gw3-review)
+        function switchReviewGw(gw, btn) {{
+            document.querySelectorAll('.review-gw-panel').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.review-gw-btn').forEach(b => {{
+                b.style.borderColor = 'var(--border-accent)';
+                b.style.color = 'var(--text-secondary)';
+                b.style.background = '#1e293b';
+            }});
+            const target = document.getElementById('review-content-gw' + gw);
+            if (target) target.style.display = 'block';
+            if (btn) {{
+                btn.style.borderColor = 'var(--accent-emerald)';
+                btn.style.color = 'var(--accent-emerald)';
+                btn.style.background = 'rgba(16, 185, 129, 0.15)';
+            }}
+        }}
+
+        // Support direct tab deep-linking via URL hash (e.g. #summary, #ticker, #sources, #gw4-review, #gw3-review, #review)
         window.addEventListener('DOMContentLoaded', () => {{
             const hash = window.location.hash.replace('#', '');
-            const tabMap = {{ 'comparison': 0, 'summary': 1, 'ticker': 2, 'sources': 3, 'gw3-review': 4 }};
+            const tabMap = {{ 'comparison': 0, 'summary': 1, 'ticker': 2, 'sources': 3, 'review': 4, 'gw-review': 4, 'gw4-review': 4, 'gw3-review': 4 }};
             if (hash in tabMap) {{
                 const btns = document.querySelectorAll('.tab-btn');
                 if (btns[tabMap[hash]]) {{
                     switchTab(hash, btns[tabMap[hash]]);
+                }}
+                if (hash === 'gw3-review') {{
+                    const gw3Btn = document.getElementById('btn-review-gw3');
+                    if (gw3Btn) switchReviewGw(3, gw3Btn);
+                }} else if (hash === 'gw4-review') {{
+                    const gw4Btn = document.getElementById('btn-review-gw4');
+                    if (gw4Btn) switchReviewGw(4, gw4Btn);
                 }}
             }}
         }});
