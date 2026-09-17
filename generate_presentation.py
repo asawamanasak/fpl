@@ -1103,6 +1103,74 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         <!-- TAB 5: POST-MATCH REVIEW & COMPARISON -->
         <section id="tab-review" class="tab-content">
             <div class="gw3-review-container">
+                <!-- SEASON HEAD-TO-HEAD LEADERBOARD -->
+                <div class="h2h-leaderboard-card" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 22, 0.98)); border: 1px solid var(--border-accent); border-radius: 12px; padding: 1.1rem 1.4rem; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); margin-bottom: 0.8rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.8rem; margin-bottom:0.9rem; border-bottom:1px solid var(--border-muted); padding-bottom:0.75rem;">
+                        <div>
+                            <div style="font-size:0.65rem; font-weight:800; color:var(--accent-emerald); text-transform:uppercase; letter-spacing:0.05em; display:flex; align-items:center; gap:6px;">
+                                <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-emerald); box-shadow:0 0 8px var(--accent-emerald);"></span>
+                                SEASON HEAD-TO-HEAD AUDIT (GW3 - GW38)
+                            </div>
+                            <h3 style="font-size:1.15rem; font-weight:800; color:#ffffff; margin:0.25rem 0 0 0; display:flex; align-items:center; gap:8px;">
+                                <span>Season Head-to-Head Leaderboard</span>
+                                <span style="font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:12px; background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">Choice 1 Leads +7 pts</span>
+                            </h3>
+                        </div>
+                        <div style="display:flex; gap:1.2rem; align-items:center;">
+                            <div style="text-align:right;">
+                                <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 1 (Micky)</div>
+                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">2 Wins <small style="font-size:0.75rem; color:#ffffff;">(135 pts)</small></div>
+                            </div>
+                            <div style="font-size:1rem; font-weight:800; color:var(--text-muted);">vs</div>
+                            <div style="text-align:left;">
+                                <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 2 (Gemini)</div>
+                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">0 Wins <small style="font-size:0.75rem; color:#ffffff;">(128 pts)</small></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- H2H Matrix Table -->
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left;">
+                            <thead>
+                                <tr style="border-bottom:1px solid var(--border-muted); color:var(--text-secondary); font-size:0.68rem; text-transform:uppercase; letter-spacing:0.04em;">
+                                    <th style="padding:6px 10px;">Gameweek</th>
+                                    <th style="padding:6px 10px; text-align:center;">Choice 1</th>
+                                    <th style="padding:6px 10px; text-align:center;">Choice 2</th>
+                                    <th style="padding:6px 10px; text-align:center;">Margin</th>
+                                    <th style="padding:6px 10px; text-align:center;">Winner</th>
+                                    <th style="padding:6px 10px;">Tactical Match Decider</th>
+                                    <th style="padding:6px 10px; text-align:right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                                    <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 4</td>
+                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">80 pts</td>
+                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">75 pts</td>
+                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald);">+5 pts</td>
+                                    <td style="padding:8px 10px; text-align:center;"><span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4);">CHOICE 1</span></td>
+                                    <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">ดร็อป Foden (-2 pts ใบแดง) &amp; Verbruggen เก็บ 8 pts</td>
+                                    <td style="padding:8px 10px; text-align:right;">
+                                        <button onclick="switchReviewGw(4, document.getElementById('btn-review-gw4'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                                    <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 3</td>
+                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">55 pts</td>
+                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">53 pts</td>
+                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald);">+2 pts</td>
+                                    <td style="padding:8px 10px; text-align:center;"><span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4);">CHOICE 1</span></td>
+                                    <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">ส่ง John Egan ตัวจริง (6 pts vs Konsa 4 pts) &amp; Gakpo 11 pts</td>
+                                    <td style="padding:8px 10px; text-align:right;">
+                                        <button onclick="switchReviewGw(3, document.getElementById('btn-review-gw3'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <!-- Gameweek Archive Selector -->
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem; background:rgba(15,23,42,0.65); padding:0.65rem 1rem; border-radius:10px; border:1px solid var(--border-accent); box-shadow:0 4px 12px rgba(0,0,0,0.25);">
                     <div style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:flex; align-items:center; gap:8px;">
