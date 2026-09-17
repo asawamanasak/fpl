@@ -1,22 +1,14 @@
 {
-  "last_checked": "2026-09-16T19:16:55.987589+00:00",
-  "total_alerts": 2,
+  "last_checked": "2026-09-17T15:39:42.363210+00:00",
+  "total_alerts": 1,
   "alerts": [
-    {
-      "id": 398,
-      "web_name": "Foden",
-      "status": "s",
-      "chance": 0,
-      "news": "Suspended until 17 Oct",
-      "timestamp": "2026-09-16T19:16:55.987423+00:00"
-    },
     {
       "id": 165,
       "web_name": "João Pedro",
       "status": "d",
       "chance": 75,
       "news": "Unspecified injury - 75% chance of playing",
-      "timestamp": "2026-09-16T19:16:55.987450+00:00"
+      "timestamp": "2026-09-17T15:39:42.362559+00:00"
     }
   ]
 }

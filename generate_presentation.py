@@ -612,7 +612,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     rank_target_label = "TOP 100K : ON TRACK" if in_top_100k else "TOP 100K : PURSUING"
     rank_tag_class = "status-ontrack" if in_top_100k else "status-pursuing"
 
-    # Friday Press Conference & Squad Health Watcher Data
+    # Friday Press Conference & Squad Health Watcher Data (Only for players currently in the squad)
     tactical_alerts_data = {"total_alerts": 0, "alerts": []}
     if os.path.exists("data/tactical_alerts.json"):
         try:
@@ -620,18 +620,22 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 tactical_alerts_data = json.load(f)
         except Exception:
             pass
-    total_flags = tactical_alerts_data.get("total_alerts", 0)
+
+    active_squad_pids = set(p[0] for p in c1_ids) | set(p[0] for p in c2_ids)
+    relevant_alerts = [alt for alt in tactical_alerts_data.get("alerts", []) if alt.get("id") in active_squad_pids]
+    total_flags = len(relevant_alerts)
+
     if total_flags == 0:
         health_status_badge = "100% MATCH FIT"
         health_badge_class = "health-badge-ok"
-        health_detail_text = "เฝ้าระวังตัวหลักทั้ง 15 คน (Haaland, Palmer, Foden, Gakpo, Szoboszlai, Pedro ฯลฯ) ตรวจพบความพร้อม 100% ปราศจากรายงานบาดเจ็บหรือแบนจากงานแถลงข่าว"
+        health_detail_text = "เฝ้าระวังตัวหลักทั้ง 15 คนในทีมปัจจุบัน (Haaland, Palmer, Pedro, Ødegaard, Szoboszlai, Tavernier ฯลฯ) ตรวจพบความพร้อม 100% ปราศจากรายงานบาดเจ็บหรือแบนจากงานแถลงข่าว"
         health_alerts_html = ""
     else:
-        health_status_badge = f"{total_flags} TACTICAL ALERTS"
+        health_status_badge = f"{total_flags} TACTICAL ALERT" if total_flags == 1 else f"{total_flags} TACTICAL ALERTS"
         health_badge_class = "health-badge-warning"
-        health_detail_text = f"ตรวจพบความเสี่ยงหรืออาการบาดเจ็บของนักเตะในทีม {total_flags} รายการ กรุณาตรวจสอบตัวเลือกสำรอง:"
+        health_detail_text = f"ตรวจพบความเสี่ยงหรืออาการบาดเจ็บของนักเตะในทีมปัจจุบัน {total_flags} รายการ กรุณาตรวจสอบตัวเลือกสำรอง:"
         items = []
-        for alt in tactical_alerts_data.get("alerts", []):
+        for alt in relevant_alerts:
             items.append(f'<div class="health-alert-pill"><strong>{alt["web_name"]}</strong>: โอกาสลงสนาม {alt.get("chance", "???")}% &bull; {alt.get("news", "No news")}</div>')
         health_alerts_html = '<div class="health-alerts-box">' + "".join(items) + '</div>'
 
