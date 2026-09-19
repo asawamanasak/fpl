@@ -1,5 +1,5 @@
 {
-  "last_checked": "2026-09-17T15:39:42.363210+00:00",
+  "last_checked": "2026-09-19T12:01:47.170400+00:00",
   "total_alerts": 1,
   "alerts": [
     {
@@ -7,8 +7,8 @@
       "web_name": "João Pedro",
       "status": "d",
       "chance": 75,
-      "news": "Unspecified injury - 75% chance of playing",
-      "timestamp": "2026-09-17T15:39:42.362559+00:00"
+      "news": "Knee injury - 75% chance of playing",
+      "timestamp": "2026-09-19T12:01:47.170183+00:00"
     }
   ]
 }
