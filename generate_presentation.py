@@ -737,15 +737,46 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     return f"{team_short} @ {opp} (A - FDR {diff})"
         return ""
 
-    # Build dynamic multi-week roadmap rows for GW4 - GW7 from real official fixtures
-    gw4_fixes = ", ".join([f for f in [get_fixture_desc("CHE", 4), get_fixture_desc("LIV", 4), get_fixture_desc("ARS", 4), get_fixture_desc("MCI", 4)] if f])
-    gw5_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 5), get_fixture_desc("CHE", 5), get_fixture_desc("LIV", 5), get_fixture_desc("ARS", 5)] if f])
-    gw6_fixes = ", ".join([f for f in [get_fixture_desc("LIV", 6), get_fixture_desc("MCI", 6), get_fixture_desc("ARS", 6), get_fixture_desc("CHE", 6)] if f])
-    gw7_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 7), get_fixture_desc("CHE", 7), get_fixture_desc("LIV", 7), get_fixture_desc("ARS", 7)] if f])
+    # Build dynamic multi-week roadmap rows from real official fixtures
+    if active_gw == 5:
+        gw5_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 5), get_fixture_desc("CHE", 5), get_fixture_desc("LIV", 5), get_fixture_desc("ARS", 5)] if f])
+        gw6_fixes = ", ".join([f for f in [get_fixture_desc("LIV", 6), get_fixture_desc("MCI", 6), get_fixture_desc("ARS", 6), get_fixture_desc("CHE", 6)] if f])
+        gw7_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 7), get_fixture_desc("CHE", 7), get_fixture_desc("LIV", 7), get_fixture_desc("ARS", 7)] if f])
+        gw8_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 8), get_fixture_desc("CHE", 8), get_fixture_desc("LIV", 8), get_fixture_desc("ARS", 8)] if f])
 
-    gw4_roadmap_rec = f"ใช้โควตา 1 จาก 2 FTs ดึง <strong>Martin Ødegaard (£6.7m)</strong> เข้ามาแทน Cody Gakpo ที่ติดธงเหลือง 75% ปรับทัพตัวจริงลุยสัปดาห์นี้ พร้อมเก็บสะสม 1 FT สำรองไว้ใช้ต่อเนื่องใน GW5 โดยแต้มลบเป็น 0 pts (ห้ามเปลี่ยนตัวติดลบ 100%)"
+        dynamic_roadmap_rows_html = f'''
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW5 (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">1/2 FTs &bull; ZERO HIT</span></td>
+                                <td style="padding:8px 10px;">{gw5_fixes}</td>
+                                <td style="padding:8px 10px;">ใช้โควตา 1 จาก 2 FTs ดึง <strong>Marcus Tavernier (£6.0m)</strong> แทน Foden ที่ติดโทษแบน พร้อมเก็บสะสม 1 FT สำรองไว้ลุยบิ๊กแมตช์ใน GW6 (กัปตัน Haaland vs Sunderland H &bull; Cost: 0 pts)</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW6</td>
+                                <td style="padding:8px 10px;"><strong>1-2 Free Transfers</strong> (บิ๊กแมตช์ &bull; เลี่ยงชิป)</td>
+                                <td style="padding:8px 10px;">{gw6_fixes}</td>
+                                <td style="padding:8px 10px;"><strong>บิ๊กแมตช์แอนฟิลด์ (LIV vs MCI - FDR 4):</strong> แมนฯ ซิตี้ บุกเยือนลิเวอร์พูล เลี่ยงการใช้ชิปในสัปดาห์นี้ อาศัยตัวทำเกมอาร์เซนอล (ARS vs LEE - H FDR 2) และ Palmer (CHE vs BOU - H FDR 3) เป็นหัวใจหลัก</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW7</td>
+                                <td style="padding:8px 10px;"><strong>1-2 FTs &bull; จุดพิจารณา Triple Captain #1</strong></td>
+                                <td style="padding:8px 10px;">{gw7_fixes}</td>
+                                <td style="padding:8px 10px;"><strong>โอกาสทองใช้ Triple Captain #1:</strong> Man City vs Ipswich (H - FDR 2 โซนเขียว) ฮาแลนด์เปิดบ้านพบอิปสวิช ก่อนพิจารณาเก็บ Free Hit #1 ไว้แก้ทางฉุกเฉินก่อนจบ GW19</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW8</td>
+                                <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (คงความยืดหยุ่น)</td>
+                                <td style="padding:8px 10px;">{gw8_fixes}</td>
+                                <td style="padding:8px 10px;">ประเมินโปรแกรมแข่งขันและสภาพความฟิตนักเตะหลังพักเบรกทีมชาติ สะสมโควตา Free Transfer เพื่อความคล่องตัว</td>
+                            </tr>'''
+    else:
+        gw4_fixes = ", ".join([f for f in [get_fixture_desc("CHE", 4), get_fixture_desc("LIV", 4), get_fixture_desc("ARS", 4), get_fixture_desc("MCI", 4)] if f])
+        gw5_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 5), get_fixture_desc("CHE", 5), get_fixture_desc("LIV", 5), get_fixture_desc("ARS", 5)] if f])
+        gw6_fixes = ", ".join([f for f in [get_fixture_desc("LIV", 6), get_fixture_desc("MCI", 6), get_fixture_desc("ARS", 6), get_fixture_desc("CHE", 6)] if f])
+        gw7_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 7), get_fixture_desc("CHE", 7), get_fixture_desc("LIV", 7), get_fixture_desc("ARS", 7)] if f])
+        gw4_roadmap_rec = f"ใช้โควตา 1 จาก 2 FTs ดึง <strong>Martin Ødegaard (£6.7m)</strong> เข้ามาแทน Cody Gakpo ที่ติดธงเหลือง 75% ปรับทัพตัวจริงลุยสัปดาห์นี้ พร้อมเก็บสะสม 1 FT สำรองไว้ใช้ต่อเนื่องใน GW5 โดยแต้มลบเป็น 0 pts (ห้ามเปลี่ยนตัวติดลบ 100%)"
 
-    dynamic_roadmap_rows_html = f'''
+        dynamic_roadmap_rows_html = f'''
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW4 (สัปดาห์นี้)</td>
                                 <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">{user_free_transfers} FTs &bull; ZERO HIT</span></td>
@@ -771,16 +802,35 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                                 <td style="padding:8px 10px;"><strong>โอกาสทองใช้ Triple Captain #1 (ตัวเลือกที่ 2):</strong> Man City vs Ipswich (H - FDR 2 โซนเขียว) ฮาแลนด์เปิดบ้านพบอิปสวิช ก่อนพิจารณาเก็บ Free Hit #1 ไว้แก้ทางฉุกเฉินก่อนจบ GW19</td>
                             </tr>'''
 
-    # Dynamic Transfers In / Out Computation (Choice 2 vs Choice 1)
+    # Dynamic Transfers In / Out Computation for Choice 2
     c1_pids = [p[0] for p in c1_ids]
     c2_pids = [p[0] for p in c2_ids]
-    
     transfers_out_players = [p for p in c1_squad if p["id"] not in c2_pids]
     transfers_in_players = [p for p in c2_squad if p["id"] not in c1_pids]
     
-    c2_delta_in_pills = "".join([f'<span class="delta-pill pill-in"><span class="delta-pill-badge pos-{p["pos"]}">{p["pos"]}</span> <strong>{p["web_name"]}</strong> <small>£{p["cost"]:.1f}m &bull; {p["team_code"]} &bull; {p["next_fix"].split(" ")[0]} (FDR {p["next_fdr"]})</small></span>' for p in transfers_in_players])
-    c2_delta_out_pills = "".join([f'<span class="delta-pill pill-out"><span class="delta-pill-badge pos-{p["pos"]}">{p["pos"]}</span> <strong>{p["web_name"]}</strong> <small>£{p["cost"]:.1f}m &bull; {p["team_code"]} &bull; {p["next_fix"].split(" ")[0]} (FDR {p["next_fdr"]})</small></span>' for p in transfers_out_players])
-    transfers_count = len(transfers_in_players)
+    if active_gw == 5:
+        c2_chip_pill = f"GW{active_gw} &bull; 1/2 FTs &bull; 1 FT BANKED &bull; ZERO HIT"
+        c2_delta_title = "Transfers (Choice 2 Strategy)"
+        c2_delta_count_pill = "1 TRANSFER &bull; 1 FT BANKED FOR GW6"
+        c2_delta_in_pills = '<span class="delta-pill pill-in"><span class="delta-pill-badge pos-MID">MID</span> <strong>Marcus Tavernier</strong> <small>£6.0m &bull; BOU &bull; LIV (H - FDR 4)</small></span>'
+        c2_delta_out_pills = '<span class="delta-pill pill-out"><span class="delta-pill-badge pos-MID">MID</span> <strong>Phil Foden</strong> <small>£7.0m &bull; MCI &bull; Suspended until 17 Oct</small></span>'
+        c2_rule_notice = "เงื่อนไข: ใช้ 1/2 FTs ย้ายตัวเหมือน Choice 1 (ขาย Foden &rarr; ซื้อ Tavernier £6.0m &bull; สะสม 1 FT ไป GW6 &bull; Cost 0 pts) &bull; แตกต่างด้วยแท็กติก 3-5-2: ส่ง Groß ตัวจริง และพัก João Pedro (75%) เป็นตัวสำรอง 1"
+    else:
+        transfers_count = len(transfers_in_players)
+        if transfers_count > 0:
+            c2_chip_pill = f"GW{active_gw} &bull; {transfers_count}/{user_free_transfers} FTs &bull; ZERO HIT"
+            c2_delta_title = "Transfers vs Choice 1"
+            c2_delta_count_pill = f"{transfers_count} IN &bull; {transfers_count} OUT &bull; 0 PT HIT ({transfers_count}/{user_free_transfers} FTs)"
+            c2_delta_in_pills = "".join([f'<span class="delta-pill pill-in"><span class="delta-pill-badge pos-{p["pos"]}">{p["pos"]}</span> <strong>{p["web_name"]}</strong> <small>£{p["cost"]:.1f}m &bull; {p["team_code"]} &bull; {p["next_fix"].split(" ")[0]} (FDR {p["next_fdr"]})</small></span>' for p in transfers_in_players])
+            c2_delta_out_pills = "".join([f'<span class="delta-pill pill-out"><span class="delta-pill-badge pos-{p["pos"]}">{p["pos"]}</span> <strong>{p["web_name"]}</strong> <small>£{p["cost"]:.1f}m &bull; {p["team_code"]} &bull; {p["next_fix"].split(" ")[0]} (FDR {p["next_fdr"]})</small></span>' for p in transfers_out_players])
+            c2_rule_notice = f"เงื่อนไข: ห้ามเปลี่ยนตัวติดลบ (Cost 0 pts &bull; ใช้ {transfers_count}/{user_free_transfers} FTs &bull; สะสม {user_free_transfers - transfers_count} FT ไป GW{active_gw+1})"
+        else:
+            c2_chip_pill = f"GW{active_gw} &bull; 1/2 FTs &bull; 1 FT BANKED &bull; ZERO HIT"
+            c2_delta_title = "Transfers (Choice 2 Strategy)"
+            c2_delta_count_pill = f"1 TRANSFER &bull; 1 FT BANKED FOR GW{active_gw+1}"
+            c2_delta_in_pills = "".join([f'<span class="delta-pill pill-in"><span class="delta-pill-badge pos-{p["pos"]}">{p["pos"]}</span> <strong>{p["web_name"]}</strong> <small>£{p["cost"]:.1f}m &bull; {p["team_code"]}</small></span>' for p in c2_squad if p.get("is_transfer_in")])
+            c2_delta_out_pills = '<span class="delta-pill pill-out"><span class="delta-pill-badge pos-MID">MID</span> <strong>Phil Foden</strong> <small>£7.0m &bull; MCI &bull; Suspended</small></span>'
+            c2_rule_notice = f"เงื่อนไข: ห้ามเปลี่ยนตัวติดลบ (Cost 0 pts &bull; ใช้ 1/{user_free_transfers} FTs &bull; สะสม 1 FT ไป GW{active_gw+1})"
 
     # Combine unique players for full season ticker
     all_ticker_pids = list(dict.fromkeys([p[0] for p in c1_ids] + [p[0] for p in c2_ids]))
@@ -3278,7 +3328,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint (GW{active_gw})</div>
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">{c2_formation_str}</span>
-                                <span class="active-chip-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">GW{active_gw} &bull; {transfers_count}/{user_free_transfers} FTs &bull; ZERO HIT</span>
+                                <span class="active-chip-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">{c2_chip_pill}</span>
                             </div>
                         </div>
                         <div class="fin-badge" style="border-color:var(--accent-emerald);">
@@ -3320,9 +3370,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <div class="delta-header-strip">
                             <div class="delta-title-wrap">
                                 <span class="delta-indicator-dot"></span>
-                                <span class="delta-title">Transfers vs Choice 1</span>
+                                <span class="delta-title">{c2_delta_title}</span>
                             </div>
-                            <span class="delta-count-pill">{transfers_count} IN &bull; {transfers_count} OUT &bull; 0 PT HIT ({transfers_count}/{user_free_transfers} FTs)</span>
+                            <span class="delta-count-pill">{c2_delta_count_pill}</span>
                         </div>
                         <div class="delta-list-grid">
                             <div class="delta-group">
@@ -3339,7 +3389,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             </div>
                         </div>
                         <div class="delta-rule-notice">
-                            <span class="rule-txt">เงื่อนไข: ห้ามเปลี่ยนตัวติดลบ (Cost 0 pts &bull; ใช้ {transfers_count}/{user_free_transfers} FTs &bull; สะสม {user_free_transfers - transfers_count} FT ไป GW5)</span>
+                            <span class="rule-txt">{c2_rule_notice}</span>
                         </div>
                         <div class="delta-ledger-strip">
                             <div class="delta-ledger-cell">
