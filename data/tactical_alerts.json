@@ -1,14 +1,22 @@
 {
-  "last_checked": "2026-09-19T12:01:47.170400+00:00",
-  "total_alerts": 1,
+  "last_checked": "2026-09-21T13:55:04.924258+00:00",
+  "total_alerts": 2,
   "alerts": [
+    {
+      "id": 154,
+      "web_name": "Palmer",
+      "status": "d",
+      "chance": 75,
+      "news": "Muscular injury - 75% chance of playing",
+      "timestamp": "2026-09-21T13:55:04.924046+00:00"
+    },
     {
       "id": 165,
       "web_name": "João Pedro",
       "status": "d",
       "chance": 75,
       "news": "Knee injury - 75% chance of playing",
-      "timestamp": "2026-09-19T12:01:47.170183+00:00"
+      "timestamp": "2026-09-21T13:55:04.924081+00:00"
     }
   ]
 }
