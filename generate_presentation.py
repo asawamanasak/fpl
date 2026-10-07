@@ -390,7 +390,28 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     if not loaded_from_official_picks:
         # Fallback Baseline Lockdown Squad if pre-deadline / picks API not yet available
-        if active_gw == 5:
+        if active_gw == 6:
+            # GW6 Squad from Micky Official Lineup (Gabriel [C], Wissa [VC], Verbruggen in Goal, 3-4-3)
+            c1_ids = [
+                (109, True, False, False, False, False),  # Verbruggen (GKP Starter @ SUN A)
+                (391, True, False, False, True, False),   # Gvardiol (DEF @ LIV A)
+                (31, True, False, False, False, False),   # Konsa (DEF vs LEE H - 75% flag)
+                (4, True, True, False, True, False),      # Gabriel (DEF C vs LEE H - Captain)
+                (68, True, False, False, False, False),   # Tavernier (MID @ CHE A)
+                (15, True, False, False, False, False),   # Ødegaard (MID vs LEE H)
+                (368, True, False, False, True, False),   # Szoboszlai (MID vs MCI H)
+                (154, True, False, False, False, False),  # Palmer (MID vs BOU H - 75% flag)
+                (165, True, False, False, True, False),   # João Pedro (FWD vs BOU H - 75% flag)
+                (464, True, False, True, False, False),   # Wissa (FWD VC @ COV A - Vice Captain)
+                (411, True, False, False, True, False),   # Haaland (FWD @ LIV A)
+                # Bench
+                (496, False, False, False, False, False), # Kinsky (GKP Sub @ MUN A)
+                (124, False, False, False, False, False), # Groß (MID Sub 1 @ SUN A)
+                (277, False, False, False, False, False), # Egan (DEF Sub 2 vs EVE H)
+                (304, False, False, False, False, False), # O'Shea (DEF Sub 3 vs FUL H)
+            ]
+            c1_bank = 1.4
+        elif active_gw == 5:
             # GW5 Squad from Micky Official Lineup (Foden -> Tavernier, Haaland [C], Wissa [VC], Kinsky in Goal)
             c1_ids = [
                 (496, True, False, False, False, False),  # Kinsky (GKP Starter vs AVL H)
@@ -461,10 +482,30 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     total_budget = round(max(c1_cost + c1_bank, (entry.get("last_deadline_value", 1000) + entry.get("last_deadline_bank", 0)) / 10.0), 1)
 
     user_free_transfers = 2
-    transfers_count = 1
+    transfers_count = len(gw_transfers) if active_gw != 5 else 1
 
     # CHOICE 2: GEMINI Autonomous Tactical Variant (0 Hits)
-    if active_gw == 5:
+    if active_gw == 6:
+        # Midfield Shield & Safety Variant (3-5-2): Starts Pascal Groß in 5-man midfield, benches João Pedro (75% flag) as Sub 1, Palmer [C], Gabriel [VC]
+        c2_ids = [
+            (109, True, False, False, False, False),  # Verbruggen (GKP Starter @ SUN A)
+            (391, True, False, False, True, False),   # Gvardiol (DEF @ LIV A)
+            (31, True, False, False, False, False),   # Konsa (DEF vs LEE H - 75% flag)
+            (4, True, False, True, True, False),      # Gabriel (DEF VC vs LEE H - Vice Captain)
+            (68, True, False, False, False, False),   # Tavernier (MID @ CHE A)
+            (15, True, False, False, False, False),   # Ødegaard (MID vs LEE H)
+            (368, True, False, False, True, False),   # Szoboszlai (MID vs MCI H)
+            (154, True, True, False, False, False),   # Palmer (MID C vs BOU H - Captain / Highest xPts)
+            (124, True, False, False, False, False),  # Groß (MID Starter in 3-5-2 @ SUN A)
+            (464, True, False, False, False, False),  # Wissa (FWD @ COV A)
+            (411, True, False, False, True, False),   # Haaland (FWD @ LIV A)
+            # Bench
+            (496, False, False, False, False, False), # Kinsky (GKP Sub @ MUN A)
+            (165, False, False, False, True, False),  # João Pedro (FWD Sub 1 vs BOU H - 75% injury buffer)
+            (277, False, False, False, False, False), # Egan (DEF Sub 2 vs EVE H)
+            (304, False, False, False, False, False), # O'Shea (DEF Sub 3 vs FUL H)
+        ]
+    elif active_gw == 5:
         # Midfield Shield Variant (3-5-2): Starts Pascal Groß in 5-man midfield, benches João Pedro (75% flag) as Sub 1
         c2_ids = [
             (496, True, False, False, False, False),  # Kinsky (GKP Starter vs AVL H)
@@ -535,7 +576,37 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     c2_nailed_count = sum(1 for p in c2_squad if p["minutes"] >= 90)
 
     # Dynamic Pros & Cons for Choice 1 and Choice 2:
-    if active_gw == 5:
+    if active_gw == 6:
+        c1_transfer_count_pill = "0 TRANSFERS &bull; 2 FTs BANKED &bull; ZERO HIT"
+        c1_transfer_status_text = "ไม่มีการย้ายตัวใน GW6 (สะสม 2 Free Transfers ไว้พร้อมรบเต็มพิกัดใน GW7 &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £1.4m)"
+        c2_pro_upgrade = "<strong>Pascal Groß Midfield Reinforcement (Groß Started in 3-5-2):</strong> ส่ง Pascal Groß (£5.9m) ยืนตัวจริงในแดนกลาง 5 คน หลังโชว์ฟอร์มระเบิด 31 แต้มใน 2 นัดล่าสุด ลุ้นผลงานจุดโทษและลูกตั้งเตะเกมเยือนซันเดอร์แลนด์"
+        c2_con_transfer = "<strong>João Pedro Tactical Injury Buffer (Sub 1 Priority):</strong> ปรับทัพเป็น 3-5-2 เพื่อพัก João Pedro (ติดสถานะบาดเจ็บเข่า 75%) เป็นตัวสำรองอันดับ 1 ป้องกันแต้มหลุดลอยหากถูกเปลี่ยนตัวลงมาท้ายเกมเพียงไม่กี่นาที"
+        c1_pros_items = [
+            ("Gabriel Captaincy Differential [C] vs Leeds (H - FDR 3):", "มอบปลอกแขนกัปตันให้ Gabriel (£8.0m) ยืนคุมแนวรับอาร์เซนอลเปิดเอมิเรตส์รับมือลีดส์ ยูไนเต็ด โอกาสเก็บคลีนชีตสูง พร้อมลุ้นทำประตูจากลูกเตะมุมและเซ็ตพีซ เป็นตัวเลือกสร้างความต่าง (Differential Captain) ชั้นยอด"),
+            ("2 Free Transfers Banked for GW7 Super-Window:", "สะสมโควตา Free Transfer ครบ 2 สิทธิ์ พร้อมเงินสดในคลัง £1.4m เพื่อเตรียมตัวรับมือ GW7 (หน้าต่างทองคำ Triple Captain: Man City vs Ipswich ในบ้าน)"),
+            ("Yoane Wissa In-Form Vice Captain [VC] vs Coventry (A - FDR 2):", "มอบปลอกแขนรองกัปตันให้ Yoane Wissa (£6.2m) ที่กำลังฟอร์มร้อนแรง บุกเยือนโคเวนทรี ทีมโซนล่าง สแตนด์บายอย่างปลอดภัย"),
+            ("Bart Verbruggen Away Goalkeeper Selection vs Sunderland (A - FDR 3):", "มอบความไว้วางใจให้ Verbruggen (£4.5m) บุกเยือนซันเดอร์แลนด์ ลุ้นคลีนชีตและแต้มเซฟ หลังเก็บ 6 แต้มใน GW5"),
+            ("Triple Front-3 Maximum Firepower (3-4-3):", "โครงสร้าง 3-4-3 ยืนหน้าสามเต็มสูบ (Haaland + Wissa + João Pedro) ครอบคลุมโอกาสทำประตูสูงสุดทุกคู่"),
+            ("Massive Financial Warchest (£1.4m in Bank):", "เหลือเงินสดสำรองในธนาคารสูงถึง £1.4m รักษาความคล่องตัวทางการเงินสูงสุด")
+        ]
+        c1_cons_items = [
+            ("Triple Yellow Flag Injury Exposure (Palmer 75%, João Pedro 75%, Konsa 75%):", "การส่งผู้เล่นที่ติดธงเหลือง 75% พร้อมกันถึง 3 คนลงตัวจริง หากมีใครลงมาเคาะสนิมท้ายเกมเพียง 5-10 นาที จะทำให้แต้มค้างที่ 1 คะแนนทันที"),
+            ("Pascal Groß 14-Pt Form Benched as Sub 1:", "การดร็อป Pascal Groß (£5.9m) ไว้เป็นตัวสำรองอันดับ 1 หลังจากเพิ่งทำ 14 แต้มใน GW5 และ 17 แต้มใน GW4 มีความเสี่ยงหากไบรท์ตันได้จุดโทษหรือลูกตั้งเตะ"),
+            ("Erling Haaland Away at Anfield Uncaptained (LIV vs MCI - FDR 4):", "การโยกปลอกแขนกัปตันออกจาก Erling Haaland (£15.6m) แม้ต้องเยือนแอนฟิลด์ แต่หาก Haaland ยิงประตูได้ อาจถูกผู้เล่นทั่วโลก (Ownership กัปตันสูง) ลงโทษอันดับได้ทันที")
+        ]
+        c2_plan_title = "Choice 2 &bull; Midfield Shield & Safety Variant (3-5-2)"
+        c2_plan_pill = "Midfield High-Ceiling"
+        c2_pros_items = [
+            ("Zero-Hit Rule Enforced (ห้ามเปลี่ยนตัวติดลบ 0 pts):", "ไม่เสียแต้มลบแม้แต่แต้มเดียว (Penalty: 0 pts) พร้อมสะสม 2 Free Transfers เต็มโควตาไว้ลุย GW7"),
+            ("Pascal Groß Started in 3-5-2 (Set-Piece & Penalty Shield):", "ส่ง Pascal Groß (£5.9m) ยืนตัวจริงในแดนกลาง 5 คน ต่อยอดฟอร์มร้อนแรง 31 แต้มใน 2 GW ล่าสุด ลุ้นผลงานจุดโทษและลูกตั้งเตะ"),
+            ("João Pedro Tactical Injury Buffer (Sub 1 Priority):", "ปรับทัพเป็น 3-5-2 เพื่อพัก João Pedro (ติดสถานะบาดเจ็บเข่า 75%) เป็นตัวสำรองอันดับ 1 ป้องกันแต้มหลุดลอย"),
+            ("Cole Palmer Captaincy Exploit [C] vs Bournemouth (H - FDR 3):", "มอบปลอกแขนกัปตันให้ Cole Palmer (£9.7m) ที่ Solio AI ยกให้มีค่า xPts สูงสุดของสัปดาห์ (6.02 pts) ในการเปิดบ้านรับมือบอร์นมัธ"),
+            ("2 Free Transfers Banked for GW7 Super-Window:", "สะสม 2 Free Transfers ไว้พร้อมเงินสด £1.4m เพื่อเตรียมตัวรับมือ GW7 (Triple Captain Haaland vs Ipswich)")
+        ]
+        c2_cons_items = [
+            ("Reduced Front-3 Firepower:", "การปรับเป็นหน้าคู่ (Haaland + Wissa) ทำให้ลดตัวเลือกทำประตูแดนหน้าลง 1 คน หาก Pedro ฟิตเต็มร้อยและยิงประตูได้ จะต้องลุ้นให้มีตัวจริงไม่ได้ลงสนาม")
+        ]
+    elif active_gw == 5:
         c1_transfer_count_pill = "1 TRANSFER &bull; 1 FT BANKED FOR GW6"
         c1_transfer_status_text = "ย้ายตัว 1 ตำแหน่ง (ขาย Foden ที่ติดโทษแบน £7.0m &rarr; ซื้อ Marcus Tavernier £6.0m &bull; รับเงินทอนเข้าคลัง +£1.4m &bull; ค่าปรับ 0 แต้ม)"
         c2_pro_upgrade = "<strong>Pascal Groß Midfield Reinforcement (Groß Started in 3-5-2):</strong> ส่ง Pascal Groß (£5.7m) ยืนตัวจริงในแดนกลาง 5 คน หลังโชว์ฟอร์มระเบิด 17 แต้มใน GW4 ลุ้นผลงานจุดโทษและลูกตั้งเตะเกมเหย้าพบอาร์เซนอล"
@@ -738,7 +809,38 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         return ""
 
     # Build dynamic multi-week roadmap rows from real official fixtures
-    if active_gw == 5:
+    if active_gw == 6:
+        gw6_fixes = ", ".join([f for f in [get_fixture_desc("ARS", 6), get_fixture_desc("CHE", 6), get_fixture_desc("LIV", 6), get_fixture_desc("MCI", 6)] if f])
+        gw7_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 7), get_fixture_desc("CHE", 7), get_fixture_desc("LIV", 7), get_fixture_desc("ARS", 7)] if f])
+        gw8_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 8), get_fixture_desc("CHE", 8), get_fixture_desc("LIV", 8), get_fixture_desc("ARS", 8)] if f])
+        gw9_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 9), get_fixture_desc("CHE", 9), get_fixture_desc("LIV", 9), get_fixture_desc("ARS", 9)] if f])
+
+        dynamic_roadmap_rows_html = f'''
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW6 (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">2 FTs BANKED &bull; ZERO HIT</span></td>
+                                <td style="padding:8px 10px;">{gw6_fixes}</td>
+                                <td style="padding:8px 10px;"><strong>บิ๊กแมตช์แอนฟิลด์ (LIV vs MCI - FDR 4):</strong> แมนฯ ซิตี้ บุกเยือนลิเวอร์พูล เลี่ยงการใช้ชิปในสัปดาห์นี้ อาศัยตัวทำเกมอาร์เซนอล (ARS vs LEE - H FDR 3) และ Palmer (CHE vs BOU - H FDR 3) เป็นหัวใจหลัก พร้อมสะสม 2 FTs เต็มโควตาไปใช้ GW7</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW7</td>
+                                <td style="padding:8px 10px;"><strong>2 FTs &bull; จุดพิจารณา Triple Captain #1</strong></td>
+                                <td style="padding:8px 10px;">{gw7_fixes}</td>
+                                <td style="padding:8px 10px;"><strong>โอกาสทองใช้ Triple Captain #1:</strong> Man City vs Ipswich (H - FDR 2 โซนเขียว) ฮาแลนด์เปิดบ้านพบอิปสวิช โอกาสระเบิดแต้ม 3 เท่า พร้อม 2 Free Transfers สำรองไว้แก้เกม</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW8</td>
+                                <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (คงความยืดหยุ่น)</td>
+                                <td style="padding:8px 10px;">{gw8_fixes}</td>
+                                <td style="padding:8px 10px;">ประเมินโปรแกรมแข่งขันและสภาพความฟิตนักเตะหลังพักเบรกทีมชาติ สะสมโควตา Free Transfer เพื่อความคล่องตัว</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW9</td>
+                                <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (บริหารโรเตชั่น)</td>
+                                <td style="padding:8px 10px;">{gw9_fixes}</td>
+                                <td style="padding:8px 10px;">สลับปรับเปลี่ยนผู้เล่นตามโปรแกรมระยะกลาง และรักษาโครงสร้าง Zero Deadweight 15 ตัวจริง</td>
+                            </tr>'''
+    elif active_gw == 5:
         gw5_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 5), get_fixture_desc("CHE", 5), get_fixture_desc("LIV", 5), get_fixture_desc("ARS", 5)] if f])
         gw6_fixes = ", ".join([f for f in [get_fixture_desc("LIV", 6), get_fixture_desc("MCI", 6), get_fixture_desc("ARS", 6), get_fixture_desc("CHE", 6)] if f])
         gw7_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 7), get_fixture_desc("CHE", 7), get_fixture_desc("LIV", 7), get_fixture_desc("ARS", 7)] if f])
@@ -808,7 +910,14 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     transfers_out_players = [p for p in c1_squad if p["id"] not in c2_pids]
     transfers_in_players = [p for p in c2_squad if p["id"] not in c1_pids]
     
-    if active_gw == 5:
+    if active_gw == 6:
+        c2_chip_pill = f"GW{active_gw} &bull; 2 FTs BANKED &bull; ZERO HIT"
+        c2_delta_title = "Transfers (Choice 2 Strategy)"
+        c2_delta_count_pill = "0 TRANSFERS &bull; 2 FTs BANKED FOR GW7"
+        c2_delta_in_pills = '<span style="color:var(--text-muted); font-size:0.8rem;">ไม่มีการย้ายตัว (สะสม 2 Free Transfers)</span>'
+        c2_delta_out_pills = '<span style="color:var(--text-muted); font-size:0.8rem;">ไม่มีการย้ายตัว (สะสม 2 Free Transfers)</span>'
+        c2_rule_notice = "เงื่อนไข: สะสม 2 Free Transfers เต็มโควตาไปลุย GW7 (Triple Captain Window: MCI vs IPS H) &bull; ไม่เสียแต้มลบ (Cost 0 pts) &bull; แตกต่างด้วยแท็กติก 3-5-2: ส่ง Groß ตัวจริงแดนกลาง, พัก João Pedro (75%) เป็นตัวสำรอง 1, และ Palmer กัปตัน [C]"
+    elif active_gw == 5:
         c2_chip_pill = f"GW{active_gw} &bull; 1/2 FTs &bull; 1 FT BANKED &bull; ZERO HIT"
         c2_delta_title = "Transfers (Choice 2 Strategy)"
         c2_delta_count_pill = "1 TRANSFER &bull; 1 FT BANKED FOR GW6"
@@ -864,6 +973,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     gw3_live_points = load_live_gw_points(3)
     gw4_live_points = load_live_gw_points(4)
+    gw5_live_points = load_live_gw_points(5)
 
     # Official fallback player scores
     gw3_fallback_pts = {
@@ -873,6 +983,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     gw4_fallback_pts = {
         109: 8, 304: 1, 31: 6, 4: 9, 124: 17, 15: 3, 368: 3, 154: 5,
         165: 12, 464: 2, 411: 9, 496: 7, 398: -2, 391: 11, 277: 2
+    }
+    gw5_fallback_pts = {
+        109: 6, 496: 2, 391: 4, 31: 1, 4: 1, 277: 1, 304: 2,
+        68: 2, 15: 2, 368: 2, 154: 2, 124: 14, 165: 0, 464: 0, 411: 6
     }
 
     # GW3 Lineups:
@@ -909,6 +1023,24 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         (165, True, False, True), (411, True, False, False),
         (109, False, False, False), (464, False, False, False), (391, False, False, False),
         (277, False, False, False)
+    ]
+
+    # GW5 Lineups:
+    gw5_c1_lineup = [
+        (496, True, False, False), (4, True, False, False), (391, True, False, False),
+        (31, True, False, False), (154, True, False, False), (68, True, False, False),
+        (15, True, False, False), (368, True, False, False), (124, True, False, False),
+        (411, True, True, False), (464, True, False, True),
+        (109, False, False, False), (165, False, False, False), (277, False, False, False),
+        (304, False, False, False)
+    ]
+    gw5_c2_lineup = [
+        (496, True, False, False), (4, True, False, False), (391, True, False, False),
+        (31, True, False, False), (154, True, False, False), (68, True, False, False),
+        (15, True, False, False), (368, True, False, False), (124, True, False, False),
+        (411, True, True, False), (464, True, False, True),
+        (109, False, False, False), (165, False, False, False), (277, False, False, False),
+        (304, False, False, False)
     ]
 
     def build_review_player_data(pid, is_starter, is_c, is_vc, live_pts, fallback_pts):
@@ -1100,6 +1232,31 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             </div>
         '''
 
+    gw5_deciders = [
+        ("1. The Pascal Groß 14-Point Masterclass (14 คะแนน):",
+         "ทั้งสองทีมได้รับผลตอบแทนมหาศาลจากการวางใจส่ง Pascal Groß (£5.9m) ยืนตัวจริงในแดนกลาง 5 คน โดยเจ้าตัวระเบิดฟอร์มทำ 14 คะแนน (ยิงประตู + โบนัสสูงสุด) ต่อยอดจาก 17 แต้มใน GW4"),
+        ("2. Erling Haaland Captaincy Returns (12 คะแนน):",
+         "การวางใจให้ Erling Haaland (£15.5m) สวมปลอกแขนกัปตันทีมเปิดบ้านรับมือซันเดอร์แลนด์ ทำได้ 6x2 = 12 คะแนน การันตีแต้มฐานที่มั่นคงสำหรับทั้งสองทีม"),
+        ("3. Tactical Parity & Draw (เสมอกัน 42 vs 42 คะแนน):",
+         "ใน GW5 ทั้ง Choice 1 และ Choice 2 มีการย้ายตัว Foden -> Tavernier เหมือนกัน และจัด 11 ตัวจริงพร้อมม้านั่งสำรองในโครงสร้าง 3-5-2 ชุดเดียวกัน ส่งผลให้ทั้งสองทีมทำคะแนนเสมอกันอย่างสมบูรณ์แบบที่ 42 คะแนน"),
+        ("4. Clean Sheet Drought Across Defense (แต้มแนวรับฝืดเคือง):",
+         "แผงหลังของทั้งสองทีม (Kinsky 2 pts, Gabriel 1 pt, Konsa 1 pt) ไม่สามารถเก็บคลีนชีตได้ในสัปดาห์นี้ ขณะที่ Gvardiol ช่วยกู้แต้มด้วย 4 คะแนน"),
+        ("5. Bench Points Buffer (แต้มบนม้านั่งสำรอง 9 pts):",
+         "ม้านั่งสำรองของทั้งสองทีมมีแต้มค้าง 9 คะแนน โดยเฉพาะ Bart Verbruggen (£4.5m) ผู้รักษาประตูที่เก็บคลีนชีตทำได้ถึง 6 คะแนนบนม้านั่งสำรอง")
+    ]
+
+    gw5_review_html = generate_gw_review_block(
+        5, gw5_c1_lineup, gw5_c2_lineup, gw5_live_points, gw5_fallback_pts,
+        world_avg=48,
+        c1_title="Choice 1 &bull; Micky Actual Squad (GW5)",
+        c1_sub="ตัวจริง 11 คน &bull; กัปตัน Erling Haaland (12 pts) &bull; แผน 3-5-2 (Groß ตัวจริง)",
+        c2_title="Choice 2 &bull; GEMINI Refined Blueprint (GW5)",
+        c2_sub="ตัวจริง 11 คน &bull; แผน 3-5-2 (Groß ตัวจริง / Pedro สำรอง)",
+        deciders=gw5_deciders,
+        gw_rank=7519011,
+        overall_rank=274644
+    )
+
     gw4_deciders = [
         ("1. The Phil Foden Red Card Dodge (+4 คะแนนเหนือ Choice 2):",
          "Choice 1 ตัดสินใจดร็อป Phil Foden (£7.0m) ไปนั่งสำรอง และส่ง Yoane Wissa (£6.2m) ลงเป็นตัวจริงในแดนหน้า (ระบบ 3-4-3) ทำให้รอดพ้นจากผลงานติดลบ -2 คะแนนของ Foden ที่โดนใบแดงไล่ออก ในขณะที่ Choice 2 จัดทัพ 3-5-2 โดยส่ง Foden ลงตัวจริง ทำให้เสียแต้มติดลบไปเต็มๆ สวิตช์นี้สร้างความต่างถึง +4 คะแนนให้ Choice 1"),
@@ -1169,12 +1326,12 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <div style="display:flex; gap:1.2rem; align-items:center;">
                             <div style="text-align:right;">
                                 <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 1 (Micky)</div>
-                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">2 Wins <small style="font-size:0.75rem; color:#ffffff;">(135 pts)</small></div>
+                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">2 Wins, 1 Draw <small style="font-size:0.75rem; color:#ffffff;">(177 pts)</small></div>
                             </div>
                             <div style="font-size:1rem; font-weight:800; color:var(--text-muted);">vs</div>
                             <div style="text-align:left;">
                                 <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 2 (Gemini)</div>
-                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">0 Wins <small style="font-size:0.75rem; color:#ffffff;">(128 pts)</small></div>
+                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">0 Wins, 1 Draw <small style="font-size:0.75rem; color:#ffffff;">(170 pts)</small></div>
                             </div>
                         </div>
                     </div>
@@ -1194,6 +1351,17 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                                    <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 5</td>
+                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">42 pts</td>
+                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">42 pts</td>
+                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted);">0 pts</td>
+                                    <td style="padding:8px 10px; text-align:center;"><span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(255,255,255,0.1); color:#ffffff; border:1px solid rgba(255,255,255,0.2);">DRAW</span></td>
+                                    <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">ปรับ 3-5-2 ส่ง Groß ตัวจริงยิง 14 pts &amp; Haaland กัปตัน 12 pts</td>
+                                    <td style="padding:8px 10px; text-align:right;">
+                                        <button onclick="switchReviewGw(5, document.getElementById('btn-review-gw5'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
+                                    </td>
+                                </tr>
                                 <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
                                     <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 4</td>
                                     <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">80 pts</td>
@@ -1228,13 +1396,19 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <span>เลือกรอบการแข่งขันที่ต้องการดูผลเปรียบเทียบ (Review Archive):</span>
                     </div>
                     <div class="review-gw-selector" style="display:flex; gap:8px;">
-                        <button id="btn-review-gw4" class="source-pill review-gw-btn" onclick="switchReviewGw(4, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--accent-emerald); color:var(--accent-emerald); background:rgba(16,185,129,0.15); transition:all 0.2s ease;">GW4 Review (ล่าสุด)</button>
+                        <button id="btn-review-gw5" class="source-pill review-gw-btn" onclick="switchReviewGw(5, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--accent-emerald); color:var(--accent-emerald); background:rgba(16,185,129,0.15); transition:all 0.2s ease;">GW5 Review (ล่าสุด)</button>
+                        <button id="btn-review-gw4" class="source-pill review-gw-btn" onclick="switchReviewGw(4, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW4 Review</button>
                         <button id="btn-review-gw3" class="source-pill review-gw-btn" onclick="switchReviewGw(3, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW3 Review</button>
                     </div>
                 </div>
 
+                <!-- REVIEW GW5 CONTENT -->
+                <div id="review-content-gw5" class="review-gw-panel">
+                    {gw5_review_html}
+                </div>
+
                 <!-- REVIEW GW4 CONTENT -->
-                <div id="review-content-gw4" class="review-gw-panel">
+                <div id="review-content-gw4" class="review-gw-panel" style="display:none;">
                     {gw4_review_html}
                 </div>
 
