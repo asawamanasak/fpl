@@ -394,7 +394,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             # GW6 Squad from Micky Official Lineup (Palmer [C], Gabriel [VC], Verbruggen in Goal, 3-4-3)
             c1_ids = [
                 (109, True, False, False, False, False),  # Verbruggen (GKP Starter @ SUN A)
-                (391, True, False, False, True, False),   # Gvardiol (DEF @ LIV A)
+                (277, True, False, False, False, False),  # Egan (DEF vs EVE H - FDR 2)
                 (31, True, False, False, False, False),   # Konsa (DEF vs LEE H - 75% flag)
                 (4, True, False, True, True, False),      # Gabriel (DEF VC vs LEE H - Vice Captain)
                 (68, True, False, False, False, False),   # Tavernier (MID @ CHE A)
@@ -407,8 +407,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 # Bench
                 (496, False, False, False, False, False), # Kinsky (GKP Sub @ MUN A)
                 (124, False, False, False, False, False), # Groß (MID Sub 1 @ SUN A)
-                (277, False, False, False, False, False), # Egan (DEF Sub 2 vs EVE H)
-                (304, False, False, False, False, False), # O'Shea (DEF Sub 3 vs FUL H)
+                (304, False, False, False, False, False), # O'Shea (DEF Sub 2 vs FUL H)
+                (391, False, False, False, True, False),  # Gvardiol (DEF Sub 3 @ LIV A)
             ]
             c1_bank = 1.4
         elif active_gw == 5:
@@ -580,13 +580,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     if active_gw == 6:
         c1_transfer_count_pill = "0 TRANSFERS &bull; 2 FTs BANKED &bull; ZERO HIT"
         c1_transfer_status_text = "ไม่มีการย้ายตัวใน GW6 (สะสม 2 Free Transfers ไว้พร้อมรบเต็มพิกัดใน GW7 &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £1.4m)"
-        c2_pro_upgrade = "<strong>Erling Haaland Template Shield [C] & Pascal Groß 3-5-2:</strong> มอบปลอกแขนกัปตันให้ Haaland สู้ศึกแอนฟิลด์เพื่อคุ้มกันค่า EO มหาศาล 74.1% พร้อมส่ง Groß ยืนแดนกลาง 5 คน และส่ง Egan ลงตัวจริงแทน Konsa ที่ติดธงเหลือง 75%"
+        c2_pro_upgrade = "<strong>Erling Haaland Template Shield [C] & Pascal Groß 3-5-2:</strong> มอบปลอกแขนกัปตันให้ Haaland สู้ศึกแอนฟิลด์เพื่อคุ้มกันค่า EO มหาศาล 74.1% พร้อมส่ง Groß ยืนแดนกลาง 5 คน และพัก Konsa (ติดธงเหลือง 75%) เป็นสำรองอันดับ 2"
         c2_con_transfer = "<strong>Yoane Wissa Tactical Bench Buffer (Sub 1 Priority):</strong> พัก Yoane Wissa เป็นตัวสำรองอันดับ 1 เพื่อปรับทัพเป็น 3-5-2 เพิ่มความแน่นในแดนกลาง"
         c1_pros_items = [
             ("Cole Palmer Captaincy Exploit [C] vs Bournemouth (H - FDR 3):", "มอบปลอกแขนกัปตันให้ Cole Palmer (£9.7m) ที่ฟิตสมบูรณ์ 100% ปลดธงเหลืองเรียบร้อย เปิดสแตมฟอร์ด บริดจ์ รับมือบอร์นมัธ โอกาสสร้างสรรค์เกมและทำประตูสูงสุดประจำสัปดาห์"),
+            ("Tactical Defensive Adjustment (Egan Started vs EVE H & Gvardiol Benched):", "ส่ง John Egan (£4.4m) ลงตัวจริงในบ้านพบเอฟเวอร์ตัน (FDR 2) และดร็อป Joško Gvardiol ไปเป็นตัวสำรองอันดับ 3 เพื่อหลีกเลี่ยงเกมเยือนแอนฟิลด์ (FDR 4) ที่มีโอกาสเสียประตูสูง"),
             ("João Pedro 100% Injury Clearance Starter vs Bournemouth (H):", "ข่าวดีจากงานแถลงข่าววันศุกร์ João Pedro (£7.7m) ฟิต 100% พร้อมลงล่าตาข่ายในแนวรุกร่วมกับ Haaland และ Wissa ในระบบ 3-4-3"),
             ("Gabriel Rock-Solid Vice Captain [VC] vs Leeds (H - FDR 3):", "ตั้ง Gabriel (£8.0m) เป็นรองกัปตัน เฝ้าเอมิเรตส์ สเตเดี้ยม รับมือลีดส์ ยูไนเต็ด โอกาสเก็บคลีนชีตสูงและมีแต้มลุ้นทำประตูจากเซ็ตพีซ เป็นฟลอร์แต้มที่ปลอดภัย"),
-            ("Bart Verbruggen Away Goalkeeper Selection vs Sunderland (A - FDR 3):", "มอบความไว้วางใจให้ Verbruggen (£4.5m) บุกเยือนซันเดอร์แลนด์ ลุ้นคลีนชีตและแต้มเซฟ หลังเก็บ 6 แต้มใน GW5"),
             ("Triple Front-3 Maximum Firepower (3-4-3):", "โครงสร้าง 3-4-3 ยืนหน้าสามเต็มสูบ (Haaland + Wissa + João Pedro) ครอบคลุมโอกาสทำประตูสูงสุดทุกคู่"),
             ("2 Free Transfers Banked for GW7 Super-Window:", "สะสม 2 Free Transfers เต็มโควตา พร้อมเงินสดในคลัง £1.4m เตรียมพร้อมสำหรับหน้าต่างทองคำ GW7 (Triple Captain Haaland vs Ipswich ในบ้าน)")
         ]
@@ -599,7 +599,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         c2_plan_pill = "Template Shield & Zero-Flag XI"
         c2_pros_items = [
             ("Erling Haaland Template Shield Captaincy [C] @ Anfield:", "สวมปลอกแขนกัปตันให้ Erling Haaland (£15.6m) ป้องกันความเสียหายจาก Effective Ownership (EO) 74.1% ทั่วโลก ไม่โดนลงโทษอันดับหาก Haaland ยิงลิเวอร์พูล"),
-            ("John Egan Started over Flagged Konsa (100% Fit Starting XI):", "ส่ง John Egan (£4.4m) ลงตัวจริงในบ้านพบเอฟเวอร์ตัน (FDR 2) แทนที่ Konsa ที่ติดธงเหลือง 75% ทำให้ Choice 2 ตัวจริงฟิตสมบูรณ์ 100% ไร้ความเสี่ยงตัวเจ็บ"),
+            ("Konsa Injury Shield (100% Fit Starting XI):", "พัก Konsa ที่ติดธงเหลือง 75% ไว้เป็นตัวสำรองอันดับ 2 โดยส่ง Egan ยืนเซ็นเตอร์แบ็กคู่ Gabriel และ Gvardiol ทำให้ Choice 2 ตัวจริงฟิตสมบูรณ์ 100% ไร้ความเสี่ยงตัวเจ็บ"),
             ("Pascal Groß Started in 3-5-2 (Set-Piece & Penalty Shield):", "ส่ง Pascal Groß (£5.9m) ยืนตัวจริงในแดนกลาง 5 คน ต่อยอดฟอร์มร้อนแรง 31 แต้มใน 2 GW ล่าสุด ลุ้นผลงานจุดโทษและลูกตั้งเตะ"),
             ("Cole Palmer High-Ceiling Vice Captain [VC] vs Bournemouth (H):", "มอบปลอกแขนรองกัปตันให้ Cole Palmer สแตนด์บายอย่างมั่นใจหลังปลดธงเหลือง 100%"),
             ("Zero-Hit Rule & 2 FTs Banked for GW7:", "ไม่เสียแต้มลบ (Cost: 0 pts) พร้อมสะสม 2 Free Transfers และเงินสด £1.4m สู่ GW7")
