@@ -1,14 +1,5 @@
 {
-  "last_checked": "2026-10-09T16:17:39.701676+00:00",
-  "total_alerts": 1,
-  "alerts": [
-    {
-      "id": 31,
-      "web_name": "Konsa",
-      "status": "d",
-      "chance": 75,
-      "news": "Unspecified injury - 75% chance of playing",
-      "timestamp": "2026-10-09T16:17:39.701550+00:00"
-    }
-  ]
+  "last_checked": "2026-10-10T12:40:24.887874+00:00",
+  "total_alerts": 0,
+  "alerts": []
 }

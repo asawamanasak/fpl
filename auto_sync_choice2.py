@@ -79,7 +79,15 @@ def extract_data_fingerprint(bs, fix):
         for f in fix
     ] if isinstance(fix, list) else []
 
-    payload = json.dumps({'el': elements_sig, 'fix': fixtures_sig}, sort_keys=True)
+    # Include presence and size of picks_gw*.json files to immediately detect official picks ingestion
+    picks_sig = []
+    if os.path.exists('data'):
+        for fname in sorted(os.listdir('data')):
+            if fname.startswith('picks_gw') and fname.endswith('.json'):
+                fpath = os.path.join('data', fname)
+                picks_sig.append((fname, os.path.getsize(fpath)))
+
+    payload = json.dumps({'el': elements_sig, 'fix': fixtures_sig, 'picks': picks_sig}, sort_keys=True)
     return hashlib.sha256(payload.encode('utf-8')).hexdigest()
 
 def check_deadline_status(bs):
@@ -369,16 +377,13 @@ def main():
     cmd = [sys.executable, "generate_presentation.py", "--out", "index.html"]
     subprocess.run(cmd, check=True)
 
-    cmd_dyn = [sys.executable, "generate_presentation.py", "--out", f"fpl_gw{active_gw}_presentation.html"]
-    subprocess.run(cmd_dyn, check=True)
-
-    if active_gw != 4:
-        cmd_gw4 = [sys.executable, "generate_presentation.py", "--out", "fpl_gw4_presentation.html"]
-        subprocess.run(cmd_gw4, check=True)
-
-    if active_gw != 3:
-        cmd_gw3 = [sys.executable, "generate_presentation.py", "--out", "fpl_gw3_presentation.html"]
-        subprocess.run(cmd_gw3, check=True)
+    # Compile all relevant gameweek archives (GW3, GW4, GW5, GW6)
+    for gw_num in set([active_gw, 6, 5, 4, 3]):
+        cmd_arch = [sys.executable, "generate_presentation.py", "--out", f"fpl_gw{gw_num}_presentation.html", "--gw", str(gw_num)]
+        try:
+            subprocess.run(cmd_arch, check=True)
+        except Exception as e:
+            print(f"Notice compiling GW{gw_num} archive: {e}")
 
     print(f"[{datetime.now(timezone.utc).isoformat()}] Choice 2 Optimization & Presentation Compilation Complete (Active GW{active_gw}).")
 
