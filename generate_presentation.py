@@ -1082,6 +1082,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     gw3_live_points = load_live_gw_points(3)
     gw4_live_points = load_live_gw_points(4)
     gw5_live_points = load_live_gw_points(5)
+    gw6_live_points = load_live_gw_points(6)
 
     # Official fallback player scores
     gw3_fallback_pts = {
@@ -1096,9 +1097,33 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         109: 6, 496: 2, 391: 4, 31: 1, 4: 1, 277: 1, 304: 2,
         68: 2, 15: 2, 368: 2, 154: 2, 124: 14, 165: 0, 464: 0, 411: 6
     }
+    gw6_fallback_pts = {
+        109: 9, 4: 2, 277: 1, 31: 4, 154: 8, 124: 6, 15: 1,
+        68: 1, 411: 6, 464: 2, 165: 12, 496: 3, 368: 0, 391: 4, 304: 11
+    }
+
+    # Load official picks lineup directly from data/picks_gw{gw}.json
+    def load_official_picks_lineup(gw, default_lineup):
+        picks_path = os.path.join(data_dir, f"picks_gw{gw}.json")
+        if os.path.exists(picks_path):
+            try:
+                data = load_json(picks_path)
+                if data and "picks" in data:
+                    lineup = []
+                    for p in data["picks"]:
+                        pid = p["element"]
+                        is_starter = (p["position"] <= 11)
+                        is_c = p.get("is_captain", False)
+                        is_vc = p.get("is_vice_captain", False)
+                        lineup.append((pid, is_starter, is_c, is_vc))
+                    if len(lineup) == 15:
+                        return lineup
+            except Exception:
+                pass
+        return default_lineup
 
     # GW3 Lineups:
-    gw3_c1_lineup = [
+    gw3_c1_fallback = [
         (109, True, False, False), (391, True, False, False), (277, True, False, False),
         (4, True, False, False), (124, True, False, False), (367, True, False, False),
         (398, True, False, True), (368, True, False, False), (154, True, False, False),
@@ -1106,6 +1131,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         (496, False, False, False), (165, False, False, False), (31, False, False, False),
         (304, False, False, False)
     ]
+    gw3_c1_lineup = load_official_picks_lineup(3, gw3_c1_fallback)
     gw3_c2_lineup = [
         (109, True, False, False), (391, True, False, False), (31, True, False, False),
         (4, True, False, False), (124, True, False, False), (367, True, False, False),
@@ -1116,7 +1142,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     ]
 
     # GW4 Lineups:
-    gw4_c1_lineup = [
+    gw4_c1_fallback = [
         (109, True, False, False), (304, True, False, False), (31, True, False, False),
         (4, True, False, False), (124, True, False, False), (15, True, False, False),
         (368, True, False, False), (154, True, True, False), (165, True, False, True),
@@ -1124,6 +1150,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         (496, False, False, False), (398, False, False, False), (391, False, False, False),
         (277, False, False, False)
     ]
+    gw4_c1_lineup = load_official_picks_lineup(4, gw4_c1_fallback)
     gw4_c2_lineup = [
         (496, True, False, False), (304, True, False, False), (31, True, False, False),
         (4, True, False, False), (124, True, False, False), (15, True, False, False),
@@ -1134,7 +1161,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     ]
 
     # GW5 Lineups:
-    gw5_c1_lineup = [
+    gw5_c1_fallback = [
         (496, True, False, False), (4, True, False, False), (391, True, False, False),
         (31, True, False, False), (154, True, False, False), (68, True, False, False),
         (15, True, False, False), (368, True, False, False), (124, True, False, False),
@@ -1142,12 +1169,32 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         (109, False, False, False), (165, False, False, False), (277, False, False, False),
         (304, False, False, False)
     ]
+    gw5_c1_lineup = load_official_picks_lineup(5, gw5_c1_fallback)
     gw5_c2_lineup = [
-        (496, True, False, False), (4, True, False, False), (391, True, False, False),
-        (31, True, False, False), (154, True, False, False), (68, True, False, False),
-        (15, True, False, False), (368, True, False, False), (124, True, False, False),
-        (411, True, True, False), (464, True, False, True),
+        (496, True, False, False), (391, True, False, False), (31, True, False, False),
+        (4, True, False, False), (68, True, False, False), (15, True, False, False),
+        (368, True, False, False), (154, True, False, False), (124, True, False, False),
+        (464, True, False, True), (411, True, True, False),
         (109, False, False, False), (165, False, False, False), (277, False, False, False),
+        (304, False, False, False)
+    ]
+
+    # GW6 Lineups:
+    gw6_c1_fallback = [
+        (109, True, False, False), (4, True, False, True), (277, True, False, False),
+        (31, True, False, False), (154, True, True, False), (124, True, False, False),
+        (15, True, False, False), (68, True, False, False), (411, True, False, False),
+        (464, True, False, False), (165, True, False, False),
+        (496, False, False, False), (368, False, False, False), (391, False, False, False),
+        (304, False, False, False)
+    ]
+    gw6_c1_lineup = load_official_picks_lineup(6, gw6_c1_fallback)
+    gw6_c2_lineup = [
+        (109, True, False, False), (391, True, False, False), (277, True, False, False),
+        (4, True, False, False), (68, True, False, False), (15, True, False, False),
+        (464, True, False, False), (154, True, False, True), (124, True, False, False),
+        (165, True, False, False), (411, True, True, False),
+        (496, False, False, False), (368, False, False, False), (31, False, False, False),
         (304, False, False, False)
     ]
 
@@ -1340,6 +1387,33 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             </div>
         '''
 
+    gw6_deciders = [
+        ("1. Cole Palmer Captaincy Masterstroke (16 คะแนน vs Haaland 12 คะแนน):",
+         "Choice 1 ตัดสินใจสวมปลอกแขนกัปตันให้ Cole Palmer (£9.7m) เปิดบ้านพบ บอร์นมัธ เก็บ 8x2 = 16 คะแนน ขณะที่ Choice 2 เลือกล็อกกัปตัน Erling Haaland (£15.6m) เยือนแอนฟิลด์ (LIV vs MCI) ทำได้ 6x2 = 12 คะแนน สวิตช์กัปตันนี้สร้างความต่างสำคัญตัดสินชัยชนะถึง +4 คะแนนให้ Choice 1"),
+        ("2. João Pedro 100% Fit Firepower (12 คะแนน):",
+         "ทั้งสองทีมได้รับผลตอบแทนเต็มเม็ดเต็มหน่วยจาก João Pedro (£7.7m) ที่ฟิตสมบูรณ์ 100% พร้อมออกสตาร์ตตัวจริงและทำได้ถึง 12 คะแนน พาทีมเก็บแต้มสำคัญในแดนหน้า"),
+        ("3. Bart Verbruggen Clean Sheet & Saves (9 คะแนน):",
+         "การไว้วางใจให้ Bart Verbruggen (£4.5m) เฝ้าเสาตัวจริงตอบแทนด้วย 9 คะแนน (คลีนชีต + เซฟ + โบนัส) สร้างฐานคะแนนเกมรับที่แข็งแกร่งให้ทั้งสองทีม"),
+        ("4. Dominik Szoboszlai 0 Minutes & Auto-Sub Resolution:",
+         "Dominik Szoboszlai ไม่ได้ลงสนามในเกมบิ๊กแมตช์ (0 นาที) โดย Choice 1 ได้รับการเปลี่ยนตัวอัตโนมัติจาก Marcus Tavernier (Sub 1) ลงมาทำ 1 คะแนน ขณะที่ Choice 2 ได้ Yoane Wissa (Sub 1) ลงมาทำ 2 คะแนน"),
+        ("5. Defensive Matchup Parity (Konsa 4 pts vs Gvardiol 4 pts):",
+         "Choice 1 ส่ง Ezri Konsa (4 คะแนน) ขณะที่ Choice 2 ส่ง Joško Gvardiol (4 คะแนน) ผลลัพธ์แต้มแนวรับออกมาเท่ากัน"),
+        ("6. ผลการแข่งขัน GW6: Choice 1 ชนะ 60 vs 58 คะแนน (+2 คะแนน):",
+         "Choice 1 เฉือนชนะ Choice 2 ไป +2 คะแนน ส่งผลให้สถิติ Season Head-to-Head รวม Choice 1 นำห่าง 3 ชนะ 1 เสมอ (237 vs 228 คะแนน &bull; นำ +9 คะแนน)")
+    ]
+
+    gw6_review_html = generate_gw_review_block(
+        6, gw6_c1_lineup, gw6_c2_lineup, gw6_live_points, gw6_fallback_pts,
+        world_avg=53,
+        c1_title="Choice 1 &bull; Micky Actual Squad (GW6)",
+        c1_sub="ตัวจริง 11 คน &bull; กัปตัน Cole Palmer (16 pts) &bull; แผน 3-4-3 (Tavernier Auto-Sub)",
+        c2_title="Choice 2 &bull; GEMINI Refined Blueprint (GW6)",
+        c2_sub="ตัวจริง 11 คน &bull; แผน 3-5-2 (Haaland กัปตัน 12 pts / Wissa Auto-Sub)",
+        deciders=gw6_deciders,
+        gw_rank=4853389,
+        overall_rank=515461
+    )
+
     gw5_deciders = [
         ("1. The Pascal Groß 14-Point Masterclass (14 คะแนน):",
          "ทั้งสองทีมได้รับผลตอบแทนมหาศาลจากการวางใจส่ง Pascal Groß (£5.9m) ยืนตัวจริงในแดนกลาง 5 คน โดยเจ้าตัวระเบิดฟอร์มทำ 14 คะแนน (ยิงประตู + โบนัสสูงสุด) ต่อยอดจาก 17 แต้มใน GW4"),
@@ -1428,18 +1502,18 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             </div>
                             <h3 style="font-size:1.15rem; font-weight:800; color:#ffffff; margin:0.25rem 0 0 0; display:flex; align-items:center; gap:8px;">
                                 <span>Season Head-to-Head Leaderboard</span>
-                                <span style="font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:12px; background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">Choice 1 Leads +7 pts</span>
+                                <span style="font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:12px; background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">Choice 1 Leads +9 pts</span>
                             </h3>
                         </div>
                         <div style="display:flex; gap:1.2rem; align-items:center;">
                             <div style="text-align:right;">
                                 <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 1 (Micky)</div>
-                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">2 Wins, 1 Draw <small style="font-size:0.75rem; color:#ffffff;">(177 pts)</small></div>
+                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">3 Wins, 1 Draw <small style="font-size:0.75rem; color:#ffffff;">(237 pts)</small></div>
                             </div>
                             <div style="font-size:1rem; font-weight:800; color:var(--text-muted);">vs</div>
                             <div style="text-align:left;">
                                 <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 2 (Gemini)</div>
-                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">0 Wins, 1 Draw <small style="font-size:0.75rem; color:#ffffff;">(170 pts)</small></div>
+                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">0 Wins, 1 Draw <small style="font-size:0.75rem; color:#ffffff;">(228 pts)</small></div>
                             </div>
                         </div>
                     </div>
@@ -1459,6 +1533,17 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                                    <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 6</td>
+                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">60 pts</td>
+                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">58 pts</td>
+                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald);">+2 pts</td>
+                                    <td style="padding:8px 10px; text-align:center;"><span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4);">CHOICE 1</span></td>
+                                    <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">Palmer กัปตัน 16 pts vs Haaland 12 pts &amp; Pedro 12 pts</td>
+                                    <td style="padding:8px 10px; text-align:right;">
+                                        <button onclick="switchReviewGw(6, document.getElementById('btn-review-gw6'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
+                                    </td>
+                                </tr>
                                 <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
                                     <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 5</td>
                                     <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">42 pts</td>
@@ -1504,14 +1589,20 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <span>เลือกรอบการแข่งขันที่ต้องการดูผลเปรียบเทียบ (Review Archive):</span>
                     </div>
                     <div class="review-gw-selector" style="display:flex; gap:8px;">
-                        <button id="btn-review-gw5" class="source-pill review-gw-btn" onclick="switchReviewGw(5, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--accent-emerald); color:var(--accent-emerald); background:rgba(16,185,129,0.15); transition:all 0.2s ease;">GW5 Review (ล่าสุด)</button>
+                        <button id="btn-review-gw6" class="source-pill review-gw-btn" onclick="switchReviewGw(6, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--accent-emerald); color:var(--accent-emerald); background:rgba(16,185,129,0.15); transition:all 0.2s ease;">GW6 Review (ล่าสุด)</button>
+                        <button id="btn-review-gw5" class="source-pill review-gw-btn" onclick="switchReviewGw(5, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW5 Review</button>
                         <button id="btn-review-gw4" class="source-pill review-gw-btn" onclick="switchReviewGw(4, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW4 Review</button>
                         <button id="btn-review-gw3" class="source-pill review-gw-btn" onclick="switchReviewGw(3, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW3 Review</button>
                     </div>
                 </div>
 
+                <!-- REVIEW GW6 CONTENT -->
+                <div id="review-content-gw6" class="review-gw-panel">
+                    {gw6_review_html}
+                </div>
+
                 <!-- REVIEW GW5 CONTENT -->
-                <div id="review-content-gw5" class="review-gw-panel">
+                <div id="review-content-gw5" class="review-gw-panel" style="display:none;">
                     {gw5_review_html}
                 </div>
 
@@ -3992,21 +4083,27 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
         }}
 
-        // Support direct tab deep-linking via URL hash (e.g. #summary, #ticker, #sources, #gw4-review, #gw3-review, #review)
+        // Support direct tab deep-linking via URL hash (e.g. #summary, #ticker, #sources, #gw6-review, #gw5-review, #gw4-review, #gw3-review, #review)
         window.addEventListener('DOMContentLoaded', () => {{
             const hash = window.location.hash.replace('#', '');
-            const tabMap = {{ 'comparison': 0, 'summary': 1, 'ticker': 2, 'sources': 3, 'review': 4, 'gw-review': 4, 'gw4-review': 4, 'gw3-review': 4 }};
+            const tabMap = {{ 'comparison': 0, 'summary': 1, 'ticker': 2, 'sources': 3, 'review': 4, 'gw-review': 4, 'gw6-review': 4, 'gw5-review': 4, 'gw4-review': 4, 'gw3-review': 4 }};
             if (hash in tabMap) {{
                 const btns = document.querySelectorAll('.tab-btn');
                 if (btns[tabMap[hash]]) {{
                     switchTab(hash, btns[tabMap[hash]]);
                 }}
-                if (hash === 'gw3-review') {{
-                    const gw3Btn = document.getElementById('btn-review-gw3');
-                    if (gw3Btn) switchReviewGw(3, gw3Btn);
+                if (hash === 'gw6-review') {{
+                    const gw6Btn = document.getElementById('btn-review-gw6');
+                    if (gw6Btn) switchReviewGw(6, gw6Btn);
+                }} else if (hash === 'gw5-review') {{
+                    const gw5Btn = document.getElementById('btn-review-gw5');
+                    if (gw5Btn) switchReviewGw(5, gw5Btn);
                 }} else if (hash === 'gw4-review') {{
                     const gw4Btn = document.getElementById('btn-review-gw4');
                     if (gw4Btn) switchReviewGw(4, gw4Btn);
+                }} else if (hash === 'gw3-review') {{
+                    const gw3Btn = document.getElementById('btn-review-gw3');
+                    if (gw3Btn) switchReviewGw(3, gw3Btn);
                 }}
             }}
         }});
