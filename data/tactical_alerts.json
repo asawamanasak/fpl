@@ -1,5 +1,5 @@
 {
-  "last_checked": "2026-10-11T16:44:20.896612+00:00",
+  "last_checked": "2026-10-13T17:09:41.184842+00:00",
   "total_alerts": 1,
   "alerts": [
     {
@@ -8,7 +8,7 @@
       "status": "d",
       "chance": 75,
       "news": "Hamstring injury - 75% chance of playing",
-      "timestamp": "2026-10-11T16:44:20.896395+00:00"
+      "timestamp": "2026-10-13T17:09:41.184411+00:00"
     }
   ]
 }

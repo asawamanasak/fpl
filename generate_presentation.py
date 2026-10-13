@@ -592,7 +592,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         ]
         c1_cons_items = [
             ("Ezri Konsa 75% Yellow Flag Exposure (Lone Defensive Risk):", "Ezri Konsa (£4.6m) ยังติดสถานะธงเหลือง 75% หากไม่ได้ลงสนามหรือลงมาเคาะสนิมท้ายเกม อาจมีความเสี่ยงที่แต้มจะไม่เต็มเม็ดเต็มหน่วย"),
-            ("Pascal Groß 14-Pt In-Form Midfielder Benched as Sub 1:", "การดร็อป Pascal Groß (£5.9m) ไว้เป็นตัวสำรองอันดับ 1 ทั้งที่ทำถึง 31 แต้มใน 2 GW ล่าสุด มีความเสี่ยงหากไบรท์ตันได้จุดโทษหรือลูกตั้งเตะ"),
+            ("Marcus Tavernier Benched as Sub 1 Priority:", "การดร็อป Marcus Tavernier (£6.0m) ไว้เป็นตัวสำรองอันดับ 1 เพื่อเปิดทางให้ Pascal Groß ออกสตาร์ตตัวจริง หากบอร์นมัธทำผลงานได้ดีในการเยือนเชลซี แต้มสำคัญอาจค้างอยู่บนม้านั่งสำรอง"),
             ("Erling Haaland Away at Anfield Uncaptained (LIV vs MCI - FDR 4):", "การโยกปลอกแขนกัปตันออกจาก Erling Haaland แม้ต้องเยือนแอนฟิลด์ แต่ด้วยค่า EO ทั่วโลกที่สูงถึง 74.1% หาก Haaland ยิงได้ อันดับจะได้รับผลกระทบทางลบ")
         ]
         c2_plan_title = "Choice 2 &bull; Template Shield & Tactical Defense Variant (3-5-2)"

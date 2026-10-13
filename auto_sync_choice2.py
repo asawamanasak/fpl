@@ -31,9 +31,10 @@ def fetch_json_with_retry(url, headers, timeout=15, max_retries=3, backoff_facto
     Resilient HTTP JSON fetcher with exponential backoff.
     Attempts max_retries with progressive delays [2s, 4s, 8s] to gracefully handle FPL API rate limits.
     """
-    ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
+    try:
+        ctx = ssl.create_default_context()
+    except Exception:
+        ctx = None
 
     last_error = None
     for attempt in range(max_retries):
