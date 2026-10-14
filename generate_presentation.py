@@ -415,23 +415,23 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             latest_past_gw -= 1
 
         if not inherited:
-            # Fallback Baseline Lockdown Squad if no past picks available at all
+            # Fallback Baseline Squad: Matches official GW7 confirmed lineup
             c1_ids = [
-                (109, True, False, False, False, False),
-                (277, True, False, False, False, False),
-                (31, True, False, False, False, False),
-                (4, True, False, True, True, False),
-                (124, True, False, False, False, False),
-                (15, True, False, False, False, False),
-                (68, True, False, False, False, False),
-                (154, True, True, False, False, False),
-                (165, True, False, False, True, False),
-                (464, True, False, False, False, False),
-                (411, True, False, False, True, False),
-                (496, False, False, False, False, False),
-                (368, False, False, False, False, False),
-                (391, False, False, False, True, False),
-                (304, False, False, False, False, False),
+                (496, True, False, False, False, False),  # Kinsky (GKP Starter)
+                (391, True, False, False, True, False),   # Gvardiol (DEF)
+                (31, True, False, False, False, False),   # Konsa (DEF)
+                (4, True, False, False, True, False),     # Gabriel (DEF)
+                (124, True, False, False, False, False),  # Groß (MID)
+                (15, True, False, False, False, False),   # Ødegaard (MID)
+                (68, True, False, True, False, False),    # Tavernier (MID VC)
+                (154, True, False, False, False, False),  # Palmer (MID)
+                (165, True, False, False, True, False),   # João Pedro (FWD)
+                (464, True, False, False, False, False),  # Wissa (FWD)
+                (411, True, True, False, True, False),    # Haaland (FWD C)
+                (109, False, False, False, False, False), # Verbruggen (GKP Sub)
+                (368, False, False, False, False, False), # Szoboszlai (MID Sub 1)
+                (277, False, False, False, False, False), # Egan (DEF Sub 2)
+                (304, False, False, False, False, False), # O'Shea (DEF Sub 3)
             ]
             c1_bank = 1.4
 
@@ -468,20 +468,20 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     # CHOICE 2: GEMINI Autonomous Tactical Variant (0 Hits)
     if active_gw == 7:
-        # Choice 2: Haaland Ipswich Fortress & Gvardiol Promotion Variant (3-4-3)
-        # Erling Haaland [C] vs Ipswich (H - FDR 2), Palmer [VC] @ Everton, Gvardiol started vs IPS (H)
+        # Choice 2: Tactical Goalkeeper & Palmer VC Variant (3-4-3)
+        # Erling Haaland [C] vs Ipswich (H - FDR 2), Cole Palmer [VC] @ Everton, Verbruggen starts vs CRY (H - FDR 2)
         c2_ids = [
-            (109, True, False, False, False, False),   # Verbruggen (GKP vs CRY H - FDR 2)
-            (4, True, False, False, True, False),      # Gabriel (DEF @ NFO A)
-            (391, True, False, False, True, False),    # Gvardiol (DEF vs IPS H - FDR 2, Promoted)
+            (109, True, False, False, False, False),   # Verbruggen (GKP Starter vs CRY H - FDR 2, Clean Sheet Anchor)
+            (391, True, False, False, True, False),    # Gvardiol (DEF vs IPS H - FDR 2)
             (31, True, False, False, False, False),    # Konsa (DEF @ NEW A)
-            (154, True, False, True, False, False),    # Palmer (MID VC @ EVE A)
+            (4, True, False, False, True, False),      # Gabriel (DEF @ NFO A)
             (124, True, False, False, False, False),   # Groß (MID vs CRY H - FDR 2)
             (15, True, False, False, False, False),    # Ødegaard (MID @ NFO A)
             (68, True, False, False, False, False),    # Tavernier (MID vs SUN H - FDR 3)
-            (411, True, True, False, True, False),     # Haaland (FWD C vs IPS H - FDR 2 / Captain)
+            (154, True, False, True, False, False),    # Palmer (MID VC @ EVE A - Elite Form Vice Captain)
             (165, True, False, False, True, False),    # João Pedro (FWD @ EVE A)
             (464, True, False, False, False, False),   # Wissa (FWD vs AVL H)
+            (411, True, True, False, True, False),     # Haaland (FWD C vs IPS H - FDR 2 / Captain)
             # Bench
             (496, False, False, False, False, False),  # Kinsky (GKP Sub)
             (368, False, False, False, True, False),   # Szoboszlai (MID Sub 1 @ BRE A)
@@ -592,29 +592,29 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     if active_gw == 7:
         c1_transfer_count_pill = "0 TRANSFERS &bull; 2 FTs BANKED &bull; ZERO HIT"
         c1_transfer_status_text = "จัดทีมสัปดาห์ที่ 7 (สะสม 2 Free Transfers ไว้พร้อมใช้งาน &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £1.4m)"
-        c2_pro_upgrade = "<strong>Erling Haaland Captain [C] vs Ipswich & Joško Gvardiol Clean Sheet Shield:</strong> มอบปลอกแขนกัปตันให้ Erling Haaland เฝ้ารังพบอิปสวิช (FDR 2) พร้อมดัน Joško Gvardiol ลงตัวจริงลุ้นคลีนชีตในบ้าน"
-        c2_con_transfer = "<strong>Szoboszlai Tactical Bench Buffer (Sub 1 Priority):</strong> พัก Dominik Szoboszlai เป็นตัวสำรองอันดับ 1 หลังจากเกมเยือนเบรนท์ฟอร์ด และให้ Tavernier ออกสตาร์ตต่อเนื่อง"
+        c2_pro_upgrade = "<strong>Bart Verbruggen Clean Sheet Anchor & Cole Palmer [VC]:</strong> สลับให้ Bart Verbruggen (£4.5m) เฝ้าเสาในบ้านรับมือคริสตัล พาเลซ (FDR 2) และวาง Cole Palmer เป็นรองกัปตัน [VC]"
+        c2_con_transfer = "<strong>Antonín Kinsky Bench Role:</strong> วาง Kinsky เป็นตัวสำรองอันดับ 1 สำหรับตำแหน่งผู้รักษาประตู"
         c1_pros_items = [
             ("Erling Haaland Home Fixture Anchor [C] vs Ipswich (H - FDR 2):", "มอบปลอกแขนกัปตันให้ Erling Haaland (£15.6m) เปิดบ้านรับมือน้องใหม่อิปสวิช ทาวน์ โอกาสระเบิดแฮตทริกและเพดานแต้มสูงสุดประจำสัปดาห์"),
-            ("Cole Palmer High-Ceiling Vice Captain [VC] @ Everton (A):", "Cole Palmer (£9.7m) ฟิตสมบูรณ์เต็มร้อย พร้อมสร้างสรรค์โอกาสและลุ้นแต้มประตูในการเยือนกูดิสัน พาร์ก"),
+            ("Marcus Tavernier Differential Vice Captain [VC] vs Sunderland (H):", "มอบตำแหน่งรองกัปตันให้ Marcus Tavernier (£6.0m) เฝ้ารังรับมือซันเดอร์แลนด์ โอกาสลุ้นแต้มเกมรุกริมเส้นสูง"),
+            ("Antonín Kinsky Home Goalkeeper Start vs Coventry (H - FDR 2):", "ส่ง Antonín Kinsky (£4.5m) ลงเฝ้าเสาตัวจริงในบ้านรับมือโคเวนทรี ลุ้นคลีนชีตเต็มตัว"),
             ("Pascal Groß Home Advantage vs Crystal Palace (H - FDR 2):", "Pascal Groß (£5.9m) ฟอร์มร้อนแรง คุมจังหวะเกมแดนกลางและรับหน้าที่ลูกตั้งเตะ/จุดโทษในเกมเหย้าพบพาเลซ"),
-            ("Marcus Tavernier Home Fixture vs Sunderland (H - FDR 3):", "Marcus Tavernier (£6.0m) เฝ้ารังรับมือซันเดอร์แลนด์ โอกาสลุ้นแต้มเกมรุกริมเส้นสูง"),
             ("Maximum Financial Flexibility (£1.4m Bank) & 2 Free Transfers:", "สะสม 2 Free Transfers เต็มโควตา พร้อมเงินคงคลัง £1.4m เตรียมพร้อมสำหรับตลาดซื้อขายรอบถัดไปได้อย่างไร้รอยต่อ")
         ]
         c1_cons_items = [
-            ("Gvardiol Bench Risk vs Ipswich (H):", "การพัก Joško Gvardiol (£5.6m) ไว้บนม้านั่งสำรองในเกมที่แมนฯ ซิตี้ มีโอกาสเก็บคลีนชีตสูงพบอิปสวิช อาจเสียดายแต้มเกมรับได้"),
-            ("Dominik Szoboszlai Rotation Risk:", "Szoboszlai พลาดการลงสนามใน GW6 หากยังไม่ฟิตเต็มร้อย อาจต้องพึ่งพาตัวสำรองในการลงมาทำคะแนน")
+            ("Verbruggen Benched vs Crystal Palace (H):", "การพัก Bart Verbruggen (£4.5m) ไว้บนม้านั่งสำรองในเกมที่ไบรท์ตันเปิดบ้านรับมือพาเลซ อาจเสี่ยงพลาดแต้มคลีนชีต"),
+            ("Dominik Szoboszlai Rotation Risk (Sub 1):", "Szoboszlai มีอาการตึงกล้ามเนื้อแฮมสตริง (75% chance) ถูกวางเป็นตัวสำรองอันดับ 1 ในแดนกลาง")
         ]
-        c2_plan_title = "Choice 2 &bull; Haaland Ipswich Fortress & Gvardiol Promotion Variant (3-4-3)"
-        c2_plan_pill = "Captain Haaland & Gvardiol Shield"
+        c2_plan_title = "Choice 2 &bull; Verbruggen Goalkeeper & Palmer VC Variant (3-4-3)"
+        c2_plan_pill = "Verbruggen Start & Palmer VC"
         c2_pros_items = [
             ("Erling Haaland Captaincy Fortress [C] vs Ipswich (H - FDR 2):", "ล็อกปลอกแขนกัปตันให้ Erling Haaland ในเกมที่ค่า Expected Goals (xG) สูงสุดในฤดูกาล พบอิปสวิชในบ้าน"),
-            ("Joško Gvardiol Promoted to Starting XI (MCI Clean Sheet Shield):", "ดึง Joško Gvardiol กลับมาเป็นตัวจริงในแนวรับ 3 คน ลุ้นคลีนชีตและแต้มบวกเกมรุกในบ้าน"),
-            ("Zero-Hit Discipline & 2 FTs Preserved:", "คงขุมกำลังเดิม 100% ไม่เสียแต้มย้ายตัวลบ (Cost: 0 pts) พร้อมสะสม 2 Free Transfers เพื่อความได้เปรียบระยะยาว"),
-            ("Bart Verbruggen Home Advantage vs Palace (H - FDR 2):", "เฝ้าเสาในบ้านลุ้นคลีนชีตต่อเนื่อง พร้อม Kinsky สแตนด์บาย")
+            ("Bart Verbruggen Promoted to Starting XI (BHA Clean Sheet Anchor):", "เลือกส่ง Bart Verbruggen เฝ้าเสาตัวจริงในบ้านพบพาเลซ (FDR 2) อาศัยสถิติการเซฟและคลีนชีตอันดับท็อป"),
+            ("Cole Palmer High-Ceiling Vice Captain [VC] @ Everton (A):", "มอบปลอกแขนรองกัปตันให้ Cole Palmer สแตนด์บายอย่างมั่นใจในฟอร์มตัวรุกหัวใจสำคัญ"),
+            ("Zero-Hit Discipline & 2 FTs Preserved:", "คงขุมกำลังเดิม 100% ไม่เสียแต้มย้ายตัวลบ (Cost: 0 pts) พร้อมสะสม 2 Free Transfers เพื่อความได้เปรียบระยะยาว")
         ]
         c2_cons_items = [
-            ("Szoboszlai & Egan High Bench Capital:", "พัก Szoboszlai และ Egan ไว้บนม้านั่งสำรอง หากมีเกมพลิกล็อก แต้มอาจค้างอยู่ข้างสนาม")
+            ("Kinsky & Egan High Bench Capital:", "พัก Kinsky และ Egan ไว้บนม้านั่งสำรอง หากโคเวนทรียิงไม่ได้ แต้มคลีนชีตของ Kinsky อาจค้างอยู่ข้างสนาม")
         ]
     elif active_gw == 6:
         c1_transfer_count_pill = "0 TRANSFERS &bull; 2 FTs BANKED &bull; ZERO HIT"
@@ -736,16 +736,23 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     c2_cons_rendered = "".join([f'<div class="pros-cons-item"><strong>{h}</strong> {b}</div>' for h, b in c2_cons_items])
 
     # Global Rank Trajectory & Top 100k Tracker
-    overall_rank = 65185
+    overall_rank = 515461
+    current_total_points = 425
+    if entry and isinstance(entry, dict) and entry.get("summary_overall_points"):
+        current_total_points = entry.get("summary_overall_points", 425)
     if history and isinstance(history, dict) and history.get("current"):
         latest_history = history["current"][-1]
-        overall_rank = latest_history.get("overall_rank", 65185)
+        overall_rank = latest_history.get("overall_rank", 515461)
+        if latest_history.get("total_points"):
+            current_total_points = latest_history.get("total_points")
     elif os.path.exists("data/gw_performance_archive.json"):
         try:
             with open("data/gw_performance_archive.json", "r", encoding="utf-8") as f:
                 perf_data = json.load(f)
                 if perf_data.get("trajectory"):
-                    overall_rank = perf_data["trajectory"][-1].get("overall_rank", 65185)
+                    overall_rank = perf_data["trajectory"][-1].get("overall_rank", 515461)
+                    if perf_data["trajectory"][-1].get("total_points"):
+                        current_total_points = perf_data["trajectory"][-1].get("total_points")
         except Exception:
             pass
     in_top_100k = (overall_rank <= 100000)
@@ -1017,7 +1024,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         c2_delta_count_pill = "0 TRANSFERS &bull; 2 FTs BANKED &bull; ZERO HIT"
         c2_delta_in_pills = '<span style="color:var(--text-muted); font-size:0.8rem;">ไม่มีการย้ายตัว (สะสม 2 Free Transfers)</span>'
         c2_delta_out_pills = '<span style="color:var(--text-muted); font-size:0.8rem;">ไม่มีการย้ายตัว (สะสม 2 Free Transfers)</span>'
-        c2_rule_notice = "เงื่อนไข: สะสม 2 Free Transfers เต็มโควตา &bull; ไม่เสียแต้มลบ (Cost 0 pts) &bull; แตกต่างด้วยแท็กติก: กัปตัน Erling Haaland [C] vs Ipswich (H), ดัน Joško Gvardiol ออกสตาร์ตตัวจริงลุ้นคลีนชีต"
+        c2_rule_notice = "เงื่อนไข: สะสม 2 Free Transfers เต็มโควตา &bull; ไม่เสียแต้มลบ (Cost 0 pts) &bull; แตกต่างด้วยแท็กติก: วาง Cole Palmer [VC] แทน Tavernier และส่ง Bart Verbruggen ออกสตาร์ตเฝ้าเสาตัวจริงลุ้นคลีนชีตในบ้าน"
     elif active_gw == 6:
         c2_chip_pill = f"GW{active_gw} &bull; 2 FTs BANKED &bull; ZERO HIT"
         c2_delta_title = "Transfers (Choice 2 Strategy)"
@@ -3671,7 +3678,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <div class="delta-ledger-strip">
                             <div class="delta-ledger-cell">
                                 <span class="dl-lbl">Starting Points</span>
-                                <span class="dl-val">{c1_start_pts} pts</span>
+                                <span class="dl-val">{current_total_points} pts</span>
                             </div>
                             <div class="delta-ledger-cell">
                                 <span class="dl-lbl">Cost Hits</span>
@@ -3767,7 +3774,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <div class="delta-ledger-strip">
                             <div class="delta-ledger-cell">
                                 <span class="dl-lbl">Starting Points</span>
-                                <span class="dl-val">{c2_start_pts} pts <span class="dl-gain">+{c2_start_pts - c1_start_pts} pts</span></span>
+                                <span class="dl-val">{current_total_points} pts</span>
                             </div>
                             <div class="delta-ledger-cell">
                                 <span class="dl-lbl">Cost Hits</span>
