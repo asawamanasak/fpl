@@ -7,6 +7,7 @@ Fetches official Fantasy Premier League data for a given team ID and saves JSON 
 import os
 import json
 import urllib.request
+import urllib.error
 import argparse
 
 TEAM_ID_DEFAULT = 306983
@@ -42,7 +43,15 @@ def sync_all(team_id: int = TEAM_ID_DEFAULT, data_dir: str = "data"):
     current_event = entry.get("current_event", 1)
     print(f"[+] Fetching picks for Gameweeks 1 to {current_event}...")
     for gw in range(1, current_event + 1):
-        fetch_json(f"{BASE_URL}/entry/{team_id}/event/{gw}/picks/", os.path.join(data_dir, f"picks_gw{gw}.json"))
+        try:
+            fetch_json(f"{BASE_URL}/entry/{team_id}/event/{gw}/picks/", os.path.join(data_dir, f"picks_gw{gw}.json"))
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                print(f"[-] GW{gw} picks not yet unlocked by FPL API (deadline not reached). Preserving existing or skipping.")
+            else:
+                print(f"[!] Warning fetching GW{gw} picks: {e}")
+        except Exception as e:
+            print(f"[!] Warning fetching GW{gw} picks: {e}")
 
     print(f"[OK] Successfully synchronized all FPL & research data into '{data_dir}/' folder.")
 

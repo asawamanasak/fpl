@@ -16,6 +16,7 @@ import json
 import os
 import argparse
 import re
+import html
 from datetime import datetime, timezone, timedelta
 
 def load_json(filepath):
@@ -263,58 +264,6 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 "diff": fix.get("team_a_difficulty", 3)
             })
 
-    pos_map = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
-
-    def build_player_by_id(element_id, is_starter, is_cap=False, is_vc=False, is_core=False, is_enabler=False):
-        el = elements_map.get(element_id)
-        if not el:
-            return None
-        t_id = el["team"]
-        t_obj = teams.get(t_id, {})
-        team_short = t_obj.get("short_name", "???")
-        official_t_code = t_obj.get("code", 1)
-        cost = el.get("now_cost", 50) / 10.0
-        if el["id"] == 68 and active_gw == 5:
-            cost = 6.0
-        pos = pos_map.get(el.get("element_type", 1), "MID")
-        
-        next_fix_list = team_fixtures.get(t_id, {}).get(next_gw, [])
-        next_fix_str = "BLANK"
-        next_fdr = 3
-        if next_fix_list:
-            f0 = next_fix_list[0]
-            next_fix_str = f"{f0['opp']} ({'H' if f0['is_home'] else 'A'})"
-            next_fdr = f0['diff']
-
-        solio_p = solio_proj_map.get(el.get("web_name", "").lower())
-        solio_pts = solio_p.get("prPoints", None) if solio_p else None
-
-        tot_pts = el.get("total_points", 0)
-        xgi = float(el.get("expected_goal_involvements", 0.0) or 0.0)
-        mins = el.get("minutes", 0)
-
-        return {
-            "id": el["id"],
-            "web_name": el["web_name"],
-            "full_name": f"{el.get('first_name', '')} {el.get('second_name', '')}",
-            "team_code": team_short,
-            "team_id": t_id,
-            "official_team_code": official_t_code,
-            "pos": pos,
-            "cost": cost,
-            "is_starter": is_starter,
-            "is_captain": is_cap,
-            "is_vice_captain": is_vc,
-            "is_core": is_core,
-            "is_enabler": is_enabler,
-            "next_fix": next_fix_str,
-            "next_fdr": next_fdr,
-            "solio_pts": solio_pts,
-            "total_points": tot_pts,
-            "xgi": xgi,
-            "minutes": mins
-        }
-
     # Dynamic Gameweek Detection from Events
     ict_tz = timezone(timedelta(hours=7))
     if os.path.exists("data/bootstrap_static.json"):
@@ -362,6 +311,63 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 except Exception:
                     pass
             break
+
+    pos_map = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
+
+    def build_player_by_id(element_id, is_starter, is_cap=False, is_vc=False, is_core=False, is_enabler=False):
+        el = elements_map.get(element_id)
+        if not el:
+            return None
+        t_id = el["team"]
+        t_obj = teams.get(t_id, {})
+        team_short = t_obj.get("short_name", "???")
+        official_t_code = t_obj.get("code", 1)
+        cost = el.get("now_cost", 50) / 10.0
+        if el["id"] == 68 and active_gw == 5:
+            cost = 6.0
+        pos = pos_map.get(el.get("element_type", 1), "MID")
+        
+        # Use active_gw for fixtures (handles Single, Double, and Blank Gameweeks)
+        active_fix_list = team_fixtures.get(t_id, {}).get(active_gw, [])
+        if active_fix_list:
+            fix_parts = [f"{fx['opp']} ({'H' if fx['is_home'] else 'A'})" for fx in active_fix_list]
+            active_fix_str = " + ".join(fix_parts)
+            active_fdr = min(fx['diff'] for fx in active_fix_list)
+        else:
+            active_fix_str = "BLANK"
+            active_fdr = 3
+
+        solio_p = solio_proj_map.get(el.get("web_name", "").lower())
+        solio_pts = solio_p.get("prPoints", None) if solio_p else None
+
+        tot_pts = el.get("total_points", 0)
+        xgi = float(el.get("expected_goal_involvements", 0.0) or 0.0)
+        mins = el.get("minutes", 0)
+
+        web_name_safe = html.escape(el.get("web_name", f"Player {element_id}"))
+        full_name_safe = html.escape(f"{el.get('first_name', '')} {el.get('second_name', '')}")
+
+        return {
+            "id": el["id"],
+            "web_name": web_name_safe,
+            "full_name": full_name_safe,
+            "team_code": team_short,
+            "team_id": t_id,
+            "official_team_code": official_t_code,
+            "pos": pos,
+            "cost": cost,
+            "is_starter": is_starter,
+            "is_captain": is_cap,
+            "is_vice_captain": is_vc,
+            "is_core": is_core,
+            "is_enabler": is_enabler,
+            "next_fix": active_fix_str,
+            "next_fdr": active_fdr,
+            "solio_pts": solio_pts,
+            "total_points": tot_pts,
+            "xgi": xgi,
+            "minutes": mins
+        }
 
     # CHOICE 1: Dynamic Ingestion from Official FPL Picks (Team ID: 306983)
     # If deadline has passed, picks_gw{active_gw}.json is available and used 100% automatically.
@@ -1072,24 +1078,28 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     review_gw = active_gw - 1 if active_gw > 1 else 1
     review_tab_name = f"GW{review_gw} Review"
 
-    # Load GW live event points helper
-    def load_live_gw_points(gw):
-        pts = {}
+    # Load GW live event points and minutes helper
+    def load_live_gw_stats(gw):
+        stats = {}
         path = f"data/live_gw{gw}.json"
         if os.path.exists(path):
             try:
                 with open(path, "r", encoding="utf-8") as f:
                     data = json.load(f)
                     for el in data.get("elements", []):
-                        pts[el["id"]] = el.get("stats", {}).get("total_points", 0)
+                        el_st = el.get("stats", {})
+                        stats[el["id"]] = {
+                            "points": el_st.get("total_points", 0),
+                            "minutes": el_st.get("minutes", 0)
+                        }
             except Exception:
                 pass
-        return pts
+        return stats
 
-    gw3_live_points = load_live_gw_points(3)
-    gw4_live_points = load_live_gw_points(4)
-    gw5_live_points = load_live_gw_points(5)
-    gw6_live_points = load_live_gw_points(6)
+    gw3_live_stats = load_live_gw_stats(3)
+    gw4_live_stats = load_live_gw_stats(4)
+    gw5_live_stats = load_live_gw_stats(5)
+    gw6_live_stats = load_live_gw_stats(6)
 
     # Official fallback player scores
     gw3_fallback_pts = {
@@ -1205,40 +1215,116 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         (304, False, False, False)
     ]
 
-    def build_review_player_data(pid, is_starter, is_c, is_vc, live_pts, fallback_pts):
-        el = elements_map.get(pid, {})
-        ev_pts = live_pts.get(pid, fallback_pts.get(pid, 0))
-        mult = 2 if is_c else (1 if is_starter else 0)
-        earned_pts = ev_pts * mult
-        pos_id = el.get("element_type", 1)
-        pos = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}.get(pos_id, "MID")
-        team_id = el.get("team", 1)
-        t_code = teams.get(team_id, {}).get("short_name", "PL")
-        cost = el.get("now_cost", 50) / 10.0
-        web_name = el.get("web_name", f"Player {pid}")
-        return {
-            "id": pid,
-            "web_name": web_name,
-            "pos": pos,
-            "team_code": t_code,
-            "cost": cost,
-            "is_starter": is_starter,
-            "is_captain": is_c,
-            "is_vice_captain": is_vc,
-            "raw_pts": ev_pts,
-            "multiplier": mult,
-            "earned_pts": earned_pts
-        }
+    # Process Review Lineup with Captaincy Resolution and Auto-Sub Simulator (Bugs 3 & 4 Fix)
+    def process_review_team(lineup, live_stats, fallback_pts):
+        players = []
+        for p in lineup:
+            pid, is_starter, is_c, is_vc = p
+            el = elements_map.get(pid, {})
+            pos_id = el.get("element_type", 1)
+            pos = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}.get(pos_id, "MID")
+            team_id = el.get("team", 1)
+            t_code = teams.get(team_id, {}).get("short_name", "PL")
+            cost = el.get("now_cost", 50) / 10.0
+            web_name = html.escape(el.get("web_name", f"Player {pid}"))
+
+            st = live_stats.get(pid)
+            if st is not None:
+                pts = st.get("points", 0)
+                mins = st.get("minutes", 0)
+            else:
+                pts = fallback_pts.get(pid, 0)
+                mins = 90 if pts != 0 else 0
+
+            players.append({
+                "id": pid,
+                "web_name": web_name,
+                "pos": pos,
+                "team_code": t_code,
+                "cost": cost,
+                "is_starter": is_starter,
+                "is_captain": is_c,
+                "is_vice_captain": is_vc,
+                "raw_pts": pts,
+                "minutes": mins,
+                "multiplier": 1 if is_starter else 0,
+                "auto_sub_in": False,
+                "auto_sub_out": False,
+                "is_promoted_captain": False
+            })
+
+        # Captain & Vice-Captain Resolution (Bug 3 Fix: VC promoted to 2x if C played 0 minutes)
+        cap = next((p for p in players if p["is_captain"]), None)
+        vc = next((p for p in players if p["is_vice_captain"]), None)
+        if cap and cap["minutes"] == 0 and vc and vc["minutes"] > 0:
+            vc["multiplier"] = 2
+            cap["multiplier"] = 0
+            vc["is_promoted_captain"] = True
+        elif cap and cap["is_starter"]:
+            cap["multiplier"] = 2
+
+        # Auto-Sub Simulation for Starters with 0 Minutes (Bug 4 Fix)
+        starters = [p for p in players if p["is_starter"]]
+        bench = [p for p in players if not p["is_starter"]]
+
+        # 1. GKP Auto-Sub
+        gkp_s = next((p for p in starters if p["pos"] == "GKP"), None)
+        gkp_b = next((p for p in bench if p["pos"] == "GKP"), None)
+        if gkp_s and gkp_s["minutes"] == 0 and gkp_b and gkp_b["minutes"] > 0:
+            gkp_s["is_starter"] = False
+            gkp_s["auto_sub_out"] = True
+            gkp_s["multiplier"] = 0
+            gkp_b["is_starter"] = True
+            gkp_b["auto_sub_in"] = True
+            gkp_b["multiplier"] = 1
+
+        # 2. Outfield Auto-Sub (sub in exact bench order, preserving valid FPL formations)
+        outfield_bench = [p for p in bench if p["pos"] != "GKP"]
+        used_bench_ids = set()
+        for s in list(starters):
+            if s["pos"] != "GKP" and s["minutes"] == 0:
+                for b in outfield_bench:
+                    if b["id"] in used_bench_ids or b["minutes"] == 0:
+                        continue
+                    current_positions = [p["pos"] for p in players if p["is_starter"] and p["id"] != s["id"]] + [b["pos"]]
+                    if current_positions.count("DEF") >= 3 and current_positions.count("MID") >= 2 and current_positions.count("FWD") >= 1:
+                        s["is_starter"] = False
+                        s["auto_sub_out"] = True
+                        s["multiplier"] = 0
+                        b["is_starter"] = True
+                        b["auto_sub_in"] = True
+                        b["multiplier"] = 1
+                        used_bench_ids.add(b["id"])
+                        break
+
+        # Calculate final earned points
+        for p in players:
+            p["earned_pts"] = p["raw_pts"] * p["multiplier"]
+
+        return players
 
     def render_review_player_row(p):
         cap_badge = ""
-        if p["is_captain"]:
+        if p["is_captain"] and p["multiplier"] == 2:
             cap_badge = '<span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px;">C</span>'
+        elif p.get("is_promoted_captain"):
+            cap_badge = '<span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px; background:var(--accent-amber);" title="Promoted to Captain (C played 0 min)">C*</span>'
         elif p["is_vice_captain"]:
             cap_badge = '<span class="role-badge-vc" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px;">V</span>'
 
+        sub_badge = ""
+        if p.get("auto_sub_in"):
+            sub_badge = ' <span style="font-size:0.52rem; font-weight:800; color:var(--accent-emerald); background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3); border-radius:3px; padding:1px 4px; margin-left:3px;">AUTO-SUB</span>'
+        elif p.get("auto_sub_out"):
+            sub_badge = ' <span style="font-size:0.52rem; color:var(--text-muted); margin-left:3px;">(0 min &bull; Subbed)</span>'
+
         if p["is_starter"]:
-            pts_display = f'{p["earned_pts"]} <small class="font-mono" style="color:var(--text-muted); font-size:0.65rem;">({p["raw_pts"]}x{p["multiplier"]})</small>' if p["is_captain"] else f'{p["earned_pts"]}'
+            if p.get("is_promoted_captain"):
+                pts_display = f'{p["earned_pts"]} <small class="font-mono" style="color:var(--text-muted); font-size:0.65rem;">({p["raw_pts"]}x2 VC)</small>'
+            elif p["is_captain"] and p["multiplier"] == 2:
+                pts_display = f'{p["earned_pts"]} <small class="font-mono" style="color:var(--text-muted); font-size:0.65rem;">({p["raw_pts"]}x{p["multiplier"]})</small>'
+            else:
+                pts_display = f'{p["earned_pts"]}'
             pts_color = "var(--accent-emerald)" if p["earned_pts"] >= 6 else ("#ffffff" if p["earned_pts"] >= 3 else ("var(--accent-rose)" if p["earned_pts"] < 0 else "var(--text-muted)"))
         else:
             pts_display = f'{p["raw_pts"]} <small style="color:var(--text-muted); font-size:0.65rem;">(bench)</small>'
@@ -1249,7 +1335,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 <td style="padding:6px 10px; font-weight:600; white-space:nowrap;">
                     <span class="pos-tag-mini pos-{p['pos']}">{p['pos']}</span>
                     <span style="color:var(--text-main); margin-left:4px;">{p['web_name']}</span>
-                    {cap_badge}
+                    {cap_badge}{sub_badge}
                 </td>
                 <td style="padding:6px 8px; font-size:0.72rem; color:var(--text-secondary);">{p['team_code']}</td>
                 <td style="padding:6px 10px; text-align:right; font-family:'JetBrains Mono', monospace; font-weight:700; color:{pts_color}; font-size:0.85rem;">
@@ -1257,9 +1343,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 </td>
             </tr>'''
 
-    def generate_gw_review_block(gw_num, c1_lineup, c2_lineup, live_pts, fallback_pts, world_avg, c1_title, c1_sub, c2_title, c2_sub, deciders, gw_rank, overall_rank):
-        c1_players = [build_review_player_data(*p, live_pts, fallback_pts) for p in c1_lineup]
-        c2_players = [build_review_player_data(*p, live_pts, fallback_pts) for p in c2_lineup]
+    def generate_gw_review_block(gw_num, c1_lineup, c2_lineup, live_stats, fallback_pts, world_avg, c1_title, c1_sub, c2_title, c2_sub, deciders, short_decider, gw_rank, overall_rank):
+        c1_players = process_review_team(c1_lineup, live_stats, fallback_pts)
+        c2_players = process_review_team(c2_lineup, live_stats, fallback_pts)
 
         c1_start_pts = sum(p["earned_pts"] for p in c1_players if p["is_starter"])
         c1_bench_pts = sum(p["raw_pts"] for p in c1_players if not p["is_starter"])
@@ -1268,15 +1354,15 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         score_diff = c1_start_pts - c2_start_pts
         if score_diff > 0:
-            result_badge = "🏆 CHOICE 1 WINS"
+            result_badge = "[WIN] CHOICE 1 WINS"
             result_class = "winner-c1"
             result_desc = f"Choice 1 ชนะด้วยผลต่าง +{score_diff} คะแนน ({c1_start_pts} vs {c2_start_pts} pts)"
         elif score_diff < 0:
-            result_badge = "🏆 CHOICE 2 WINS"
+            result_badge = "[WIN] CHOICE 2 WINS"
             result_class = "winner-c2"
             result_desc = f"Choice 2 ชนะด้วยผลต่าง +{abs(score_diff)} คะแนน ({c2_start_pts} vs {c1_start_pts} pts)"
         else:
-            result_badge = "🤝 MATCH DRAW"
+            result_badge = "[DRAW] MATCH DRAW"
             result_class = "winner-draw"
             result_desc = f"ทั้งสองทีมเสมอกันด้วยคะแนน {c1_start_pts} pts เท่ากัน"
 
@@ -1290,7 +1376,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             for d in deciders
         ])
 
-        return f'''
+        html_block = f'''
             <div class="gw3-hero-banner">
                 <div class="gw3-hero-left">
                     <span class="gw3-result-pill {result_class}">{result_badge}</span>
@@ -1394,6 +1480,18 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             </div>
         '''
 
+        return {
+            "gw": gw_num,
+            "html": html_block,
+            "c1_pts": c1_start_pts,
+            "c2_pts": c2_start_pts,
+            "diff": score_diff,
+            "short_decider": short_decider,
+            "result_badge": result_badge,
+            "result_class": result_class,
+            "result_desc": result_desc
+        }
+
     gw6_deciders = [
         ("1. Cole Palmer Captaincy Masterstroke (16 คะแนน vs Haaland 12 คะแนน):",
          "Choice 1 ตัดสินใจสวมปลอกแขนกัปตันให้ Cole Palmer (£9.7m) เปิดบ้านพบ บอร์นมัธ เก็บ 8x2 = 16 คะแนน ขณะที่ Choice 2 เลือกล็อกกัปตัน Erling Haaland (£15.6m) เยือนแอนฟิลด์ (LIV vs MCI) ทำได้ 6x2 = 12 คะแนน สวิตช์กัปตันนี้สร้างความต่างสำคัญตัดสินชัยชนะถึง +4 คะแนนให้ Choice 1"),
@@ -1406,45 +1504,21 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         ("5. Defensive Matchup Parity (Konsa 4 pts vs Gvardiol 4 pts):",
          "Choice 1 ส่ง Ezri Konsa (4 คะแนน) ขณะที่ Choice 2 ส่ง Joško Gvardiol (4 คะแนน) ผลลัพธ์แต้มแนวรับออกมาเท่ากัน"),
         ("6. ผลการแข่งขัน GW6: Choice 1 ชนะ 60 vs 58 คะแนน (+2 คะแนน):",
-         "Choice 1 เฉือนชนะ Choice 2 ไป +2 คะแนน ส่งผลให้สถิติ Season Head-to-Head รวม Choice 1 นำห่าง 3 ชนะ 1 เสมอ (237 vs 228 คะแนน &bull; นำ +9 คะแนน)")
+         "Choice 1 เฉือนชนะ Choice 2 ไป +2 คะแนน ส่งผลให้สถิติ Season Head-to-Head รวม Choice 1 นำห่าง 3 ชนะ 1 เสมอ")
     ]
-
-    gw6_review_html = generate_gw_review_block(
-        6, gw6_c1_lineup, gw6_c2_lineup, gw6_live_points, gw6_fallback_pts,
-        world_avg=53,
-        c1_title="Choice 1 &bull; Micky Actual Squad (GW6)",
-        c1_sub="ตัวจริง 11 คน &bull; กัปตัน Cole Palmer (16 pts) &bull; แผน 3-4-3 (Tavernier Auto-Sub)",
-        c2_title="Choice 2 &bull; GEMINI Refined Blueprint (GW6)",
-        c2_sub="ตัวจริง 11 คน &bull; แผน 3-5-2 (Haaland กัปตัน 12 pts / Wissa Auto-Sub)",
-        deciders=gw6_deciders,
-        gw_rank=4853389,
-        overall_rank=515461
-    )
 
     gw5_deciders = [
         ("1. The Pascal Groß 14-Point Masterclass (14 คะแนน):",
-         "ทั้งสองทีมได้รับผลตอบแทนมหาศาลจากการวางใจส่ง Pascal Groß (£5.9m) ยืนตัวจริงในแดนกลาง 5 คน โดยเจ้าตัวระเบิดฟอร์มทำ 14 คะแนน (ยิงประตู + โบนัสสูงสุด) ต่อยอดจาก 17 แต้มใน GW4"),
+         "ทั้งสองทีมได้รับผลตอบแทนมหาศาลจากการวางใจส่ง Pascal Groß (£5.9m) ยืนตัวจริงในแดนกลาง โดยเจ้าตัวระเบิดฟอร์มทำ 14 คะแนน (ยิงประตู + โบนัสสูงสุด) ต่อยอดจาก 17 แต้มใน GW4"),
         ("2. Erling Haaland Captaincy Returns (12 คะแนน):",
          "การวางใจให้ Erling Haaland (£15.5m) สวมปลอกแขนกัปตันทีมเปิดบ้านรับมือซันเดอร์แลนด์ ทำได้ 6x2 = 12 คะแนน การันตีแต้มฐานที่มั่นคงสำหรับทั้งสองทีม"),
         ("3. Tactical Parity & Draw (เสมอกัน 42 vs 42 คะแนน):",
-         "ใน GW5 ทั้ง Choice 1 และ Choice 2 มีการย้ายตัว Foden -> Tavernier เหมือนกัน และจัด 11 ตัวจริงพร้อมม้านั่งสำรองในโครงสร้าง 3-5-2 ชุดเดียวกัน ส่งผลให้ทั้งสองทีมทำคะแนนเสมอกันอย่างสมบูรณ์แบบที่ 42 คะแนน"),
+         "ใน GW5 ทั้ง Choice 1 และ Choice 2 มีการย้ายตัว Foden -> Tavernier เหมือนกัน โดย Choice 1 มี João Pedro ที่ไม่ได้ลงเล่น (0 นาที) และได้ Pascal Groß (Sub 1) เปลี่ยนลงมาทำ 14 คะแนน ขณะที่ Choice 2 จัดทัพ 3-5-2 ส่ง Groß ตัวจริง ทำให้ทั้งสองทีมทำคะแนนเสมอกันอย่างสมบูรณ์แบบที่ 42 คะแนน"),
         ("4. Clean Sheet Drought Across Defense (แต้มแนวรับฝืดเคือง):",
          "แผงหลังของทั้งสองทีม (Kinsky 2 pts, Gabriel 1 pt, Konsa 1 pt) ไม่สามารถเก็บคลีนชีตได้ในสัปดาห์นี้ ขณะที่ Gvardiol ช่วยกู้แต้มด้วย 4 คะแนน"),
         ("5. Bench Points Buffer (แต้มบนม้านั่งสำรอง 9 pts):",
          "ม้านั่งสำรองของทั้งสองทีมมีแต้มค้าง 9 คะแนน โดยเฉพาะ Bart Verbruggen (£4.5m) ผู้รักษาประตูที่เก็บคลีนชีตทำได้ถึง 6 คะแนนบนม้านั่งสำรอง")
     ]
-
-    gw5_review_html = generate_gw_review_block(
-        5, gw5_c1_lineup, gw5_c2_lineup, gw5_live_points, gw5_fallback_pts,
-        world_avg=48,
-        c1_title="Choice 1 &bull; Micky Actual Squad (GW5)",
-        c1_sub="ตัวจริง 11 คน &bull; กัปตัน Erling Haaland (12 pts) &bull; แผน 3-5-2 (Groß ตัวจริง)",
-        c2_title="Choice 2 &bull; GEMINI Refined Blueprint (GW5)",
-        c2_sub="ตัวจริง 11 คน &bull; แผน 3-5-2 (Groß ตัวจริง / Pedro สำรอง)",
-        deciders=gw5_deciders,
-        gw_rank=7519011,
-        overall_rank=274644
-    )
 
     gw4_deciders = [
         ("1. The Phil Foden Red Card Dodge (+4 คะแนนเหนือ Choice 2):",
@@ -1470,29 +1544,123 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
          "ทั้งสองทีมมีแต้มค้างอยู่บนม้านั่งสำรองในระดับ 14-16 คะแนน โดยเฉพาะ Antonín Kinsky (£4.5m) ผู้รักษาประตูที่เก็บคลีนชีตทำได้ถึง 6 คะแนนบนม้านั่งสำรอง")
     ]
 
-    gw4_review_html = generate_gw_review_block(
-        4, gw4_c1_lineup, gw4_c2_lineup, gw4_live_points, gw4_fallback_pts,
-        world_avg=69,
-        c1_title="Choice 1 &bull; Micky Actual Squad (GW4)",
-        c1_sub="ตัวจริง 11 คน &bull; กัปตัน Cole Palmer (10 pts) &bull; แผน 3-4-3",
-        c2_title="Choice 2 &bull; GEMINI Refined Blueprint (GW4)",
-        c2_sub="ตัวจริง 11 คน &bull; แผน 3-5-2 (Foden ลงตัวจริง / Wissa สำรอง)",
-        deciders=gw4_deciders,
-        gw_rank=2511013,
-        overall_rank=129877
-    )
+    # Generate all review blocks
+    gw_reviews = [
+        generate_gw_review_block(
+            6, gw6_c1_lineup, gw6_c2_lineup, gw6_live_stats, gw6_fallback_pts,
+            world_avg=53,
+            c1_title="Choice 1 &bull; Micky Actual Squad (GW6)",
+            c1_sub="ตัวจริง 11 คน &bull; กัปตัน Cole Palmer (16 pts) &bull; แผน 3-4-3 (Tavernier Auto-Sub)",
+            c2_title="Choice 2 &bull; GEMINI Refined Blueprint (GW6)",
+            c2_sub="ตัวจริง 11 คน &bull; แผน 3-5-2 (Haaland กัปตัน 12 pts / Wissa Auto-Sub)",
+            deciders=gw6_deciders,
+            short_decider="Palmer กัปตัน 16 pts vs Haaland 12 pts &amp; Pedro 12 pts",
+            gw_rank=4853389,
+            overall_rank=515461
+        ),
+        generate_gw_review_block(
+            5, gw5_c1_lineup, gw5_c2_lineup, gw5_live_stats, gw5_fallback_pts,
+            world_avg=48,
+            c1_title="Choice 1 &bull; Micky Actual Squad (GW5)",
+            c1_sub="ตัวจริง 11 คน &bull; กัปตัน Erling Haaland (12 pts) &bull; แผน 3-5-2 (Groß ตัวจริง)",
+            c2_title="Choice 2 &bull; GEMINI Refined Blueprint (GW5)",
+            c2_sub="ตัวจริง 11 คน &bull; แผน 3-5-2 (Groß ตัวจริง / Pedro สำรอง)",
+            deciders=gw5_deciders,
+            short_decider="ปรับ 3-5-2 ส่ง Groß ตัวจริงยิง 14 pts &amp; Haaland กัปตัน 12 pts",
+            gw_rank=7519011,
+            overall_rank=274644
+        ),
+        generate_gw_review_block(
+            4, gw4_c1_lineup, gw4_c2_lineup, gw4_live_stats, gw4_fallback_pts,
+            world_avg=69,
+            c1_title="Choice 1 &bull; Micky Actual Squad (GW4)",
+            c1_sub="ตัวจริง 11 คน &bull; กัปตัน Cole Palmer (10 pts) &bull; แผน 3-4-3",
+            c2_title="Choice 2 &bull; GEMINI Refined Blueprint (GW4)",
+            c2_sub="ตัวจริง 11 คน &bull; แผน 3-5-2 (Foden ลงตัวจริง / Wissa สำรอง)",
+            deciders=gw4_deciders,
+            short_decider="ดร็อป Foden (-2 pts ใบแดง) &amp; Verbruggen เก็บ 8 pts",
+            gw_rank=2511013,
+            overall_rank=129877
+        ),
+        generate_gw_review_block(
+            3, gw3_c1_lineup, gw3_c2_lineup, gw3_live_stats, gw3_fallback_pts,
+            world_avg=51,
+            c1_title="Choice 1 &bull; Micky Actual Squad (GW3 Wildcard)",
+            c1_sub="ตัวจริง 11 คน &bull; กัปตัน Erling Haaland (18 pts)",
+            c2_title="Choice 2 &bull; Tactical Variant Setup",
+            c2_sub="ตัวจริง 11 คน &bull; สลับ Konsa ลงแทน Egan / Pedro แทน Wissa",
+            deciders=gw3_deciders,
+            short_decider="ส่ง John Egan ตัวจริง (6 pts vs Konsa 4 pts) &amp; Gakpo 11 pts",
+            gw_rank=3758653,
+            overall_rank=59630
+        )
+    ]
 
-    gw3_review_html = generate_gw_review_block(
-        3, gw3_c1_lineup, gw3_c2_lineup, gw3_live_points, gw3_fallback_pts,
-        world_avg=51,
-        c1_title="Choice 1 &bull; Micky Actual Squad (GW3 Wildcard)",
-        c1_sub="ตัวจริง 11 คน &bull; กัปตัน Erling Haaland (18 pts)",
-        c2_title="Choice 2 &bull; Tactical Variant Setup",
-        c2_sub="ตัวจริง 11 คน &bull; สลับ Konsa ลงแทน Egan / Pedro แทน Wissa",
-        deciders=gw3_deciders,
-        gw_rank=3758653,
-        overall_rank=59630
-    )
+    # Dynamic Season Head-to-Head Totals & Metrics (Bug 5 Fix)
+    total_c1_pts = sum(r["c1_pts"] for r in gw_reviews)
+    total_c2_pts = sum(r["c2_pts"] for r in gw_reviews)
+    c1_wins = sum(1 for r in gw_reviews if r["c1_pts"] > r["c2_pts"])
+    c2_wins = sum(1 for r in gw_reviews if r["c2_pts"] > r["c1_pts"])
+    draws = sum(1 for r in gw_reviews if r["c1_pts"] == r["c2_pts"])
+    h2h_diff = total_c1_pts - total_c2_pts
+
+    if h2h_diff > 0:
+        h2h_status_pill = f"Choice 1 Leads +{h2h_diff} pts"
+        h2h_pill_bg = "rgba(16,185,129,0.15)"
+        h2h_pill_color = "var(--accent-emerald)"
+        h2h_pill_border = "rgba(16,185,129,0.3)"
+    elif h2h_diff < 0:
+        h2h_status_pill = f"Choice 2 Leads +{abs(h2h_diff)} pts"
+        h2h_pill_bg = "rgba(56,189,248,0.15)"
+        h2h_pill_color = "var(--accent-sky)"
+        h2h_pill_border = "rgba(56,189,248,0.3)"
+    else:
+        h2h_status_pill = "All-Square Tied Match"
+        h2h_pill_bg = "rgba(255,255,255,0.1)"
+        h2h_pill_color = "#ffffff"
+        h2h_pill_border = "rgba(255,255,255,0.2)"
+
+    # Build Dynamic Table Rows
+    h2h_rows = []
+    for r in gw_reviews:
+        gw_num = r["gw"]
+        diff_str = f"+{r['diff']} pts" if r['diff'] > 0 else (f"{r['diff']} pts" if r['diff'] < 0 else "0 pts")
+        diff_color = "var(--accent-emerald)" if r['diff'] > 0 else ("var(--accent-sky)" if r['diff'] < 0 else "var(--text-muted)")
+        if r['c1_pts'] > r['c2_pts']:
+            winner_badge = '<span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4);">CHOICE 1</span>'
+        elif r['c2_pts'] > r['c1_pts']:
+            winner_badge = '<span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(56,189,248,0.2); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.4);">CHOICE 2</span>'
+        else:
+            winner_badge = '<span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(255,255,255,0.1); color:#ffffff; border:1px solid rgba(255,255,255,0.2);">DRAW</span>'
+
+        h2h_rows.append(f'''
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek {gw_num}</td>
+                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">{r['c1_pts']} pts</td>
+                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">{r['c2_pts']} pts</td>
+                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:{diff_color};">{diff_str}</td>
+                <td style="padding:8px 10px; text-align:center;">{winner_badge}</td>
+                <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">{r['short_decider']}</td>
+                <td style="padding:8px 10px; text-align:right;">
+                    <button onclick="switchReviewGw({gw_num}, document.getElementById('btn-review-gw{gw_num}'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
+                </td>
+            </tr>''')
+    h2h_table_body = "".join(h2h_rows)
+
+    # Build Dynamic Archive Selector Buttons and Content Panels
+    selector_buttons = []
+    review_panels = []
+    for idx, r in enumerate(gw_reviews):
+        gw_num = r["gw"]
+        is_latest = (idx == 0)
+        btn_style = "border-color:var(--accent-emerald); color:var(--accent-emerald); background:rgba(16,185,129,0.15);" if is_latest else "border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b;"
+        latest_label = " (ล่าสุด)" if is_latest else ""
+        selector_buttons.append(f'''<button id="btn-review-gw{gw_num}" class="source-pill review-gw-btn" onclick="switchReviewGw({gw_num}, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; {btn_style} transition:all 0.2s ease;">GW{gw_num} Review{latest_label}</button>''')
+        display_style = "" if is_latest else ' style="display:none;"'
+        review_panels.append(f'''<div id="review-content-gw{gw_num}" class="review-gw-panel"{display_style}>{r['html']}</div>''')
+
+    selector_buttons_html = "\n".join(selector_buttons)
+    review_panels_html = "\n".join(review_panels)
 
     if active_gw >= 5:
         review_section_html = f'''
@@ -1509,18 +1677,18 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             </div>
                             <h3 style="font-size:1.15rem; font-weight:800; color:#ffffff; margin:0.25rem 0 0 0; display:flex; align-items:center; gap:8px;">
                                 <span>Season Head-to-Head Leaderboard</span>
-                                <span style="font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:12px; background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">Choice 1 Leads +9 pts</span>
+                                <span style="font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:12px; background:{h2h_pill_bg}; color:{h2h_pill_color}; border:1px solid {h2h_pill_border};">{h2h_status_pill}</span>
                             </h3>
                         </div>
                         <div style="display:flex; gap:1.2rem; align-items:center;">
                             <div style="text-align:right;">
                                 <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 1 (Micky)</div>
-                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">3 Wins, 1 Draw <small style="font-size:0.75rem; color:#ffffff;">(237 pts)</small></div>
+                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">{c1_wins} Wins, {draws} Draw <small style="font-size:0.75rem; color:#ffffff;">({total_c1_pts} pts)</small></div>
                             </div>
                             <div style="font-size:1rem; font-weight:800; color:var(--text-muted);">vs</div>
                             <div style="text-align:left;">
                                 <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 2 (Gemini)</div>
-                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">0 Wins, 1 Draw <small style="font-size:0.75rem; color:#ffffff;">(228 pts)</small></div>
+                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">{c2_wins} Wins, {draws} Draw <small style="font-size:0.75rem; color:#ffffff;">({total_c2_pts} pts)</small></div>
                             </div>
                         </div>
                     </div>
@@ -1540,50 +1708,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-                                    <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 6</td>
-                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">60 pts</td>
-                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">58 pts</td>
-                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald);">+2 pts</td>
-                                    <td style="padding:8px 10px; text-align:center;"><span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4);">CHOICE 1</span></td>
-                                    <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">Palmer กัปตัน 16 pts vs Haaland 12 pts &amp; Pedro 12 pts</td>
-                                    <td style="padding:8px 10px; text-align:right;">
-                                        <button onclick="switchReviewGw(6, document.getElementById('btn-review-gw6'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-                                    <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 5</td>
-                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">42 pts</td>
-                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">42 pts</td>
-                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted);">0 pts</td>
-                                    <td style="padding:8px 10px; text-align:center;"><span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(255,255,255,0.1); color:#ffffff; border:1px solid rgba(255,255,255,0.2);">DRAW</span></td>
-                                    <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">ปรับ 3-5-2 ส่ง Groß ตัวจริงยิง 14 pts &amp; Haaland กัปตัน 12 pts</td>
-                                    <td style="padding:8px 10px; text-align:right;">
-                                        <button onclick="switchReviewGw(5, document.getElementById('btn-review-gw5'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-                                    <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 4</td>
-                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">80 pts</td>
-                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">75 pts</td>
-                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald);">+5 pts</td>
-                                    <td style="padding:8px 10px; text-align:center;"><span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4);">CHOICE 1</span></td>
-                                    <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">ดร็อป Foden (-2 pts ใบแดง) &amp; Verbruggen เก็บ 8 pts</td>
-                                    <td style="padding:8px 10px; text-align:right;">
-                                        <button onclick="switchReviewGw(4, document.getElementById('btn-review-gw4'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-                                    <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 3</td>
-                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">55 pts</td>
-                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">53 pts</td>
-                                    <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald);">+2 pts</td>
-                                    <td style="padding:8px 10px; text-align:center;"><span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4);">CHOICE 1</span></td>
-                                    <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">ส่ง John Egan ตัวจริง (6 pts vs Konsa 4 pts) &amp; Gakpo 11 pts</td>
-                                    <td style="padding:8px 10px; text-align:right;">
-                                        <button onclick="switchReviewGw(3, document.getElementById('btn-review-gw3'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
-                                    </td>
-                                </tr>
+                                {h2h_table_body}
                             </tbody>
                         </table>
                     </div>
@@ -1596,32 +1721,12 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <span>เลือกรอบการแข่งขันที่ต้องการดูผลเปรียบเทียบ (Review Archive):</span>
                     </div>
                     <div class="review-gw-selector" style="display:flex; gap:8px;">
-                        <button id="btn-review-gw6" class="source-pill review-gw-btn" onclick="switchReviewGw(6, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--accent-emerald); color:var(--accent-emerald); background:rgba(16,185,129,0.15); transition:all 0.2s ease;">GW6 Review (ล่าสุด)</button>
-                        <button id="btn-review-gw5" class="source-pill review-gw-btn" onclick="switchReviewGw(5, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW5 Review</button>
-                        <button id="btn-review-gw4" class="source-pill review-gw-btn" onclick="switchReviewGw(4, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW4 Review</button>
-                        <button id="btn-review-gw3" class="source-pill review-gw-btn" onclick="switchReviewGw(3, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW3 Review</button>
+                        {selector_buttons_html}
                     </div>
                 </div>
 
-                <!-- REVIEW GW6 CONTENT -->
-                <div id="review-content-gw6" class="review-gw-panel">
-                    {gw6_review_html}
-                </div>
-
-                <!-- REVIEW GW5 CONTENT -->
-                <div id="review-content-gw5" class="review-gw-panel" style="display:none;">
-                    {gw5_review_html}
-                </div>
-
-                <!-- REVIEW GW4 CONTENT -->
-                <div id="review-content-gw4" class="review-gw-panel" style="display:none;">
-                    {gw4_review_html}
-                </div>
-
-                <!-- REVIEW GW3 CONTENT -->
-                <div id="review-content-gw3" class="review-gw-panel" style="display:none;">
-                    {gw3_review_html}
-                </div>
+                <!-- REVIEW PANELS -->
+                {review_panels_html}
             </div>
         </section>
         '''
@@ -1630,9 +1735,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         <!-- TAB 5: POST-MATCH REVIEW & COMPARISON -->
         <section id="tab-review" class="tab-content">
             <div class="gw3-review-container">
-                <div id="review-content-gw3" class="review-gw-panel">
-                    {gw3_review_html}
-                </div>
+                {review_panels_html}
             </div>
         </section>
         '''
