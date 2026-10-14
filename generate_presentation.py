@@ -474,26 +474,26 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     # CHOICE 2: GEMINI Autonomous Tactical Variant (0 Hits)
     if active_gw == 7:
-        # Choice 2: Aggressive Transfer Engine (Top 5 FDR & Market Form) + Tactical Goalkeeper Variant (3-5-2)
-        # IN: Rayan Cherki (#399, MCI MID £7.9m, Form 9.0, 5GW FDR 2.60)
-        # OUT: Dominik Szoboszlai (#368, LIV MID £6.9m, Form 1.0, 5GW FDR 3.40)
-        # 3-5-2 Formation: Verbruggen starts vs CRY (H - FDR 2), Haaland [C] vs IPS (H - FDR 2), Palmer [VC] @ EVE
+        # Choice 2: Aggressive Transfer Engine (Top 5 FDR & Market Form &bull; Max 2 Players/Club Rule)
+        # IN: Jay Dasilva (#176, COV DEF £4.0m, Form 10.0, 5GW FDR 2.60) - COV count: 1 (<= 2)
+        # OUT: John Egan (#277, HUL DEF £4.1m, Form 1.0, 5GW FDR 3.20)
+        # 3-4-3 Formation: Verbruggen starts vs CRY (H - FDR 2), Haaland [C] vs IPS (H - FDR 2), Palmer [VC] @ EVE
         c2_ids = [
             (109, True, False, False, False, False),   # Verbruggen (GKP Starter vs CRY H - FDR 2, Clean Sheet Anchor)
             (391, True, False, False, True, False),    # Gvardiol (DEF vs IPS H - FDR 2)
-            (31, True, False, False, False, False),    # Konsa (DEF @ NEW A)
             (4, True, False, False, True, False),      # Gabriel (DEF @ NFO A)
+            (176, True, False, False, False, False),   # Dasilva (DEF Transfer IN @ TOT A - FDR 3, Form 10.0, 5GW FDR 2.60)
             (124, True, False, False, False, False),   # Groß (MID vs CRY H - FDR 2)
             (15, True, False, False, False, False),    # Ødegaard (MID @ NFO A)
             (68, True, False, False, False, False),    # Tavernier (MID vs SUN H - FDR 3)
             (154, True, False, True, False, False),    # Palmer (MID VC @ EVE A)
-            (399, True, False, False, True, False),    # Cherki (MID Transfer IN vs IPS H - FDR 2, Form 9.0)
             (165, True, False, False, True, False),    # João Pedro (FWD @ EVE A)
+            (464, True, False, False, False, False),   # Wissa (FWD vs AVL H)
             (411, True, True, False, True, False),     # Haaland (FWD C vs IPS H - FDR 2 / Captain)
             # Bench
             (496, False, False, False, False, False),  # Kinsky (GKP Sub)
-            (464, False, False, False, False, False),  # Wissa (FWD Sub 1 vs AVL H)
-            (277, False, False, False, False, False),  # Egan (DEF Sub 2 @ FUL A)
+            (31, False, False, False, False, False),   # Konsa (DEF Sub 1 @ NEW A - 75% injury rotation buffer)
+            (368, False, False, False, True, False),   # Szoboszlai (MID Sub 2 @ BRE A - Form 1.0 buffer)
             (304, False, False, False, False, False),  # O'Shea (DEF Sub 3 @ MCI A)
         ]
     elif active_gw == 6:
@@ -569,12 +569,12 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     c2_squad = [build_player_by_id(*p) for p in c2_ids if build_player_by_id(*p)]
     for p in c2_squad:
-        if p["id"] in transferred_in_ids or (active_gw == 7 and p["id"] == 399):
+        if p["id"] in transferred_in_ids or (active_gw == 7 and p["id"] == 176):
             p["is_transfer_in"] = True
     c2_starters = [p for p in c2_squad if p["is_starter"]]
     c2_bench = [p for p in c2_squad if not p["is_starter"]]
     c2_cost = sum(p["cost"] for p in c2_squad)
-    c2_bank = 0.4 if active_gw == 7 else c1_bank
+    c2_bank = 1.5 if active_gw == 7 else c1_bank
     c2_bank_str = f"+£{c2_bank:.1f}m"
 
     c2_def_count = sum(1 for p in c2_starters if p["pos"] == "DEF")
@@ -600,8 +600,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     if active_gw == 7:
         c1_transfer_count_pill = "0 TRANSFERS &bull; 3 FTs BANKED &bull; ZERO HIT"
         c1_transfer_status_text = "จัดทีมสัปดาห์ที่ 7 (สะสม 3 Free Transfers เต็มโควตาพร้อมใช้งาน &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £1.4m)"
-        c2_pro_upgrade = "<strong>Proactive Transfer Engine (Top 5 FDR & Form 9.0):</strong> ใช้ 1/3 FTs ดึง Rayan Cherki (£7.9m) ฟอร์มร้อนแรง 9.0 จากแมนฯ ซิตี้ (FDR 5 นัดหน้า 2.60 ดีสุดในลีก) เข้ามาแทน Szoboszlai ที่ฟอร์มดร็อป พร้อมส่ง Groß และ Cherki ยืนตัวจริง 3-5-2 และดัน Verbruggen เฝ้าเสาลุ้นคลีนชีตในบ้าน"
-        c2_con_transfer = "<strong>Banked 2 FTs Preservation:</strong> ยังคงรักษาโควตา 2 Free Transfers ไว้อย่างมั่นคง เพื่อความยืดหยุ่นใน GW8 โดยไม่เสียแต้มลบ (Cost 0 pts) พร้อมเงินสดสำรอง £0.4m"
+        c2_pro_upgrade = "<strong>Proactive Transfer Engine (Top 5 FDR & Form 10.0 &bull; Max 2 Players/Club Rule):</strong> ภายใต้กฎใหม่ห้ามถือผู้เล่นทีมเดียวกันเกิน 2 คน ระบบวิเคราะห์พบ Jay Dasilva (£4.0m) กองหลังฟอร์มสูงสุดในลีก 10.0 จากโคเวนทรี (FDR 5 นัดหน้า 2.60 อันดับ 1 ของลีก) เข้ามาแทน John Egan (£4.1m) ที่ฟอร์มดร็อป พร้อมส่ง Dasilva ตัวจริง 3-4-3 และดัน Verbruggen เฝ้าเสาลุ้นคลีนชีตในบ้าน"
+        c2_con_transfer = "<strong>Banked 2 FTs & Warchest £1.5m:</strong> ใช้เพียง 1/3 FTs ยังคงรักษาโควตา 2 Free Transfers ไว้อย่างมั่นคงเพื่อความยืดหยุ่นใน GW8 โดยไม่เสียแต้มลบ (Cost 0 pts) พร้อมเงินคงคลังเพิ่มขึ้นเป็น £1.5m"
         c1_pros_items = [
             ("Erling Haaland Home Fixture Anchor [C] vs Ipswich (H - FDR 2):", "มอบปลอกแขนกัปตันให้ Erling Haaland (£15.6m) เปิดบ้านรับมือน้องใหม่อิปสวิช ทาวน์ โอกาสระเบิดแฮตทริกและเพดานแต้มสูงสุดประจำสัปดาห์"),
             ("Cole Palmer Elite Form Vice Captain [VC] @ Everton (A):", "มอบตำแหน่งรองกัปตันให้ Cole Palmer (£9.7m) ฟอร์มตัวรุกหัวใจสำคัญของเชลซี สแตนด์บายอย่างมั่นใจ"),
@@ -613,17 +613,17 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             ("Verbruggen Benched vs Crystal Palace (H):", "การพัก Bart Verbruggen (£4.5m) ไว้บนม้านั่งสำรองในเกมที่ไบรท์ตันเปิดบ้านรับมือพาเลซ อาจเสี่ยงพลาดแต้มคลีนชีต"),
             ("Dominik Szoboszlai Form Drop & Rotation Risk (Sub 1):", "Szoboszlai ฟอร์มดร็อปลง (1.0) และโปรแกรม 5 นัดหน้าเฉลี่ย FDR 3.40 ถูกวางเป็นตัวสำรองอันดับ 1 ในแดนกลาง")
         ]
-        c2_plan_title = "Choice 2 &bull; Aggressive Transfer Engine (Cherki In & Verbruggen Start &bull; 3-5-2)"
-        c2_plan_pill = "Top 5 FDR & Form 9.0 In"
+        c2_plan_title = "Choice 2 &bull; Aggressive Transfer Engine (Dasilva In & Verbruggen Start &bull; 3-4-3)"
+        c2_plan_pill = "Top 1 FDR & Form 10.0 In (Max 2 Rule)"
         c2_pros_items = [
-            ("Proactive Transfer Engine Acquisition (Rayan Cherki £7.9m - Form 9.0):", "ดึง Rayan Cherki จอมทัพฟอร์มร้อนแรงของแมนฯ ซิตี้ (ฟอร์ม 9.0, 44 คะแนน) เข้ามาทันทีที่โควตาสะสมถึง 3 FTs อาศัยโปรแกรม 5 นัดข้างหน้าของเรือใบสีฟ้าที่ FDR รวมเฉลี่ยดีที่สุดในลีก (2.60) ลงสนามล่าแต้มสูง"),
+            ("Proactive Transfer Engine Acquisition (Jay Dasilva £4.0m - Form 10.0):", "ดึง Jay Dasilva แบ็กฟอร์มร้อนแรงอันดับ 1 ของพรีเมียร์ลีก (ฟอร์ม 10.0) จากโคเวนทรี ทีมที่มี FDR รวม 5 นัดหน้าเฉลี่ยดีที่สุดในลีก (2.60) เข้ามาแทน John Egan โดยปฏิบัติตามกฎเหล็กไม่ให้มีนักเตะทีมเดียวกันเกิน 2 คน (โคเวนทรีมีในทีมเพียง 1 คน)"),
             ("Erling Haaland Captaincy Fortress [C] vs Ipswich (H - FDR 2):", "ล็อกปลอกแขนกัปตันให้ Erling Haaland ในเกมที่ค่า Expected Goals (xG) สูงสุดในฤดูกาล พบอิปสวิชในบ้าน"),
             ("Bart Verbruggen Promoted to Starting XI (BHA Clean Sheet Anchor):", "เลือกส่ง Bart Verbruggen เฝ้าเสาตัวจริงในบ้านพบพาเลซ (FDR 2) อาศัยสถิติการเซฟและคลีนชีตอันดับท็อป"),
-            ("Balanced 3-5-2 Attack & 2 FTs Preserved for GW8:", "ปรับทัพเป็น 3-5-2 อัดแน่นแดนกลาง 5 คน (Groß, Cherki, Palmer, Tavernier, Ødegaard) โดยยังคงรักษา 2 Free Transfers และเงินสด £0.4m ไว้พร้อมรับมือ GW8 อย่างปลอดภัย")
+            ("Balanced 3-4-3 Attack & £1.5m Banked for GW8:", "จัดทัพ 3-4-3 ส่ง Dasilva ตัวจริงลุ้นแต้ม พร้อมประหยัดงบเพิ่มเงินคงคลังเป็น £1.5m และสะสม 2 Free Transfers ลุยต่อใน GW8 โดยแต้มลบเป็น 0 pts")
         ]
         c2_cons_items = [
-            ("Yoane Wissa Tactical Bench Buffer (Sub 1 Priority):", "การปรับทัพเป็น 3-5-2 เพื่อเปิดพื้นที่ให้ Cherki จำเป็นต้องพัก Yoane Wissa เป็นตัวสำรองอันดับ 1"),
-            ("Kinsky & Egan High Bench Capital:", "พัก Kinsky และ Egan ไว้บนม้านั่งสำรอง หากโคเวนทรียิงไม่ได้ แต้มคลีนชีตของ Kinsky อาจค้างอยู่ข้างสนาม")
+            ("Ezri Konsa Rotated to Bench (Sub 1 Priority):", "พัก Ezri Konsa ที่ต้องออกไปเยือนนิวคาสเซิล (FDR 3) และยังมีประวัติฟื้นฟูอาการบาดเจ็บ เป็นตัวสำรองอันดับ 1"),
+            ("Kinsky & Szoboszlai High Bench Capital:", "พัก Kinsky และ Szoboszlai ไว้บนม้านั่งสำรองเพื่อจัดทัพตามฟอร์มปัจจุบันที่ 100% Fit")
         ]
     elif active_gw == 6:
         c1_transfer_count_pill = "0 TRANSFERS &bull; 2 FTs BANKED &bull; ZERO HIT"
@@ -898,7 +898,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                                 <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW7 (สัปดาห์นี้)</td>
                                 <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">3 FTs BANKED &bull; ZERO HIT</span></td>
                                 <td style="padding:8px 10px;">{gw7_fixes}</td>
-                                <td style="padding:8px 10px;"><strong>โอกาสทองกัปตัน Haaland vs Ipswich (H - FDR 2):</strong> แมนฯ ซิตี้ เฝ้ารังพบอิปสวิช จุดพิจารณา Triple Captain #1 หรือกัปตันเต็มพิกัด พร้อมสิทธิ์สะสม 3 Free Transfers และเงินสด £1.4m (Choice 2 เปิดระบบ Transfer Engine ใช้ 1/3 FTs ซื้อ Cherki £7.9m ฟอร์ม 9.0 เสริมเกมรุก)</td>
+                                <td style="padding:8px 10px;"><strong>โอกาสทองกัปตัน Haaland vs Ipswich (H - FDR 2):</strong> แมนฯ ซิตี้ เฝ้ารังพบอิปสวิช จุดพิจารณา Triple Captain #1 หรือกัปตันเต็มพิกัด พร้อมสิทธิ์สะสม 3 Free Transfers และเงินสด £1.4m (Choice 2 เปิดระบบ Transfer Engine ตามกฎ Max 2 คน/ทีม ใช้ 1/3 FTs ซื้อ Dasilva £4.0m ฟอร์ม 10.0 FDR 2.60 เข้ามาเสริมเกมรับ)</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW8</td>
@@ -1029,11 +1029,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     
     if active_gw == 7:
         c2_chip_pill = f"GW{active_gw} &bull; 1/3 FTs USED &bull; 2 FTs BANKED &bull; ZERO HIT"
-        c2_delta_title = "Transfers (Choice 2 Aggressive Strategy &bull; Top 5 FDR Engine)"
+        c2_delta_title = "Transfers (Choice 2 Aggressive Strategy &bull; Top 5 FDR & Max 2 Rule)"
         c2_delta_count_pill = "1 IN &bull; 1 OUT &bull; 0 PT HIT (1/3 FTs &bull; 2 FTs BANKED)"
-        c2_delta_in_pills = '<span class="delta-pill pill-in"><span class="delta-pill-badge pos-MID">MID</span> <strong>Rayan Cherki</strong> <small>£7.9m &bull; MCI &bull; IPS (H - FDR 2) &bull; Form 9.0 &bull; 5GW FDR 2.60</small></span>'
-        c2_delta_out_pills = '<span class="delta-pill pill-out"><span class="delta-pill-badge pos-MID">MID</span> <strong>Dominik Szoboszlai</strong> <small>£6.9m &bull; LIV &bull; BRE (A - FDR 3) &bull; Form 1.0 &bull; 5GW FDR 3.40</small></span>'
-        c2_rule_notice = "เงื่อนไข: ใช้ 1 จาก 3 FTs ตามระบบ Transfer Engine เชิงรุกเมื่อมีสะสมตั้งแต่ 3 FTs ขึ้นไป &bull; ดึงนักเตะฟอร์มแรงติด Top 5 ตลาดที่โปรแกรม 5 นัดหน้า FDR รวมเฉลี่ยดีที่สุด (Cherki ฟอร์ม 9.0, FDR 2.60) เข้ามาแทน Szoboszlai ที่ฟอร์มดร็อป &bull; เหลือ 2 FTs สะสมไป GW8 โดยไม่เสียแต้มลบ (Cost 0 pts) &bull; เงินคงคลังเหลือ £0.4m"
+        c2_delta_in_pills = '<span class="delta-pill pill-in"><span class="delta-pill-badge pos-DEF">DEF</span> <strong>Jay Dasilva</strong> <small>£4.0m &bull; COV &bull; TOT (A - FDR 3) &bull; Form 10.0 &bull; 5GW FDR 2.60</small></span>'
+        c2_delta_out_pills = '<span class="delta-pill pill-out"><span class="delta-pill-badge pos-DEF">DEF</span> <strong>John Egan</strong> <small>£4.1m &bull; HUL &bull; FUL (A - FDR 3) &bull; Form 1.0 &bull; 5GW FDR 3.20</small></span>'
+        c2_rule_notice = "เงื่อนไข: ใช้ 1 จาก 3 FTs ตามระบบ Transfer Engine เชิงรุก ภายใต้กฎเหล็กห้ามมีนักเตะทีมเดียวกันเกิน 2 คน (โคเวนทรีมี 1 คน) &bull; ดึง Jay Dasilva แบ็กฟอร์ม 10.0 (อันดับ 1 ของลีก) ที่โปรแกรม 5 นัดหน้า FDR เฉลี่ย 2.60 ดีที่สุดในลีก เข้ามาแทน Egan ที่ฟอร์มดร็อป &bull; เหลือ 2 FTs สะสมไป GW8 โดยไม่เสียแต้มลบ (Cost 0 pts) &bull; เงินคงคลังเพิ่มขึ้นเป็น £1.5m"
     elif active_gw == 6:
         c2_chip_pill = f"GW{active_gw} &bull; 2 FTs BANKED &bull; ZERO HIT"
         c2_delta_title = "Transfers (Choice 2 Strategy)"
