@@ -62,14 +62,14 @@
       "position": 7,
       "multiplier": 1,
       "is_captain": false,
-      "is_vice_captain": true
+      "is_vice_captain": false
     },
     {
       "element": 154,
       "position": 8,
       "multiplier": 1,
       "is_captain": false,
-      "is_vice_captain": false
+      "is_vice_captain": true
     },
     {
       "element": 165,

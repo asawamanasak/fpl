@@ -423,8 +423,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 (4, True, False, False, True, False),     # Gabriel (DEF)
                 (124, True, False, False, False, False),  # Groß (MID)
                 (15, True, False, False, False, False),   # Ødegaard (MID)
-                (68, True, False, True, False, False),    # Tavernier (MID VC)
-                (154, True, False, False, False, False),  # Palmer (MID)
+                (68, True, False, False, False, False),   # Tavernier (MID)
+                (154, True, False, True, False, False),   # Palmer (MID VC)
                 (165, True, False, False, True, False),   # João Pedro (FWD)
                 (464, True, False, False, False, False),  # Wissa (FWD)
                 (411, True, True, False, True, False),    # Haaland (FWD C)
@@ -477,8 +477,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             (4, True, False, False, True, False),      # Gabriel (DEF @ NFO A)
             (124, True, False, False, False, False),   # Groß (MID vs CRY H - FDR 2)
             (15, True, False, False, False, False),    # Ødegaard (MID @ NFO A)
-            (68, True, False, False, False, False),    # Tavernier (MID vs SUN H - FDR 3)
-            (154, True, False, True, False, False),    # Palmer (MID VC @ EVE A - Elite Form Vice Captain)
+            (68, True, False, True, False, False),    # Tavernier (MID VC vs SUN H - FDR 3)
+            (154, True, False, False, False, False),   # Palmer (MID @ EVE A)
             (165, True, False, False, True, False),    # João Pedro (FWD @ EVE A)
             (464, True, False, False, False, False),   # Wissa (FWD vs AVL H)
             (411, True, True, False, True, False),     # Haaland (FWD C vs IPS H - FDR 2 / Captain)
@@ -592,11 +592,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     if active_gw == 7:
         c1_transfer_count_pill = "0 TRANSFERS &bull; 2 FTs BANKED &bull; ZERO HIT"
         c1_transfer_status_text = "จัดทีมสัปดาห์ที่ 7 (สะสม 2 Free Transfers ไว้พร้อมใช้งาน &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £1.4m)"
-        c2_pro_upgrade = "<strong>Bart Verbruggen Clean Sheet Anchor & Cole Palmer [VC]:</strong> สลับให้ Bart Verbruggen (£4.5m) เฝ้าเสาในบ้านรับมือคริสตัล พาเลซ (FDR 2) และวาง Cole Palmer เป็นรองกัปตัน [VC]"
+        c2_pro_upgrade = "<strong>Bart Verbruggen Clean Sheet Anchor & Tavernier [VC]:</strong> สลับให้ Bart Verbruggen (£4.5m) เฝ้าเสาในบ้านรับมือคริสตัล พาเลซ (FDR 2) และวาง Marcus Tavernier เป็นรองกัปตัน [VC]"
         c2_con_transfer = "<strong>Antonín Kinsky Bench Role:</strong> วาง Kinsky เป็นตัวสำรองอันดับ 1 สำหรับตำแหน่งผู้รักษาประตู"
         c1_pros_items = [
             ("Erling Haaland Home Fixture Anchor [C] vs Ipswich (H - FDR 2):", "มอบปลอกแขนกัปตันให้ Erling Haaland (£15.6m) เปิดบ้านรับมือน้องใหม่อิปสวิช ทาวน์ โอกาสระเบิดแฮตทริกและเพดานแต้มสูงสุดประจำสัปดาห์"),
-            ("Marcus Tavernier Differential Vice Captain [VC] vs Sunderland (H):", "มอบตำแหน่งรองกัปตันให้ Marcus Tavernier (£6.0m) เฝ้ารังรับมือซันเดอร์แลนด์ โอกาสลุ้นแต้มเกมรุกริมเส้นสูง"),
+            ("Cole Palmer Elite Form Vice Captain [VC] @ Everton (A):", "มอบตำแหน่งรองกัปตันให้ Cole Palmer (£9.7m) ฟอร์มตัวรุกหัวใจสำคัญของเชลซี สแตนด์บายอย่างมั่นใจ"),
             ("Antonín Kinsky Home Goalkeeper Start vs Coventry (H - FDR 2):", "ส่ง Antonín Kinsky (£4.5m) ลงเฝ้าเสาตัวจริงในบ้านรับมือโคเวนทรี ลุ้นคลีนชีตเต็มตัว"),
             ("Pascal Groß Home Advantage vs Crystal Palace (H - FDR 2):", "Pascal Groß (£5.9m) ฟอร์มร้อนแรง คุมจังหวะเกมแดนกลางและรับหน้าที่ลูกตั้งเตะ/จุดโทษในเกมเหย้าพบพาเลซ"),
             ("Maximum Financial Flexibility (£1.4m Bank) & 2 Free Transfers:", "สะสม 2 Free Transfers เต็มโควตา พร้อมเงินคงคลัง £1.4m เตรียมพร้อมสำหรับตลาดซื้อขายรอบถัดไปได้อย่างไร้รอยต่อ")
@@ -605,12 +605,12 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             ("Verbruggen Benched vs Crystal Palace (H):", "การพัก Bart Verbruggen (£4.5m) ไว้บนม้านั่งสำรองในเกมที่ไบรท์ตันเปิดบ้านรับมือพาเลซ อาจเสี่ยงพลาดแต้มคลีนชีต"),
             ("Dominik Szoboszlai Rotation Risk (Sub 1):", "Szoboszlai มีอาการตึงกล้ามเนื้อแฮมสตริง (75% chance) ถูกวางเป็นตัวสำรองอันดับ 1 ในแดนกลาง")
         ]
-        c2_plan_title = "Choice 2 &bull; Verbruggen Goalkeeper & Palmer VC Variant (3-4-3)"
-        c2_plan_pill = "Verbruggen Start & Palmer VC"
+        c2_plan_title = "Choice 2 &bull; Verbruggen Goalkeeper & Tavernier VC Variant (3-4-3)"
+        c2_plan_pill = "Verbruggen Start & Tavernier VC"
         c2_pros_items = [
             ("Erling Haaland Captaincy Fortress [C] vs Ipswich (H - FDR 2):", "ล็อกปลอกแขนกัปตันให้ Erling Haaland ในเกมที่ค่า Expected Goals (xG) สูงสุดในฤดูกาล พบอิปสวิชในบ้าน"),
             ("Bart Verbruggen Promoted to Starting XI (BHA Clean Sheet Anchor):", "เลือกส่ง Bart Verbruggen เฝ้าเสาตัวจริงในบ้านพบพาเลซ (FDR 2) อาศัยสถิติการเซฟและคลีนชีตอันดับท็อป"),
-            ("Cole Palmer High-Ceiling Vice Captain [VC] @ Everton (A):", "มอบปลอกแขนรองกัปตันให้ Cole Palmer สแตนด์บายอย่างมั่นใจในฟอร์มตัวรุกหัวใจสำคัญ"),
+            ("Marcus Tavernier High-Ceiling Vice Captain [VC] vs Sunderland (H):", "มอบปลอกแขนรองกัปตันให้ Marcus Tavernier เฝ้ารังรับมือน้องใหม่ซันเดอร์แลนด์ โอกาสทำแต้มริมเส้นสูง"),
             ("Zero-Hit Discipline & 2 FTs Preserved:", "คงขุมกำลังเดิม 100% ไม่เสียแต้มย้ายตัวลบ (Cost: 0 pts) พร้อมสะสม 2 Free Transfers เพื่อความได้เปรียบระยะยาว")
         ]
         c2_cons_items = [
@@ -1024,7 +1024,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         c2_delta_count_pill = "0 TRANSFERS &bull; 2 FTs BANKED &bull; ZERO HIT"
         c2_delta_in_pills = '<span style="color:var(--text-muted); font-size:0.8rem;">ไม่มีการย้ายตัว (สะสม 2 Free Transfers)</span>'
         c2_delta_out_pills = '<span style="color:var(--text-muted); font-size:0.8rem;">ไม่มีการย้ายตัว (สะสม 2 Free Transfers)</span>'
-        c2_rule_notice = "เงื่อนไข: สะสม 2 Free Transfers เต็มโควตา &bull; ไม่เสียแต้มลบ (Cost 0 pts) &bull; แตกต่างด้วยแท็กติก: วาง Cole Palmer [VC] แทน Tavernier และส่ง Bart Verbruggen ออกสตาร์ตเฝ้าเสาตัวจริงลุ้นคลีนชีตในบ้าน"
+        c2_rule_notice = "เงื่อนไข: สะสม 2 Free Transfers เต็มโควตา &bull; ไม่เสียแต้มลบ (Cost 0 pts) &bull; แตกต่างด้วยแท็กติก: วาง Marcus Tavernier [VC] แทน Palmer และส่ง Bart Verbruggen ออกสตาร์ตเฝ้าเสาตัวจริงลุ้นคลีนชีตในบ้าน"
     elif active_gw == 6:
         c2_chip_pill = f"GW{active_gw} &bull; 2 FTs BANKED &bull; ZERO HIT"
         c2_delta_title = "Transfers (Choice 2 Strategy)"
