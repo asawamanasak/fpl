@@ -435,9 +435,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 (464, True, False, False, False, False),  # Wissa (FWD)
                 (411, True, True, False, True, False),    # Haaland (FWD C)
                 (109, False, False, False, False, False), # Verbruggen (GKP Sub)
-                (368, False, False, False, False, False), # Szoboszlai (MID Sub 1)
-                (277, False, False, False, False, False), # Egan (DEF Sub 2)
-                (304, False, False, False, False, False), # O'Shea (DEF Sub 3)
+                (277, False, False, False, False, False), # Egan (DEF Sub 1)
+                (304, False, False, False, False, False), # O'Shea (DEF Sub 2)
+                (368, False, False, False, False, False), # Szoboszlai (MID Sub 3)
             ]
             c1_bank = 1.4
 
@@ -611,7 +611,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         ]
         c1_cons_items = [
             ("Verbruggen Benched vs Crystal Palace (H):", "การพัก Bart Verbruggen (£4.5m) ไว้บนม้านั่งสำรองในเกมที่ไบรท์ตันเปิดบ้านรับมือพาเลซ อาจเสี่ยงพลาดแต้มคลีนชีต"),
-            ("Dominik Szoboszlai Form Drop & Rotation Risk (Sub 1):", "Szoboszlai ฟอร์มดร็อปลง (1.0) และโปรแกรม 5 นัดหน้าเฉลี่ย FDR 3.40 ถูกวางเป็นตัวสำรองอันดับ 1 ในแดนกลาง")
+            ("Dominik Szoboszlai Form Drop & Bench Buffer (Sub 3):", "Szoboszlai ฟอร์มดร็อปลง (1.0) และมีอาการตึงกล้ามเนื้อ จึงถูกวางเป็นตัวสำรองอันดับ 3 ท้ายม้านั่ง")
         ]
         c2_plan_title = "Choice 2 &bull; Aggressive Transfer Engine (Dasilva In & Verbruggen Start &bull; 3-4-3)"
         c2_plan_pill = "Top 1 FDR & Form 10.0 In (Max 2 Rule)"
