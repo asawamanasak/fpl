@@ -1,14 +1,14 @@
 {
-  "last_checked": "2026-10-13T17:09:41.184842+00:00",
+  "last_checked": "2026-10-16T09:38:59.519685+00:00",
   "total_alerts": 1,
   "alerts": [
     {
       "id": 368,
       "web_name": "Szoboszlai",
       "status": "d",
-      "chance": 75,
-      "news": "Hamstring injury - 75% chance of playing",
-      "timestamp": "2026-10-13T17:09:41.184411+00:00"
+      "chance": 25,
+      "news": "Hamstring injury - 25% chance of playing",
+      "timestamp": "2026-10-16T09:38:59.519521+00:00"
     }
   ]
 }
