@@ -8,9 +8,9 @@
     "rank": null,
     "rank_sort": null,
     "overall_rank": 515461,
-    "bank": 14,
-    "value": 1017,
-    "event_transfers": 0,
+    "bank": 5,
+    "value": 1026,
+    "event_transfers": 2,
     "event_transfers_cost": 0,
     "points_on_bench": 0
   },
@@ -44,14 +44,14 @@
       "is_vice_captain": false
     },
     {
-      "element": 124,
+      "element": 8,
       "position": 5,
       "multiplier": 1,
       "is_captain": false,
       "is_vice_captain": false
     },
     {
-      "element": 15,
+      "element": 124,
       "position": 6,
       "multiplier": 1,
       "is_captain": false,
@@ -100,7 +100,7 @@
       "is_vice_captain": false
     },
     {
-      "element": 277,
+      "element": 53,
       "position": 13,
       "multiplier": 0,
       "is_captain": false,
