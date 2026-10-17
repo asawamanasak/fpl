@@ -672,6 +672,15 @@
         .starter-card.card-transfer-in:hover, .bench-card.card-transfer-in:hover {
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.55), 0 8px 24px rgba(0, 0, 0, 0.7) !important;
         }
+        /* Glowing Triple Captain Card */
+        .starter-card.card-triple-captain {
+            border-color: rgba(245, 158, 11, 0.85) !important;
+            background: linear-gradient(180deg, rgba(48, 32, 10, 0.92) 0%, rgba(20, 15, 8, 0.98) 100%) !important;
+            box-shadow: 0 0 16px rgba(245, 158, 11, 0.35), 0 4px 14px rgba(0, 0, 0, 0.6) !important;
+        }
+        .starter-card.card-triple-captain:hover {
+            box-shadow: 0 0 24px rgba(245, 158, 11, 0.6), 0 8px 24px rgba(0, 0, 0, 0.75) !important;
+        }
 
         .starter-card-top, .bench-card-top {
             display: flex;
@@ -696,6 +705,27 @@
             border-radius: 3px;
             line-height: 1;
             box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+        }
+        .role-badge-tc {
+            background: linear-gradient(135deg, #f59e0b, #b45309) !important;
+            color: #ffffff !important;
+            border: 1px solid #fef08a;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.85) !important;
+            font-size: 0.55rem;
+            padding: 0.05rem 0.3rem;
+            letter-spacing: 0.5px;
+        }
+        .tc-mult-tag {
+            font-size: 0.52rem;
+            font-weight: 900;
+            color: #fbbf24;
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            border-radius: 3px;
+            padding: 1px 4px;
+            letter-spacing: 0.5px;
+            margin-left: 3px;
+            display: inline-block;
         }
         .role-badge-vc {
             background: linear-gradient(135deg, #e2e8f0, #94a3b8);
@@ -1743,7 +1773,7 @@
             }
             .starter-card-top { min-height: 13px; }
             .pos-tag-mini { font-size: 0.46rem; padding: 0.03rem 0.16rem; border-radius: 2px; }
-            .role-badge-cap, .role-badge-vc { font-size: 0.50rem; padding: 0.03rem 0.2rem; }
+            .role-badge-cap, .role-badge-vc, .role-badge-tc { font-size: 0.50rem; padding: 0.03rem 0.2rem; }
             .core-tag-mini, .enabler-tag-mini, .transfer-in-tag-mini { font-size: 0.44rem; padding: 0.03rem 0.15rem; }
             .starter-photo-wrap { height: 34px; margin: 0; }
             .starter-shirt-img { width: 30px; height: 30px; }
@@ -1908,7 +1938,7 @@
                     <h1>
                         <span class="team-name">GEMINI UNITED</span> 
                         <span class="team-id-tag">(ID: 306983)</span> 
-                        <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 18/10/2026 01:52 AM<span class="sync-tag-active">ACTIVE</span></span>
+                        <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 18/10/2026 03:18 AM<span class="sync-tag-active">ACTIVE</span></span>
                     </h1>
                     <p class="manager-meta-line">
                         <span class="manager-name">Manager: Micky Asawamanasak</span> 
@@ -1986,7 +2016,7 @@
                             <div class="plan-title">Choice 1 &bull; Micky Selection (GW7)</div>
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">4-3-3</span>
-                                <span class="active-chip-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.3);">GW7 &bull; BASELINE</span>
+                                <span class="active-chip-pill chip-pill-tc" style="background:rgba(245,158,11,0.2); color:#fbbf24; border:1px solid rgba(245,158,11,0.5); font-weight:800; letter-spacing:0.5px;">TRIPLE CAPTAIN ACTIVE (3x)</span>
                             </div>
                         </div>
                         <div class="fin-badge">
@@ -2050,11 +2080,11 @@
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card card-triple-captain">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
             <div class="starter-badges-group">
-                <span class="role-badge-cap">C</span>
+                <span class="role-badge-cap role-badge-tc" title="Triple Captain Active (3x Points)">3XC</span>
                 
                 
                 
@@ -2068,7 +2098,7 @@
         </div>
         <div class="starter-info-card">
             <div class="starter-name" title="Erling Haaland">Haaland</div>
-            <div class="starter-meta">MCI &bull; £15.7m</div>
+            <div class="starter-meta">MCI &bull; £15.7m<span class="tc-mult-tag">3x PTS</span></div>
             <div class="starter-fix-row">
                 <span class="starter-fix-text">IPS</span>
                 <span class="fdr-pill fdr-2">FDR 2</span>
@@ -2424,7 +2454,7 @@
                         </div>
                         <div class="delta-status-banner">
                             <span class="status-lbl">STATUS:</span>
-                            <span class="status-txt">จัดทีมสัปดาห์ที่ 7 (ใช้ 2 Free Transfers คว้า Calafiori £5.9m และ Manzambi £5.9m &bull; เหลือ 1 FT สะสมไป GW8 &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £0.3m)</span>
+                            <span class="status-txt">จัดทีมสัปดาห์ที่ 7 (ใช้ 2 Free Transfers คว้า Calafiori £5.9m และ Manzambi £5.9m &bull; เปิดใช้งาน Triple Captain [3x] Active &bull; เหลือ 1 FT สะสมไป GW8 &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £0.3m)</span>
                         </div>
                         <div class="delta-ledger-strip">
                             <div class="delta-ledger-cell">
@@ -2956,7 +2986,7 @@
                         <span class="health-dot-active" style="background:var(--accent-sky); box-shadow:0 0 8px var(--accent-sky);"></span>
                         <span class="health-heading">Official FPL 2026/27 Chip Inventory &amp; Dual-Half Architecture</span>
                     </div>
-                    <span class="health-status-badge" style="background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.35);">CHIP REMAINING: 5 / 8 (6 AVAILABLE)</span>
+                    <span class="health-status-badge" style="background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.35);">CHIP REMAINING: 5 / 8 (5 AVAILABLE &bull; 1 ACTIVE (GW7))</span>
                 </div>
                 <div class="health-detail-text" style="margin-bottom:0.75rem;">
                     ในฤดูกาล 2026/27 กฎ FPL แบ่งชิปการเล่นออกเป็น <strong>2 ครึ่งฤดูกาล (รวมทั้งหมด 8 ชิป)</strong> โดยแต่ละครึ่งฤดูกาลจะมีชิป 4 ใบ (Wildcard, Free Hit, Bench Boost, Triple Captain) แยกจากกันอย่างอิสระ:
@@ -2981,10 +3011,10 @@
                 <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Bench Boost #1 &bull; GW1-19</div>
                 <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); margin-top:2px;">USED (GW1)</div>
                 <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">ใช้งานแล้วใน GW1</div>
-            </div><div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
+            </div><div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid rgba(245, 158, 11, 0.6); border-radius:6px; padding:0.5rem 0.75rem;">
                 <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Triple Captain #1 &bull; GW1-19</div>
-                <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); margin-top:2px;">USED (GW7)</div>
-                <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">ใช้งานแล้วใน GW7</div>
+                <div style="font-size:0.85rem; font-weight:700; color:var(--accent-amber); margin-top:2px;">ACTIVE (GW7)</div>
+                <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">กำลังเปิดใช้งานในสัปดาห์นี้ (GW7)</div>
             </div>
                     </div>
                 </div>
@@ -3024,7 +3054,7 @@
                         <span class="health-dot-active" style="background:var(--accent-emerald); box-shadow:0 0 8px var(--accent-emerald);"></span>
                         <span class="health-heading">Multi-Week Strategic Transfer &amp; Chip Roadmap (GW4 - GW7)</span>
                     </div>
-                    <span class="health-status-badge health-badge-ok">ACTIVE WEAPONS: TC1 &amp; FH1 READY</span>
+                    <span class="health-status-badge" style="background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.35);">ACTIVE WEAPONS: TC1 ACTIVE (GW7) &bull; FH1 READY</span>
                 </div>
                 <div class="roadmap-table-wrap">
                     <table class="roadmap-table" style="width:100%; border-collapse:collapse; font-size:0.75rem; text-align:left;">
@@ -3040,9 +3070,9 @@
 
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW7 (สัปดาห์นี้)</td>
-                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">2/3 FTs USED &bull; 1 FT BANKED &bull; ZERO HIT</span></td>
+                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">2/3 FTs USED &bull; 1 FT BANKED &bull; ZERO HIT &bull; TRIPLE CAPTAIN [3x] ACTIVE</span></td>
                                 <td style="padding:8px 10px;">MCI vs IPS (H - FDR 2), CHE @ EVE (A - FDR 3), LIV @ BRE (A - FDR 3), ARS @ NFO (A - FDR 3)</td>
-                                <td style="padding:8px 10px;"><strong>โอกาสทองกัปตัน Haaland vs Ipswich (H - FDR 2):</strong> แมนฯ ซิตี้ เฝ้ารังพบอิปสวิช โอกาสระเบิดแต้มกัปตันเต็มพิกัด พร้อมใช้ 2 Free Transfers เสริมทัพด้วย Calafiori และ Manzambi (Choice 2 ยกระดับด้วย 3-4-3 ส่ง Manzambi ตัวจริงฟอร์ม 9.0 และพัก Konsa ลดความเสี่ยงคลีนชีตอาร์เซน่อลซ้ำซ้อน เหลือ 1 FT สะสมไป GW8 เงินคงคลัง £0.5m)</td>
+                                <td style="padding:8px 10px;"><strong>Triple Captain Masterstroke [3XC] vs Ipswich (H - FDR 2):</strong> แมนฯ ซิตี้ เฝ้ารังพบอิปสวิช เปิดใช้งานชิป Triple Captain คะแนนคูณ 3 เท่า ลุ้นเพดานแต้มระเบิดสูงสุดประจำฤดูกาล พร้อมเสริมทัพด้วย Calafiori และ Manzambi (Choice 2 ยกระดับด้วย 3-4-3 ส่ง Manzambi ตัวจริงฟอร์ม 9.0 และพัก Konsa ลดความเสี่ยงคลีนชีตอาร์เซน่อลซ้ำซ้อน เหลือ 1 FT สะสมไป GW8)</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW8</td>
@@ -3077,13 +3107,13 @@
                             <div class="plan-title">Choice 1 &bull; Micky Final Lockdown Squad</div>
                             <span style="font-size:0.65rem; color:var(--text-secondary);">4-3-3 Formation &bull; Cost: £101.6m &bull; Bank: £0.3m &bull; Quota: 3 FTs</span>
                         </div>
-                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">Lockdown Active</span>
+                        <span class="source-pill" style="border-color:#f59e0b; color:#fbbf24; background:rgba(245,158,11,0.15);">Triple Captain Active (3x)</span>
                     </div>
 
                     <!-- Pros -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
-                        <div class="pros-cons-item"><strong>Erling Haaland Home Fixture Anchor [C] vs Ipswich (H - FDR 2):</strong> มอบปลอกแขนกัปตันให้ Erling Haaland (£15.6m) เปิดบ้านรับมือน้องใหม่อิปสวิช ทาวน์ โอกาสระเบิดแฮตทริกและเพดานแต้มสูงสุดประจำสัปดาห์</div><div class="pros-cons-item"><strong>Cole Palmer Elite Form Vice Captain [VC] @ Everton (A):</strong> มอบตำแหน่งรองกัปตันให้ Cole Palmer (£9.7m) ฟอร์มตัวรุกหัวใจสำคัญของเชลซี สแตนด์บายอย่างมั่นใจ</div><div class="pros-cons-item"><strong>Triple Arsenal Defense Stack (Gabriel + Calafiori + Konsa):</strong> อัปเกรดแนวรับส่ง Riccardo Calafiori (£5.9m) ประเดิมตัวจริงร่วมกับ Gabriel และ Konsa ลุ้นเหมา 3 คลีนชีตในเกมเยือนฟอเรสต์</div><div class="pros-cons-item"><strong>Pascal Groß Home Advantage vs Crystal Palace (H - FDR 2):</strong> Pascal Groß (£6.0m) ฟอร์มร้อนแรง คุมจังหวะเกมแดนกลางและรับหน้าที่ลูกตั้งเตะ/จุดโทษในเกมเหย้าพบพาเลซ</div><div class="pros-cons-item"><strong>1 Free Transfer Banked & Zero Hit (Cost 0 pts):</strong> ใช้ 2 จาก 3 FTs ดึงสองตัวหลักเข้ามาโดยไม่เสียแต้มลบ พร้อมเก็บ 1 Free Transfer สะสมไว้ลุยต่อใน GW8 เงินคงเหลือ £0.5m</div>
+                        <div class="pros-cons-item"><strong>Triple Captain Masterstroke [3XC] - Erling Haaland vs Ipswich (H - FDR 2):</strong> เปิดใช้งานชิป Triple Captain (คะแนนคูณ 3 เท่า) ให้กับ Erling Haaland (£15.6m) เฝ้ารังรับมือน้องใหม่อิปสวิช ทาวน์ (FDR 2) มุ่งหวังเพดานคะแนนระเบิดสูงสุดประจำฤดูกาล</div><div class="pros-cons-item"><strong>Cole Palmer Elite Form Vice Captain [VC] @ Everton (A):</strong> มอบตำแหน่งรองกัปตันให้ Cole Palmer (£9.7m) ฟอร์มตัวรุกหัวใจสำคัญของเชลซี สแตนด์บายอย่างมั่นใจ</div><div class="pros-cons-item"><strong>Triple Arsenal Defense Stack (Gabriel + Calafiori + Konsa):</strong> อัปเกรดแนวรับส่ง Riccardo Calafiori (£5.9m) ประเดิมตัวจริงร่วมกับ Gabriel และ Konsa ลุ้นเหมา 3 คลีนชีตในเกมเยือนฟอเรสต์</div><div class="pros-cons-item"><strong>Pascal Groß Home Advantage vs Crystal Palace (H - FDR 2):</strong> Pascal Groß (£6.0m) ฟอร์มร้อนแรง คุมจังหวะเกมแดนกลางและรับหน้าที่ลูกตั้งเตะ/จุดโทษในเกมเหย้าพบพาเลซ</div><div class="pros-cons-item"><strong>1 Free Transfer Banked & Zero Hit (Cost 0 pts):</strong> ใช้ 2 จาก 3 FTs ดึงสองตัวหลักเข้ามาโดยไม่เสียแต้มลบ พร้อมเก็บ 1 Free Transfer สะสมไว้ลุยต่อใน GW8 เงินคงเหลือ £0.3m</div>
                     </div>
 
                     <!-- Cons -->

@@ -29,8 +29,11 @@ def load_json(filepath):
         return None
 
 def render_starter_card(p):
+    is_tc = p.get("is_triple_captain") or p.get("multiplier") == 3
     cap_marker = ""
-    if p.get("is_captain"):
+    if is_tc:
+        cap_marker = '<span class="role-badge-cap role-badge-tc" title="Triple Captain Active (3x Points)">3XC</span>'
+    elif p.get("is_captain"):
         cap_marker = '<span class="role-badge-cap">C</span>'
     elif p.get("is_vice_captain"):
         cap_marker = '<span class="role-badge-vc">V</span>'
@@ -40,7 +43,10 @@ def render_starter_card(p):
     core_tag = '<span class="core-tag-mini">CORE</span>' if p.get("is_core") else ''
     enabler_tag = '<span class="enabler-tag-mini">VALUE</span>' if p.get("is_enabler") else ''
     transfer_tag = '<span class="transfer-in-tag-mini">IN</span>' if p.get("is_transfer_in") else ''
+    tc_tag = '<span class="tc-mult-tag">3x PTS</span>' if is_tc else ''
     card_extra = " card-transfer-in" if p.get("is_transfer_in") else ""
+    if is_tc:
+        card_extra += " card-triple-captain"
 
     t_code = p.get("official_team_code", 43)
     is_gkp = p.get("pos") == "GKP"
@@ -68,7 +74,7 @@ def render_starter_card(p):
         </div>
         <div class="starter-info-card">
             <div class="starter-name" title="{p['full_name']}">{p['web_name']}</div>
-            <div class="starter-meta">{p['team_code']} &bull; £{p['cost']:.1f}m</div>
+            <div class="starter-meta">{p['team_code']} &bull; £{p['cost']:.1f}m{tc_tag}</div>
             <div class="starter-fix-row">
                 <span class="starter-fix-text">{p['next_fix'].split(' ')[0]}</span>
                 <span class="fdr-pill {fdr_class}">FDR {p['next_fdr']}</span>
@@ -327,7 +333,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     pos_map = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}
 
-    def build_player_by_id(element_id, is_starter, is_cap=False, is_vc=False, is_core=False, is_enabler=False):
+    def build_player_by_id(element_id, is_starter, is_cap=False, is_vc=False, is_core=False, is_enabler=False, multiplier=None):
         el = elements_map.get(element_id)
         if not el:
             return None
@@ -361,6 +367,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         web_name_safe = html.escape(el.get("web_name", f"Player {element_id}"))
         full_name_safe = html.escape(f"{el.get('first_name', '')} {el.get('second_name', '')}")
 
+        mult = multiplier if multiplier is not None else (2 if is_cap else 1)
+        is_tc = (mult == 3) or (is_cap and mult == 3)
+
         return {
             "id": el["id"],
             "web_name": web_name_safe,
@@ -373,9 +382,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             "form": form_val,
             "is_starter": is_starter,
             "is_captain": is_cap,
+            "is_triple_captain": is_tc,
             "is_vice_captain": is_vc,
             "is_core": is_core,
             "is_enabler": is_enabler,
+            "multiplier": mult,
             "next_fix": active_fix_str,
             "next_fdr": active_fdr,
             "solio_pts": solio_pts,
@@ -395,6 +406,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     picks_file_path = os.path.join(data_dir, f"picks_gw{active_gw}.json")
     loaded_from_official_picks = False
     c1_ids = []
+    c1_active_chip = None
     c1_bank = 0.5
     c1_event_transfers = None
     c1_hit_cost = 0
@@ -403,6 +415,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         try:
             picks_data = load_json(picks_file_path)
             if picks_data and "picks" in picks_data:
+                c1_active_chip = picks_data.get("active_chip")
                 eh = picks_data.get("entry_history", {})
                 c1_bank = eh.get("bank", 0) / 10.0
                 c1_event_transfers = eh.get("event_transfers")
@@ -413,11 +426,26 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     is_starter = (pos_idx <= 11)
                     is_cap = p.get("is_captain", False)
                     is_vc = p.get("is_vice_captain", False)
-                    c1_ids.append((pid, is_starter, is_cap, is_vc, False, False))
+                    p_mult = p.get("multiplier", 1)
+                    if c1_active_chip == "3xc" and is_cap:
+                        p_mult = 3
+                    c1_ids.append((pid, is_starter, is_cap, is_vc, False, False, p_mult))
                 if len(c1_ids) == 15:
                     loaded_from_official_picks = True
         except Exception as e:
             print(f"Notice loading official picks for GW{active_gw}: {e}")
+
+    # Fallback check on history chips if active_chip not set in picks
+    used_chips_history = history.get("chips", []) if history and isinstance(history, dict) else []
+    if not c1_active_chip:
+        used_cur = next((u for u in used_chips_history if u.get("event") == active_gw), None)
+        if used_cur:
+            c1_active_chip = used_cur.get("name")
+            if c1_active_chip == "3xc":
+                c1_ids = [
+                    (item[0], item[1], item[2], item[3], item[4] if len(item) > 4 else False, item[5] if len(item) > 5 else False, 3 if item[2] else (item[6] if len(item) > 6 else 1))
+                    for item in c1_ids
+                ]
 
     if not loaded_from_official_picks:
         # Pre-deadline: dynamically inherit the most recent official picks and apply gw_transfers
@@ -514,6 +542,19 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     c1_fwd_count = sum(1 for p in c1_starters if p["pos"] == "FWD")
     c1_formation_str = f"{c1_def_count}-{c1_mid_count}-{c1_fwd_count}"
 
+    if c1_active_chip == "3xc":
+        c1_chip_pill_pitch = '<span class="active-chip-pill chip-pill-tc" style="background:rgba(245,158,11,0.2); color:#fbbf24; border:1px solid rgba(245,158,11,0.5); font-weight:800; letter-spacing:0.5px;">TRIPLE CAPTAIN ACTIVE (3x)</span>'
+        c1_lockdown_pill = '<span class="source-pill" style="border-color:#f59e0b; color:#fbbf24; background:rgba(245,158,11,0.15);">Triple Captain Active (3x)</span>'
+        roadmap_active_weapons_badge = f'<span class="health-status-badge" style="background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.35);">ACTIVE WEAPONS: TC1 ACTIVE (GW{active_gw}) &bull; FH1 READY</span>'
+    elif c1_active_chip:
+        c1_chip_pill_pitch = f'<span class="active-chip-pill" style="background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4); font-weight:800;">{c1_active_chip.upper()} ACTIVE</span>'
+        c1_lockdown_pill = f'<span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">{c1_active_chip.upper()} Active</span>'
+        roadmap_active_weapons_badge = f'<span class="health-status-badge health-badge-ok">ACTIVE WEAPONS: {c1_active_chip.upper()} ACTIVE &bull; FH1 READY</span>'
+    else:
+        c1_chip_pill_pitch = f'<span class="active-chip-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.3);">GW{active_gw} &bull; BASELINE</span>'
+        c1_lockdown_pill = '<span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">Lockdown Active</span>'
+        roadmap_active_weapons_badge = '<span class="health-status-badge health-badge-ok">ACTIVE WEAPONS: TC1 &amp; FH1 READY</span>'
+
     # Total Team Budget dynamically derived from Choice 1 and FPL Entry data
     total_budget = round(max(c1_cost + c1_bank, (entry.get("last_deadline_value", 1000) + entry.get("last_deadline_bank", 0)) / 10.0), 1)
 
@@ -582,10 +623,22 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         new_starters = [lineup_tuples[i] for i in range(len(lineup_tuples)) if built[i]["is_starter"]]
         new_bench = [lineup_tuples[i] for i in range(len(lineup_tuples)) if not built[i]["is_starter"]]
         res = []
-        for pid, _, is_c, is_v, is_core, is_en in new_starters:
-            res.append((pid, True, is_c, is_v, is_core, is_en))
-        for pid, _, is_c, is_v, is_core, is_en in new_bench:
-            res.append((pid, False, is_c, is_v, is_core, is_en))
+        for t in new_starters:
+            pid = t[0]
+            is_c = t[2] if len(t) > 2 else False
+            is_v = t[3] if len(t) > 3 else False
+            is_core = t[4] if len(t) > 4 else False
+            is_en = t[5] if len(t) > 5 else False
+            mult = t[6] if len(t) > 6 else (2 if is_c else 1)
+            res.append((pid, True, is_c, is_v, is_core, is_en, mult))
+        for t in new_bench:
+            pid = t[0]
+            is_c = t[2] if len(t) > 2 else False
+            is_v = t[3] if len(t) > 3 else False
+            is_core = t[4] if len(t) > 4 else False
+            is_en = t[5] if len(t) > 5 else False
+            mult = t[6] if len(t) > 6 else 0
+            res.append((pid, False, is_c, is_v, is_core, is_en, mult))
         return res
 
     # CHOICE 2: GEMINI Autonomous Tactical Variant (0 Hits)
@@ -727,19 +780,22 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     # Dynamic Pros & Cons for Choice 1 and Choice 2:
     if active_gw == 7:
         c1_transfer_count_pill = f"{c1_actual_transfers} TRANSFER{'S' if c1_actual_transfers != 1 else ''} &bull; {c1_rem_fts} FT{'s' if c1_rem_fts != 1 else ''} BANKED &bull; {c1_hit_pill}"
+        chip_tag_c1 = " &bull; เปิดใช้งาน Triple Captain [3x] Active" if c1_active_chip == "3xc" else ""
         if c1_actual_transfers > 0 and c1_in_summary_str:
             hit_desc = f"เสียแต้มลบ -{c1_hit_cost} pts" if c1_hit_cost > 0 else "ไม่เสียแต้มลบ 0 pts"
-            c1_transfer_status_text = f"จัดทีมสัปดาห์ที่ 7 (ใช้ {min(c1_actual_transfers, user_free_transfers)} Free Transfers คว้า {c1_in_summary_str} &bull; เหลือ {c1_rem_fts} FT สะสมไป GW8 &bull; {hit_desc} &bull; เงินคงคลัง £{c1_bank:.1f}m)"
+            c1_transfer_status_text = f"จัดทีมสัปดาห์ที่ 7 (ใช้ {min(c1_actual_transfers, user_free_transfers)} Free Transfers คว้า {c1_in_summary_str}{chip_tag_c1} &bull; เหลือ {c1_rem_fts} FT สะสมไป GW8 &bull; {hit_desc} &bull; เงินคงคลัง £{c1_bank:.1f}m)"
         else:
-            c1_transfer_status_text = f"จัดทีมสัปดาห์ที่ 7 (สะสม {user_free_transfers} Free Transfers เต็มโควตาพร้อมใช้งาน &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £{c1_bank:.1f}m)"
+            c1_transfer_status_text = f"จัดทีมสัปดาห์ที่ 7 (สะสม {user_free_transfers} Free Transfers เต็มโควตาพร้อมใช้งาน{chip_tag_c1} &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £{c1_bank:.1f}m)"
         c2_pro_upgrade = "<strong>Unleash Manzambi (Form 9.0) & De-risk Arsenal Defense (3-4-3):</strong> Choice 2 จัดระบบ 3-4-3 ผลักดัน Johan Manzambi (£5.9m, ฟอร์มร้อนแรง 9.0) ลงตัวจริงทันทีเพื่อเก็บเกี่ยวผลตอบแทนเกมรุก และพัก Konsa เป็นสำรองอันดับ 1 เพื่อกระจายความเสี่ยงไม่ให้เสียคลีนชีตอาร์เซน่อลพร้อมกัน 3 คน พร้อมส่ง Verbruggen เฝ้าเสาลุ้นคลีนชีตในบ้าน"
         c2_con_transfer = "<strong>Dual-Transfer Integration & 1 FT Banked for GW8:</strong> นำ Calafiori และ Manzambi เข้าสู่ระบบแท็กติกอย่างสมบูรณ์แบบ โดยไม่เสียแต้มลบ (Cost 0 pts) รักษา 1 Free Transfer สะสมไว้ต่อยอดเป็น 2 FTs ใน GW8 อย่างมั่นคง"
+        haaland_title = "Triple Captain Masterstroke [3XC] - Erling Haaland vs Ipswich (H - FDR 2):" if c1_active_chip == "3xc" else "Erling Haaland Home Fixture Anchor [C] vs Ipswich (H - FDR 2):"
+        haaland_desc = "เปิดใช้งานชิป Triple Captain (คะแนนคูณ 3 เท่า) ให้กับ Erling Haaland (£15.6m) เฝ้ารังรับมือน้องใหม่อิปสวิช ทาวน์ (FDR 2) มุ่งหวังเพดานคะแนนระเบิดสูงสุดประจำฤดูกาล" if c1_active_chip == "3xc" else "มอบปลอกแขนกัปตันให้ Erling Haaland (£15.6m) เปิดบ้านรับมือน้องใหม่อิปสวิช ทาวน์ โอกาสระเบิดแฮตทริกและเพดานแต้มสูงสุดประจำสัปดาห์"
         c1_pros_items = [
-            ("Erling Haaland Home Fixture Anchor [C] vs Ipswich (H - FDR 2):", "มอบปลอกแขนกัปตันให้ Erling Haaland (£15.6m) เปิดบ้านรับมือน้องใหม่อิปสวิช ทาวน์ โอกาสระเบิดแฮตทริกและเพดานแต้มสูงสุดประจำสัปดาห์"),
+            (haaland_title, haaland_desc),
             ("Cole Palmer Elite Form Vice Captain [VC] @ Everton (A):", "มอบตำแหน่งรองกัปตันให้ Cole Palmer (£9.7m) ฟอร์มตัวรุกหัวใจสำคัญของเชลซี สแตนด์บายอย่างมั่นใจ"),
             ("Triple Arsenal Defense Stack (Gabriel + Calafiori + Konsa):", "อัปเกรดแนวรับส่ง Riccardo Calafiori (£5.9m) ประเดิมตัวจริงร่วมกับ Gabriel และ Konsa ลุ้นเหมา 3 คลีนชีตในเกมเยือนฟอเรสต์"),
             ("Pascal Groß Home Advantage vs Crystal Palace (H - FDR 2):", "Pascal Groß (£6.0m) ฟอร์มร้อนแรง คุมจังหวะเกมแดนกลางและรับหน้าที่ลูกตั้งเตะ/จุดโทษในเกมเหย้าพบพาเลซ"),
-            ("1 Free Transfer Banked & Zero Hit (Cost 0 pts):", "ใช้ 2 จาก 3 FTs ดึงสองตัวหลักเข้ามาโดยไม่เสียแต้มลบ พร้อมเก็บ 1 Free Transfer สะสมไว้ลุยต่อใน GW8 เงินคงเหลือ £0.5m")
+            ("1 Free Transfer Banked & Zero Hit (Cost 0 pts):", f"ใช้ 2 จาก 3 FTs ดึงสองตัวหลักเข้ามาโดยไม่เสียแต้มลบ พร้อมเก็บ 1 Free Transfer สะสมไว้ลุยต่อใน GW8 เงินคงเหลือ £{c1_bank:.1f}m")
         ]
         c1_cons_items = [
             ("Triple Arsenal Clean Sheet Wipeout Risk:", "การลงสนามกองหลังอาร์เซน่อลพร้อมกัน 3 คน หากฟอเรสต์ยิงได้เพียงลูกเดียว แต้มคลีนชีตจะหายไปพร้อมกันถึง 12 คะแนนทันที"),
@@ -954,6 +1010,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     remaining_chips_count = 0
     total_chips_count = len(all_chips_meta)
 
+    active_chips_count = 0
     for c in all_chips_meta:
         c_name = c.get("name")
         s_ev = c.get("start_event", 1)
@@ -962,11 +1019,18 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         used_entry = next((u for u in used_chips_history if u.get("name") == c_name and s_ev <= u.get("event", 0) <= e_ev), None)
         is_used = used_entry is not None
         used_gw = used_entry.get("event") if used_entry else None
-        
+        is_active_current = (c_name == c1_active_chip and s_ev <= active_gw <= e_ev) or (is_used and used_gw == active_gw)
+
         display_title = f"{chip_names_display.get(c_name, c_name)} #{c_num}"
         if e_ev <= 19:
             # Half 1 (GW1-19)
-            if is_used:
+            if is_active_current:
+                active_chips_count += 1
+                status_badge = f"ACTIVE (GW{active_gw})"
+                status_color = "var(--accent-amber)"
+                border_color = "rgba(245, 158, 11, 0.6)"
+                note = f"กำลังเปิดใช้งานในสัปดาห์นี้ (GW{active_gw})"
+            elif is_used:
                 status_badge = f"USED (GW{used_gw})"
                 status_color = "var(--text-muted)"
                 border_color = "var(--border-subtle)"
@@ -986,7 +1050,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             half1_cards_html.append(card)
         else:
             # Half 2 (GW20-38)
-            if is_used:
+            if is_active_current:
+                active_chips_count += 1
+                status_badge = f"ACTIVE (GW{active_gw})"
+                status_color = "var(--accent-amber)"
+                border_color = "rgba(245, 158, 11, 0.6)"
+                note = f"กำลังเปิดใช้งานในสัปดาห์นี้ (GW{active_gw})"
+            elif is_used:
                 status_badge = f"USED (GW{used_gw})"
                 status_color = "var(--text-muted)"
                 border_color = "var(--border-subtle)"
@@ -1007,6 +1077,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     chips_half1_str = "".join(half1_cards_html)
     chips_half2_str = "".join(half2_cards_html)
+    active_chip_note = f" &bull; {active_chips_count} ACTIVE (GW{active_gw})" if active_chips_count > 0 else ""
+    chip_inventory_badge_text = f"CHIP REMAINING: {remaining_chips_count} / {total_chips_count} ({remaining_chips_count} AVAILABLE{active_chip_note})"
 
     # Dynamic Fixture Lookup Helper based on real data/fixtures.json
     teams_by_id = {t["id"]: t for t in bootstrap.get("teams", [])}
@@ -1036,12 +1108,15 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         gw9_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 9), get_fixture_desc("CHE", 9), get_fixture_desc("LIV", 9), get_fixture_desc("ARS", 9)] if f])
         gw10_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 10), get_fixture_desc("CHE", 10), get_fixture_desc("LIV", 10), get_fixture_desc("ARS", 10)] if f])
 
+        gw7_chip_roadmap_note = " &bull; TRIPLE CAPTAIN [3x] ACTIVE" if c1_active_chip == "3xc" else ""
+        gw7_roadmap_strategy = "<strong>Triple Captain Masterstroke [3XC] vs Ipswich (H - FDR 2):</strong> แมนฯ ซิตี้ เฝ้ารังพบอิปสวิช เปิดใช้งานชิป Triple Captain คะแนนคูณ 3 เท่า ลุ้นเพดานแต้มระเบิดสูงสุดประจำฤดูกาล พร้อมเสริมทัพด้วย Calafiori และ Manzambi (Choice 2 ยกระดับด้วย 3-4-3 ส่ง Manzambi ตัวจริงฟอร์ม 9.0 และพัก Konsa ลดความเสี่ยงคลีนชีตอาร์เซน่อลซ้ำซ้อน เหลือ 1 FT สะสมไป GW8)" if c1_active_chip == "3xc" else "<strong>โอกาสทองกัปตัน Haaland vs Ipswich (H - FDR 2):</strong> แมนฯ ซิตี้ เฝ้ารังพบอิปสวิช โอกาสระเบิดแต้มกัปตันเต็มพิกัด พร้อมใช้ 2 Free Transfers เสริมทัพด้วย Calafiori และ Manzambi (Choice 2 ยกระดับด้วย 3-4-3 ส่ง Manzambi ตัวจริงฟอร์ม 9.0 และพัก Konsa ลดความเสี่ยงคลีนชีตอาร์เซน่อลซ้ำซ้อน เหลือ 1 FT สะสมไป GW8 เงินคงคลัง £0.5m)"
+
         dynamic_roadmap_rows_html = f'''
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW7 (สัปดาห์นี้)</td>
-                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">2/3 FTs USED &bull; 1 FT BANKED &bull; ZERO HIT</span></td>
+                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">2/3 FTs USED &bull; 1 FT BANKED &bull; ZERO HIT{gw7_chip_roadmap_note}</span></td>
                                 <td style="padding:8px 10px;">{gw7_fixes}</td>
-                                <td style="padding:8px 10px;"><strong>โอกาสทองกัปตัน Haaland vs Ipswich (H - FDR 2):</strong> แมนฯ ซิตี้ เฝ้ารังพบอิปสวิช โอกาสระเบิดแต้มกัปตันเต็มพิกัด พร้อมใช้ 2 Free Transfers เสริมทัพด้วย Calafiori และ Manzambi (Choice 2 ยกระดับด้วย 3-4-3 ส่ง Manzambi ตัวจริงฟอร์ม 9.0 และพัก Konsa ลดความเสี่ยงคลีนชีตอาร์เซน่อลซ้ำซ้อน เหลือ 1 FT สะสมไป GW8 เงินคงคลัง £0.5m)</td>
+                                <td style="padding:8px 10px;">{gw7_roadmap_strategy}</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
                                 <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW8</td>
@@ -1273,12 +1348,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 data = load_json(picks_path)
                 if data and "picks" in data:
                     lineup = []
+                    chip = data.get("active_chip")
                     for p in data["picks"]:
                         pid = p["element"]
                         is_starter = (p["position"] <= 11)
                         is_c = p.get("is_captain", False)
                         is_vc = p.get("is_vice_captain", False)
-                        lineup.append((pid, is_starter, is_c, is_vc))
+                        mult = p.get("multiplier", 1)
+                        if is_c and (chip == "3xc" or mult == 3):
+                            mult = 3
+                        lineup.append((pid, is_starter, is_c, is_vc, mult))
                     if len(lineup) == 15:
                         return lineup
             except Exception:
@@ -1365,7 +1444,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     def process_review_team(lineup, live_stats, fallback_pts):
         players = []
         for p in lineup:
-            pid, is_starter, is_c, is_vc = p
+            pid = p[0]
+            is_starter = p[1]
+            is_c = p[2]
+            is_vc = p[3]
+            mult = p[4] if len(p) > 4 else (1 if is_starter else 0)
+            is_tc = (mult == 3) or (is_c and mult == 3)
+
             el = elements_map.get(pid, {})
             pos_id = el.get("element_type", 1)
             pos = {1: "GKP", 2: "DEF", 3: "MID", 4: "FWD"}.get(pos_id, "MID")
@@ -1390,6 +1475,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 "cost": cost,
                 "is_starter": is_starter,
                 "is_captain": is_c,
+                "is_triple_captain": is_tc,
                 "is_vice_captain": is_vc,
                 "raw_pts": pts,
                 "minutes": mins,
@@ -1432,16 +1518,17 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         b["multiplier"] = 1
                         break
 
-        # 3. Captain & Vice-Captain Resolution (evaluated after Auto-Subs so a subbed-in VC retains 2x multiplier)
+        # 3. Captain & Vice-Captain Resolution (evaluated after Auto-Subs so a subbed-in VC retains multiplier)
         cap = next((p for p in players if p["is_captain"]), None)
         vc = next((p for p in players if p["is_vice_captain"]), None)
+        cap_mult = 3 if (cap and (cap.get("is_triple_captain") or cap.get("multiplier") == 3)) else 2
         if cap and cap["minutes"] == 0:
             cap["multiplier"] = 0
             if vc and vc["is_starter"] and vc["minutes"] > 0:
-                vc["multiplier"] = 2
+                vc["multiplier"] = cap_mult
                 vc["is_promoted_captain"] = True
         elif cap and cap["is_starter"]:
-            cap["multiplier"] = 2
+            cap["multiplier"] = cap_mult
 
         # Calculate final earned points
         for p in players:
@@ -1451,10 +1538,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     def render_review_player_row(p):
         cap_badge = ""
-        if p["is_captain"] and p["multiplier"] == 2:
+        if p["is_captain"] and p["multiplier"] == 3:
+            cap_badge = '<span class="role-badge-cap role-badge-tc" style="width:24px; height:18px; font-size:0.55rem; margin-left:4px;">3XC</span>'
+        elif p["is_captain"] and p["multiplier"] == 2:
             cap_badge = '<span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px;">C</span>'
         elif p.get("is_promoted_captain"):
-            cap_badge = '<span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px; background:var(--accent-amber);" title="Promoted to Captain (C played 0 min)">C*</span>'
+            cap_label = "3XC*" if p["multiplier"] == 3 else "C*"
+            cap_badge = f'<span class="role-badge-cap" style="width:24px; height:18px; font-size:0.55rem; margin-left:4px; background:var(--accent-amber);" title="Promoted to Captain (C played 0 min)">{cap_label}</span>'
         elif p["is_vice_captain"]:
             cap_badge = '<span class="role-badge-vc" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px;">V</span>'
 
@@ -1466,7 +1556,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         if p["is_starter"]:
             if p.get("is_promoted_captain"):
-                pts_display = f'{p["earned_pts"]} <small class="font-mono" style="color:var(--text-muted); font-size:0.65rem;">({p["raw_pts"]}x2 VC)</small>'
+                mult_lbl = "3x VC" if p["multiplier"] == 3 else "2x VC"
+                pts_display = f'{p["earned_pts"]} <small class="font-mono" style="color:var(--text-muted); font-size:0.65rem;">({p["raw_pts"]}x{mult_lbl})</small>'
+            elif p["is_captain"] and p["multiplier"] == 3:
+                pts_display = f'{p["earned_pts"]} <small class="font-mono" style="color:var(--accent-amber); font-weight:800; font-size:0.65rem;">({p["raw_pts"]}x3 TC)</small>'
             elif p["is_captain"] and p["multiplier"] == 2:
                 pts_display = f'{p["earned_pts"]} <small class="font-mono" style="color:var(--text-muted); font-size:0.65rem;">({p["raw_pts"]}x{p["multiplier"]})</small>'
             else:
@@ -2612,6 +2705,15 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         .starter-card.card-transfer-in:hover, .bench-card.card-transfer-in:hover {{
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.55), 0 8px 24px rgba(0, 0, 0, 0.7) !important;
         }}
+        /* Glowing Triple Captain Card */
+        .starter-card.card-triple-captain {{
+            border-color: rgba(245, 158, 11, 0.85) !important;
+            background: linear-gradient(180deg, rgba(48, 32, 10, 0.92) 0%, rgba(20, 15, 8, 0.98) 100%) !important;
+            box-shadow: 0 0 16px rgba(245, 158, 11, 0.35), 0 4px 14px rgba(0, 0, 0, 0.6) !important;
+        }}
+        .starter-card.card-triple-captain:hover {{
+            box-shadow: 0 0 24px rgba(245, 158, 11, 0.6), 0 8px 24px rgba(0, 0, 0, 0.75) !important;
+        }}
 
         .starter-card-top, .bench-card-top {{
             display: flex;
@@ -2636,6 +2738,27 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             border-radius: 3px;
             line-height: 1;
             box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+        }}
+        .role-badge-tc {{
+            background: linear-gradient(135deg, #f59e0b, #b45309) !important;
+            color: #ffffff !important;
+            border: 1px solid #fef08a;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.85) !important;
+            font-size: 0.55rem;
+            padding: 0.05rem 0.3rem;
+            letter-spacing: 0.5px;
+        }}
+        .tc-mult-tag {{
+            font-size: 0.52rem;
+            font-weight: 900;
+            color: #fbbf24;
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            border-radius: 3px;
+            padding: 1px 4px;
+            letter-spacing: 0.5px;
+            margin-left: 3px;
+            display: inline-block;
         }}
         .role-badge-vc {{
             background: linear-gradient(135deg, #e2e8f0, #94a3b8);
@@ -3683,7 +3806,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
             .starter-card-top {{ min-height: 13px; }}
             .pos-tag-mini {{ font-size: 0.46rem; padding: 0.03rem 0.16rem; border-radius: 2px; }}
-            .role-badge-cap, .role-badge-vc {{ font-size: 0.50rem; padding: 0.03rem 0.2rem; }}
+            .role-badge-cap, .role-badge-vc, .role-badge-tc {{ font-size: 0.50rem; padding: 0.03rem 0.2rem; }}
             .core-tag-mini, .enabler-tag-mini, .transfer-in-tag-mini {{ font-size: 0.44rem; padding: 0.03rem 0.15rem; }}
             .starter-photo-wrap {{ height: 34px; margin: 0; }}
             .starter-shirt-img {{ width: 30px; height: 30px; }}
@@ -3926,7 +4049,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             <div class="plan-title">Choice 1 &bull; Micky Selection (GW{active_gw})</div>
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">{c1_formation_str}</span>
-                                <span class="active-chip-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.3);">GW{active_gw} &bull; BASELINE</span>
+                                {c1_chip_pill_pitch}
                             </div>
                         </div>
                         <div class="fin-badge">
@@ -4116,7 +4239,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <span class="health-dot-active" style="background:var(--accent-sky); box-shadow:0 0 8px var(--accent-sky);"></span>
                         <span class="health-heading">Official FPL 2026/27 Chip Inventory &amp; Dual-Half Architecture</span>
                     </div>
-                    <span class="health-status-badge" style="background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.35);">CHIP REMAINING: {remaining_chips_count} / {total_chips_count} (6 AVAILABLE)</span>
+                    <span class="health-status-badge" style="background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.35);">{chip_inventory_badge_text}</span>
                 </div>
                 <div class="health-detail-text" style="margin-bottom:0.75rem;">
                     ในฤดูกาล 2026/27 กฎ FPL แบ่งชิปการเล่นออกเป็น <strong>2 ครึ่งฤดูกาล (รวมทั้งหมด 8 ชิป)</strong> โดยแต่ละครึ่งฤดูกาลจะมีชิป 4 ใบ (Wildcard, Free Hit, Bench Boost, Triple Captain) แยกจากกันอย่างอิสระ:
@@ -4152,7 +4275,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <span class="health-dot-active" style="background:var(--accent-emerald); box-shadow:0 0 8px var(--accent-emerald);"></span>
                         <span class="health-heading">Multi-Week Strategic Transfer &amp; Chip Roadmap (GW4 - GW7)</span>
                     </div>
-                    <span class="health-status-badge health-badge-ok">ACTIVE WEAPONS: TC1 &amp; FH1 READY</span>
+                    {roadmap_active_weapons_badge}
                 </div>
                 <div class="roadmap-table-wrap">
                     <table class="roadmap-table" style="width:100%; border-collapse:collapse; font-size:0.75rem; text-align:left;">
@@ -4181,7 +4304,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             <div class="plan-title">Choice 1 &bull; Micky Final Lockdown Squad</div>
                             <span style="font-size:0.65rem; color:var(--text-secondary);">{c1_formation_str} Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m &bull; Quota: {user_free_transfers} FTs</span>
                         </div>
-                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">Lockdown Active</span>
+                        {c1_lockdown_pill}
                     </div>
 
                     <!-- Pros -->
