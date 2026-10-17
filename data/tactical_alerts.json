@@ -1,38 +1,14 @@
 {
-  "last_checked": "2026-10-17T04:14:23.090415+00:00",
-  "total_alerts": 6,
+  "last_checked": "2026-10-17T13:52:50.814547+00:00",
+  "total_alerts": 3,
   "alerts": [
-    {
-      "id": 367,
-      "web_name": "Gakpo",
-      "status": "d",
-      "chance": 25,
-      "news": "Ankle injury - 25% chance of playing",
-      "timestamp": "2026-10-17T04:14:23.089874+00:00"
-    },
-    {
-      "id": 368,
-      "web_name": "Szoboszlai",
-      "status": "d",
-      "chance": 25,
-      "news": "Hamstring injury - 25% chance of playing",
-      "timestamp": "2026-10-17T04:14:23.089897+00:00"
-    },
-    {
-      "id": 379,
-      "web_name": "Isak",
-      "status": "d",
-      "chance": 25,
-      "news": "Thigh injury - 25% chance of playing",
-      "timestamp": "2026-10-17T04:14:23.089904+00:00"
-    },
     {
       "id": 423,
       "web_name": "Shaw",
       "status": "d",
       "chance": 75,
       "news": "Unspecified injury - 75% chance of playing",
-      "timestamp": "2026-10-17T04:14:23.089911+00:00"
+      "timestamp": "2026-10-17T13:52:50.814423+00:00"
     },
     {
       "id": 499,
@@ -40,7 +16,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Unknown return date",
-      "timestamp": "2026-10-17T04:14:23.089918+00:00"
+      "timestamp": "2026-10-17T13:52:50.814450+00:00"
     },
     {
       "id": 557,
@@ -48,7 +24,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Expected back 1 Nov",
-      "timestamp": "2026-10-17T04:14:23.089923+00:00"
+      "timestamp": "2026-10-17T13:52:50.814454+00:00"
     }
   ]
 }
