@@ -1,14 +1,22 @@
 {
-  "last_checked": "2026-10-17T18:52:11.141820+00:00",
-  "total_alerts": 4,
+  "last_checked": "2026-10-17T21:03:12.481474+00:00",
+  "total_alerts": 5,
   "alerts": [
+    {
+      "id": 53,
+      "web_name": "Manzambi",
+      "status": "d",
+      "chance": 75,
+      "news": "Calf injury - 75% chance of playing",
+      "timestamp": "2026-10-17T21:03:12.481344+00:00"
+    },
     {
       "id": 368,
       "web_name": "Szoboszlai",
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Unknown return date",
-      "timestamp": "2026-10-17T18:52:11.141677+00:00"
+      "timestamp": "2026-10-17T21:03:12.481371+00:00"
     },
     {
       "id": 423,
@@ -16,7 +24,7 @@
       "status": "d",
       "chance": 75,
       "news": "Unspecified injury - 75% chance of playing",
-      "timestamp": "2026-10-17T18:52:11.141699+00:00"
+      "timestamp": "2026-10-17T21:03:12.481379+00:00"
     },
     {
       "id": 499,
@@ -24,7 +32,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Unknown return date",
-      "timestamp": "2026-10-17T18:52:11.141706+00:00"
+      "timestamp": "2026-10-17T21:03:12.481384+00:00"
     },
     {
       "id": 557,
@@ -32,7 +40,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Expected back 1 Nov",
-      "timestamp": "2026-10-17T18:52:11.141710+00:00"
+      "timestamp": "2026-10-17T21:03:12.481387+00:00"
     }
   ]
 }
