@@ -1,14 +1,22 @@
 {
-  "last_checked": "2026-10-17T13:52:50.814547+00:00",
-  "total_alerts": 3,
+  "last_checked": "2026-10-17T16:40:22.767259+00:00",
+  "total_alerts": 4,
   "alerts": [
+    {
+      "id": 368,
+      "web_name": "Szoboszlai",
+      "status": "d",
+      "chance": 75,
+      "news": "Unspecified injury - 75% chance of playing",
+      "timestamp": "2026-10-17T16:40:22.767140+00:00"
+    },
     {
       "id": 423,
       "web_name": "Shaw",
       "status": "d",
       "chance": 75,
       "news": "Unspecified injury - 75% chance of playing",
-      "timestamp": "2026-10-17T13:52:50.814423+00:00"
+      "timestamp": "2026-10-17T16:40:22.767163+00:00"
     },
     {
       "id": 499,
@@ -16,7 +24,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Unknown return date",
-      "timestamp": "2026-10-17T13:52:50.814450+00:00"
+      "timestamp": "2026-10-17T16:40:22.767170+00:00"
     },
     {
       "id": 557,
@@ -24,7 +32,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Expected back 1 Nov",
-      "timestamp": "2026-10-17T13:52:50.814454+00:00"
+      "timestamp": "2026-10-17T16:40:22.767174+00:00"
     }
   ]
 }
