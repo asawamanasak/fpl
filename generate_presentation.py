@@ -375,6 +375,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     loaded_from_official_picks = False
     c1_ids = []
     c1_bank = 0.5
+    c1_event_transfers = None
+    c1_hit_cost = 0
 
     if os.path.exists(picks_file_path):
         try:
@@ -382,6 +384,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             if picks_data and "picks" in picks_data:
                 eh = picks_data.get("entry_history", {})
                 c1_bank = eh.get("bank", 0) / 10.0
+                c1_event_transfers = eh.get("event_transfers")
+                c1_hit_cost = eh.get("event_transfers_cost", 0)
                 for p in picks_data["picks"]:
                     pid = p["element"]
                     pos_idx = p["position"]
@@ -441,11 +445,25 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             ]
             c1_bank = 0.5
 
-    # Detect transfers dynamically if available
+    # Detect transfers dynamically via both transfers.json AND squad delta vs previous GW picks
     transfers_file_path = os.path.join(data_dir, "transfers.json")
     transfers_history = load_json(transfers_file_path) if os.path.exists(transfers_file_path) else []
     gw_transfers = [t for t in (transfers_history or []) if t.get("event") == active_gw] if isinstance(transfers_history, list) else []
     transferred_in_ids = set(t.get("element_in") for t in gw_transfers)
+
+    # Also compare current GW squad against previous GW squad to catch any last-minute transfers automatically
+    if active_gw > 1:
+        prev_picks_path = os.path.join(data_dir, f"picks_gw{active_gw - 1}.json")
+        if os.path.exists(prev_picks_path):
+            try:
+                prev_picks_data = load_json(prev_picks_path)
+                if prev_picks_data and "picks" in prev_picks_data:
+                    prev_gw_pids = set(p["element"] for p in prev_picks_data["picks"])
+                    curr_gw_pids = set(p[0] for p in c1_ids)
+                    transferred_in_ids |= (curr_gw_pids - prev_gw_pids)
+            except Exception:
+                pass
+
     if not transferred_in_ids:
         if active_gw == 5:
             transferred_in_ids.add(68)
@@ -594,10 +612,22 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     c1_nailed_count = sum(1 for p in c1_squad if p["minutes"] >= 90)
     c2_nailed_count = sum(1 for p in c2_squad if p["minutes"] >= 90)
 
+    # Dynamic Choice 1 Transfer & Hit Computation (auto-updates if user makes last-minute transfers)
+    c1_actual_transfers = c1_event_transfers if c1_event_transfers is not None else len(transferred_in_ids)
+    c1_rem_fts = max(0, user_free_transfers - c1_actual_transfers)
+    c1_hit_pill = f"-{c1_hit_cost} PT HIT" if c1_hit_cost > 0 else "ZERO HIT"
+    c1_hit_cost_html = f'<span class="dl-val" style="color:{"var(--accent-rose)" if c1_hit_cost > 0 else "var(--accent-emerald)"};">{f"-{c1_hit_cost}" if c1_hit_cost > 0 else "0"} pts</span>'
+    c1_in_players_objs = [p for p in c1_squad if p["id"] in transferred_in_ids]
+    c1_in_summary_str = " และ ".join([f"{p['web_name']} £{p['cost']:.1f}m" for p in c1_in_players_objs])
+
     # Dynamic Pros & Cons for Choice 1 and Choice 2:
     if active_gw == 7:
-        c1_transfer_count_pill = "2 TRANSFERS &bull; 1 FT BANKED &bull; ZERO HIT"
-        c1_transfer_status_text = "จัดทีมสัปดาห์ที่ 7 (ใช้ 2 Free Transfers คว้า Calafiori £5.9m และ Manzambi £5.9m &bull; เหลือ 1 FT สะสมไป GW8 &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £0.5m)"
+        c1_transfer_count_pill = f"{c1_actual_transfers} TRANSFER{'S' if c1_actual_transfers != 1 else ''} &bull; {c1_rem_fts} FT{'s' if c1_rem_fts != 1 else ''} BANKED &bull; {c1_hit_pill}"
+        if c1_actual_transfers > 0 and c1_in_summary_str:
+            hit_desc = f"เสียแต้มลบ -{c1_hit_cost} pts" if c1_hit_cost > 0 else "ไม่เสียแต้มลบ 0 pts"
+            c1_transfer_status_text = f"จัดทีมสัปดาห์ที่ 7 (ใช้ {min(c1_actual_transfers, user_free_transfers)} Free Transfers คว้า {c1_in_summary_str} &bull; เหลือ {c1_rem_fts} FT สะสมไป GW8 &bull; {hit_desc} &bull; เงินคงคลัง £{c1_bank:.1f}m)"
+        else:
+            c1_transfer_status_text = f"จัดทีมสัปดาห์ที่ 7 (สะสม {user_free_transfers} Free Transfers เต็มโควตาพร้อมใช้งาน &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £{c1_bank:.1f}m)"
         c2_pro_upgrade = "<strong>Unleash Manzambi (Form 9.0) & De-risk Arsenal Defense (3-4-3):</strong> Choice 2 จัดระบบ 3-4-3 ผลักดัน Johan Manzambi (£5.9m, ฟอร์มร้อนแรง 9.0) ลงตัวจริงทันทีเพื่อเก็บเกี่ยวผลตอบแทนเกมรุก และพัก Konsa เป็นสำรองอันดับ 1 เพื่อกระจายความเสี่ยงไม่ให้เสียคลีนชีตอาร์เซน่อลพร้อมกัน 3 คน พร้อมส่ง Verbruggen เฝ้าเสาลุ้นคลีนชีตในบ้าน"
         c2_con_transfer = "<strong>Dual-Transfer Integration & 1 FT Banked for GW8:</strong> นำ Calafiori และ Manzambi เข้าสู่ระบบแท็กติกอย่างสมบูรณ์แบบ โดยไม่เสียแต้มลบ (Cost 0 pts) รักษา 1 Free Transfer สะสมไว้ต่อยอดเป็น 2 FTs ใน GW8 อย่างมั่นคง"
         c1_pros_items = [
@@ -3788,7 +3818,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             </div>
                             <div class="delta-ledger-cell">
                                 <span class="dl-lbl">Cost Hits</span>
-                                <span class="dl-val" style="color:var(--accent-emerald);">0 pts</span>
+                                {c1_hit_cost_html}
                             </div>
                             <div class="delta-ledger-cell">
                                 <span class="dl-lbl">Remaining Bank</span>

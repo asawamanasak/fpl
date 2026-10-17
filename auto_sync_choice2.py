@@ -80,13 +80,19 @@ def extract_data_fingerprint(bs, fix):
         for f in fix
     ] if isinstance(fix, list) else []
 
-    # Include presence and size of picks_gw*.json files to immediately detect official picks ingestion
+    # Include SHA256 content hash of picks_gw*.json, transfers.json, entry.json, and live_gw*.json
+    # so any last-minute lineup, captaincy, bench order, or transfer change is detected 100% reliably
     picks_sig = []
     if os.path.exists('data'):
         for fname in sorted(os.listdir('data')):
-            if fname.startswith('picks_gw') and fname.endswith('.json'):
+            if (fname.startswith('picks_gw') or fname.startswith('live_gw') or fname in ('transfers.json', 'entry.json')) and fname.endswith('.json'):
                 fpath = os.path.join('data', fname)
-                picks_sig.append((fname, os.path.getsize(fpath)))
+                try:
+                    with open(fpath, 'rb') as pf:
+                        file_hash = hashlib.sha256(pf.read()).hexdigest()
+                    picks_sig.append((fname, file_hash))
+                except Exception:
+                    picks_sig.append((fname, os.path.getsize(fpath)))
 
     payload = json.dumps({'el': elements_sig, 'fix': fixtures_sig, 'picks': picks_sig}, sort_keys=True)
     return hashlib.sha256(payload.encode('utf-8')).hexdigest()
@@ -266,9 +272,28 @@ def fetch_live_data():
                 fix = json.load(f)
 
     # 3. entry, history & transfers
+    now_epoch_sync = datetime.now(timezone.utc).timestamp()
+    upcoming_events = set()
+    if bs and "events" in bs:
+        for ev in bs["events"]:
+            if ev.get("deadline_time_epoch", 0) > now_epoch_sync:
+                upcoming_events.add(ev.get("id"))
+
     for endpoint, filename in [('entry/306983/', 'data/entry.json'), ('entry/306983/history/', 'data/history.json'), ('entry/306983/transfers/', 'data/transfers.json')]:
         try:
             data = fetch_json_with_retry(f'https://fantasy.premierleague.com/api/{endpoint}', headers=headers)
+            if filename == 'data/transfers.json' and isinstance(data, list) and os.path.exists(filename):
+                # Before deadline passes, FPL API hides current GW transfers; preserve pre-deadline local transfers
+                try:
+                    with open(filename, 'r', encoding='utf-8') as rf:
+                        existing_transfers = json.load(rf)
+                    if isinstance(existing_transfers, list):
+                        api_events = set(t.get('event') for t in data)
+                        pre_deadline_local = [t for t in existing_transfers if t.get('event') in upcoming_events and t.get('event') not in api_events]
+                        if pre_deadline_local:
+                            data = pre_deadline_local + data
+                except Exception:
+                    pass
             with open(filename, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False)
         except Exception as e:
