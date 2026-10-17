@@ -130,7 +130,8 @@ def render_bench_list(bench_players):
         if p.get("pos") == "GKP":
             cards.append(render_bench_card(p, sub_idx="GKP"))
         else:
-            cards.append(render_bench_card(p, sub_idx=outfield_idx))
+            sub_num = p.get("tactical_sub_idx", outfield_idx)
+            cards.append(render_bench_card(p, sub_idx=sub_num))
             outfield_idx += 1
     return "".join(cards)
 
@@ -166,7 +167,8 @@ def align_pitch_players(c1_starters, c2_starters, pos):
 
 def align_bench_players(c1_bench, c2_bench):
     """
-    Align bench so that identical players occupy the same sub index.
+    Align bench so that identical players occupy the same visual column,
+    while preserving each player's true tactical_sub_idx badge.
     """
     if len(c1_bench) != len(c2_bench):
         return c2_bench
@@ -214,6 +216,15 @@ def render_ticker_row_full_season(p, team_fixtures, start_gw=4, end_gw=38, orig_
     </tr>
     """
 
+def is_valid_fpl_formation(positions):
+    return (
+        len(positions) == 11
+        and positions.count("GKP") == 1
+        and 3 <= positions.count("DEF") <= 5
+        and 2 <= positions.count("MID") <= 5
+        and 1 <= positions.count("FWD") <= 3
+    )
+
 def generate_html_report(data_dir="data", output_file="index.html", target_gw=None):
     bootstrap = load_json(os.path.join(data_dir, "bootstrap_static.json"))
     entry = load_json(os.path.join(data_dir, "entry.json"))
@@ -232,20 +243,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     current_gw = current_event_obj["id"] if current_event_obj else entry.get("current_event", 2)
     next_gw = next_event_obj["id"] if next_event_obj else current_gw + 1
 
-    teams = {t["id"]: t for t in bootstrap.get("teams", [])}
-    elements_map = {e["id"]: e for e in bootstrap.get("elements", [])}
-
-    solio_proj_map = {}
-    if solio and "topProjected" in solio:
-        for sp in solio["topProjected"]:
-            solio_proj_map[sp.get("name", "").lower()] = sp
+    teams = {t["id"]: t for t in bootstrap.get("teams", []) if "id" in t}
+    elements_map = {e["id"]: e for e in bootstrap.get("elements", []) if "id" in e}
 
     # Full season fixtures lookup (GW1 - GW38)
     team_fixtures = {}
     for fix in (fixtures or []):
         ev = fix.get("event")
-        if ev:
-            th, ta = fix["team_h"], fix["team_a"]
+        th = fix.get("team_h")
+        ta = fix.get("team_a")
+        if ev and th and ta:
             if th not in team_fixtures: team_fixtures[th] = {}
             if ta not in team_fixtures: team_fixtures[ta] = {}
             if ev not in team_fixtures[th]: team_fixtures[th][ev] = []
@@ -266,8 +273,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     # Dynamic Gameweek Detection from Events
     ict_tz = timezone(timedelta(hours=7))
-    if os.path.exists("data/bootstrap_static.json"):
-        mtime = os.path.getmtime("data/bootstrap_static.json")
+    bs_path = os.path.join(data_dir, "bootstrap_static.json")
+    if os.path.exists(bs_path):
+        mtime = os.path.getmtime(bs_path)
         sync_dt = datetime.fromtimestamp(mtime, tz=timezone.utc).astimezone(ict_tz)
     else:
         sync_dt = datetime.now(ict_tz)
@@ -299,6 +307,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     break
         active_gw = active_gw or 4
 
+    solio_proj_map = {}
+    if solio and isinstance(solio, dict) and "topProjected" in solio and solio.get("gameweek") == active_gw:
+        for sp in solio["topProjected"]:
+            solio_proj_map[sp.get("name", "").lower()] = sp
+
     deadline_epoch = 1789216200
     deadline_str = "Sat 12 Sep, 19:30 ICT"
     for ev in bootstrap.get("events", []):
@@ -318,7 +331,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         el = elements_map.get(element_id)
         if not el:
             return None
-        t_id = el["team"]
+        t_id = el.get("team", 1)
         t_obj = teams.get(t_id, {})
         team_short = t_obj.get("short_name", "???")
         official_t_code = t_obj.get("code", 1)
@@ -343,6 +356,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         tot_pts = el.get("total_points", 0)
         xgi = float(el.get("expected_goal_involvements", 0.0) or 0.0)
         mins = el.get("minutes", 0)
+        form_val = float(el.get("form", 0.0) or 0.0)
 
         web_name_safe = html.escape(el.get("web_name", f"Player {element_id}"))
         full_name_safe = html.escape(f"{el.get('first_name', '')} {el.get('second_name', '')}")
@@ -356,6 +370,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             "official_team_code": official_t_code,
             "pos": pos,
             "cost": cost,
+            "form": form_val,
             "is_starter": is_starter,
             "is_captain": is_cap,
             "is_vice_captain": is_vc,
@@ -368,6 +383,12 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             "xgi": xgi,
             "minutes": mins
         }
+
+    # Load transfers history early so pre-deadline inheritance can apply pending transfers
+    transfers_file_path = os.path.join(data_dir, "transfers.json")
+    transfers_history = load_json(transfers_file_path) if os.path.exists(transfers_file_path) else []
+    gw_transfers = [t for t in (transfers_history or []) if t.get("event") == active_gw] if isinstance(transfers_history, list) else []
+    transferred_in_ids = set(t.get("element_in") for t in gw_transfers if t.get("element_in"))
 
     # CHOICE 1: Dynamic Ingestion from Official FPL Picks (Team ID: 306983)
     # If deadline has passed, picks_gw{active_gw}.json is available and used 100% automatically.
@@ -399,7 +420,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             print(f"Notice loading official picks for GW{active_gw}: {e}")
 
     if not loaded_from_official_picks:
-        # Pre-deadline: dynamically inherit the most recent official picks as baseline squad
+        # Pre-deadline: dynamically inherit the most recent official picks and apply gw_transfers
         latest_past_gw = active_gw - 1
         inherited = False
         while latest_past_gw >= 1:
@@ -424,6 +445,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     pass
             latest_past_gw -= 1
 
+        if inherited and gw_transfers:
+            # Apply current GW transfers onto the inherited squad
+            swap_map = {t.get("element_out"): t.get("element_in") for t in gw_transfers if t.get("element_out") and t.get("element_in")}
+            cost_delta = sum((elements_map.get(t.get("element_out"), {}).get("now_cost", 0) - elements_map.get(t.get("element_in"), {}).get("now_cost", 0)) for t in gw_transfers) / 10.0
+            c1_bank = round(max(0.0, c1_bank + cost_delta), 1)
+            c1_ids = [
+                (swap_map.get(pid, pid), is_starter, is_cap, is_vc, is_core, is_enabler)
+                for (pid, is_starter, is_cap, is_vc, is_core, is_enabler) in c1_ids
+            ]
+
         if not inherited:
             # Fallback Baseline Squad: Matches official GW7 confirmed lineup
             c1_ids = [
@@ -444,12 +475,6 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 (368, False, False, False, False, False), # Szoboszlai (MID Sub 3)
             ]
             c1_bank = 0.5
-
-    # Detect transfers dynamically via both transfers.json AND squad delta vs previous GW picks
-    transfers_file_path = os.path.join(data_dir, "transfers.json")
-    transfers_history = load_json(transfers_file_path) if os.path.exists(transfers_file_path) else []
-    gw_transfers = [t for t in (transfers_history or []) if t.get("event") == active_gw] if isinstance(transfers_history, list) else []
-    transferred_in_ids = set(t.get("element_in") for t in gw_transfers)
 
     # Also compare current GW squad against previous GW squad to catch any last-minute transfers automatically
     if active_gw > 1:
@@ -476,6 +501,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             p["is_transfer_in"] = True
     c1_starters = [p for p in c1_squad if p["is_starter"]]
     c1_bench = [p for p in c1_squad if not p["is_starter"]]
+    c1_outfield_sub = 1
+    for bp in c1_bench:
+        if bp["pos"] != "GKP":
+            bp["tactical_sub_idx"] = c1_outfield_sub
+            c1_outfield_sub += 1
     c1_cost = sum(p["cost"] for p in c1_squad)
 
     # Dynamic formation detection for Choice 1
@@ -489,6 +519,74 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     user_free_transfers = 3 if active_gw >= 7 else (2 if active_gw in (4, 5, 6) else 1)
     transfers_count = len(gw_transfers) if active_gw not in (5, 6, 7) else (2 if active_gw == 7 else (1 if active_gw == 5 else 0))
+
+    def enforce_club_starter_limit(lineup_tuples, max_per_club=2):
+        """
+        Programmatically enforces Choice 2's tactical rule:
+        At most max_per_club (2) starters from any single club in the starting XI,
+        replacing any 3rd starter from the same club with the highest-form healthy
+        outfield bench player from an uncapped club while preserving a valid FPL formation.
+        """
+        built = [build_player_by_id(*t) for t in lineup_tuples]
+        if any(b is None for b in built):
+            return lineup_tuples
+
+        starters_idx = [i for i, b in enumerate(built) if b["is_starter"]]
+        bench_idx = [i for i, b in enumerate(built) if not b["is_starter"] and b["pos"] != "GKP"]
+
+        club_counts = {}
+        for i in starters_idx:
+            cid = built[i]["team_id"]
+            club_counts[cid] = club_counts.get(cid, 0) + 1
+
+        for club_id, count in list(club_counts.items()):
+            while count > max_per_club:
+                # Candidate starters from this club (non-captain, non-GKP), lowest form first
+                club_starter_indices = [
+                    i for i in starters_idx
+                    if built[i]["team_id"] == club_id and built[i]["pos"] != "GKP" and not built[i]["is_captain"]
+                ]
+                club_starter_indices.sort(key=lambda idx: (built[idx]["form"], -built[idx]["next_fdr"]))
+                if not club_starter_indices:
+                    break
+
+                # Candidate bench players from clubs with < max_per_club starters, highest form first
+                valid_bench_indices = [
+                    bi for bi in bench_idx
+                    if club_counts.get(built[bi]["team_id"], 0) < max_per_club
+                ]
+                valid_bench_indices.sort(key=lambda idx: (-built[idx]["form"], built[idx]["next_fdr"]))
+
+                swapped = False
+                for s_idx in club_starter_indices:
+                    for b_idx in valid_bench_indices:
+                        new_positions = [built[i]["pos"] for i in starters_idx if i != s_idx] + [built[b_idx]["pos"]]
+                        if is_valid_fpl_formation(new_positions):
+                            built[s_idx]["is_starter"] = False
+                            built[b_idx]["is_starter"] = True
+                            starters_idx.remove(s_idx)
+                            starters_idx.append(b_idx)
+                            bench_idx.remove(b_idx)
+                            bench_idx.append(s_idx)
+                            club_counts[club_id] -= 1
+                            b_club = built[b_idx]["team_id"]
+                            club_counts[b_club] = club_counts.get(b_club, 0) + 1
+                            count -= 1
+                            swapped = True
+                            break
+                    if swapped:
+                        break
+                if not swapped:
+                    break
+
+        new_starters = [lineup_tuples[i] for i in range(len(lineup_tuples)) if built[i]["is_starter"]]
+        new_bench = [lineup_tuples[i] for i in range(len(lineup_tuples)) if not built[i]["is_starter"]]
+        res = []
+        for pid, _, is_c, is_v, is_core, is_en in new_starters:
+            res.append((pid, True, is_c, is_v, is_core, is_en))
+        for pid, _, is_c, is_v, is_core, is_en in new_bench:
+            res.append((pid, False, is_c, is_v, is_core, is_en))
+        return res
 
     # CHOICE 2: GEMINI Autonomous Tactical Variant (0 Hits)
     if active_gw == 7:
@@ -512,6 +610,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             (368, False, False, False, True, False),   # Szoboszlai (MID Sub 2 @ BRE A - Flagged 75% injury buffer)
             (304, False, False, False, False, False),  # O'Shea (DEF Sub 3 @ MCI A - FDR 5)
         ]
+        c2_ids = enforce_club_starter_limit(c2_ids, max_per_club=2)
     elif active_gw == 6:
         # Choice 2: Template Shield & Tactical Defense Variant (3-5-2)
         # Haaland [C] (74.1% EO Shield), Palmer [VC], Groß Started in 3-5-2, Egan Started over Konsa (75% flag)
@@ -574,14 +673,14 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             (277, False, False, False, False, False), # Egan (DEF Sub 3)
         ]
     else:
-        # Dynamic Future GW Variant: Inherit Choice 1 baseline with Haaland [C] anchor
+        # Dynamic Future GW Variant: Inherit Choice 1 baseline, captain Haaland [C], and enforce max 2 starters per club
         c2_ids = []
         for p in c1_ids:
             pid, starter, cap, vc, core, enabler = p
-            # By default in Choice 2, captain Haaland if present
             is_c = (pid == 411)
             is_v = (pid == 154) if is_c else vc
             c2_ids.append((pid, starter, is_c, is_v, core, enabler))
+        c2_ids = enforce_club_starter_limit(c2_ids, max_per_club=2)
 
     c2_squad = [build_player_by_id(*p) for p in c2_ids if build_player_by_id(*p)]
     for p in c2_squad:
@@ -589,8 +688,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             p["is_transfer_in"] = True
     c2_starters = [p for p in c2_squad if p["is_starter"]]
     c2_bench = [p for p in c2_squad if not p["is_starter"]]
+    c2_outfield_sub = 1
+    for bp in c2_bench:
+        if bp["pos"] != "GKP":
+            bp["tactical_sub_idx"] = c2_outfield_sub
+            c2_outfield_sub += 1
     c2_cost = sum(p["cost"] for p in c2_squad)
-    c2_bank = 0.5 if active_gw == 7 else c1_bank
+    c2_bank = 0.5 if active_gw == 7 else (c1_bank if set(p[0] for p in c1_ids) == set(p[0] for p in c2_ids) else round(max(0.0, total_budget - c2_cost), 1))
     c2_bank_str = f"+£{c2_bank:.1f}m"
 
     c2_def_count = sum(1 for p in c2_starters if p["pos"] == "DEF")
@@ -748,9 +852,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         ]
     else:
         # Dynamic Future Gameweeks
-        c1_transfer_count_pill = f"0 TRANSFERS &bull; {user_free_transfers} FTs BANKED &bull; ZERO HIT"
-        c1_transfer_status_text = f"จัดทีมสัปดาห์ที่ {active_gw} (สะสม Free Transfers ไว้พร้อมใช้งาน &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £{c1_bank:.1f}m)"
-        c2_pro_upgrade = "<strong>Autonomous Tactical Optimization:</strong> ปรับทัพตัวจริงเพื่อดึงศักยภาพสูงสุดตามโปรแกรมแข่งขัน FDR และความน่าจะเป็นของคะแนน"
+        c1_transfer_count_pill = f"{c1_actual_transfers} TRANSFER{'S' if c1_actual_transfers != 1 else ''} &bull; {c1_rem_fts} FT{'s' if c1_rem_fts != 1 else ''} BANKED &bull; {c1_hit_pill}"
+        if c1_actual_transfers > 0 and c1_in_summary_str:
+            hit_desc = f"เสียแต้มลบ -{c1_hit_cost} pts" if c1_hit_cost > 0 else "ไม่เสียแต้มลบ 0 pts"
+            c1_transfer_status_text = f"จัดทีมสัปดาห์ที่ {active_gw} (ใช้ {min(c1_actual_transfers, user_free_transfers)} Free Transfers คว้า {c1_in_summary_str} &bull; เหลือ {c1_rem_fts} FT สะสมไป GW{active_gw+1} &bull; {hit_desc} &bull; เงินคงคลัง £{c1_bank:.1f}m)"
+        else:
+            c1_transfer_status_text = f"จัดทีมสัปดาห์ที่ {active_gw} (สะสม {user_free_transfers} Free Transfers ไว้พร้อมใช้งาน &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £{c1_bank:.1f}m)"
+        c2_pro_upgrade = "<strong>Autonomous Tactical Optimization:</strong> ปรับทัพตัวจริงเพื่อดึงศักยภาพสูงสุดตามโปรแกรมแข่งขัน FDR และจำกัดตัวจริงไม่เกินสโมสรละ 2 คน"
         c2_con_transfer = "<strong>Zero-Hit Policy:</strong> รักษาวินัยไม่เสียแต้มย้ายตัวลบ (Penalty: 0 pts)"
         c1_pros_items = [
             ("Core Squad Stability:", "ขุมกำลังหลักมีเสถียรภาพและกระจายตัวในทีมชั้นนำครบถ้วน"),
@@ -762,7 +870,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         c2_plan_title = f"Choice 2 &bull; GEMINI Autonomous Blueprint (GW{active_gw})"
         c2_plan_pill = "Autonomous Optimization"
         c2_pros_items = [
-            ("Zero-Hit Rule Enforced:", "ไม่เสียแต้มลบแม้แต่แต้มเดียว"),
+            ("Zero-Hit Rule & Max 2 Per Club Enforced:", "ไม่เสียแต้มลบและจำกัดผู้เล่นตัวจริงไม่เกินสโมสรละ 2 คนเพื่อลดความเสี่ยง"),
             ("Optimized Captaincy Foundation:", "จัดสรรปลอกแขนกัปตันตามค่า Expected Involvements สูงสุด")
         ]
         c2_cons_items = [
@@ -777,6 +885,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     # Global Rank Trajectory & Top 100k Tracker
     overall_rank = 515461
     current_total_points = 425
+    gw_perf_path = os.path.join(data_dir, "gw_performance_archive.json")
     if entry and isinstance(entry, dict) and entry.get("summary_overall_points"):
         current_total_points = entry.get("summary_overall_points", 425)
     if history and isinstance(history, dict) and history.get("current"):
@@ -784,9 +893,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         overall_rank = latest_history.get("overall_rank", 515461)
         if latest_history.get("total_points"):
             current_total_points = latest_history.get("total_points")
-    elif os.path.exists("data/gw_performance_archive.json"):
+    elif os.path.exists(gw_perf_path):
         try:
-            with open("data/gw_performance_archive.json", "r", encoding="utf-8") as f:
+            with open(gw_perf_path, "r", encoding="utf-8") as f:
                 perf_data = json.load(f)
                 if perf_data.get("trajectory"):
                     overall_rank = perf_data["trajectory"][-1].get("overall_rank", 515461)
@@ -800,9 +909,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
     # Friday Press Conference & Squad Health Watcher Data (Only for players currently in the squad)
     tactical_alerts_data = {"total_alerts": 0, "alerts": []}
-    if os.path.exists("data/tactical_alerts.json"):
+    tactical_alerts_path = os.path.join(data_dir, "tactical_alerts.json")
+    if os.path.exists(tactical_alerts_path):
         try:
-            with open("data/tactical_alerts.json", "r", encoding="utf-8") as f:
+            with open(tactical_alerts_path, "r", encoding="utf-8") as f:
                 tactical_alerts_data = json.load(f)
         except Exception:
             pass
@@ -814,7 +924,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     if total_flags == 0:
         health_status_badge = "100% MATCH FIT"
         health_badge_class = "health-badge-ok"
-        health_detail_text = "เฝ้าระวังตัวหลักทั้ง 15 คนในทีมปัจจุบัน (Haaland, Palmer, Pedro, Ødegaard, Szoboszlai, Tavernier ฯลฯ) ตรวจพบความพร้อม 100% ปราศจากรายงานบาดเจ็บหรือแบนจากงานแถลงข่าว"
+        health_detail_text = "เฝ้าระวังตัวหลักทั้ง 15 คนในทีมปัจจุบัน (Haaland, Palmer, Pedro, Calafiori, Manzambi, Szoboszlai, Tavernier ฯลฯ) ตรวจพบความพร้อม 100% ปราศจากรายงานบาดเจ็บหรือแบนจากงานแถลงข่าว"
         health_alerts_html = ""
     else:
         health_status_badge = f"{total_flags} TACTICAL ALERT" if total_flags == 1 else f"{total_flags} TACTICAL ALERTS"
@@ -822,7 +932,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         health_detail_text = f"ตรวจพบความเสี่ยงหรืออาการบาดเจ็บของนักเตะในทีมปัจจุบัน {total_flags} รายการ กรุณาตรวจสอบตัวเลือกสำรอง:"
         items = []
         for alt in relevant_alerts:
-            items.append(f'<div class="health-alert-pill"><strong>{alt["web_name"]}</strong>: โอกาสลงสนาม {alt.get("chance", "???")}% &bull; {alt.get("news", "No news")}</div>')
+            safe_wname = html.escape(str(alt.get("web_name", "")))
+            safe_news = html.escape(str(alt.get("news", "No news")))
+            safe_chance = html.escape(str(alt.get("chance", "???")))
+            items.append(f'<div class="health-alert-pill"><strong>{safe_wname}</strong>: โอกาสลงสนาม {safe_chance}% &bull; {safe_news}</div>')
         health_alerts_html = '<div class="health-alerts-box">' + "".join(items) + '</div>'
 
     # Dynamic 2026/27 FPL Chip Inventory Computation from Official API Rules
@@ -1114,7 +1227,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     # Load GW live event points and minutes helper
     def load_live_gw_stats(gw):
         stats = {}
-        path = f"data/live_gw{gw}.json"
+        path = os.path.join(data_dir, f"live_gw{gw}.json")
         if os.path.exists(path):
             try:
                 with open(path, "r", encoding="utf-8") as f:
@@ -1248,7 +1361,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         (304, False, False, False)
     ]
 
-    # Process Review Lineup with Captaincy Resolution and Auto-Sub Simulator (Bugs 3 & 4 Fix)
+    # Process Review Lineup with Auto-Sub Simulator (strict bench priority & upper/lower formation bounds) and Captaincy Resolution
     def process_review_team(lineup, live_stats, fallback_pts):
         players = []
         for p in lineup:
@@ -1286,17 +1399,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 "is_promoted_captain": False
             })
 
-        # Captain & Vice-Captain Resolution (Bug 3 Fix: VC promoted to 2x if C played 0 minutes)
-        cap = next((p for p in players if p["is_captain"]), None)
-        vc = next((p for p in players if p["is_vice_captain"]), None)
-        if cap and cap["minutes"] == 0 and vc and vc["minutes"] > 0:
-            vc["multiplier"] = 2
-            cap["multiplier"] = 0
-            vc["is_promoted_captain"] = True
-        elif cap and cap["is_starter"]:
-            cap["multiplier"] = 2
-
-        # Auto-Sub Simulation for Starters with 0 Minutes (Bug 4 Fix)
+        # Auto-Sub Simulation for Starters with 0 Minutes
         starters = [p for p in players if p["is_starter"]]
         bench = [p for p in players if not p["is_starter"]]
 
@@ -1311,24 +1414,34 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             gkp_b["auto_sub_in"] = True
             gkp_b["multiplier"] = 1
 
-        # 2. Outfield Auto-Sub (sub in exact bench order, preserving valid FPL formations)
+        # 2. Outfield Auto-Sub: iterate in strict bench order (Sub 1 -> Sub 2 -> Sub 3)
+        # and enforce full FPL formation bounds (1 GKP, 3-5 DEF, 2-5 MID, 1-3 FWD)
         outfield_bench = [p for p in bench if p["pos"] != "GKP"]
-        used_bench_ids = set()
-        for s in list(starters):
-            if s["pos"] != "GKP" and s["minutes"] == 0:
-                for b in outfield_bench:
-                    if b["id"] in used_bench_ids or b["minutes"] == 0:
-                        continue
+        for b in outfield_bench:
+            if b["minutes"] == 0:
+                continue
+            for s in starters:
+                if s["pos"] != "GKP" and s["minutes"] == 0 and s["is_starter"]:
                     current_positions = [p["pos"] for p in players if p["is_starter"] and p["id"] != s["id"]] + [b["pos"]]
-                    if current_positions.count("DEF") >= 3 and current_positions.count("MID") >= 2 and current_positions.count("FWD") >= 1:
+                    if is_valid_fpl_formation(current_positions):
                         s["is_starter"] = False
                         s["auto_sub_out"] = True
                         s["multiplier"] = 0
                         b["is_starter"] = True
                         b["auto_sub_in"] = True
                         b["multiplier"] = 1
-                        used_bench_ids.add(b["id"])
                         break
+
+        # 3. Captain & Vice-Captain Resolution (evaluated after Auto-Subs so a subbed-in VC retains 2x multiplier)
+        cap = next((p for p in players if p["is_captain"]), None)
+        vc = next((p for p in players if p["is_vice_captain"]), None)
+        if cap and cap["minutes"] == 0:
+            cap["multiplier"] = 0
+            if vc and vc["is_starter"] and vc["minutes"] > 0:
+                vc["multiplier"] = 2
+                vc["is_promoted_captain"] = True
+        elif cap and cap["is_starter"]:
+            cap["multiplier"] = 2
 
         # Calculate final earned points
         for p in players:
@@ -1577,7 +1690,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
          "ทั้งสองทีมมีแต้มค้างอยู่บนม้านั่งสำรองในระดับ 14-16 คะแนน โดยเฉพาะ Antonín Kinsky (£4.5m) ผู้รักษาประตูที่เก็บคลีนชีตทำได้ถึง 6 คะแนนบนม้านั่งสำรอง")
     ]
 
-    # Generate all review blocks
+    # Generate all review blocks (GW3-GW6 baseline + dynamic completed GWs >= 7)
     gw_reviews = [
         generate_gw_review_block(
             6, gw6_c1_lineup, gw6_c2_lineup, gw6_live_stats, gw6_fallback_pts,
@@ -1628,6 +1741,58 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             overall_rank=59630
         )
     ]
+
+    # Dynamically prepend any completed gameweeks >= 7 so Tab 5 scales automatically through GW38
+    events_by_id = {ev.get("id"): ev for ev in bootstrap.get("events", []) if ev.get("id")}
+    hist_by_gw = {h.get("event"): h for h in (history.get("current", []) if isinstance(history, dict) else []) if h.get("event")}
+    for dyn_gw in range(7, active_gw + 1):
+        ev_meta = events_by_id.get(dyn_gw, {})
+        dyn_live = load_live_gw_stats(dyn_gw)
+        has_played_mins = any(v.get("minutes", 0) > 0 for v in dyn_live.values())
+        if (dyn_gw < active_gw or ev_meta.get("finished")) and has_played_mins:
+            gw7_c1_def = [
+                (496, True, False, False), (391, True, False, False), (31, True, False, False),
+                (4, True, False, False), (8, True, False, False), (124, True, False, False),
+                (68, True, False, False), (154, True, False, True), (165, True, False, False),
+                (464, True, False, False), (411, True, True, False),
+                (109, False, False, False), (53, False, False, False), (304, False, False, False),
+                (368, False, False, False)
+            ]
+            dyn_c1 = load_official_picks_lineup(dyn_gw, gw7_c1_def)
+            if dyn_gw == 7:
+                dyn_c2 = [
+                    (109, True, False, False), (391, True, False, False), (4, True, False, False),
+                    (8, True, False, False), (124, True, False, False), (68, True, False, False),
+                    (154, True, False, True), (53, True, False, False), (165, True, False, False),
+                    (464, True, False, False), (411, True, True, False),
+                    (496, False, False, False), (31, False, False, False), (368, False, False, False),
+                    (304, False, False, False)
+                ]
+            else:
+                c2_tuples_6 = [(pid, st, (pid == 411), (pid == 154), False, False) for (pid, st, _, _) in dyn_c1]
+                c2_enforced = enforce_club_starter_limit(c2_tuples_6, max_per_club=2)
+                dyn_c2 = [(pid, st, is_c, is_v) for (pid, st, is_c, is_v, _, _) in c2_enforced]
+
+            h_entry = hist_by_gw.get(dyn_gw, {})
+            dyn_avg = ev_meta.get("average_entry_score") or 50
+            dyn_gw_rank = h_entry.get("rank") or overall_rank
+            dyn_ov_rank = h_entry.get("overall_rank") or overall_rank
+            dyn_block = generate_gw_review_block(
+                dyn_gw, dyn_c1, dyn_c2, dyn_live, {},
+                world_avg=dyn_avg,
+                c1_title=f"Choice 1 &bull; Micky Actual Squad (GW{dyn_gw})",
+                c1_sub=f"ตัวจริง 11 คน &bull; Official FPL Locked Lineup (GW{dyn_gw})",
+                c2_title=f"Choice 2 &bull; GEMINI Refined Blueprint (GW{dyn_gw})",
+                c2_sub=f"ตัวจริง 11 คน &bull; Max 2 Per Club Tactical Variant (GW{dyn_gw})",
+                deciders=[
+                    (f"1. สรุปผลการแข่งขันสัปดาห์ที่ {dyn_gw} (Automated Post-Match Audit):",
+                     f"ประมวลผลคะแนนจริงและเปรียบเทียบการตัดสินใจเชิงกลยุทธ์ระหว่าง Choice 1 และ Choice 2 อัตโนมัติจากข้อมูลทางการของ FPL")
+                ],
+                short_decider=f"GW{dyn_gw} Automated Tactical Comparison",
+                gw_rank=dyn_gw_rank,
+                overall_rank=dyn_ov_rank
+            )
+            gw_reviews.insert(0, dyn_block)
 
     # Dynamic Season Head-to-Head Totals & Metrics (Bug 5 Fix)
     total_c1_pts = sum(r["c1_pts"] for r in gw_reviews)
@@ -3681,12 +3846,12 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 <div class="gw-top-badge">GW{active_gw}</div>
                 <div class="title-box">
                     <h1>
-                        <span class="team-name">{entry.get("name", "GEMINI UNITED")}</span> 
+                        <span class="team-name">{html.escape(str(entry.get("name", "GEMINI UNITED")))}</span> 
                         <span class="team-id-tag">(ID: {entry.get('id', 306983)})</span> 
                         <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: {last_sync_str}<span class="sync-tag-active">ACTIVE</span></span>
                     </h1>
                     <p class="manager-meta-line">
-                        <span class="manager-name">Manager: {entry.get("player_first_name", "")} {entry.get("player_last_name", "")}</span> 
+                        <span class="manager-name">Manager: {html.escape(str(entry.get("player_first_name", "")))} {html.escape(str(entry.get("player_last_name", "")))}</span> 
                         <span class="header-dot">&bull;</span> 
                         <span class="gw-target-txt">จัดทีมสำหรับสัปดาห์ที่ {active_gw} (Gameweek {active_gw})</span>
                     </p>

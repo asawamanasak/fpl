@@ -18,6 +18,7 @@ Hardened Strategic & Resilience Architecture (Rollback 7):
 
 import json
 import urllib.request
+import urllib.error
 import ssl
 import sys
 import os
@@ -28,8 +29,9 @@ from datetime import datetime, timezone, timedelta
 
 def fetch_json_with_retry(url, headers, timeout=15, max_retries=3, backoff_factor=2):
     """
-    Resilient HTTP JSON fetcher with exponential backoff.
-    Attempts max_retries with progressive delays [2s, 4s, 8s] to gracefully handle FPL API rate limits.
+    Resilient HTTP JSON fetcher with exponential backoff and smart status handling.
+    - Fast-fails on client errors (400, 401, 403, 404) without wasting retry delays.
+    - Respects Retry-After headers on HTTP 429 rate limits.
     """
     try:
         ctx = ssl.create_default_context()
@@ -42,6 +44,18 @@ def fetch_json_with_retry(url, headers, timeout=15, max_retries=3, backoff_facto
             req = urllib.request.Request(url, headers=headers)
             with urllib.request.urlopen(req, context=ctx, timeout=timeout) as resp:
                 return json.loads(resp.read().decode('utf-8'))
+        except urllib.error.HTTPError as he:
+            last_error = he
+            if he.code in (400, 401, 403, 404):
+                raise he
+            if attempt < max_retries - 1:
+                retry_after = he.headers.get('Retry-After') if he.headers else None
+                try:
+                    sleep_sec = int(retry_after) if retry_after else backoff_factor * (attempt + 1)
+                except ValueError:
+                    sleep_sec = backoff_factor * (attempt + 1)
+                print(f"[HTTP {he.code} Retry] Attempt {attempt + 1} failed for {url}. Retrying in {sleep_sec}s...")
+                time.sleep(sleep_sec)
         except Exception as e:
             last_error = e
             if attempt < max_retries - 1:
@@ -53,11 +67,21 @@ def fetch_json_with_retry(url, headers, timeout=15, max_retries=3, backoff_facto
 def extract_data_fingerprint(bs, fix):
     """
     Generate a deterministic SHA256 hash of all fields that impact FPL decisions:
-    - Player prices (now_cost)
-    - Injury/availability statuses and news
-    - Player points
+    - Event lifecycle flags (is_current, is_next, finished, deadline_time_epoch)
+    - Player prices (now_cost), availability statuses, news, and total_points
     - Fixture kickoff, scores, and status
+    - Local state JSON files (picks_gw*, live_gw*, transfers, entry, history, tactical_alerts, gw_performance_archive)
     """
+    events_sig = [
+        (
+            ev.get('id'),
+            ev.get('is_current'),
+            ev.get('is_next'),
+            ev.get('finished'),
+            ev.get('deadline_time_epoch')
+        )
+        for ev in bs.get('events', [])
+    ]
     elements_sig = [
         (
             e.get('id'),
@@ -80,12 +104,17 @@ def extract_data_fingerprint(bs, fix):
         for f in fix
     ] if isinstance(fix, list) else []
 
-    # Include SHA256 content hash of picks_gw*.json, transfers.json, entry.json, and live_gw*.json
-    # so any last-minute lineup, captaincy, bench order, or transfer change is detected 100% reliably
+    tracked_files = {
+        'transfers.json',
+        'entry.json',
+        'history.json',
+        'tactical_alerts.json',
+        'gw_performance_archive.json'
+    }
     picks_sig = []
     if os.path.exists('data'):
         for fname in sorted(os.listdir('data')):
-            if (fname.startswith('picks_gw') or fname.startswith('live_gw') or fname in ('transfers.json', 'entry.json')) and fname.endswith('.json'):
+            if (fname.startswith('picks_gw') or fname.startswith('live_gw') or fname in tracked_files) and fname.endswith('.json'):
                 fpath = os.path.join('data', fname)
                 try:
                     with open(fpath, 'rb') as pf:
@@ -94,7 +123,7 @@ def extract_data_fingerprint(bs, fix):
                 except Exception:
                     picks_sig.append((fname, os.path.getsize(fpath)))
 
-    payload = json.dumps({'el': elements_sig, 'fix': fixtures_sig, 'picks': picks_sig}, sort_keys=True)
+    payload = json.dumps({'ev': events_sig, 'el': elements_sig, 'fix': fixtures_sig, 'picks': picks_sig}, sort_keys=True)
     return hashlib.sha256(payload.encode('utf-8')).hexdigest()
 
 def check_deadline_status(bs):
@@ -118,21 +147,18 @@ def check_deadline_status(bs):
 def get_active_gameweek(bs):
     """
     Detect the active Gameweek for squad planning:
-    1. If a gameweek is currently in play (is_current=True and finished=False), check if deadline has passed. If passed, use upcoming gameweek (is_next=True).
+    1. If a gameweek is currently in play (deadline passed and finished=False), return that gameweek.
     2. Otherwise, use the upcoming deadline gameweek (is_next=True).
     3. Fallback to is_current or 4.
     """
     events = bs.get('events', []) if isinstance(bs, dict) else []
     now_epoch = datetime.now(timezone.utc).timestamp()
-    # 1. Currently active in-play gameweek (deadline has passed, but matches not finished)
     for ev in events:
         if ev.get('deadline_time_epoch', 0) <= now_epoch and not ev.get('finished'):
             return ev.get('id', 4)
-    # 2. Upcoming gameweek (before deadline)
     for ev in events:
         if ev.get('is_next'):
             return ev.get('id', 4)
-    # 3. Fallback to is_current
     for ev in events:
         if ev.get('is_current'):
             return ev.get('id', 4)
@@ -141,22 +167,46 @@ def get_active_gameweek(bs):
 def monitor_press_conferences_and_injuries(bs):
     """
     Strategic Injury & Press Conference Watcher:
-    Continuously monitors squad starters and key transfer targets.
+    Dynamically discovers all players in picks_gw*.json and transfers.json plus core targets.
     Flags any change in chance_of_playing, yellow/red status, or press conference news.
     """
     elements_map = {e['id']: e for e in bs.get('elements', [])}
-    # Monitored Core Targets (Choice 1 & Choice 2 Key Players: 15 Squad Players + Key Targets)
-    monitored_pids = [109, 391, 277, 4, 124, 368, 154, 464, 411, 496, 165, 304, 31, 15, 68, 8, 53, 176, 183]
-    
+    monitored_set = {109, 391, 277, 4, 124, 368, 154, 464, 411, 496, 165, 304, 31, 15, 68, 8, 53, 176, 183}
+
+    if os.path.exists('data'):
+        for fname in sorted(os.listdir('data')):
+            if fname.startswith('picks_gw') and fname.endswith('.json'):
+                try:
+                    with open(os.path.join('data', fname), 'r', encoding='utf-8') as pf:
+                        pdata = json.load(pf)
+                        for p in pdata.get('picks', []):
+                            if p.get('element'):
+                                monitored_set.add(p['element'])
+                except Exception:
+                    pass
+        transfers_path = os.path.join('data', 'transfers.json')
+        if os.path.exists(transfers_path):
+            try:
+                with open(transfers_path, 'r', encoding='utf-8') as tf:
+                    tdata = json.load(tf)
+                    if isinstance(tdata, list):
+                        for t in tdata:
+                            if t.get('element_in'):
+                                monitored_set.add(t['element_in'])
+            except Exception:
+                pass
+
+    monitored_pids = sorted(monitored_set)
     alerts = []
     for pid in monitored_pids:
         el = elements_map.get(pid)
-        if not el: continue
-        
+        if not el:
+            continue
+
         status = el.get('status', 'a')
         chance = el.get('chance_of_playing_next_round')
         news = el.get('news', '')
-        
+
         is_flagged = (status != 'a') or (chance is not None and chance < 100) or bool(news)
         if is_flagged:
             alerts.append({
@@ -193,7 +243,7 @@ def monitor_press_conferences_and_injuries(bs):
                 "total_alerts": len(alerts),
                 "alerts": alerts
             }, f, indent=2, ensure_ascii=False)
-    
+
     return alerts
 
 def evaluate_and_archive_gameweek_performance(bs):
@@ -209,7 +259,7 @@ def evaluate_and_archive_gameweek_performance(bs):
     try:
         with open(history_file, 'r', encoding='utf-8') as f:
             hist_data = json.load(f)
-        
+
         current_gws = hist_data.get('current', [])
         new_trajectory = [
             {
@@ -272,26 +322,28 @@ def fetch_live_data():
                 fix = json.load(f)
 
     # 3. entry, history & transfers
-    now_epoch_sync = datetime.now(timezone.utc).timestamp()
-    upcoming_events = set()
+    unfinished_events = set()
     if bs and "events" in bs:
         for ev in bs["events"]:
-            if ev.get("deadline_time_epoch", 0) > now_epoch_sync:
-                upcoming_events.add(ev.get("id"))
+            if not ev.get("finished"):
+                unfinished_events.add(ev.get("id"))
 
     for endpoint, filename in [('entry/306983/', 'data/entry.json'), ('entry/306983/history/', 'data/history.json'), ('entry/306983/transfers/', 'data/transfers.json')]:
         try:
             data = fetch_json_with_retry(f'https://fantasy.premierleague.com/api/{endpoint}', headers=headers)
             if filename == 'data/transfers.json' and isinstance(data, list) and os.path.exists(filename):
-                # Before deadline passes, FPL API hides current GW transfers; preserve pre-deadline local transfers
+                # Before deadline and during post-deadline FPL API processing lag, preserve local transfers for unfinished GWs not yet published by API
                 try:
                     with open(filename, 'r', encoding='utf-8') as rf:
                         existing_transfers = json.load(rf)
                     if isinstance(existing_transfers, list):
-                        api_events = set(t.get('event') for t in data)
-                        pre_deadline_local = [t for t in existing_transfers if t.get('event') in upcoming_events and t.get('event') not in api_events]
-                        if pre_deadline_local:
-                            data = pre_deadline_local + data
+                        api_transfer_keys = set((t.get('event'), t.get('element_in'), t.get('element_out')) for t in data)
+                        pending_local = [
+                            t for t in existing_transfers
+                            if t.get('event') in unfinished_events and (t.get('event'), t.get('element_in'), t.get('element_out')) not in api_transfer_keys
+                        ]
+                        if pending_local:
+                            data = pending_local + data
                 except Exception:
                     pass
             with open(filename, 'w', encoding='utf-8') as f:
@@ -299,34 +351,35 @@ def fetch_live_data():
         except Exception as e:
             print(f"Notice fetching {endpoint}: {e}")
 
-    # 4. Autonomous Official Picks Ingestion (GW1 up to latest past deadline GW)
+    # 4. Autonomous Official Picks & Live Scores Ingestion
     if bs and "events" in bs:
         now_epoch = datetime.now(timezone.utc).timestamp()
+        active_gw_now = get_active_gameweek(bs)
         for ev in bs["events"]:
             ev_id = ev.get("id")
             deadline_epoch = ev.get("deadline_time_epoch", 0)
-            # Only fetch picks if the deadline has passed (FPL API unlocks picks only after deadline)
+            is_finished = bool(ev.get("finished"))
+
+            # Only fetch picks if deadline has passed; skip re-downloading immutable historical GWs already cached on disk
             if deadline_epoch and deadline_epoch <= now_epoch:
                 picks_file = f"data/picks_gw{ev_id}.json"
-                try:
-                    picks_data = fetch_json_with_retry(f'https://fantasy.premierleague.com/api/entry/306983/event/{ev_id}/picks/', headers=headers)
-                    if picks_data and "picks" in picks_data:
-                        with open(picks_file, 'w', encoding='utf-8') as f:
-                            json.dump(picks_data, f, ensure_ascii=False)
-                except Exception as e:
-                    # Ignore if FPL hasn't published yet
-                    pass
+                if not os.path.exists(picks_file) or not is_finished or ev_id >= active_gw_now:
+                    try:
+                        picks_data = fetch_json_with_retry(f'https://fantasy.premierleague.com/api/entry/306983/event/{ev_id}/picks/', headers=headers)
+                        if picks_data and "picks" in picks_data:
+                            with open(picks_file, 'w', encoding='utf-8') as f:
+                                json.dump(picks_data, f, ensure_ascii=False)
+                    except Exception:
+                        pass
 
-            # Also fetch event live scores/points for completed or in-progress gameweeks
-            if deadline_epoch and deadline_epoch <= now_epoch:
                 live_file = f"data/live_gw{ev_id}.json"
-                if not os.path.exists(live_file) or not ev.get("finished"):
+                if not os.path.exists(live_file) or not is_finished:
                     try:
                         live_data = fetch_json_with_retry(f'https://fantasy.premierleague.com/api/event/{ev_id}/live/', headers=headers)
                         if live_data and "elements" in live_data:
                             with open(live_file, 'w', encoding='utf-8') as f:
                                 json.dump(live_data, f, ensure_ascii=False)
-                    except Exception as e:
+                    except Exception:
                         pass
 
     return bs, fix
@@ -399,17 +452,20 @@ def main():
 
     active_gw = get_active_gameweek(bs)
 
-    # Re-run presentation generator for main dashboard and dynamic gameweek archive
+    # Re-run presentation generator for main dashboard
     cmd = [sys.executable, "generate_presentation.py", "--out", "index.html"]
     subprocess.run(cmd, check=True)
 
-    # Compile all relevant gameweek archives (GW3, GW4, GW5, GW6)
-    for gw_num in set([active_gw, 6, 5, 4, 3]):
-        cmd_arch = [sys.executable, "generate_presentation.py", "--out", f"fpl_gw{gw_num}_presentation.html", "--gw", str(gw_num)]
-        try:
-            subprocess.run(cmd_arch, check=True)
-        except Exception as e:
-            print(f"Notice compiling GW{gw_num} archive: {e}")
+    # Dynamically compile gameweek presentations from GW3 to active_gw
+    # Freeze historical archives (gw_num < active_gw - 1) once generated unless --force is passed
+    for gw_num in range(3, active_gw + 1):
+        arch_out = f"fpl_gw{gw_num}_presentation.html"
+        if gw_num >= active_gw - 1 or not os.path.exists(arch_out) or force_run:
+            cmd_arch = [sys.executable, "generate_presentation.py", "--out", arch_out, "--gw", str(gw_num)]
+            try:
+                subprocess.run(cmd_arch, check=True)
+            except Exception as e:
+                print(f"Notice compiling GW{gw_num} archive: {e}")
 
     print(f"[{datetime.now(timezone.utc).isoformat()}] Choice 2 Optimization & Presentation Compilation Complete (Active GW{active_gw}).")
 
