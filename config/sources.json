@@ -21,10 +21,10 @@
       "usage": "Used for Press Conference round-ups, Injury News, Predicted Lineups, Leaked Lineups before deadline, and Scout Picks."
     },
     {
-      "id": "coach_fpl_fdr",
-      "name": "Coach FPL FDR",
-      "url": "https://coachfplfdr.streamlit.app",
-      "usage": "Used for advanced Fixture Difficulty Ratings (FDR), attacking vs defensive fixture strength, and defensive rotation pair planning."
+      "id": "coach_fpl",
+      "name": "Coach FPL",
+      "url": "https://www.coachfpl.app/",
+      "usage": "Used as a comprehensive Analytics Hub for Choice 2 selection: advanced Fixtures & custom FDR, player projections, ownership analytics, and transfer solver optimization."
     },
     {
       "id": "live_fpl",

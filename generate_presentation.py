@@ -2075,6 +2075,88 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         </section>
         '''
 
+    # CoachFPL GW8 Transfer Solver Suggestions Tactical Summary Card
+    coachfpl_solver_widget_html = f'''
+            <!-- Tactical Summary Card: CoachFPL GW8 Transfer Solver Suggestions -->
+            <div class="squad-health-widget" style="border-color: rgba(56, 189, 248, 0.4); background: linear-gradient(180deg, rgba(15, 20, 28, 0.95) 0%, rgba(21, 27, 38, 0.85) 100%);">
+                <div class="health-top-bar">
+                    <div class="health-meta">
+                        <span class="health-dot-active" style="background:var(--accent-sky); box-shadow:0 0 8px var(--accent-sky);"></span>
+                        <span class="health-heading">Coach FPL &bull; GW8 Transfer Solver Tactical Recommendations</span>
+                    </div>
+                    <span class="health-status-badge" style="background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.35);">CoachFPL Analytics Hub</span>
+                </div>
+                <div class="health-detail-text" style="margin-bottom:0.85rem;">
+                    สรุปผลการวิเคราะห์โมเดล <strong>Transfer Solver (open-fpl-solver)</strong> จาก <strong>CoachFPL Analytics Hub</strong> สำหรับ Gameweek 8 เพื่อสนับสนุน Choice 2 ในการบริหารขุมกำลัง คำนวณจากสถานะผู้เล่นบาดเจ็บ (Szoboszlai 0% และ Manzambi 75%), โควตา 2 Free Transfers ในมือ (Banked 1 FT จาก GW7), และตารางความยากง่ายโปรแกรม FDR:
+                </div>
+                
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:0.75rem; margin-top:0.5rem;">
+                    <!-- Recommendation Card 1: Direct Replacements (1 FT) -->
+                    <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 0.85rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan A: Direct Fix (1 FT)</span>
+                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.3);">1 FT &bull; ZERO HIT</span>
+                        </div>
+                        <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:0.5rem; line-height:1.45;">
+                            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                                <span style="color:var(--accent-rose); font-weight:700; width:34px;">OUT:</span>
+                                <span>Szoboszlai (£6.8m &bull; LIV &bull; เจ็บ Hamstring 0%)</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
+                                <span><strong>Bryan Mbeumo</strong> (£7.5m &bull; BRE &bull; H vs IPS FDR 2)</span>
+                            </div>
+                        </div>
+                        <div style="font-size:0.7rem; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:0.4rem; line-height:1.35;">
+                            <strong>กลยุทธ์:</strong> ปลดล็อกนักเตะเจ็บทันที โดยดึงตัวจบสกอร์หลักและมือสังหารจุดโทษเบรนท์ฟอร์ดที่มีโปรแกรมเหย้า FDR 2 ต่อเนื่อง คาดการณ์แต้มเพิ่มขึ้น +4.2 xP ใน GW8 พร้อมเหลือ 1 FT เก็บไว้ใช้ต่อ
+                        </div>
+                    </div>
+
+                    <!-- Recommendation Card 2: Value & Bank Buffer (1 FT) -->
+                    <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; padding: 0.85rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan B: Value Differential (1 FT)</span>
+                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">Bank Reinvest</span>
+                        </div>
+                        <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:0.5rem; line-height:1.45;">
+                            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                                <span style="color:var(--accent-rose); font-weight:700; width:34px;">OUT:</span>
+                                <span>Szoboszlai (£6.8m &bull; LIV &bull; เจ็บ 0%)</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
+                                <span><strong>Antoine Semenyo</strong> (£5.6m &bull; BOU &bull; H vs ARS)</span>
+                            </div>
+                        </div>
+                        <div style="font-size:0.7rem; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:0.4rem; line-height:1.35;">
+                            <strong>กลยุทธ์:</strong> ประหยัดงบเพื่อสะสมเงินคงเหลือในธนาคารเพิ่มขึ้นเป็น £1.7m เพื่อเตรียมขยับตัวสู่พรีเมียมตัวท็อปใน GW9-10 พร้อมได้สถิติยิงเฉลี่ย 4.2 นัด/90 นาที
+                        </div>
+                    </div>
+
+                    <!-- Recommendation Card 3: 2-FT Full Rebalance (2 FTs) -->
+                    <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 0.85rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan C: Horizon Pivot (2 FTs)</span>
+                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.3);">Max 3-GW xP</span>
+                        </div>
+                        <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:0.5rem; line-height:1.45;">
+                            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                                <span style="color:var(--accent-rose); font-weight:700; width:34px;">OUT:</span>
+                                <span>Szoboszlai (£6.8m) + O'Shea (£4.0m)</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
+                                <span><strong>Mbeumo</strong> (£7.5m) + <strong>Rico Lewis</strong> (£4.8m &bull; MCI)</span>
+                            </div>
+                        </div>
+                        <div style="font-size:0.7rem; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:0.4rem; line-height:1.35;">
+                            <strong>กลยุทธ์:</strong> โมเดล Solver ระบุว่าเป็นแผนที่ให้ค่าคาดหวังแต้มสูงสุดในรอบ 3 นัด (+6.8 xP) แก้ไขจุดบกพร่องแดนกลางพร้อมเสริมแบ็กบุกแมนฯ ซิตี้ ที่มีโอกาสคลีนชีตและ xGI สูง
+                        </div>
+                    </div>
+                </div>
+            </div>
+    '''
+
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5005,6 +5087,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 </div>
             </div>
 
+{coachfpl_solver_widget_html}
+
             <!-- Pros & Cons Split Grid -->
             <div class="summary-split-grid">
                 
@@ -5148,13 +5232,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
                     <div class="source-ledger-row">
                         <div class="source-identity">
-                            <span class="source-main-name">Coach FPL FDR</span>
-                            <a href="https://coachfplfdr.streamlit.app" target="_blank" class="source-link-url">coachfplfdr.streamlit.app &rarr;</a>
+                            <span class="source-main-name">Coach FPL</span>
+                            <a href="https://www.coachfpl.app/" target="_blank" class="source-link-url">coachfpl.app &rarr;</a>
                         </div>
                         <div class="source-feature-body">
                             <span class="source-feature-label">จุดเด่นสำคัญ:</span>
                             <span class="source-feature-text">
-                                ระบบวิเคราะห์โปรแกรมการแข่งขันขั้นสูง (Custom Fixture Difficulty Rating) <strong>แยกความยากง่ายฝั่งเกมรุก (Attacking FDR) และเกมรับ (Defensive FDR)</strong> อย่างแม่นยำ พร้อมโมเดลคำนวณการจับคู่โรเตชั่นแนวรับและผู้รักษาประตูราคาประหยัด
+                                ศูนย์รวมข้อมูลและการวิเคราะห์ครบวงจร (CoachFPL Analytics Hub) รวบรวม <strong>Fixtures & FDR, Projections, Ownership และ Transfer Solver</strong> ขับเคลื่อนการตัดสินใจและวิเคราะห์จัดทัพของ Choice 2 ให้ครบถ้วนรอบด้าน
                             </span>
                         </div>
                     </div>

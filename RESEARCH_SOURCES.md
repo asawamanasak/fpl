@@ -25,12 +25,13 @@
 
 ---
 
-### 3. Coach FPL FDR (`https://coachfplfdr.streamlit.app`)
-* **บทบาทหลัก:** วิเคราะห์ระดับความยากง่ายของโปรแกรมแข่งขัน (Custom Fixture Difficulty Rating & Rotations)
+### 3. Coach FPL (`https://www.coachfpl.app/`)
+* **บทบาทหลัก:** ศูนย์รวมข้อมูลและการวิเคราะห์ครบวงจร (CoachFPL Analytics Hub) และ Transfer Solver สำหรับ Choice 2 Selection
 * **ข้อมูลที่นำมาใช้:**
-  - การแยกค่า FDR ฝั่ง **เกมรุก (Attacking FDR)** และ **เกมรับ (Defensive FDR)**
-  - การวางแผนโรเตชั่นคู่กองหลัง / ผู้รักษาประตูราคาประหยัด (Defensive Rotation Pairs)
-  - ตาราง Heatmap สภาพโปรแกรม 8–10 นัดล่วงหน้า
+  - **Fixtures & Custom FDR:** วิเคราะห์ความยากง่ายโปรแกรมแข่งขัน แยกเกมรุก (Attacking FDR) และเกมรับ (Defensive FDR) พร้อมโรเตชั่นแนวรับ
+  - **Player Projections & Expected Stats:** สถิติคาดการณ์แต้ม ประตู และแอสซิสต์
+  - **Ownership Analytics:** สถิติการถือครองและความเสี่ยง
+  - **Transfer Solver Optimization:** โมเดลจำลองและคำนวณการย้ายตัวจัดทีมอัตโนมัติ
 
 ---
 
@@ -53,4 +54,4 @@
 
 ## Automated Data Pipeline
 
-ระบบจะทำการผสานข้อมูลจาก **Official FPL API** ร่วมกับ **Solio Analytics Projections API** และรายงานความพร้อม/สถิติจาก **Fantasy Football Scout, LiveFPL, Coach FDR, และ FPL Gameweek** ในทุกๆ ครั้งที่มีการสร้าง Presentation รายงานประจำสัปดาห์
+ระบบจะทำการผสานข้อมูลจาก **Official FPL API** ร่วมกับ **Solio Analytics Projections API** และรายงานความพร้อม/สถิติจาก **Fantasy Football Scout, LiveFPL, Coach FPL, และ FPL Gameweek** ในทุกๆ ครั้งที่มีการสร้าง Presentation รายงานประจำสัปดาห์

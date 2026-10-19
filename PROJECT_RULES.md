@@ -29,7 +29,7 @@
   * **การคำนวณและวางแผนระยะยาว 38 Gameweek พร้อมชิป (38-GW Long-Term & 8-Chip Calculation) :** 
     * ทุกครั้งที่ผู้จัดการทีมสั่งให้วางแผนการจัดตัวในแต่ละ Gameweek ระบบจะต้องคำนวณเงื่อนไขทั้งหมดที่ผู้จัดการทีมกำหนดไว้ (ปรัชญา Low-Turnover, Zero Deadweight 15 ตัวจริง 90 นาที, การรักษา 2-FT Buffer)
     * คำนวณและจำลองจังหวะการใช้ชิปทั้งหมดตลอด 38 Gameweek (Wildcard 1/2, Bench Boost 1/2, Triple Captain 1/2, Free Hit 1/2) โดยดึงข้อมูลประวัติการใช้ชิปจริงจาก `https://fantasy.premierleague.com/api/entry/306983/history/` มาประมวลผลสด
-    * ผสานข้อมูลจาก **5 แหล่งข้อมูลวิจัย** (Official FPL API, Solio Analytics, Coach FPL FDR, LiveFPL, FPL Gameweek) ในการคัดเลือก 11 ตัวจริง, กัปตัน (C), รองกัปตัน (VC) และลำดับตัวสำรอง (Sub 1, 2, 3)
+    * ผสานข้อมูลจาก **5 แหล่งข้อมูลวิจัย** (Official FPL API, Solio Analytics, Coach FPL, LiveFPL, FPL Gameweek) ในการคัดเลือก 11 ตัวจริง, กัปตัน (C), รองกัปตัน (VC) และลำดับตัวสำรอง (Sub 1, 2, 3)
   * **ทุกครั้งที่ผู้จัดการทีมสั่งให้อัปเดตหรือแนะนำแผนประจำสัปดาห์ AI จะทำการปรับปรุงเฉพาะ Choice 2 นี้ด้วยข้อมูล Real-Time ณ วินาทีนั้นเสมอ**
 
 ---
@@ -44,7 +44,7 @@
 ### 4. การผสาน 5 แหล่งข้อมูลการวิเคราะห์ (5 Intelligence Sources)
 1. **Fantasy Football Scout :** ข่าวงานแถลงข่าว (Press Conferences), รายงานอาการบาดเจ็บ และไลน์อัปหลุดก่อนเดดไลน์ (Early Leaks)
 2. **Solio Analytics :** โมเดล AI จำลองแต้มล่วงหน้า (Projected Points), ค่าความต่าง (Differentials) และคลีนชีต
-3. **Coach FPL FDR :** ตารางความยากง่ายโปรแกรมระยะยาว (GW3 - GW38) และการจับคู่โรเตชั่นแนวรับ
+3. **Coach FPL (`coachfpl.app`) :** ศูนย์รวมข้อมูลวิเคราะห์ครบวงจร (CoachFPL Analytics Hub) - Fixtures, Projections, Ownership และโมเดล Transfer Solver เพื่อวิเคราะห์ Choice 2 Selection อย่างรอบด้าน
 4. **LiveFPL :** อันดับสดเรียลไทม์, Effective Ownership (EO%) และการวิเคราะห์กลุ่ม Top 10k
 5. **FPL Gameweek :** ระบบติดตามคู่แข่งในมินิลีก, แต้มสดพร้อม Live BPS และระบบคำนวณตัวสำรองอัตโนมัติ
 
