@@ -1608,9 +1608,321 @@
             color: #ffffff;
         }
 
+        /* Season H2H Desktop Table & Mobile Cards */
+        .h2h-leaderboard-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 22, 0.98));
+            border: 1px solid var(--border-accent);
+            border-radius: 12px;
+            padding: 1.1rem 1.4rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+            margin-bottom: 0.8rem;
+        }
+        .h2h-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 0.9rem;
+            border-bottom: 1px solid var(--border-muted);
+            padding-bottom: 0.75rem;
+        }
+        .h2h-title-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .h2h-audit-tag {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--accent-emerald);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .h2h-audit-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-emerald);
+            box-shadow: 0 0 8px var(--accent-emerald);
+        }
+        .h2h-main-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0.25rem 0 0 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .h2h-lead-pill {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+        }
+        .h2h-summary-strip {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+        }
+        .h2h-stat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+        .h2h-stat-box.box-c1 { text-align: right; }
+        .h2h-stat-box.box-c2 { text-align: left; }
+        .h2h-stat-lbl {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .h2h-stat-val {
+            font-size: 1.1rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .h2h-stat-val.val-c1 { color: var(--accent-emerald); }
+        .h2h-stat-val.val-c2 { color: var(--accent-sky); }
+        .h2h-stat-sub {
+            font-size: 0.75rem;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .h2h-stat-vs {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-muted);
+        }
+
+        .h2h-desktop-table-wrap {
+            overflow-x: auto;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+        .h2h-desktop-table {
+            width: 100%;
+            min-width: 680px;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            text-align: left;
+        }
+        .h2h-desktop-table th {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-muted);
+            color: var(--text-secondary);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+        .h2h-desktop-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            vertical-align: middle;
+        }
+
+        /* Mobile Match Cards */
+        .h2h-mobile-card-list {
+            display: none;
+            flex-direction: column;
+            gap: 0.75rem;
+            width: 100%;
+        }
+        .h2h-match-card {
+            background: linear-gradient(135deg, rgba(20, 29, 45, 0.95), rgba(11, 16, 26, 0.98));
+            border: 1px solid var(--border-accent);
+            border-radius: 10px;
+            padding: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        }
+        .h2h-match-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.45rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .h2h-match-gw {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.5px;
+        }
+        .mobile-winner-pill {
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.4px;
+            display: inline-block;
+        }
+        .mobile-winner-pill.pill-c1 {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.45);
+        }
+        .mobile-winner-pill.pill-c2 {
+            background: rgba(56, 189, 248, 0.2);
+            color: var(--accent-sky);
+            border: 1px solid rgba(56, 189, 248, 0.45);
+        }
+        .mobile-winner-pill.pill-draw {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-amber);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+        .h2h-match-score-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            background: rgba(15, 20, 28, 0.8);
+            border: 1px solid var(--border-muted);
+            border-radius: 8px;
+            padding: 0.6rem 0.75rem;
+            gap: 0.5rem;
+        }
+        .h2h-team-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .h2h-team-cell.cell-right {
+            text-align: right;
+            align-items: flex-end;
+        }
+        .h2h-team-name {
+            font-size: 0.62rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        .h2h-team-pts {
+            font-size: 1.35rem;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1;
+        }
+        .h2h-team-pts small {
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .pts-c1 { color: var(--accent-emerald); }
+        .pts-c2 { color: var(--accent-sky); }
+        .h2h-vs-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            padding: 0 4px;
+        }
+        .h2h-vs-badge {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .h2h-margin-badge {
+            font-size: 0.58rem;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            white-space: nowrap;
+        }
+        .h2h-match-decider-box {
+            background: rgba(10, 15, 24, 0.6);
+            border-left: 3px solid var(--accent-emerald);
+            border-radius: 0 6px 6px 0;
+            padding: 0.5rem 0.65rem;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .h2h-decider-lbl {
+            font-size: 0.54rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+        .h2h-decider-txt {
+            font-size: 0.76rem;
+            color: var(--text-main);
+            line-height: 1.5;
+            word-break: break-word;
+        }
+        .h2h-match-action-btn {
+            width: 100%;
+            padding: 0.55rem;
+            font-size: 0.74rem;
+            font-weight: 700;
+            border-radius: 6px;
+            background: #1e293b;
+            color: #ffffff;
+            border: 1px solid var(--border-accent);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s ease;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .h2h-match-action-btn:hover, .h2h-match-action-btn:active {
+            background: #334155;
+            border-color: var(--accent-emerald);
+            color: var(--accent-emerald);
+        }
+        .review-archive-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            background: rgba(15, 23, 42, 0.65);
+            padding: 0.65rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-accent);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+        .review-archive-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .review-archive-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-emerald);
+        }
+        .review-gw-selector {
+            display: flex;
+            gap: 8px;
+        }
+
         /* =========================================================
            MOBILE & TABLET RESPONSIVE STYLING (< 1024px & < 768px)
            ========================================================= */
+        .mobile-lineup-toggle-bar {
+            display: none;
+        }
+
         @media (max-width: 1024px) {
             .lineup-split-grid, .summary-split-grid, .gw3-grid-2 {
                 grid-template-columns: 1fr;
@@ -1640,9 +1952,26 @@
                 padding: 0.4rem 0.5rem 1.5rem;
             }
             header { padding: 0.45rem 0.65rem; }
-            .nav-bar { padding: 0.3rem 0.5rem; gap: 0.25rem; }
-            .tab-btn { font-size: 0.70rem; padding: 0.32rem 0.65rem; border-radius: 5px; }
+
+            /* Mobile Tab Bar */
+            .nav-bar { 
+                padding: 0.35rem 0.5rem; 
+                gap: 0.35rem; 
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+            }
+            .tab-btn { 
+                font-size: 0.72rem; 
+                padding: 0.42rem 0.75rem; 
+                border-radius: 6px; 
+                min-height: 38px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                scroll-snap-align: start;
+            }
             
+            /* Header Elements */
             .header-wrap { flex-direction: column; align-items: stretch; gap: 0.45rem; }
             .brand-meta { flex-direction: column; align-items: flex-start; gap: 0.35rem; width: 100%; }
             .title-box { width: 100%; }
@@ -1650,8 +1979,8 @@
             .team-name { display: inline-block; }
             .team-id-tag { font-size: 0.68rem; color: var(--text-muted); font-weight: 500; font-family: 'JetBrains Mono', monospace; }
             .sync-pill { margin-left: 0; margin-top: 3px; font-size: 0.58rem; display: inline-flex; }
-            .manager-meta-line { font-size: 0.70rem; line-height: 1.5; color: var(--text-secondary); margin-top: 2px; overflow-wrap: break-word; word-break: break-word; }
-            .deadline-pill { font-size: 0.56rem; padding: 2px 7px; flex-wrap: wrap; width: 100%; line-height: 1.35; gap: 4px; }
+            .manager-meta-line { font-size: 0.70rem; line-height: 1.6; color: var(--text-secondary); margin-top: 2px; overflow-wrap: break-word; word-break: break-word; }
+            .deadline-pill { font-size: 0.60rem; padding: 4px 8px; flex-wrap: wrap; width: 100%; line-height: 1.4; gap: 4px; box-sizing: border-box; }
             
             .stats-strip { 
                 display: grid; 
@@ -1660,11 +1989,12 @@
                 width: 100%; 
                 margin-top: 0.2rem; 
             }
-            .stat-cell { min-width: 0; padding: 0.32rem 0.5rem; }
-            .stat-cell .lbl { font-size: 0.52rem; letter-spacing: 0.4px; }
-            .stat-cell .val { font-size: 0.86rem; }
-            .rank-trajectory-tag { font-size: 0.50rem; padding: 1px 4px; }
+            .stat-cell { min-width: 0; padding: 0.35rem 0.5rem; }
+            .stat-cell .lbl { font-size: 0.54rem; letter-spacing: 0.4px; }
+            .stat-cell .val { font-size: 0.88rem; }
+            .rank-trajectory-tag { font-size: 0.52rem; padding: 1px 4px; }
             
+            /* Target Banner */
             .gw-target-banner {
                 flex-direction: column;
                 align-items: stretch;
@@ -1682,14 +2012,15 @@
                 flex-shrink: 0;
             }
             .gw-banner-title {
-                font-size: 0.76rem;
+                font-size: 0.78rem;
                 font-weight: 700;
                 color: #ffffff;
-                line-height: 1.3;
-                word-break: keep-all;
+                line-height: 1.4;
+                word-break: break-word;
+                overflow-wrap: break-word;
             }
             .gw-banner-en {
-                font-size: 0.62rem;
+                font-size: 0.64rem;
                 color: var(--text-muted);
                 display: block;
                 margin-top: 1px;
@@ -1700,7 +2031,7 @@
                 gap: 0.25rem;
                 padding-top: 0.35rem;
                 border-top: 1px dashed rgba(255, 255, 255, 0.08);
-                font-size: 0.64rem;
+                font-size: 0.66rem;
             }
             .gw-divider { display: none; }
             .gw-info-chip {
@@ -1716,13 +2047,51 @@
                 font-family: 'JetBrains Mono', monospace;
             }
             .chip-val {
-                font-size: 0.66rem;
+                font-size: 0.68rem;
                 color: #ffffff;
             }
             .quota-rule {
-                font-size: 0.58rem;
+                font-size: 0.60rem;
                 color: var(--accent-emerald);
                 font-weight: 600;
+            }
+
+            /* Mobile Choice Switcher Bar */
+            .mobile-lineup-toggle-bar {
+                display: flex;
+                gap: 0.35rem;
+                width: 100%;
+                margin-bottom: 0.75rem;
+                background: rgba(15, 23, 42, 0.85);
+                padding: 0.25rem;
+                border-radius: 8px;
+                border: 1px solid var(--border-accent);
+                box-sizing: border-box;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+            }
+            .mobile-toggle-btn {
+                flex: 1;
+                padding: 0.45rem 0.4rem;
+                font-size: 0.68rem;
+                font-weight: 700;
+                border-radius: 6px;
+                background: transparent;
+                color: var(--text-secondary);
+                border: 1px solid transparent;
+                cursor: pointer;
+                text-align: center;
+                white-space: nowrap;
+                transition: all 0.18s ease;
+                min-height: 38px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .mobile-toggle-btn.active {
+                background: #1e293b;
+                color: #ffffff;
+                border-color: var(--accent-emerald);
+                box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
             }
 
             .lineup-split-grid, .summary-split-grid { 
@@ -1742,84 +2111,147 @@
                 align-items: flex-start;
                 gap: 0.35rem;
             }
-            .plan-title { font-size: 0.82rem; }
-            .fin-badge { font-size: 0.60rem; padding: 0.15rem 0.42rem; align-self: flex-start; }
+            .plan-title { font-size: 0.84rem; }
+            .fin-badge { font-size: 0.62rem; padding: 0.18rem 0.45rem; align-self: flex-start; }
             
+            /* Modern Fluid Pitch & Cards */
             .compact-pitch { 
                 min-width: 0;
                 width: 100%;
                 box-sizing: border-box;
-                padding: 0.45rem 0.15rem; 
-                min-height: 400px; 
-                gap: 0.35rem; 
+                padding: 0.5rem 0.25rem; 
+                min-height: 420px; 
+                gap: 0.45rem; 
                 overflow: hidden;
             }
             .pitch-row { 
                 min-width: 0;
                 width: 100%;
-                gap: 0.2rem; 
+                gap: 0.25rem; 
                 justify-content: center; 
                 box-sizing: border-box;
             }
             
             .starter-card { 
-                width: 70px; 
-                max-width: 72px;
+                flex: 1 1 0;
+                width: auto;
                 min-width: 0;
-                flex-shrink: 1;
-                padding: 0.18rem 0.16rem 0.14rem; 
+                max-width: 88px;
+                padding: 0.22rem 0.18rem 0.16rem; 
                 border-radius: 6px; 
                 box-sizing: border-box;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
             }
-            .starter-card-top { min-height: 13px; }
-            .pos-tag-mini { font-size: 0.46rem; padding: 0.03rem 0.16rem; border-radius: 2px; }
-            .role-badge-cap, .role-badge-vc, .role-badge-tc { font-size: 0.50rem; padding: 0.03rem 0.2rem; }
-            .core-tag-mini, .enabler-tag-mini, .transfer-in-tag-mini { font-size: 0.44rem; padding: 0.03rem 0.15rem; }
-            .starter-photo-wrap { height: 34px; margin: 0; }
-            .starter-shirt-img { width: 30px; height: 30px; }
+            .starter-card-top { min-height: 14px; gap: 2px; }
+            .pos-tag-mini { font-size: clamp(0.48rem, 1.5vw, 0.54rem); padding: 0.04rem 0.18rem; border-radius: 2px; }
+            .role-badge-cap, .role-badge-vc, .role-badge-tc { font-size: clamp(0.50rem, 1.6vw, 0.56rem); padding: 0.04rem 0.22rem; }
+            .core-tag-mini, .enabler-tag-mini, .transfer-in-tag-mini { font-size: clamp(0.46rem, 1.5vw, 0.52rem); padding: 0.04rem 0.16rem; }
+            .starter-photo-wrap { height: 38px; margin: 1px 0; }
+            .starter-shirt-img { width: 34px; height: 34px; }
             .starter-info-card { padding-top: 2px; }
-            .starter-name { font-size: 0.60rem; letter-spacing: -0.2px; line-height: 1.1; }
-            .starter-meta { font-size: 0.48rem; margin: 1px 0; }
-            .starter-fix-row { font-size: 0.45rem; padding-top: 1px; margin-top: 1px; }
-            .starter-fix-text { font-weight: 600; }
-            .fdr-pill { font-size: 0.46rem; padding: 0.02rem 0.16rem; }
+            .starter-name { 
+                font-size: clamp(0.66rem, 2.2vw, 0.74rem); 
+                letter-spacing: -0.1px; 
+                line-height: 1.15; 
+                font-weight: 700;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .starter-meta { 
+                font-size: clamp(0.52rem, 1.7vw, 0.58rem); 
+                margin: 1px 0; 
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .starter-fix-row { 
+                font-size: clamp(0.50rem, 1.6vw, 0.56rem); 
+                padding-top: 2px; 
+                margin-top: 2px; 
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 2px;
+            }
+            .starter-fix-text { 
+                font-weight: 700; 
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .fdr-pill { 
+                font-size: clamp(0.48rem, 1.5vw, 0.54rem); 
+                padding: 0.03rem 0.20rem; 
+                flex-shrink: 0;
+            }
 
+            /* Modern Bench Layout */
             .compact-bench-strip { 
                 min-width: 0;
                 width: 100%;
                 box-sizing: border-box;
-                padding: 0.35rem 0.3rem; 
-                margin-top: 0.4rem; 
-                border-radius: 7px; 
-                overflow-x: auto;
+                padding: 0.4rem 0.35rem; 
+                margin-top: 0.45rem; 
+                border-radius: 8px; 
+                overflow-x: hidden;
             }
-            .bench-header-bar { margin-bottom: 0.2rem; padding-bottom: 0.15rem; }
-            .bench-lbl { font-size: 0.56rem; }
-            .bench-count-tag { font-size: 0.48rem; padding: 0.03rem 0.25rem; }
+            .bench-header-bar { margin-bottom: 0.25rem; padding-bottom: 0.18rem; }
+            .bench-lbl { font-size: 0.60rem; }
+            .bench-count-tag { font-size: 0.50rem; padding: 0.04rem 0.25rem; }
             .bench-row { 
                 min-width: 0;
                 width: 100%;
-                gap: 0.2rem; 
+                gap: 0.25rem; 
                 justify-content: center; 
                 box-sizing: border-box;
             }
             .bench-card { 
-                width: 70px; 
-                max-width: 72px;
+                flex: 1 1 0;
+                width: auto;
                 min-width: 0;
-                flex-shrink: 1;
-                padding: 0.18rem 0.16rem 0.14rem; 
+                max-width: 88px;
+                padding: 0.22rem 0.18rem 0.16rem; 
                 border-radius: 6px; 
                 box-sizing: border-box;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
             }
-            .bench-card-top { min-height: 13px; }
-            .sub-label-badge { font-size: 0.46rem; padding: 0.03rem 0.18rem; }
-            .bench-photo-wrap { height: 34px; margin: 0; }
-            .bench-shirt-img { width: 30px; height: 30px; }
+            .bench-card-top { min-height: 14px; gap: 2px; }
+            .sub-label-badge { font-size: clamp(0.48rem, 1.5vw, 0.54rem); padding: 0.04rem 0.18rem; }
+            .bench-photo-wrap { height: 38px; margin: 1px 0; }
+            .bench-shirt-img { width: 34px; height: 34px; }
             .bench-info-card { padding-top: 2px; }
-            .bench-name { font-size: 0.60rem; letter-spacing: -0.2px; line-height: 1.1; }
-            .bench-meta { font-size: 0.48rem; margin: 1px 0; }
-            .bench-fix-row { font-size: 0.45rem; padding-top: 1px; margin-top: 1px; }
+            .bench-name { 
+                font-size: clamp(0.66rem, 2.2vw, 0.74rem); 
+                letter-spacing: -0.1px; 
+                line-height: 1.15; 
+                font-weight: 700;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .bench-meta { 
+                font-size: clamp(0.52rem, 1.7vw, 0.58rem); 
+                margin: 1px 0; 
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .bench-fix-row { 
+                font-size: clamp(0.50rem, 1.6vw, 0.56rem); 
+                padding-top: 2px; 
+                margin-top: 2px; 
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 2px;
+            }
+            .bench-fix-text { 
+                font-weight: 700; 
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
 
             /* Tactical Mobile Transition Divider */
             .mobile-vs-divider {
@@ -1855,11 +2287,13 @@
             .delta-header-strip { margin-bottom: 0.25rem; padding-bottom: 0.2rem; }
             .delta-title { font-size: 0.68rem; }
             .delta-count-pill { font-size: 0.52rem; padding: 1px 5px; }
+            .delta-group { flex-wrap: wrap; gap: 0.25rem; }
+            .delta-tags { flex-wrap: wrap; gap: 0.25rem; }
             .delta-group-label { font-size: 0.54rem; min-width: 62px; }
-            .delta-pill { font-size: 0.58rem; padding: 1px 5px; }
-            .delta-status-banner, .delta-rule-notice { font-size: 0.58rem; line-height: 1.35; padding: 0.25rem 0.45rem; }
-            .status-lbl { font-size: 0.54rem; }
-            .status-txt, .rule-txt { font-size: 0.58rem; word-break: keep-all; }
+            .delta-pill { font-size: 0.60rem; padding: 2px 6px; }
+            .delta-status-banner, .delta-rule-notice { font-size: 0.60rem; line-height: 1.45; padding: 0.3rem 0.5rem; }
+            .status-lbl { font-size: 0.56rem; }
+            .status-txt, .rule-txt { font-size: 0.60rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.5; }
             .delta-ledger-strip {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
@@ -1890,39 +2324,265 @@
             .summary-metric-title { font-size: 0.56rem; }
             .metric-sub-val { font-size: 0.76rem; }
             .squad-health-widget { padding: 0.65rem 0.75rem; margin-bottom: 0.75rem; border-radius: 8px; }
-            .health-heading { font-size: 0.78rem; }
-            .health-detail-text { font-size: 0.70rem; line-height: 1.45; word-break: keep-all; }
+            .health-heading { font-size: 0.80rem; }
+            .health-detail-text { font-size: 0.74rem; line-height: 1.6; word-break: break-word; overflow-wrap: break-word; }
             .summary-plan-panel { padding: 0.65rem; border-radius: 8px; gap: 0.55rem; }
-            .pros-cons-item { font-size: 0.68rem; line-height: 1.4; padding: 0.35rem 0.5rem; word-break: keep-all; }
-            .roadmap-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 0.5rem; }
+            .pros-cons-item { font-size: 0.74rem; line-height: 1.6; padding: 0.45rem 0.65rem; word-break: break-word; overflow-wrap: break-word; }
+            
+            /* Chip Inventory Cards on Mobile */
+            .chip-inventory-card {
+                min-width: calc(50% - 0.35rem) !important;
+                padding: 0.45rem 0.6rem !important;
+            }
+            
+            /* Multi-Week Roadmap Mobile Responsive Table */
+            .roadmap-table-wrap { 
+                overflow-x: auto; 
+                -webkit-overflow-scrolling: touch; 
+                margin-top: 0.5rem; 
+            }
             .roadmap-table { min-width: 580px; }
+            .roadmap-table th:first-child,
+            .roadmap-table td:first-child {
+                position: sticky;
+                left: 0;
+                background: #0f141c;
+                z-index: 2;
+                border-right: 1px solid var(--border-muted);
+                font-weight: 700;
+            }
+            .roadmap-table th:first-child {
+                z-index: 3;
+                background: #151b26;
+            }
 
-            /* Tab 3 FDR Ticker Mobile Sticky Columns */
-            .tbl-sticky { min-width: 82px; font-size: 0.68rem; padding: 0.35rem 0.25rem; }
-            .tbl-sticky-2 { left: 82px; min-width: 42px; font-size: 0.68rem; padding: 0.35rem 0.25rem; }
-            .tbl-sticky-3 { left: 124px; min-width: 40px; font-size: 0.68rem; padding: 0.35rem 0.25rem; }
-            .tbl-sticky-4 { left: 164px; min-width: 45px; font-size: 0.68rem; padding: 0.35rem 0.25rem; }
-            .fdr-box-lg { min-width: 48px; font-size: 0.60rem; padding: 0.18rem 0.3rem; }
-            .ticker-scroll-pane { max-height: calc(100vh - 210px); }
+            /* Tab 3 FDR Ticker Mobile Sticky Columns (Unpin Col 2,3,4 to free 127px) */
+            .tbl-sticky-2, .tbl-sticky-3, .tbl-sticky-4 {
+                position: static !important;
+                left: auto !important;
+                z-index: 1 !important;
+                border-right: 1px solid var(--border-muted) !important;
+            }
+            th.tbl-sticky-2, th.tbl-sticky-3, th.tbl-sticky-4 {
+                position: sticky !important;
+                top: 0 !important;
+                left: auto !important;
+                z-index: 10 !important;
+            }
+            .tbl-sticky {
+                position: sticky !important;
+                left: 0 !important;
+                z-index: 15 !important;
+                min-width: 86px !important;
+                max-width: 92px !important;
+                font-size: 0.68rem !important;
+                padding: 0.35rem 0.35rem !important;
+                background: #0f141c !important;
+                border-right: 2px solid var(--accent-emerald) !important;
+                box-shadow: 2px 0 6px rgba(0, 0, 0, 0.45);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            th.tbl-sticky {
+                top: 0 !important;
+                z-index: 35 !important;
+                background: #1a2230 !important;
+            }
+            .fdr-box-lg { min-width: 46px; font-size: 0.60rem; padding: 0.18rem 0.25rem; }
+            .ticker-scroll-pane { max-height: calc(100vh - 200px); }
+            .ticker-header-bar { flex-direction: column; align-items: stretch; gap: 0.45rem; }
 
             /* Tab 4 Research Sources Mobile */
             .source-ledger-row {
                 grid-template-columns: 1fr;
-                gap: 0.35rem;
-                padding: 0.65rem 0.3rem;
+                gap: 0.45rem;
+                padding: 0.75rem 0.3rem;
             }
-            .source-main-name { font-size: 0.82rem; }
-            .source-link-url { font-size: 0.65rem; }
-            .source-feature-text { font-size: 0.72rem; line-height: 1.4; word-break: keep-all; }
+            .source-main-name { font-size: 0.86rem; }
+            .source-link-url { 
+                font-size: 0.68rem; 
+                display: inline-flex;
+                align-items: center;
+                padding: 4px 8px;
+                background: rgba(56, 189, 248, 0.08);
+                border: 1px solid rgba(56, 189, 248, 0.2);
+                border-radius: 4px;
+                margin-top: 2px;
+                word-break: break-all;
+                min-height: 36px;
+            }
+            .source-feature-text { 
+                font-size: 0.75rem; 
+                line-height: 1.6; 
+                word-break: break-word; 
+                overflow-wrap: break-word;
+            }
+
+            /* Tab 5 Post-Match Review Mobile */
+            .h2h-desktop-table-wrap {
+                display: none !important;
+            }
+            .h2h-mobile-card-list {
+                display: flex !important;
+            }
+            .h2h-leaderboard-card {
+                padding: 0.75rem 0.65rem !important;
+            }
+            .h2h-card-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.65rem;
+                margin-bottom: 0.65rem;
+                padding-bottom: 0.55rem;
+            }
+            .h2h-title-group {
+                width: 100%;
+            }
+            .h2h-main-title {
+                font-size: 0.98rem;
+                flex-wrap: wrap;
+                gap: 0.35rem;
+            }
+            .h2h-summary-strip {
+                display: grid !important;
+                grid-template-columns: 1fr auto 1fr;
+                align-items: center;
+                background: rgba(15, 23, 42, 0.6);
+                border: 1px solid var(--border-main);
+                border-radius: 8px;
+                padding: 0.5rem 0.6rem;
+                gap: 0.4rem;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .h2h-stat-box.box-c1 { text-align: left; }
+            .h2h-stat-box.box-c2 { text-align: right; }
+            .h2h-stat-lbl { font-size: 0.58rem; }
+            .h2h-stat-val { font-size: 0.88rem; }
+            .h2h-stat-sub { font-size: 0.68rem; }
+            .h2h-stat-vs { font-size: 0.75rem; }
+
+            .review-archive-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+                padding: 0.6rem 0.75rem;
+            }
+            .review-archive-title {
+                font-size: 0.72rem;
+                line-height: 1.4;
+            }
+            .review-gw-selector {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 6px !important;
+                width: 100%;
+            }
+            .review-gw-selector button {
+                width: 100% !important;
+                min-height: 40px !important;
+                font-size: 0.72rem !important;
+                padding: 0.4rem 0.5rem !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                white-space: nowrap !important;
+            }
+
+            .gw3-hero-banner {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem;
+                padding: 0.85rem 0.75rem;
+            }
+            .gw3-hero-left {
+                width: 100%;
+            }
+            .gw3-hero-title {
+                font-size: 0.95rem !important;
+                line-height: 1.35;
+                word-break: break-word;
+            }
+            .gw3-hero-subtitle {
+                font-size: 0.72rem !important;
+                line-height: 1.55;
+                word-break: break-word;
+            }
+            .gw3-scoreboard {
+                display: grid !important;
+                grid-template-columns: 1fr auto 1fr;
+                align-items: center;
+                width: 100%;
+                padding: 0.6rem 0.5rem;
+                gap: 0.4rem;
+                box-sizing: border-box;
+            }
+            .score-box {
+                align-items: center;
+                text-align: center;
+            }
+            .score-val {
+                font-size: 1.6rem !important;
+            }
+            .score-divider {
+                font-size: 0.85rem;
+                font-weight: 800;
+                color: var(--text-muted);
+            }
+
+            .gw3-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .gw3-table th {
+                padding: 6px 8px !important;
+                font-size: 0.65rem !important;
+                white-space: nowrap !important;
+            }
+            .gw3-table td {
+                padding: 8px 6px !important;
+                font-size: 0.74rem !important;
+            }
+            .gw3-decider-box {
+                padding: 0.75rem 0.85rem;
+            }
+            .gw3-decider-item {
+                font-size: 0.74rem;
+                line-height: 1.6;
+                padding: 0.5rem 0.7rem;
+                word-break: break-word;
+                overflow-wrap: break-word;
+            }
         }
 
         @media (max-width: 380px) {
-            .starter-card, .bench-card { width: 70px; padding: 0.15rem 0.14rem; }
-            .pitch-row, .bench-row { gap: 0.18rem; }
-            .starter-name, .bench-name { font-size: 0.58rem; }
+            .starter-card, .bench-card { 
+                max-width: 80px; 
+                padding: 0.18rem 0.14rem 0.14rem; 
+            }
+            .pitch-row, .bench-row { gap: 0.16rem; }
+            .starter-name, .bench-name { font-size: 0.62rem; }
+            .starter-meta, .bench-meta { font-size: 0.50rem; }
+            .starter-fix-row, .bench-fix-row { font-size: 0.48rem; }
             .starter-photo-wrap, .bench-photo-wrap { height: 32px; }
             .starter-shirt-img, .bench-shirt-img { width: 28px; height: 28px; }
             .compact-pitch { padding: 0.35rem 0.12rem; }
+        }
+
+        @media (min-width: 769px) {
+            #c1-column, #choice-2 {
+                display: block !important;
+            }
+            .mobile-lineup-toggle-bar, .mobile-vs-divider {
+                display: none !important;
+            }
+            .h2h-desktop-table-wrap {
+                display: block !important;
+            }
+            .h2h-mobile-card-list {
+                display: none !important;
+            }
         }
     </style>
 </head>
@@ -1938,7 +2598,7 @@
                     <h1>
                         <span class="team-name">GEMINI UNITED</span> 
                         <span class="team-id-tag">(ID: 306983)</span> 
-                        <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 19/10/2026 06:22 AM<span class="sync-tag-active">ACTIVE</span></span>
+                        <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 19/10/2026 08:24 AM<span class="sync-tag-active">ACTIVE</span></span>
                     </h1>
                     <p class="manager-meta-line">
                         <span class="manager-name">Manager: Micky Asawamanasak</span> 
@@ -2007,10 +2667,17 @@
                 </div>
             </div>
 
+            <!-- MOBILE LINEUP TOGGLE (Choice 1 vs Choice 2) -->
+            <div class="mobile-lineup-toggle-bar" id="mobileLineupToggle">
+                <button type="button" class="mobile-toggle-btn active" onclick="setMobileLineupView('all', this)">All (Side-by-Side)</button>
+                <button type="button" class="mobile-toggle-btn" onclick="setMobileLineupView('c1', this)">Choice 1 (Micky)</button>
+                <button type="button" class="mobile-toggle-btn" onclick="setMobileLineupView('c2', this)">Choice 2 (Gemini)</button>
+            </div>
+
             <div class="lineup-split-grid">
                 
                 <!-- LEFT COLUMN: CHOICE 1 (MICKY SELECTION) -->
-                <div class="plan-column">
+                <div class="plan-column" id="c1-column">
                     <div class="plan-col-header">
                         <div>
                             <div class="plan-title">Choice 1 &bull; Micky Selection (GW6)</div>
@@ -2999,19 +3666,19 @@
                         <span style="font-size:0.6rem; padding:1px 6px; border-radius:3px; background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.3);">เตือน: ชิปที่เหลือจะหมดอายุสิ้น GW19</span>
                     </div>
                     <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
-                        <div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
+                        <div class="chip-inventory-card" style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
                 <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Wildcard #1 &bull; GW2-19</div>
                 <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); margin-top:2px;">USED (GW3)</div>
                 <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">ใช้งานแล้วใน GW3</div>
-            </div><div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid rgba(16, 185, 129, 0.4); border-radius:6px; padding:0.5rem 0.75rem;">
+            </div><div class="chip-inventory-card" style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid rgba(16, 185, 129, 0.4); border-radius:6px; padding:0.5rem 0.75rem;">
                 <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Free Hit #1 &bull; GW2-19</div>
                 <div style="font-size:0.85rem; font-weight:700; color:var(--accent-emerald); margin-top:2px;">AVAILABLE</div>
                 <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">พร้อมใช้ทันที (หมดอายุสิ้น GW19)</div>
-            </div><div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
+            </div><div class="chip-inventory-card" style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
                 <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Bench Boost #1 &bull; GW1-19</div>
                 <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); margin-top:2px;">USED (GW1)</div>
                 <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">ใช้งานแล้วใน GW1</div>
-            </div><div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
+            </div><div class="chip-inventory-card" style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem 0.75rem;">
                 <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Triple Captain #1 &bull; GW1-19</div>
                 <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); margin-top:2px;">USED (GW7)</div>
                 <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">ใช้งานแล้วใน GW7</div>
@@ -3026,19 +3693,19 @@
                         <span style="font-size:0.6rem; padding:1px 6px; border-radius:3px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">ปลดล็อกชุดที่ 2 เต็มอัตราศึก 4 ชิป</span>
                     </div>
                     <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
-                        <div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid rgba(56, 189, 248, 0.4); border-radius:6px; padding:0.5rem 0.75rem;">
+                        <div class="chip-inventory-card" style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid rgba(56, 189, 248, 0.4); border-radius:6px; padding:0.5rem 0.75rem;">
                 <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Wildcard #1 &bull; GW20-38</div>
                 <div style="font-size:0.85rem; font-weight:700; color:var(--accent-sky); margin-top:2px;">AVAILABLE (GW20+)</div>
                 <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">ปลดล็อกครึ่งฤดูกาลหลัง</div>
-            </div><div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid rgba(56, 189, 248, 0.4); border-radius:6px; padding:0.5rem 0.75rem;">
+            </div><div class="chip-inventory-card" style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid rgba(56, 189, 248, 0.4); border-radius:6px; padding:0.5rem 0.75rem;">
                 <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Free Hit #1 &bull; GW20-38</div>
                 <div style="font-size:0.85rem; font-weight:700; color:var(--accent-sky); margin-top:2px;">AVAILABLE (GW20+)</div>
                 <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">ปลดล็อกครึ่งฤดูกาลหลัง</div>
-            </div><div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid rgba(56, 189, 248, 0.4); border-radius:6px; padding:0.5rem 0.75rem;">
+            </div><div class="chip-inventory-card" style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid rgba(56, 189, 248, 0.4); border-radius:6px; padding:0.5rem 0.75rem;">
                 <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Bench Boost #1 &bull; GW20-38</div>
                 <div style="font-size:0.85rem; font-weight:700; color:var(--accent-sky); margin-top:2px;">AVAILABLE (GW20+)</div>
                 <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">ปลดล็อกครึ่งฤดูกาลหลัง</div>
-            </div><div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid rgba(56, 189, 248, 0.4); border-radius:6px; padding:0.5rem 0.75rem;">
+            </div><div class="chip-inventory-card" style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid rgba(56, 189, 248, 0.4); border-radius:6px; padding:0.5rem 0.75rem;">
                 <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Triple Captain #1 &bull; GW20-38</div>
                 <div style="font-size:0.85rem; font-weight:700; color:var(--accent-sky); margin-top:2px;">AVAILABLE (GW20+)</div>
                 <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">ปลดล็อกครึ่งฤดูกาลหลัง</div>
@@ -3405,103 +4072,218 @@
         <section id="tab-review" class="tab-content">
             <div class="gw3-review-container">
                 <!-- SEASON HEAD-TO-HEAD LEADERBOARD -->
-                <div class="h2h-leaderboard-card" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 22, 0.98)); border: 1px solid var(--border-accent); border-radius: 12px; padding: 1.1rem 1.4rem; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); margin-bottom: 0.8rem;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.8rem; margin-bottom:0.9rem; border-bottom:1px solid var(--border-muted); padding-bottom:0.75rem;">
-                        <div>
-                            <div style="font-size:0.65rem; font-weight:800; color:var(--accent-emerald); text-transform:uppercase; letter-spacing:0.05em; display:flex; align-items:center; gap:6px;">
-                                <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-emerald); box-shadow:0 0 8px var(--accent-emerald);"></span>
+                <div class="h2h-leaderboard-card">
+                    <div class="h2h-card-header">
+                        <div class="h2h-title-group">
+                            <div class="h2h-audit-tag">
+                                <span class="h2h-audit-dot"></span>
                                 SEASON HEAD-TO-HEAD AUDIT (GW3 - GW38)
                             </div>
-                            <h3 style="font-size:1.15rem; font-weight:800; color:#ffffff; margin:0.25rem 0 0 0; display:flex; align-items:center; gap:8px;">
+                            <h3 class="h2h-main-title">
                                 <span>Season Head-to-Head Leaderboard</span>
-                                <span style="font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:12px; background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">Choice 1 Leads +9 pts</span>
+                                <span class="h2h-lead-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">Choice 1 Leads +9 pts</span>
                             </h3>
                         </div>
-                        <div style="display:flex; gap:1.2rem; align-items:center;">
-                            <div style="text-align:right;">
-                                <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 1 (Micky)</div>
-                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">3 Wins, 1 Draw <small style="font-size:0.75rem; color:#ffffff;">(237 pts)</small></div>
+                        <div class="h2h-summary-strip">
+                            <div class="h2h-stat-box box-c1">
+                                <div class="h2h-stat-lbl">Choice 1 (Micky)</div>
+                                <div class="h2h-stat-val val-c1">3 Wins, 1 Draw</div>
+                                <div class="h2h-stat-sub">(237 pts)</div>
                             </div>
-                            <div style="font-size:1rem; font-weight:800; color:var(--text-muted);">vs</div>
-                            <div style="text-align:left;">
-                                <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 2 (Gemini)</div>
-                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">0 Wins, 1 Draw <small style="font-size:0.75rem; color:#ffffff;">(228 pts)</small></div>
+                            <div class="h2h-stat-vs">VS</div>
+                            <div class="h2h-stat-box box-c2">
+                                <div class="h2h-stat-lbl">Choice 2 (Gemini)</div>
+                                <div class="h2h-stat-val val-c2">0 Wins, 1 Draw</div>
+                                <div class="h2h-stat-sub">(228 pts)</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- H2H Matrix Table -->
-                    <div style="overflow-x:auto;">
-                        <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left;">
+                    <!-- H2H Matrix Desktop Table -->
+                    <div class="h2h-desktop-table-wrap">
+                        <table class="h2h-desktop-table">
                             <thead>
-                                <tr style="border-bottom:1px solid var(--border-muted); color:var(--text-secondary); font-size:0.68rem; text-transform:uppercase; letter-spacing:0.04em;">
-                                    <th style="padding:6px 10px;">Gameweek</th>
-                                    <th style="padding:6px 10px; text-align:center;">Choice 1</th>
-                                    <th style="padding:6px 10px; text-align:center;">Choice 2</th>
-                                    <th style="padding:6px 10px; text-align:center;">Margin</th>
-                                    <th style="padding:6px 10px; text-align:center;">Winner</th>
-                                    <th style="padding:6px 10px;">Tactical Match Decider</th>
-                                    <th style="padding:6px 10px; text-align:right;">Action</th>
+                                <tr>
+                                    <th>Gameweek</th>
+                                    <th style="text-align:center;">Choice 1</th>
+                                    <th style="text-align:center;">Choice 2</th>
+                                    <th style="text-align:center;">Margin</th>
+                                    <th style="text-align:center;">Winner</th>
+                                    <th>Tactical Match Decider</th>
+                                    <th style="text-align:right;">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 6</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">60 pts</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">58 pts</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald);">+2 pts</td>
-                <td style="padding:8px 10px; text-align:center;"><span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4);">CHOICE 1</span></td>
-                <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">Palmer กัปตัน 16 pts vs Haaland 12 pts &amp; Pedro 12 pts</td>
-                <td style="padding:8px 10px; text-align:right;">
-                    <button onclick="switchReviewGw(6, document.getElementById('btn-review-gw6'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                <td style="padding:10px 12px; font-weight:700; color:#ffffff; white-space:nowrap;">Gameweek 6</td>
+                <td style="padding:10px 12px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald); white-space:nowrap;">60 pts</td>
+                <td style="padding:10px 12px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky); white-space:nowrap;">58 pts</td>
+                <td style="padding:10px 12px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald); white-space:nowrap;">+2 pts</td>
+                <td style="padding:10px 12px; text-align:center; white-space:nowrap;"><span class="mobile-winner-pill pill-c1">CHOICE 1</span></td>
+                <td style="padding:10px 12px; color:var(--text-secondary); font-size:0.75rem; line-height:1.5;">Palmer กัปตัน 16 pts vs Haaland 12 pts &amp; Pedro 12 pts</td>
+                <td style="padding:10px 12px; text-align:right; white-space:nowrap;">
+                    <button onclick="switchReviewGw(6, document.getElementById('btn-review-gw6'))" style="cursor:pointer; padding:5px 12px; font-size:0.72rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent); white-space:nowrap;">ดูรายละเอียด &rarr;</button>
                 </td>
             </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 5</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">42 pts</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">42 pts</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted);">0 pts</td>
-                <td style="padding:8px 10px; text-align:center;"><span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(255,255,255,0.1); color:#ffffff; border:1px solid rgba(255,255,255,0.2);">DRAW</span></td>
-                <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">ปรับ 3-5-2 ส่ง Groß ตัวจริงยิง 14 pts &amp; Haaland กัปตัน 12 pts</td>
-                <td style="padding:8px 10px; text-align:right;">
-                    <button onclick="switchReviewGw(5, document.getElementById('btn-review-gw5'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                <td style="padding:10px 12px; font-weight:700; color:#ffffff; white-space:nowrap;">Gameweek 5</td>
+                <td style="padding:10px 12px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald); white-space:nowrap;">42 pts</td>
+                <td style="padding:10px 12px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky); white-space:nowrap;">42 pts</td>
+                <td style="padding:10px 12px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--text-muted); white-space:nowrap;">0 pts</td>
+                <td style="padding:10px 12px; text-align:center; white-space:nowrap;"><span class="mobile-winner-pill pill-draw">DRAW</span></td>
+                <td style="padding:10px 12px; color:var(--text-secondary); font-size:0.75rem; line-height:1.5;">ปรับ 3-5-2 ส่ง Groß ตัวจริงยิง 14 pts &amp; Haaland กัปตัน 12 pts</td>
+                <td style="padding:10px 12px; text-align:right; white-space:nowrap;">
+                    <button onclick="switchReviewGw(5, document.getElementById('btn-review-gw5'))" style="cursor:pointer; padding:5px 12px; font-size:0.72rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent); white-space:nowrap;">ดูรายละเอียด &rarr;</button>
                 </td>
             </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 4</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">80 pts</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">75 pts</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald);">+5 pts</td>
-                <td style="padding:8px 10px; text-align:center;"><span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4);">CHOICE 1</span></td>
-                <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">ดร็อป Foden (-2 pts ใบแดง) &amp; Verbruggen เก็บ 8 pts</td>
-                <td style="padding:8px 10px; text-align:right;">
-                    <button onclick="switchReviewGw(4, document.getElementById('btn-review-gw4'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                <td style="padding:10px 12px; font-weight:700; color:#ffffff; white-space:nowrap;">Gameweek 4</td>
+                <td style="padding:10px 12px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald); white-space:nowrap;">80 pts</td>
+                <td style="padding:10px 12px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky); white-space:nowrap;">75 pts</td>
+                <td style="padding:10px 12px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald); white-space:nowrap;">+5 pts</td>
+                <td style="padding:10px 12px; text-align:center; white-space:nowrap;"><span class="mobile-winner-pill pill-c1">CHOICE 1</span></td>
+                <td style="padding:10px 12px; color:var(--text-secondary); font-size:0.75rem; line-height:1.5;">ดร็อป Foden (-2 pts ใบแดง) &amp; Verbruggen เก็บ 8 pts</td>
+                <td style="padding:10px 12px; text-align:right; white-space:nowrap;">
+                    <button onclick="switchReviewGw(4, document.getElementById('btn-review-gw4'))" style="cursor:pointer; padding:5px 12px; font-size:0.72rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent); white-space:nowrap;">ดูรายละเอียด &rarr;</button>
                 </td>
             </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek 3</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">55 pts</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">53 pts</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald);">+2 pts</td>
-                <td style="padding:8px 10px; text-align:center;"><span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4);">CHOICE 1</span></td>
-                <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">ส่ง John Egan ตัวจริง (6 pts vs Konsa 4 pts) &amp; Gakpo 11 pts</td>
-                <td style="padding:8px 10px; text-align:right;">
-                    <button onclick="switchReviewGw(3, document.getElementById('btn-review-gw3'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                <td style="padding:10px 12px; font-weight:700; color:#ffffff; white-space:nowrap;">Gameweek 3</td>
+                <td style="padding:10px 12px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald); white-space:nowrap;">55 pts</td>
+                <td style="padding:10px 12px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky); white-space:nowrap;">53 pts</td>
+                <td style="padding:10px 12px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-emerald); white-space:nowrap;">+2 pts</td>
+                <td style="padding:10px 12px; text-align:center; white-space:nowrap;"><span class="mobile-winner-pill pill-c1">CHOICE 1</span></td>
+                <td style="padding:10px 12px; color:var(--text-secondary); font-size:0.75rem; line-height:1.5;">ส่ง John Egan ตัวจริง (6 pts vs Konsa 4 pts) &amp; Gakpo 11 pts</td>
+                <td style="padding:10px 12px; text-align:right; white-space:nowrap;">
+                    <button onclick="switchReviewGw(3, document.getElementById('btn-review-gw3'))" style="cursor:pointer; padding:5px 12px; font-size:0.72rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent); white-space:nowrap;">ดูรายละเอียด &rarr;</button>
                 </td>
             </tr>
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- H2H Matrix Mobile Match Cards (Redesigned for Mobile) -->
+                    <div class="h2h-mobile-card-list">
+                        
+            <div class="h2h-match-card">
+                <div class="h2h-match-card-header">
+                    <span class="h2h-match-gw">GAMEWEEK 6</span>
+                    <span class="mobile-winner-pill pill-c1">CHOICE 1 WIN</span>
+                </div>
+                <div class="h2h-match-score-row">
+                    <div class="h2h-team-cell">
+                        <span class="h2h-team-name">Choice 1 (Micky)</span>
+                        <span class="h2h-team-pts pts-c1">60 <small>pts</small></span>
+                    </div>
+                    <div class="h2h-vs-indicator">
+                        <span class="h2h-vs-badge">VS</span>
+                        <span class="h2h-margin-badge" style="color:var(--accent-emerald);">Margin: +2 pts</span>
+                    </div>
+                    <div class="h2h-team-cell cell-right">
+                        <span class="h2h-team-name">Choice 2 (Gemini)</span>
+                        <span class="h2h-team-pts pts-c2">58 <small>pts</small></span>
+                    </div>
+                </div>
+                <div class="h2h-match-decider-box">
+                    <span class="h2h-decider-lbl">TACTICAL MATCH DECIDER:</span>
+                    <span class="h2h-decider-txt">Palmer กัปตัน 16 pts vs Haaland 12 pts &amp; Pedro 12 pts</span>
+                </div>
+                <button type="button" class="h2h-match-action-btn" onclick="switchReviewGw(6, document.getElementById('btn-review-gw6'))">
+                    ดูรายละเอียดและคะแนนรายตัว GW6 &rarr;
+                </button>
+            </div>
+            <div class="h2h-match-card">
+                <div class="h2h-match-card-header">
+                    <span class="h2h-match-gw">GAMEWEEK 5</span>
+                    <span class="mobile-winner-pill pill-draw">DRAW</span>
+                </div>
+                <div class="h2h-match-score-row">
+                    <div class="h2h-team-cell">
+                        <span class="h2h-team-name">Choice 1 (Micky)</span>
+                        <span class="h2h-team-pts pts-c1">42 <small>pts</small></span>
+                    </div>
+                    <div class="h2h-vs-indicator">
+                        <span class="h2h-vs-badge">VS</span>
+                        <span class="h2h-margin-badge" style="color:var(--text-muted);">Margin: 0 pts</span>
+                    </div>
+                    <div class="h2h-team-cell cell-right">
+                        <span class="h2h-team-name">Choice 2 (Gemini)</span>
+                        <span class="h2h-team-pts pts-c2">42 <small>pts</small></span>
+                    </div>
+                </div>
+                <div class="h2h-match-decider-box">
+                    <span class="h2h-decider-lbl">TACTICAL MATCH DECIDER:</span>
+                    <span class="h2h-decider-txt">ปรับ 3-5-2 ส่ง Groß ตัวจริงยิง 14 pts &amp; Haaland กัปตัน 12 pts</span>
+                </div>
+                <button type="button" class="h2h-match-action-btn" onclick="switchReviewGw(5, document.getElementById('btn-review-gw5'))">
+                    ดูรายละเอียดและคะแนนรายตัว GW5 &rarr;
+                </button>
+            </div>
+            <div class="h2h-match-card">
+                <div class="h2h-match-card-header">
+                    <span class="h2h-match-gw">GAMEWEEK 4</span>
+                    <span class="mobile-winner-pill pill-c1">CHOICE 1 WIN</span>
+                </div>
+                <div class="h2h-match-score-row">
+                    <div class="h2h-team-cell">
+                        <span class="h2h-team-name">Choice 1 (Micky)</span>
+                        <span class="h2h-team-pts pts-c1">80 <small>pts</small></span>
+                    </div>
+                    <div class="h2h-vs-indicator">
+                        <span class="h2h-vs-badge">VS</span>
+                        <span class="h2h-margin-badge" style="color:var(--accent-emerald);">Margin: +5 pts</span>
+                    </div>
+                    <div class="h2h-team-cell cell-right">
+                        <span class="h2h-team-name">Choice 2 (Gemini)</span>
+                        <span class="h2h-team-pts pts-c2">75 <small>pts</small></span>
+                    </div>
+                </div>
+                <div class="h2h-match-decider-box">
+                    <span class="h2h-decider-lbl">TACTICAL MATCH DECIDER:</span>
+                    <span class="h2h-decider-txt">ดร็อป Foden (-2 pts ใบแดง) &amp; Verbruggen เก็บ 8 pts</span>
+                </div>
+                <button type="button" class="h2h-match-action-btn" onclick="switchReviewGw(4, document.getElementById('btn-review-gw4'))">
+                    ดูรายละเอียดและคะแนนรายตัว GW4 &rarr;
+                </button>
+            </div>
+            <div class="h2h-match-card">
+                <div class="h2h-match-card-header">
+                    <span class="h2h-match-gw">GAMEWEEK 3</span>
+                    <span class="mobile-winner-pill pill-c1">CHOICE 1 WIN</span>
+                </div>
+                <div class="h2h-match-score-row">
+                    <div class="h2h-team-cell">
+                        <span class="h2h-team-name">Choice 1 (Micky)</span>
+                        <span class="h2h-team-pts pts-c1">55 <small>pts</small></span>
+                    </div>
+                    <div class="h2h-vs-indicator">
+                        <span class="h2h-vs-badge">VS</span>
+                        <span class="h2h-margin-badge" style="color:var(--accent-emerald);">Margin: +2 pts</span>
+                    </div>
+                    <div class="h2h-team-cell cell-right">
+                        <span class="h2h-team-name">Choice 2 (Gemini)</span>
+                        <span class="h2h-team-pts pts-c2">53 <small>pts</small></span>
+                    </div>
+                </div>
+                <div class="h2h-match-decider-box">
+                    <span class="h2h-decider-lbl">TACTICAL MATCH DECIDER:</span>
+                    <span class="h2h-decider-txt">ส่ง John Egan ตัวจริง (6 pts vs Konsa 4 pts) &amp; Gakpo 11 pts</span>
+                </div>
+                <button type="button" class="h2h-match-action-btn" onclick="switchReviewGw(3, document.getElementById('btn-review-gw3'))">
+                    ดูรายละเอียดและคะแนนรายตัว GW3 &rarr;
+                </button>
+            </div>
+                    </div>
                 </div>
 
                 <!-- Gameweek Archive Selector -->
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem; background:rgba(15,23,42,0.65); padding:0.65rem 1rem; border-radius:10px; border:1px solid var(--border-accent); box-shadow:0 4px 12px rgba(0,0,0,0.25);">
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:flex; align-items:center; gap:8px;">
-                        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-emerald);"></span>
+                <div class="review-archive-bar">
+                    <div class="review-archive-title">
+                        <span class="review-archive-dot"></span>
                         <span>เลือกรอบการแข่งขันที่ต้องการดูผลเปรียบเทียบ (Review Archive):</span>
                     </div>
-                    <div class="review-gw-selector" style="display:flex; gap:8px;">
+                    <div class="review-gw-selector">
                         <button id="btn-review-gw6" class="source-pill review-gw-btn" onclick="switchReviewGw(6, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--accent-emerald); color:var(--accent-emerald); background:rgba(16,185,129,0.15); transition:all 0.2s ease;">GW6 Review (ล่าสุด)</button>
 <button id="btn-review-gw5" class="source-pill review-gw-btn" onclick="switchReviewGw(5, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW5 Review</button>
 <button id="btn-review-gw4" class="source-pill review-gw-btn" onclick="switchReviewGw(4, this)" style="cursor:pointer; padding:5px 14px; font-size:0.75rem; font-weight:700; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW4 Review</button>
@@ -5273,11 +6055,41 @@
                 b.style.background = '#1e293b';
             });
             const target = document.getElementById('review-content-gw' + gw);
-            if (target) target.style.display = 'block';
-            if (btn) {
-                btn.style.borderColor = 'var(--accent-emerald)';
-                btn.style.color = 'var(--accent-emerald)';
-                btn.style.background = 'rgba(16, 185, 129, 0.15)';
+            if (target) {
+                target.style.display = 'block';
+                if (window.innerWidth <= 768) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+            const activeBtn = btn || document.getElementById('btn-review-gw' + gw);
+            if (activeBtn) {
+                activeBtn.style.borderColor = 'var(--accent-emerald)';
+                activeBtn.style.color = 'var(--accent-emerald)';
+                activeBtn.style.background = 'rgba(16, 185, 129, 0.15)';
+            }
+        }
+
+        // Mobile Choice 1 vs Choice 2 View Switcher
+        function setMobileLineupView(mode, btn) {
+            const c1 = document.getElementById('c1-column');
+            const c2 = document.getElementById('choice-2');
+            const divider = document.querySelector('.mobile-vs-divider');
+            const btns = document.querySelectorAll('.mobile-toggle-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            if (mode === 'c1') {
+                if (c1) c1.style.display = 'block';
+                if (c2) c2.style.display = 'none';
+                if (divider) divider.style.display = 'none';
+            } else if (mode === 'c2') {
+                if (c1) c1.style.display = 'none';
+                if (c2) c2.style.display = 'block';
+                if (divider) divider.style.display = 'none';
+            } else {
+                if (c1) c1.style.display = 'block';
+                if (c2) c2.style.display = 'block';
+                if (divider) divider.style.display = 'flex';
             }
         }
 
@@ -5303,6 +6115,10 @@
                     const gw3Btn = document.getElementById('btn-review-gw3');
                     if (gw3Btn) switchReviewGw(3, gw3Btn);
                 }
+            }
+            if (window.location.hash === '#choice-2' && window.innerWidth <= 768) {
+                const c2Btn = document.querySelectorAll('.mobile-toggle-btn')[2];
+                if (c2Btn) setMobileLineupView('c2', c2Btn);
             }
         });
 
