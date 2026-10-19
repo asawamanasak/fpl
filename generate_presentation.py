@@ -2090,7 +2090,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     สรุปผลการวิเคราะห์โมเดล <strong>Transfer Solver (open-fpl-solver)</strong> จาก <strong>CoachFPL Analytics Hub</strong> สำหรับ Gameweek 8 เพื่อสนับสนุน Choice 2 ในการบริหารขุมกำลัง คำนวณจากสถานะผู้เล่นบาดเจ็บ (Szoboszlai 0% และ Manzambi 75%), โควตา 2 Free Transfers ในมือ (Banked 1 FT จาก GW7), และตารางความยากง่ายโปรแกรม FDR:
                 </div>
                 
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:0.75rem; margin-top:0.5rem;">
+                <div class="coachfpl-solver-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:0.75rem; margin-top:0.5rem;">
                     <!-- Recommendation Card 1: Direct Replacements (1 FT) -->
                     <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 0.85rem;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
@@ -4099,71 +4099,131 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
 
         @media (max-width: 768px) {{
+            /* 1. Global Viewport & Container Resets */
             html, body {{
                 overflow-x: hidden;
                 width: 100%;
-                max-width: 100vw;
+                max-width: 100%;
+                min-width: 0;
             }}
             main {{
                 overflow-x: hidden;
                 width: 100%;
-                max-width: 100vw;
-                padding: 0.4rem 0.5rem 1.5rem;
+                max-width: 100%;
+                min-width: 0;
+                padding: 0.4rem max(0.45rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(0.45rem, env(safe-area-inset-left));
+                box-sizing: border-box;
             }}
-            header {{ padding: 0.45rem 0.65rem; }}
+            header {{
+                padding: 0.5rem max(0.6rem, env(safe-area-inset-right)) 0.5rem max(0.6rem, env(safe-area-inset-left));
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }}
+            .header-wrap {{
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+                width: 100%;
+                max-width: 100%;
+            }}
 
-            /* Mobile Tab Bar */
-            .nav-bar {{ 
-                padding: 0.35rem 0.5rem; 
-                gap: 0.35rem; 
+            /* 2. Touch Interactions & Tactile Feedback */
+            button, .tab-btn, .mobile-toggle-btn, .reset-btn, .review-gw-selector button, .source-link-url {{
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: transparent;
+            }}
+            .tab-btn:active, .mobile-toggle-btn:active, .reset-btn:active, .review-gw-selector button:active {{
+                transform: scale(0.97);
+                filter: brightness(1.2);
+            }}
+
+            /* 3. Navigation Bar (Mobile Touch Carousel) */
+            .nav-bar {{
+                padding: 0.35rem max(0.5rem, env(safe-area-inset-left));
+                gap: 0.35rem;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
                 -webkit-overflow-scrolling: touch;
                 scroll-snap-type: x mandatory;
+                scrollbar-width: none;
             }}
-            .tab-btn {{ 
-                font-size: 0.72rem; 
-                padding: 0.42rem 0.75rem; 
-                border-radius: 6px; 
-                min-height: 38px;
+            .nav-bar::-webkit-scrollbar {{
+                display: none;
+            }}
+            .tab-btn {{
+                font-size: 0.74rem;
+                padding: 0.45rem 0.85rem;
+                border-radius: 6px;
+                min-height: 42px;
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
                 scroll-snap-align: start;
+                white-space: nowrap;
+                flex-shrink: 0;
             }}
-            
-            /* Header Elements */
-            .header-wrap {{ flex-direction: column; align-items: stretch; gap: 0.45rem; }}
-            .brand-meta {{ flex-direction: column; align-items: flex-start; gap: 0.35rem; width: 100%; }}
+
+            /* 4. Header Details & Stats */
+            .brand-meta {{
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.35rem;
+                width: 100%;
+            }}
             .title-box {{ width: 100%; }}
-            .title-box h1 {{ font-size: 0.95rem; line-height: 1.25; }}
-            .team-name {{ display: inline-block; }}
-            .team-id-tag {{ font-size: 0.68rem; color: var(--text-muted); font-weight: 500; font-family: 'JetBrains Mono', monospace; }}
+            .title-box h1 {{ font-size: clamp(0.90rem, 3.2vw, 1.05rem); line-height: 1.25; }}
+            .team-name {{ display: inline-block; word-break: break-word; }}
+            .team-id-tag {{ font-size: 0.68rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }}
             .sync-pill {{ margin-left: 0; margin-top: 3px; font-size: 0.58rem; display: inline-flex; }}
-            .manager-meta-line {{ font-size: 0.70rem; line-height: 1.6; color: var(--text-secondary); margin-top: 2px; overflow-wrap: break-word; word-break: break-word; }}
-            .deadline-pill {{ font-size: 0.60rem; padding: 4px 8px; flex-wrap: wrap; width: 100%; line-height: 1.4; gap: 4px; box-sizing: border-box; }}
-            
-            .stats-strip {{ 
-                display: grid; 
-                grid-template-columns: 1fr 1fr; 
-                gap: 0.35rem; 
-                width: 100%; 
-                margin-top: 0.2rem; 
+            .manager-meta-line {{
+                font-size: 0.70rem;
+                line-height: 1.55;
+                color: var(--text-secondary);
+                margin-top: 2px;
+                overflow-wrap: break-word;
+                word-break: break-word;
             }}
-            .stat-cell {{ min-width: 0; padding: 0.35rem 0.5rem; }}
-            .stat-cell .lbl {{ font-size: 0.54rem; letter-spacing: 0.4px; }}
-            .stat-cell .val {{ font-size: 0.88rem; }}
+            .deadline-pill {{
+                font-size: 0.60rem;
+                padding: 4px 8px;
+                flex-wrap: wrap;
+                width: 100%;
+                line-height: 1.4;
+                gap: 4px;
+                box-sizing: border-box;
+            }}
+            .stats-strip {{
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.35rem;
+                width: 100%;
+                margin-top: 0.2rem;
+            }}
+            .stat-cell {{
+                min-width: 0;
+                padding: 0.4rem 0.5rem;
+                box-sizing: border-box;
+            }}
+            .stat-cell .lbl {{ font-size: 0.54rem; letter-spacing: 0.3px; }}
+            .stat-cell .val {{ font-size: clamp(0.76rem, 2.5vw, 0.90rem); }}
             .rank-trajectory-tag {{ font-size: 0.52rem; padding: 1px 4px; }}
-            
-            /* Target Banner */
+
+            /* 5. Gameweek Target Banner */
             .gw-target-banner {{
                 flex-direction: column;
                 align-items: stretch;
                 gap: 0.45rem;
                 padding: 0.55rem 0.65rem;
+                width: 100%;
+                box-sizing: border-box;
             }}
             .gw-banner-left {{
                 display: flex;
                 align-items: flex-start;
                 gap: 0.45rem;
+                width: 100%;
             }}
             .gw-badge-pill {{
                 font-size: 0.58rem;
@@ -4171,7 +4231,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 flex-shrink: 0;
             }}
             .gw-banner-title {{
-                font-size: 0.78rem;
+                font-size: clamp(0.74rem, 2.4vw, 0.82rem);
                 font-weight: 700;
                 color: #ffffff;
                 line-height: 1.4;
@@ -4191,6 +4251,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 padding-top: 0.35rem;
                 border-top: 1px dashed rgba(255, 255, 255, 0.08);
                 font-size: 0.66rem;
+                width: 100%;
             }}
             .gw-divider {{ display: none; }}
             .gw-info-chip {{
@@ -4198,6 +4259,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 align-items: baseline;
                 gap: 0.35rem;
                 flex-wrap: wrap;
+                width: 100%;
             }}
             .chip-label {{
                 font-size: 0.56rem;
@@ -4208,6 +4270,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             .chip-val {{
                 font-size: 0.68rem;
                 color: #ffffff;
+                word-break: break-word;
             }}
             .quota-rule {{
                 font-size: 0.60rem;
@@ -4215,7 +4278,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 font-weight: 600;
             }}
 
-            /* Mobile Choice Switcher Bar */
+            /* 6. Mobile Choice Switcher Bar */
             .mobile-lineup-toggle-bar {{
                 display: flex;
                 gap: 0.35rem;
@@ -4230,8 +4293,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
             .mobile-toggle-btn {{
                 flex: 1;
-                padding: 0.45rem 0.4rem;
-                font-size: 0.68rem;
+                padding: 0.45rem 0.35rem;
+                font-size: clamp(0.64rem, 1.8vw, 0.72rem);
                 font-weight: 700;
                 border-radius: 6px;
                 background: transparent;
@@ -4241,7 +4304,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 text-align: center;
                 white-space: nowrap;
                 transition: all 0.18s ease;
-                min-height: 38px;
+                min-height: 40px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -4253,166 +4316,196 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
             }}
 
-            .lineup-split-grid, .summary-split-grid {{ 
-                grid-template-columns: minmax(0, 1fr) !important; 
+            /* 7. Tab 1 Lineup Split Grid & Vertical Stack */
+            .lineup-split-grid, .summary-split-grid {{
+                grid-template-columns: minmax(0, 1fr) !important;
                 width: 100%;
-                gap: 0.85rem; 
+                max-width: 100%;
+                gap: 0.85rem;
+                box-sizing: border-box;
             }}
-            .plan-column {{ 
+            .plan-column {{
                 min-width: 0;
                 width: 100%;
+                max-width: 100%;
                 box-sizing: border-box;
-                padding: 0.5rem 0.45rem; 
-                border-radius: 9px; 
+                padding: 0.45rem 0.4rem;
+                border-radius: 9px;
             }}
             .plan-col-header {{
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 0.35rem;
+                width: 100%;
             }}
-            .plan-title {{ font-size: 0.84rem; }}
+            .plan-title {{ font-size: 0.84rem; word-break: break-word; }}
             .fin-badge {{ font-size: 0.62rem; padding: 0.18rem 0.45rem; align-self: flex-start; }}
-            
-            /* Modern Fluid Pitch & Cards */
-            .compact-pitch {{ 
+
+            /* 8. Fluid Responsive Pitch & Cards (Zero-Overflow on 5-Man Midfield) */
+            .compact-pitch {{
                 min-width: 0;
                 width: 100%;
+                max-width: 100%;
                 box-sizing: border-box;
-                padding: 0.5rem 0.25rem; 
-                min-height: 420px; 
-                gap: 0.45rem; 
+                padding: 0.45rem clamp(2px, 1vw, 6px);
+                min-height: 410px;
+                gap: 0.45rem;
                 overflow: hidden;
             }}
-            .pitch-row {{ 
+            .pitch-row {{
                 min-width: 0;
                 width: 100%;
-                gap: 0.25rem; 
-                justify-content: center; 
+                max-width: 100%;
+                gap: clamp(2px, 0.8vw, 5px);
+                justify-content: center;
+                align-items: stretch;
                 box-sizing: border-box;
             }}
-            
-            .starter-card {{ 
+            .starter-card {{
                 flex: 1 1 0;
                 width: auto;
                 min-width: 0;
-                max-width: 88px;
-                padding: 0.22rem 0.18rem 0.16rem; 
-                border-radius: 6px; 
+                max-width: 82px;
+                padding: 0.18rem 0.12rem 0.14rem;
+                border-radius: 6px;
                 box-sizing: border-box;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+                overflow: hidden;
             }}
-            .starter-card-top {{ min-height: 14px; gap: 2px; }}
-            .pos-tag-mini {{ font-size: clamp(0.48rem, 1.5vw, 0.54rem); padding: 0.04rem 0.18rem; border-radius: 2px; }}
-            .role-badge-cap, .role-badge-vc, .role-badge-tc {{ font-size: clamp(0.50rem, 1.6vw, 0.56rem); padding: 0.04rem 0.22rem; }}
-            .core-tag-mini, .enabler-tag-mini, .transfer-in-tag-mini {{ font-size: clamp(0.46rem, 1.5vw, 0.52rem); padding: 0.04rem 0.16rem; }}
-            .starter-photo-wrap {{ height: 38px; margin: 1px 0; }}
-            .starter-shirt-img {{ width: 34px; height: 34px; }}
-            .starter-info-card {{ padding-top: 2px; }}
-            .starter-name {{ 
-                font-size: clamp(0.66rem, 2.2vw, 0.74rem); 
-                letter-spacing: -0.1px; 
-                line-height: 1.15; 
+            .starter-card-top, .bench-card-top {{
+                min-height: 12px;
+                gap: 1px;
+                width: 100%;
+                overflow: hidden;
+                flex-wrap: nowrap;
+            }}
+            .starter-badges-group {{
+                display: flex;
+                align-items: center;
+                gap: 1px;
+                flex-shrink: 1;
+                min-width: 0;
+            }}
+            .pos-tag-mini {{
+                font-size: clamp(0.38rem, 1.3vw, 0.50rem) !important;
+                padding: 0 2px !important;
+                border-radius: 2px;
+                line-height: 1.1 !important;
+                flex-shrink: 0;
+            }}
+            .role-badge-cap, .role-badge-vc, .role-badge-tc {{
+                width: 14px !important;
+                min-width: 14px !important;
+                height: 14px !important;
+                font-size: 0.48rem !important;
+                padding: 0 !important;
+                margin-left: 1px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                flex-shrink: 0;
+            }}
+            .core-tag-mini, .enabler-tag-mini, .transfer-in-tag-mini {{
+                font-size: clamp(0.36rem, 1.1vw, 0.46rem) !important;
+                padding: 0 2px !important;
+                line-height: 1.1 !important;
+                white-space: nowrap;
+                flex-shrink: 1;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }}
+            .starter-photo-wrap, .bench-photo-wrap {{
+                height: clamp(26px, 7.5vw, 36px);
+                margin: 0;
+                width: 100%;
+            }}
+            .starter-shirt-img, .bench-shirt-img {{
+                width: clamp(22px, 6.8vw, 32px);
+                height: clamp(22px, 6.8vw, 32px);
+                object-fit: contain;
+            }}
+            .starter-info-card, .bench-info-card {{
+                padding-top: 1px;
+                width: 100%;
+            }}
+            .starter-name, .bench-name {{
+                font-size: clamp(0.58rem, 1.8vw, 0.72rem);
+                letter-spacing: -0.1px;
+                line-height: 1.15;
                 font-weight: 700;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                max-width: 100%;
             }}
-            .starter-meta {{ 
-                font-size: clamp(0.52rem, 1.7vw, 0.58rem); 
-                margin: 1px 0; 
+            .starter-meta, .bench-meta {{
+                font-size: clamp(0.44rem, 1.3vw, 0.54rem);
+                margin: 0;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                max-width: 100%;
             }}
-            .starter-fix-row {{ 
-                font-size: clamp(0.50rem, 1.6vw, 0.56rem); 
-                padding-top: 2px; 
-                margin-top: 2px; 
+            .starter-fix-row, .bench-fix-row {{
+                font-size: clamp(0.44rem, 1.3vw, 0.52rem);
+                padding-top: 1px;
+                margin-top: 1px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                gap: 2px;
+                gap: 1px;
+                width: 100%;
             }}
-            .starter-fix-text {{ 
-                font-weight: 700; 
+            .starter-fix-text, .bench-fix-text {{
+                font-weight: 700;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                max-width: calc(100% - 18px);
             }}
-            .fdr-pill {{ 
-                font-size: clamp(0.48rem, 1.5vw, 0.54rem); 
-                padding: 0.03rem 0.20rem; 
+            .fdr-pill {{
+                font-size: clamp(0.40rem, 1.2vw, 0.48rem);
+                padding: 0 2px;
                 flex-shrink: 0;
             }}
 
-            /* Modern Bench Layout */
-            .compact-bench-strip {{ 
+            /* 9. Bench Strip Mobile */
+            .compact-bench-strip {{
                 min-width: 0;
                 width: 100%;
+                max-width: 100%;
                 box-sizing: border-box;
-                padding: 0.4rem 0.35rem; 
-                margin-top: 0.45rem; 
-                border-radius: 8px; 
+                padding: 0.35rem 0.3rem;
+                margin-top: 0.45rem;
+                border-radius: 8px;
                 overflow-x: hidden;
             }}
             .bench-header-bar {{ margin-bottom: 0.25rem; padding-bottom: 0.18rem; }}
             .bench-lbl {{ font-size: 0.60rem; }}
             .bench-count-tag {{ font-size: 0.50rem; padding: 0.04rem 0.25rem; }}
-            .bench-row {{ 
+            .bench-row {{
                 min-width: 0;
                 width: 100%;
-                gap: 0.25rem; 
-                justify-content: center; 
+                max-width: 100%;
+                gap: clamp(2px, 0.8vw, 5px);
+                justify-content: center;
                 box-sizing: border-box;
             }}
-            .bench-card {{ 
+            .bench-card {{
                 flex: 1 1 0;
                 width: auto;
                 min-width: 0;
-                max-width: 88px;
-                padding: 0.22rem 0.18rem 0.16rem; 
-                border-radius: 6px; 
+                max-width: 82px;
+                padding: 0.18rem 0.12rem 0.14rem;
+                border-radius: 6px;
                 box-sizing: border-box;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-            }}
-            .bench-card-top {{ min-height: 14px; gap: 2px; }}
-            .sub-label-badge {{ font-size: clamp(0.48rem, 1.5vw, 0.54rem); padding: 0.04rem 0.18rem; }}
-            .bench-photo-wrap {{ height: 38px; margin: 1px 0; }}
-            .bench-shirt-img {{ width: 34px; height: 34px; }}
-            .bench-info-card {{ padding-top: 2px; }}
-            .bench-name {{ 
-                font-size: clamp(0.66rem, 2.2vw, 0.74rem); 
-                letter-spacing: -0.1px; 
-                line-height: 1.15; 
-                font-weight: 700;
-                white-space: nowrap;
                 overflow: hidden;
-                text-overflow: ellipsis;
             }}
-            .bench-meta {{ 
-                font-size: clamp(0.52rem, 1.7vw, 0.58rem); 
-                margin: 1px 0; 
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }}
-            .bench-fix-row {{ 
-                font-size: clamp(0.50rem, 1.6vw, 0.56rem); 
-                padding-top: 2px; 
-                margin-top: 2px; 
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 2px;
-            }}
-            .bench-fix-text {{ 
-                font-weight: 700; 
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }}
+            .sub-label-badge {{ font-size: clamp(0.42rem, 1.3vw, 0.50rem); padding: 0 2px; }}
 
-            /* Tactical Mobile Transition Divider */
+            /* 10. Mobile Divider */
             .mobile-vs-divider {{
                 display: flex;
                 align-items: center;
@@ -4441,24 +4534,60 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
             }}
 
-            /* Transfers Delta Box */
-            .transfers-delta-box {{ padding: 0.45rem 0.55rem; margin-top: 0.4rem; border-radius: 7px; }}
+            /* 11. Transfers Delta Box */
+            .transfers-delta-box {{
+                padding: 0.45rem 0.55rem;
+                margin-top: 0.4rem;
+                border-radius: 7px;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                overflow: hidden;
+            }}
             .delta-header-strip {{ margin-bottom: 0.25rem; padding-bottom: 0.2rem; }}
-            .delta-title {{ font-size: 0.68rem; }}
+            .delta-title {{ font-size: 0.68rem; word-break: break-word; }}
             .delta-count-pill {{ font-size: 0.52rem; padding: 1px 5px; }}
-            .delta-group {{ flex-wrap: wrap; gap: 0.25rem; }}
-            .delta-tags {{ flex-wrap: wrap; gap: 0.25rem; }}
-            .delta-group-label {{ font-size: 0.54rem; min-width: 62px; }}
-            .delta-pill {{ font-size: 0.60rem; padding: 2px 6px; }}
-            .delta-status-banner, .delta-rule-notice {{ font-size: 0.60rem; line-height: 1.45; padding: 0.3rem 0.5rem; }}
+            .delta-group {{
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+                width: 100%;
+            }}
+            .delta-tags {{
+                flex-wrap: wrap;
+                gap: 0.25rem;
+                width: 100%;
+            }}
+            .delta-group-label {{ font-size: 0.54rem; min-width: 0; }}
+            .delta-pill {{
+                font-size: 0.60rem;
+                padding: 2px 6px;
+                max-width: 100%;
+                flex-wrap: wrap;
+                word-break: break-word;
+            }}
+            .delta-status-banner, .delta-rule-notice {{
+                font-size: 0.60rem;
+                line-height: 1.45;
+                padding: 0.3rem 0.5rem;
+                width: 100%;
+                box-sizing: border-box;
+            }}
             .status-lbl {{ font-size: 0.56rem; }}
-            .status-txt, .rule-txt {{ font-size: 0.60rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.5; }}
+            .status-txt, .rule-txt {{
+                font-size: 0.60rem;
+                word-break: break-word;
+                overflow-wrap: break-word;
+                line-height: 1.5;
+            }}
             .delta-ledger-strip {{
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 0.25rem;
                 margin-top: 0.35rem;
                 padding-top: 0.3rem;
+                width: 100%;
+                box-sizing: border-box;
             }}
             .delta-ledger-cell {{
                 padding: 0.25rem 0.15rem;
@@ -4469,38 +4598,84 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 flex-direction: column;
                 align-items: center;
                 gap: 2px;
+                min-width: 0;
             }}
             .dl-lbl {{ font-size: 0.48rem; text-transform: uppercase; color: var(--text-muted); }}
-            .dl-val {{ font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #ffffff; }}
+            .dl-val {{ font-size: clamp(0.56rem, 1.8vw, 0.66rem); font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #ffffff; }}
             .dl-gain {{ display: block; font-size: 0.52rem; margin-left: 0; }}
 
-            /* Tab 2 Plan Summary Mobile */
-            .summary-metrics-strip {{
-                grid-template-columns: repeat(2, 1fr);
+            /* 12. Tab 2 Plan Summary Mobile */
+            .squad-health-widget {{
+                padding: 0.65rem 0.75rem;
+                margin-bottom: 0.75rem;
+                border-radius: 8px;
+                width: 100%;
+                max-width: 100%;
+                min-width: 0;
+                box-sizing: border-box;
+            }}
+            .health-top-bar {{
+                flex-direction: column;
+                align-items: flex-start;
                 gap: 0.35rem;
+                width: 100%;
             }}
-            .summary-metric-card {{ padding: 0.4rem 0.5rem; }}
-            .summary-metric-title {{ font-size: 0.56rem; }}
-            .metric-sub-val {{ font-size: 0.76rem; }}
-            .squad-health-widget {{ padding: 0.65rem 0.75rem; margin-bottom: 0.75rem; border-radius: 8px; }}
-            .health-heading {{ font-size: 0.80rem; }}
-            .health-detail-text {{ font-size: 0.74rem; line-height: 1.6; word-break: break-word; overflow-wrap: break-word; }}
-            .summary-plan-panel {{ padding: 0.65rem; border-radius: 8px; gap: 0.55rem; }}
-            .pros-cons-item {{ font-size: 0.74rem; line-height: 1.6; padding: 0.45rem 0.65rem; word-break: break-word; overflow-wrap: break-word; }}
-            
-            /* Chip Inventory Cards on Mobile */
+            .health-heading {{ font-size: clamp(0.78rem, 2.4vw, 0.88rem); line-height: 1.35; }}
+            .health-status-badge {{
+                font-size: 0.60rem;
+                padding: 2px 6px;
+                align-self: flex-start;
+                max-width: 100%;
+                white-space: normal;
+                word-break: break-word;
+            }}
+            .health-detail-text {{
+                font-size: 0.74rem;
+                line-height: 1.6;
+                word-break: break-word;
+                overflow-wrap: break-word;
+            }}
+            .summary-plan-panel {{
+                padding: 0.65rem;
+                border-radius: 8px;
+                gap: 0.55rem;
+                width: 100%;
+                max-width: 100%;
+                min-width: 0;
+                box-sizing: border-box;
+            }}
+            .summary-panel-header {{
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.35rem;
+                width: 100%;
+            }}
+            .pros-cons-item {{
+                font-size: 0.74rem;
+                line-height: 1.6;
+                padding: 0.45rem 0.65rem;
+                word-break: break-word;
+                overflow-wrap: break-word;
+            }}
+            .coachfpl-solver-grid {{
+                grid-template-columns: 1fr !important;
+                gap: 0.65rem !important;
+                width: 100% !important;
+            }}
             .chip-inventory-card {{
-                min-width: calc(50% - 0.35rem) !important;
-                padding: 0.45rem 0.6rem !important;
+                min-width: calc(50% - 0.25rem) !important;
+                padding: 0.45rem 0.55rem !important;
+                box-sizing: border-box;
             }}
-            
-            /* Multi-Week Roadmap Mobile Responsive Table */
-            .roadmap-table-wrap {{ 
-                overflow-x: auto; 
-                -webkit-overflow-scrolling: touch; 
-                margin-top: 0.5rem; 
+            .roadmap-table-wrap {{
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin-top: 0.5rem;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
             }}
-            .roadmap-table {{ min-width: 580px; }}
+            .roadmap-table {{ min-width: 540px; }}
             .roadmap-table th:first-child,
             .roadmap-table td:first-child {{
                 position: sticky;
@@ -4515,7 +4690,26 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 background: #151b26;
             }}
 
-            /* Tab 3 FDR Ticker Mobile Sticky Columns (Unpin Col 2,3,4 to free 127px) */
+            /* 13. Tab 3 FDR Ticker Mobile */
+            .ticker-container {{
+                padding: 0.5rem;
+                width: 100%;
+                max-width: 100%;
+                min-width: 0;
+                box-sizing: border-box;
+            }}
+            .ticker-header-bar {{
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.45rem;
+                width: 100%;
+            }}
+            .ticker-scroll-pane {{
+                max-height: calc(100dvh - 220px);
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }}
             .tbl-sticky-2, .tbl-sticky-3, .tbl-sticky-4 {{
                 position: static !important;
                 left: auto !important;
@@ -4532,8 +4726,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 position: sticky !important;
                 left: 0 !important;
                 z-index: 15 !important;
-                min-width: 86px !important;
-                max-width: 92px !important;
+                min-width: 82px !important;
+                max-width: 88px !important;
                 font-size: 0.68rem !important;
                 padding: 0.35rem 0.35rem !important;
                 background: #0f141c !important;
@@ -4548,45 +4742,51 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 z-index: 35 !important;
                 background: #1a2230 !important;
             }}
-            .fdr-box-lg {{ min-width: 46px; font-size: 0.60rem; padding: 0.18rem 0.25rem; }}
-            .ticker-scroll-pane {{ max-height: calc(100vh - 200px); }}
-            .ticker-header-bar {{ flex-direction: column; align-items: stretch; gap: 0.45rem; }}
+            .fdr-box-lg {{ min-width: 44px; font-size: 0.60rem; padding: 0.18rem 0.22rem; }}
 
-            /* Tab 4 Research Sources Mobile */
+            /* 14. Tab 4 Research Sources Mobile */
             .source-ledger-row {{
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
                 gap: 0.45rem;
                 padding: 0.75rem 0.3rem;
+                width: 100%;
+                box-sizing: border-box;
             }}
             .source-main-name {{ font-size: 0.86rem; }}
-            .source-link-url {{ 
-                font-size: 0.68rem; 
+            .source-link-url {{
+                font-size: 0.68rem;
                 display: inline-flex;
                 align-items: center;
-                padding: 4px 8px;
+                padding: 6px 10px;
                 background: rgba(56, 189, 248, 0.08);
                 border: 1px solid rgba(56, 189, 248, 0.2);
                 border-radius: 4px;
                 margin-top: 2px;
                 word-break: break-all;
-                min-height: 36px;
+                min-height: 40px;
             }}
-            .source-feature-text {{ 
-                font-size: 0.75rem; 
-                line-height: 1.6; 
-                word-break: break-word; 
+            .source-feature-text {{
+                font-size: 0.75rem;
+                line-height: 1.6;
+                word-break: break-word;
                 overflow-wrap: break-word;
             }}
 
-            /* Tab 5 Post-Match Review Mobile */
+            /* 15. Tab 5 Post-Match Review Mobile */
             .h2h-desktop-table-wrap {{
                 display: none !important;
             }}
             .h2h-mobile-card-list {{
                 display: flex !important;
+                flex-direction: column;
+                gap: 0.75rem;
+                width: 100%;
+                max-width: 100%;
             }}
             .h2h-leaderboard-card {{
                 padding: 0.75rem 0.65rem !important;
+                width: 100%;
+                box-sizing: border-box;
             }}
             .h2h-card-header {{
                 flex-direction: column;
@@ -4594,14 +4794,14 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 gap: 0.65rem;
                 margin-bottom: 0.65rem;
                 padding-bottom: 0.55rem;
-            }}
-            .h2h-title-group {{
                 width: 100%;
             }}
+            .h2h-title-group {{ width: 100%; }}
             .h2h-main-title {{
                 font-size: 0.98rem;
                 flex-wrap: wrap;
                 gap: 0.35rem;
+                word-break: break-word;
             }}
             .h2h-summary-strip {{
                 display: grid !important;
@@ -4627,10 +4827,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 align-items: stretch;
                 gap: 0.5rem;
                 padding: 0.6rem 0.75rem;
+                width: 100%;
+                box-sizing: border-box;
             }}
             .review-archive-title {{
                 font-size: 0.72rem;
                 line-height: 1.4;
+                word-break: break-word;
             }}
             .review-gw-selector {{
                 display: grid !important;
@@ -4640,7 +4843,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
             .review-gw-selector button {{
                 width: 100% !important;
-                min-height: 40px !important;
+                min-height: 42px !important;
                 font-size: 0.72rem !important;
                 padding: 0.4rem 0.5rem !important;
                 display: flex !important;
@@ -4648,18 +4851,17 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 justify-content: center !important;
                 white-space: nowrap !important;
             }}
-
             .gw3-hero-banner {{
                 flex-direction: column;
                 align-items: stretch;
                 gap: 0.75rem;
                 padding: 0.85rem 0.75rem;
-            }}
-            .gw3-hero-left {{
                 width: 100%;
+                box-sizing: border-box;
             }}
+            .gw3-hero-left {{ width: 100%; }}
             .gw3-hero-title {{
-                font-size: 0.95rem !important;
+                font-size: clamp(0.88rem, 2.6vw, 1.05rem) !important;
                 line-height: 1.35;
                 word-break: break-word;
             }}
@@ -4682,14 +4884,30 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 text-align: center;
             }}
             .score-val {{
-                font-size: 1.6rem !important;
+                font-size: clamp(1.2rem, 5vw, 1.6rem) !important;
             }}
             .score-divider {{
                 font-size: 0.85rem;
                 font-weight: 800;
                 color: var(--text-muted);
             }}
-
+            .gw3-grid-2 {{
+                grid-template-columns: 1fr !important;
+                width: 100%;
+                gap: 0.85rem;
+            }}
+            .gw3-panel {{
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding: 0.75rem 0.65rem;
+            }}
+            .gw3-panel-header {{
+                flex-wrap: wrap;
+                gap: 0.35rem;
+            }}
             .gw3-table {{
                 width: 100%;
                 border-collapse: collapse;
@@ -4705,6 +4923,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
             .gw3-decider-box {{
                 padding: 0.75rem 0.85rem;
+                width: 100%;
+                box-sizing: border-box;
             }}
             .gw3-decider-item {{
                 font-size: 0.74rem;
@@ -4715,18 +4935,69 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
         }}
 
-        @media (max-width: 380px) {{
-            .starter-card, .bench-card {{ 
-                max-width: 80px; 
-                padding: 0.18rem 0.14rem 0.14rem; 
+        @media (max-width: 480px) {{
+            .stats-strip {{
+                grid-template-columns: 1fr 1fr;
+                gap: 0.25rem;
             }}
-            .pitch-row, .bench-row {{ gap: 0.16rem; }}
-            .starter-name, .bench-name {{ font-size: 0.62rem; }}
-            .starter-meta, .bench-meta {{ font-size: 0.50rem; }}
-            .starter-fix-row, .bench-fix-row {{ font-size: 0.48rem; }}
-            .starter-photo-wrap, .bench-photo-wrap {{ height: 32px; }}
-            .starter-shirt-img, .bench-shirt-img {{ width: 28px; height: 28px; }}
-            .compact-pitch {{ padding: 0.35rem 0.12rem; }}
+            .stat-cell {{
+                padding: 0.35rem 0.4rem;
+            }}
+            .chip-inventory-card {{
+                min-width: 100% !important;
+            }}
+            .compact-pitch {{
+                padding: 0.35rem 2px;
+            }}
+            .pitch-row, .bench-row {{
+                gap: 2px;
+            }}
+            .starter-card, .bench-card {{
+                max-width: 76px;
+                padding: 0.16rem 0.10rem 0.12rem;
+            }}
+            .starter-name, .bench-name {{
+                font-size: 0.58rem;
+            }}
+            .starter-meta, .bench-meta {{
+                font-size: 0.44rem;
+            }}
+            .starter-fix-row, .bench-fix-row {{
+                font-size: 0.44rem;
+            }}
+            .starter-photo-wrap, .bench-photo-wrap {{
+                height: 28px;
+            }}
+            .starter-shirt-img, .bench-shirt-img {{
+                width: 24px;
+                height: 24px;
+            }}
+        }}
+
+        @media (max-width: 360px) {{
+            .starter-card, .bench-card {{
+                max-width: 68px;
+                padding: 0.14rem 0.08rem 0.10rem;
+            }}
+            .pitch-row, .bench-row {{
+                gap: 1px;
+            }}
+            .starter-name, .bench-name {{
+                font-size: 0.52rem;
+            }}
+            .starter-shirt-img, .bench-shirt-img {{
+                width: 20px;
+                height: 20px;
+            }}
+            .starter-photo-wrap, .bench-photo-wrap {{
+                height: 24px;
+            }}
+            .stats-strip {{
+                grid-template-columns: 1fr;
+            }}
+            .review-gw-selector {{
+                grid-template-columns: 1fr !important;
+            }}
         }}
 
         @media (min-width: 769px) {{
@@ -4828,7 +5099,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
             <!-- MOBILE LINEUP TOGGLE (Choice 1 vs Choice 2) -->
             <div class="mobile-lineup-toggle-bar" id="mobileLineupToggle">
-                <button type="button" class="mobile-toggle-btn active" onclick="setMobileLineupView('all', this)">All (Side-by-Side)</button>
+                <button type="button" class="mobile-toggle-btn active" onclick="setMobileLineupView('all', this)">All (Choice 1 &amp; 2)</button>
                 <button type="button" class="mobile-toggle-btn" onclick="setMobileLineupView('c1', this)">Choice 1 (Micky)</button>
                 <button type="button" class="mobile-toggle-btn" onclick="setMobileLineupView('c2', this)">Choice 2 (Gemini)</button>
             </div>
