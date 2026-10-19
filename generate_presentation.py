@@ -1912,31 +1912,68 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         h2h_pill_border = "rgba(255,255,255,0.2)"
 
     # Build Dynamic Table Rows
+    # Build Dynamic Table Rows (Desktop) & Cards (Mobile)
     h2h_rows = []
+    h2h_mobile_cards = []
     for r in gw_reviews:
         gw_num = r["gw"]
         diff_str = f"+{r['diff']} pts" if r['diff'] > 0 else (f"{r['diff']} pts" if r['diff'] < 0 else "0 pts")
         diff_color = "var(--accent-emerald)" if r['diff'] > 0 else ("var(--accent-sky)" if r['diff'] < 0 else "var(--text-muted)")
         if r['c1_pts'] > r['c2_pts']:
-            winner_badge = '<span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4);">CHOICE 1</span>'
+            winner_badge = '<span class="mobile-winner-pill pill-c1">CHOICE 1</span>'
+            mobile_winner_badge = '<span class="mobile-winner-pill pill-c1">CHOICE 1 WIN</span>'
         elif r['c2_pts'] > r['c1_pts']:
-            winner_badge = '<span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(56,189,248,0.2); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.4);">CHOICE 2</span>'
+            winner_badge = '<span class="mobile-winner-pill pill-c2">CHOICE 2</span>'
+            mobile_winner_badge = '<span class="mobile-winner-pill pill-c2">CHOICE 2 WIN</span>'
         else:
-            winner_badge = '<span style="display:inline-block; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(255,255,255,0.1); color:#ffffff; border:1px solid rgba(255,255,255,0.2);">DRAW</span>'
+            winner_badge = '<span class="mobile-winner-pill pill-draw">DRAW</span>'
+            mobile_winner_badge = '<span class="mobile-winner-pill pill-draw">DRAW</span>'
 
+        # Desktop Table Row (strictly with white-space: nowrap on numbers and labels)
         h2h_rows.append(f'''
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
-                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">Gameweek {gw_num}</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:800; color:var(--accent-emerald);">{r['c1_pts']} pts</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-sky);">{r['c2_pts']} pts</td>
-                <td style="padding:8px 10px; text-align:center; font-family:'JetBrains Mono', monospace; font-weight:700; color:{diff_color};">{diff_str}</td>
-                <td style="padding:8px 10px; text-align:center;">{winner_badge}</td>
-                <td style="padding:8px 10px; color:var(--text-secondary); font-size:0.75rem;">{r['short_decider']}</td>
-                <td style="padding:8px 10px; text-align:right;">
-                    <button onclick="switchReviewGw({gw_num}, document.getElementById('btn-review-gw{gw_num}'))" style="cursor:pointer; padding:3px 9px; font-size:0.7rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent);">ดูรายละเอียด</button>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                <td style="padding:10px 12px; font-weight:700; color:#ffffff; white-space:nowrap;">Gameweek {gw_num}</td>
+                <td style="padding:10px 12px; text-align:center; font-family:\'JetBrains Mono\', monospace; font-weight:800; color:var(--accent-emerald); white-space:nowrap;">{r['c1_pts']} pts</td>
+                <td style="padding:10px 12px; text-align:center; font-family:\'JetBrains Mono\', monospace; font-weight:700; color:var(--accent-sky); white-space:nowrap;">{r['c2_pts']} pts</td>
+                <td style="padding:10px 12px; text-align:center; font-family:\'JetBrains Mono\', monospace; font-weight:700; color:{diff_color}; white-space:nowrap;">{diff_str}</td>
+                <td style="padding:10px 12px; text-align:center; white-space:nowrap;">{winner_badge}</td>
+                <td style="padding:10px 12px; color:var(--text-secondary); font-size:0.75rem; line-height:1.5;">{r['short_decider']}</td>
+                <td style="padding:10px 12px; text-align:right; white-space:nowrap;">
+                    <button onclick="switchReviewGw({gw_num}, document.getElementById(\'btn-review-gw{gw_num}\'))" style="cursor:pointer; padding:5px 12px; font-size:0.72rem; font-weight:600; border-radius:4px; background:#1e293b; color:var(--text-main); border:1px solid var(--border-accent); white-space:nowrap;">ดูรายละเอียด &rarr;</button>
                 </td>
             </tr>''')
+
+        # Mobile Match Card (Clean, spacious, 100% readable on phone)
+        h2h_mobile_cards.append(f'''
+            <div class="h2h-match-card">
+                <div class="h2h-match-card-header">
+                    <span class="h2h-match-gw">GAMEWEEK {gw_num}</span>
+                    {mobile_winner_badge}
+                </div>
+                <div class="h2h-match-score-row">
+                    <div class="h2h-team-cell">
+                        <span class="h2h-team-name">Choice 1 (Micky)</span>
+                        <span class="h2h-team-pts pts-c1">{r['c1_pts']} <small>pts</small></span>
+                    </div>
+                    <div class="h2h-vs-indicator">
+                        <span class="h2h-vs-badge">VS</span>
+                        <span class="h2h-margin-badge" style="color:{diff_color};">Margin: {diff_str}</span>
+                    </div>
+                    <div class="h2h-team-cell cell-right">
+                        <span class="h2h-team-name">Choice 2 (Gemini)</span>
+                        <span class="h2h-team-pts pts-c2">{r['c2_pts']} <small>pts</small></span>
+                    </div>
+                </div>
+                <div class="h2h-match-decider-box">
+                    <span class="h2h-decider-lbl">TACTICAL MATCH DECIDER:</span>
+                    <span class="h2h-decider-txt">{r['short_decider']}</span>
+                </div>
+                <button type="button" class="h2h-match-action-btn" onclick="switchReviewGw({gw_num}, document.getElementById(\'btn-review-gw{gw_num}\'))">
+                    ดูรายละเอียดและคะแนนรายตัว GW{gw_num} &rarr;
+                </button>
+            </div>''')
     h2h_table_body = "".join(h2h_rows)
+    h2h_mobile_cards_html = "".join(h2h_mobile_cards)
 
     # Build Dynamic Archive Selector Buttons and Content Panels
     selector_buttons = []
@@ -1959,43 +1996,45 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         <section id="tab-review" class="tab-content">
             <div class="gw3-review-container">
                 <!-- SEASON HEAD-TO-HEAD LEADERBOARD -->
-                <div class="h2h-leaderboard-card" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 22, 0.98)); border: 1px solid var(--border-accent); border-radius: 12px; padding: 1.1rem 1.4rem; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); margin-bottom: 0.8rem;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.8rem; margin-bottom:0.9rem; border-bottom:1px solid var(--border-muted); padding-bottom:0.75rem;">
-                        <div>
-                            <div style="font-size:0.65rem; font-weight:800; color:var(--accent-emerald); text-transform:uppercase; letter-spacing:0.05em; display:flex; align-items:center; gap:6px;">
-                                <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-emerald); box-shadow:0 0 8px var(--accent-emerald);"></span>
+                <div class="h2h-leaderboard-card">
+                    <div class="h2h-card-header">
+                        <div class="h2h-title-group">
+                            <div class="h2h-audit-tag">
+                                <span class="h2h-audit-dot"></span>
                                 SEASON HEAD-TO-HEAD AUDIT (GW3 - GW38)
                             </div>
-                            <h3 style="font-size:1.15rem; font-weight:800; color:#ffffff; margin:0.25rem 0 0 0; display:flex; align-items:center; gap:8px;">
+                            <h3 class="h2h-main-title">
                                 <span>Season Head-to-Head Leaderboard</span>
-                                <span style="font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:12px; background:{h2h_pill_bg}; color:{h2h_pill_color}; border:1px solid {h2h_pill_border};">{h2h_status_pill}</span>
+                                <span class="h2h-lead-pill" style="background:{h2h_pill_bg}; color:{h2h_pill_color}; border:1px solid {h2h_pill_border};">{h2h_status_pill}</span>
                             </h3>
                         </div>
-                        <div class="h2h-summary-strip" style="display:flex; gap:1.2rem; align-items:center;">
-                            <div style="text-align:right;">
-                                <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 1 (Micky)</div>
-                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">{c1_wins} Wins, {draws} Draw <small style="font-size:0.75rem; color:#ffffff;">({total_c1_pts} pts)</small></div>
+                        <div class="h2h-summary-strip">
+                            <div class="h2h-stat-box box-c1">
+                                <div class="h2h-stat-lbl">Choice 1 (Micky)</div>
+                                <div class="h2h-stat-val val-c1">{c1_wins} Wins, {draws} Draw</div>
+                                <div class="h2h-stat-sub">({total_c1_pts} pts)</div>
                             </div>
-                            <div style="font-size:1rem; font-weight:800; color:var(--text-muted);">vs</div>
-                            <div style="text-align:left;">
-                                <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 2 (Gemini)</div>
-                                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">{c2_wins} Wins, {draws} Draw <small style="font-size:0.75rem; color:#ffffff;">({total_c2_pts} pts)</small></div>
+                            <div class="h2h-stat-vs">VS</div>
+                            <div class="h2h-stat-box box-c2">
+                                <div class="h2h-stat-lbl">Choice 2 (Gemini)</div>
+                                <div class="h2h-stat-val val-c2">{c2_wins} Wins, {draws} Draw</div>
+                                <div class="h2h-stat-sub">({total_c2_pts} pts)</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- H2H Matrix Table -->
-                    <div style="overflow-x:auto;">
-                        <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left;">
+                    <!-- H2H Matrix Desktop Table -->
+                    <div class="h2h-desktop-table-wrap">
+                        <table class="h2h-desktop-table">
                             <thead>
-                                <tr style="border-bottom:1px solid var(--border-muted); color:var(--text-secondary); font-size:0.68rem; text-transform:uppercase; letter-spacing:0.04em;">
-                                    <th style="padding:6px 10px;">Gameweek</th>
-                                    <th style="padding:6px 10px; text-align:center;">Choice 1</th>
-                                    <th style="padding:6px 10px; text-align:center;">Choice 2</th>
-                                    <th style="padding:6px 10px; text-align:center;">Margin</th>
-                                    <th style="padding:6px 10px; text-align:center;">Winner</th>
-                                    <th style="padding:6px 10px;">Tactical Match Decider</th>
-                                    <th style="padding:6px 10px; text-align:right;">Action</th>
+                                <tr>
+                                    <th>Gameweek</th>
+                                    <th style="text-align:center;">Choice 1</th>
+                                    <th style="text-align:center;">Choice 2</th>
+                                    <th style="text-align:center;">Margin</th>
+                                    <th style="text-align:center;">Winner</th>
+                                    <th>Tactical Match Decider</th>
+                                    <th style="text-align:right;">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -2003,15 +2042,20 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- H2H Matrix Mobile Match Cards (Redesigned for Mobile) -->
+                    <div class="h2h-mobile-card-list">
+                        {h2h_mobile_cards_html}
+                    </div>
                 </div>
 
                 <!-- Gameweek Archive Selector -->
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem; background:rgba(15,23,42,0.65); padding:0.65rem 1rem; border-radius:10px; border:1px solid var(--border-accent); box-shadow:0 4px 12px rgba(0,0,0,0.25);">
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:flex; align-items:center; gap:8px;">
-                        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-emerald);"></span>
+                <div class="review-archive-bar">
+                    <div class="review-archive-title">
+                        <span class="review-archive-dot"></span>
                         <span>เลือกรอบการแข่งขันที่ต้องการดูผลเปรียบเทียบ (Review Archive):</span>
                     </div>
-                    <div class="review-gw-selector" style="display:flex; gap:8px;">
+                    <div class="review-gw-selector">
                         {selector_buttons_html}
                     </div>
                 </div>
@@ -3641,6 +3685,314 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             color: #ffffff;
         }}
 
+        /* Season H2H Desktop Table & Mobile Cards */
+        .h2h-leaderboard-card {{
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 22, 0.98));
+            border: 1px solid var(--border-accent);
+            border-radius: 12px;
+            padding: 1.1rem 1.4rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+            margin-bottom: 0.8rem;
+        }}
+        .h2h-card-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 0.9rem;
+            border-bottom: 1px solid var(--border-muted);
+            padding-bottom: 0.75rem;
+        }}
+        .h2h-title-group {{
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }}
+        .h2h-audit-tag {{
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--accent-emerald);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }}
+        .h2h-audit-dot {{
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-emerald);
+            box-shadow: 0 0 8px var(--accent-emerald);
+        }}
+        .h2h-main-title {{
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0.25rem 0 0 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        .h2h-lead-pill {{
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+        }}
+        .h2h-summary-strip {{
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+        }}
+        .h2h-stat-box {{
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }}
+        .h2h-stat-box.box-c1 {{ text-align: right; }}
+        .h2h-stat-box.box-c2 {{ text-align: left; }}
+        .h2h-stat-lbl {{
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-weight: 600;
+        }}
+        .h2h-stat-val {{
+            font-size: 1.1rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }}
+        .h2h-stat-val.val-c1 {{ color: var(--accent-emerald); }}
+        .h2h-stat-val.val-c2 {{ color: var(--accent-sky); }}
+        .h2h-stat-sub {{
+            font-size: 0.75rem;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+        }}
+        .h2h-stat-vs {{
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-muted);
+        }}
+
+        .h2h-desktop-table-wrap {{
+            overflow-x: auto;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }}
+        .h2h-desktop-table {{
+            width: 100%;
+            min-width: 680px;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            text-align: left;
+        }}
+        .h2h-desktop-table th {{
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-muted);
+            color: var(--text-secondary);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }}
+        .h2h-desktop-table td {{
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            vertical-align: middle;
+        }}
+
+        /* Mobile Match Cards */
+        .h2h-mobile-card-list {{
+            display: none;
+            flex-direction: column;
+            gap: 0.75rem;
+            width: 100%;
+        }}
+        .h2h-match-card {{
+            background: linear-gradient(135deg, rgba(20, 29, 45, 0.95), rgba(11, 16, 26, 0.98));
+            border: 1px solid var(--border-accent);
+            border-radius: 10px;
+            padding: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        }}
+        .h2h-match-card-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.45rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }}
+        .h2h-match-gw {{
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.5px;
+        }}
+        .mobile-winner-pill {{
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.4px;
+            display: inline-block;
+        }}
+        .mobile-winner-pill.pill-c1 {{
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.45);
+        }}
+        .mobile-winner-pill.pill-c2 {{
+            background: rgba(56, 189, 248, 0.2);
+            color: var(--accent-sky);
+            border: 1px solid rgba(56, 189, 248, 0.45);
+        }}
+        .mobile-winner-pill.pill-draw {{
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-amber);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }}
+        .h2h-match-score-row {{
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            background: rgba(15, 20, 28, 0.8);
+            border: 1px solid var(--border-muted);
+            border-radius: 8px;
+            padding: 0.6rem 0.75rem;
+            gap: 0.5rem;
+        }}
+        .h2h-team-cell {{
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }}
+        .h2h-team-cell.cell-right {{
+            text-align: right;
+            align-items: flex-end;
+        }}
+        .h2h-team-name {{
+            font-size: 0.62rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }}
+        .h2h-team-pts {{
+            font-size: 1.35rem;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1;
+        }}
+        .h2h-team-pts small {{
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }}
+        .pts-c1 {{ color: var(--accent-emerald); }}
+        .pts-c2 {{ color: var(--accent-sky); }}
+        .h2h-vs-indicator {{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            padding: 0 4px;
+        }}
+        .h2h-vs-badge {{
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }}
+        .h2h-margin-badge {{
+            font-size: 0.58rem;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            white-space: nowrap;
+        }}
+        .h2h-match-decider-box {{
+            background: rgba(10, 15, 24, 0.6);
+            border-left: 3px solid var(--accent-emerald);
+            border-radius: 0 6px 6px 0;
+            padding: 0.5rem 0.65rem;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }}
+        .h2h-decider-lbl {{
+            font-size: 0.54rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }}
+        .h2h-decider-txt {{
+            font-size: 0.76rem;
+            color: var(--text-main);
+            line-height: 1.5;
+            word-break: break-word;
+        }}
+        .h2h-match-action-btn {{
+            width: 100%;
+            padding: 0.55rem;
+            font-size: 0.74rem;
+            font-weight: 700;
+            border-radius: 6px;
+            background: #1e293b;
+            color: #ffffff;
+            border: 1px solid var(--border-accent);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s ease;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }}
+        .h2h-match-action-btn:hover, .h2h-match-action-btn:active {{
+            background: #334155;
+            border-color: var(--accent-emerald);
+            color: var(--accent-emerald);
+        }}
+        .review-archive-bar {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            background: rgba(15, 23, 42, 0.65);
+            padding: 0.65rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-accent);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }}
+        .review-archive-title {{
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        .review-archive-dot {{
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-emerald);
+        }}
+        .review-gw-selector {{
+            display: flex;
+            gap: 8px;
+        }}
+
         /* =========================================================
            MOBILE & TABLET RESPONSIVE STYLING (< 1024px & < 768px)
            ========================================================= */
@@ -4145,50 +4497,129 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
 
             /* Tab 5 Post-Match Review Mobile */
+            .h2h-desktop-table-wrap {{
+                display: none !important;
+            }}
+            .h2h-mobile-card-list {{
+                display: flex !important;
+            }}
+            .h2h-leaderboard-card {{
+                padding: 0.75rem 0.65rem !important;
+            }}
+            .h2h-card-header {{
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.65rem;
+                margin-bottom: 0.65rem;
+                padding-bottom: 0.55rem;
+            }}
+            .h2h-title-group {{
+                width: 100%;
+            }}
+            .h2h-main-title {{
+                font-size: 0.98rem;
+                flex-wrap: wrap;
+                gap: 0.35rem;
+            }}
+            .h2h-summary-strip {{
+                display: grid !important;
+                grid-template-columns: 1fr auto 1fr;
+                align-items: center;
+                background: rgba(15, 23, 42, 0.6);
+                border: 1px solid var(--border-main);
+                border-radius: 8px;
+                padding: 0.5rem 0.6rem;
+                gap: 0.4rem;
+                width: 100%;
+                box-sizing: border-box;
+            }}
+            .h2h-stat-box.box-c1 {{ text-align: left; }}
+            .h2h-stat-box.box-c2 {{ text-align: right; }}
+            .h2h-stat-lbl {{ font-size: 0.58rem; }}
+            .h2h-stat-val {{ font-size: 0.88rem; }}
+            .h2h-stat-sub {{ font-size: 0.68rem; }}
+            .h2h-stat-vs {{ font-size: 0.75rem; }}
+
+            .review-archive-bar {{
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+                padding: 0.6rem 0.75rem;
+            }}
+            .review-archive-title {{
+                font-size: 0.72rem;
+                line-height: 1.4;
+            }}
+            .review-gw-selector {{
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 6px !important;
+                width: 100%;
+            }}
+            .review-gw-selector button {{
+                width: 100% !important;
+                min-height: 40px !important;
+                font-size: 0.72rem !important;
+                padding: 0.4rem 0.5rem !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                white-space: nowrap !important;
+            }}
+
             .gw3-hero-banner {{
                 flex-direction: column;
                 align-items: stretch;
                 gap: 0.75rem;
-                padding: 0.85rem 0.9rem;
+                padding: 0.85rem 0.75rem;
             }}
             .gw3-hero-left {{
                 width: 100%;
             }}
+            .gw3-hero-title {{
+                font-size: 0.95rem !important;
+                line-height: 1.35;
+                word-break: break-word;
+            }}
+            .gw3-hero-subtitle {{
+                font-size: 0.72rem !important;
+                line-height: 1.55;
+                word-break: break-word;
+            }}
             .gw3-scoreboard {{
+                display: grid !important;
+                grid-template-columns: 1fr auto 1fr;
+                align-items: center;
                 width: 100%;
-                justify-content: space-around;
-                padding: 0.5rem 0.8rem;
-                gap: 0.75rem;
+                padding: 0.6rem 0.5rem;
+                gap: 0.4rem;
                 box-sizing: border-box;
             }}
+            .score-box {{
+                align-items: center;
+                text-align: center;
+            }}
             .score-val {{
-                font-size: 1.5rem;
+                font-size: 1.6rem !important;
             }}
-            .h2h-leaderboard-card {{
-                padding: 0.85rem 0.9rem !important;
+            .score-divider {{
+                font-size: 0.85rem;
+                font-weight: 800;
+                color: var(--text-muted);
             }}
-            .h2h-summary-strip {{
+
+            .gw3-table {{
                 width: 100%;
-                justify-content: space-around;
-                gap: 0.75rem !important;
-                padding-top: 0.4rem;
-                border-top: 1px dashed rgba(255, 255, 255, 0.08);
+                border-collapse: collapse;
             }}
-            .review-gw-selector {{
-                gap: 6px !important;
-                flex-wrap: wrap;
-                width: 100%;
+            .gw3-table th {{
+                padding: 6px 8px !important;
+                font-size: 0.65rem !important;
+                white-space: nowrap !important;
             }}
-            .review-gw-selector button {{
-                flex: 1 1 calc(25% - 6px);
-                min-width: 65px;
-                min-height: 38px;
-                font-size: 0.70rem;
-                padding: 0.35rem 0.5rem;
-            }}
-            .gw3-table th, .gw3-table td {{
-                padding: 6px 4px !important;
-                font-size: 0.72rem !important;
+            .gw3-table td {{
+                padding: 8px 6px !important;
+                font-size: 0.74rem !important;
             }}
             .gw3-decider-box {{
                 padding: 0.75rem 0.85rem;
@@ -4221,6 +4652,12 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 display: block !important;
             }}
             .mobile-lineup-toggle-bar, .mobile-vs-divider {{
+                display: none !important;
+            }}
+            .h2h-desktop-table-wrap {{
+                display: block !important;
+            }}
+            .h2h-mobile-card-list {{
                 display: none !important;
             }}
         }}
@@ -4780,11 +5217,17 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 b.style.background = '#1e293b';
             }});
             const target = document.getElementById('review-content-gw' + gw);
-            if (target) target.style.display = 'block';
-            if (btn) {{
-                btn.style.borderColor = 'var(--accent-emerald)';
-                btn.style.color = 'var(--accent-emerald)';
-                btn.style.background = 'rgba(16, 185, 129, 0.15)';
+            if (target) {{
+                target.style.display = 'block';
+                if (window.innerWidth <= 768) {{
+                    target.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+                }}
+            }}
+            const activeBtn = btn || document.getElementById('btn-review-gw' + gw);
+            if (activeBtn) {{
+                activeBtn.style.borderColor = 'var(--accent-emerald)';
+                activeBtn.style.color = 'var(--accent-emerald)';
+                activeBtn.style.background = 'rgba(16, 185, 129, 0.15)';
             }}
         }}
 
