@@ -1042,7 +1042,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 border_color = "rgba(16, 185, 129, 0.4)"
                 note = "พร้อมใช้ทันที (หมดอายุสิ้น GW19)"
             
-            card = f'''<div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid {border_color}; border-radius:6px; padding:0.5rem 0.75rem;">
+            card = f'''<div class="chip-inventory-card" style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid {border_color}; border-radius:6px; padding:0.5rem 0.75rem;">
                 <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">{display_title} &bull; GW{s_ev}-{e_ev}</div>
                 <div style="font-size:0.85rem; font-weight:700; color:{status_color}; margin-top:2px;">{status_badge}</div>
                 <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">{note}</div>
@@ -1068,7 +1068,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 border_color = "rgba(56, 189, 248, 0.4)"
                 note = "ปลดล็อกครึ่งฤดูกาลหลัง"
             
-            card = f'''<div style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid {border_color}; border-radius:6px; padding:0.5rem 0.75rem;">
+            card = f'''<div class="chip-inventory-card" style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid {border_color}; border-radius:6px; padding:0.5rem 0.75rem;">
                 <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">{display_title} &bull; GW{s_ev}-{e_ev}</div>
                 <div style="font-size:0.85rem; font-weight:700; color:{status_color}; margin-top:2px;">{status_badge}</div>
                 <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">{note}</div>
@@ -1971,7 +1971,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                                 <span style="font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:12px; background:{h2h_pill_bg}; color:{h2h_pill_color}; border:1px solid {h2h_pill_border};">{h2h_status_pill}</span>
                             </h3>
                         </div>
-                        <div style="display:flex; gap:1.2rem; align-items:center;">
+                        <div class="h2h-summary-strip" style="display:flex; gap:1.2rem; align-items:center;">
                             <div style="text-align:right;">
                                 <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase;">Choice 1 (Micky)</div>
                                 <div style="font-size:1.1rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">{c1_wins} Wins, {draws} Draw <small style="font-size:0.75rem; color:#ffffff;">({total_c1_pts} pts)</small></div>
@@ -3644,6 +3644,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         /* =========================================================
            MOBILE & TABLET RESPONSIVE STYLING (< 1024px & < 768px)
            ========================================================= */
+        .mobile-lineup-toggle-bar {{
+            display: none;
+        }}
+
         @media (max-width: 1024px) {{
             .lineup-split-grid, .summary-split-grid, .gw3-grid-2 {{
                 grid-template-columns: 1fr;
@@ -3673,9 +3677,26 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 padding: 0.4rem 0.5rem 1.5rem;
             }}
             header {{ padding: 0.45rem 0.65rem; }}
-            .nav-bar {{ padding: 0.3rem 0.5rem; gap: 0.25rem; }}
-            .tab-btn {{ font-size: 0.70rem; padding: 0.32rem 0.65rem; border-radius: 5px; }}
+
+            /* Mobile Tab Bar */
+            .nav-bar {{ 
+                padding: 0.35rem 0.5rem; 
+                gap: 0.35rem; 
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+            }}
+            .tab-btn {{ 
+                font-size: 0.72rem; 
+                padding: 0.42rem 0.75rem; 
+                border-radius: 6px; 
+                min-height: 38px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                scroll-snap-align: start;
+            }}
             
+            /* Header Elements */
             .header-wrap {{ flex-direction: column; align-items: stretch; gap: 0.45rem; }}
             .brand-meta {{ flex-direction: column; align-items: flex-start; gap: 0.35rem; width: 100%; }}
             .title-box {{ width: 100%; }}
@@ -3683,8 +3704,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             .team-name {{ display: inline-block; }}
             .team-id-tag {{ font-size: 0.68rem; color: var(--text-muted); font-weight: 500; font-family: 'JetBrains Mono', monospace; }}
             .sync-pill {{ margin-left: 0; margin-top: 3px; font-size: 0.58rem; display: inline-flex; }}
-            .manager-meta-line {{ font-size: 0.70rem; line-height: 1.5; color: var(--text-secondary); margin-top: 2px; overflow-wrap: break-word; word-break: break-word; }}
-            .deadline-pill {{ font-size: 0.56rem; padding: 2px 7px; flex-wrap: wrap; width: 100%; line-height: 1.35; gap: 4px; }}
+            .manager-meta-line {{ font-size: 0.70rem; line-height: 1.6; color: var(--text-secondary); margin-top: 2px; overflow-wrap: break-word; word-break: break-word; }}
+            .deadline-pill {{ font-size: 0.60rem; padding: 4px 8px; flex-wrap: wrap; width: 100%; line-height: 1.4; gap: 4px; box-sizing: border-box; }}
             
             .stats-strip {{ 
                 display: grid; 
@@ -3693,11 +3714,12 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 width: 100%; 
                 margin-top: 0.2rem; 
             }}
-            .stat-cell {{ min-width: 0; padding: 0.32rem 0.5rem; }}
-            .stat-cell .lbl {{ font-size: 0.52rem; letter-spacing: 0.4px; }}
-            .stat-cell .val {{ font-size: 0.86rem; }}
-            .rank-trajectory-tag {{ font-size: 0.50rem; padding: 1px 4px; }}
+            .stat-cell {{ min-width: 0; padding: 0.35rem 0.5rem; }}
+            .stat-cell .lbl {{ font-size: 0.54rem; letter-spacing: 0.4px; }}
+            .stat-cell .val {{ font-size: 0.88rem; }}
+            .rank-trajectory-tag {{ font-size: 0.52rem; padding: 1px 4px; }}
             
+            /* Target Banner */
             .gw-target-banner {{
                 flex-direction: column;
                 align-items: stretch;
@@ -3715,14 +3737,15 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 flex-shrink: 0;
             }}
             .gw-banner-title {{
-                font-size: 0.76rem;
+                font-size: 0.78rem;
                 font-weight: 700;
                 color: #ffffff;
-                line-height: 1.3;
-                word-break: keep-all;
+                line-height: 1.4;
+                word-break: break-word;
+                overflow-wrap: break-word;
             }}
             .gw-banner-en {{
-                font-size: 0.62rem;
+                font-size: 0.64rem;
                 color: var(--text-muted);
                 display: block;
                 margin-top: 1px;
@@ -3733,7 +3756,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 gap: 0.25rem;
                 padding-top: 0.35rem;
                 border-top: 1px dashed rgba(255, 255, 255, 0.08);
-                font-size: 0.64rem;
+                font-size: 0.66rem;
             }}
             .gw-divider {{ display: none; }}
             .gw-info-chip {{
@@ -3749,13 +3772,51 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 font-family: 'JetBrains Mono', monospace;
             }}
             .chip-val {{
-                font-size: 0.66rem;
+                font-size: 0.68rem;
                 color: #ffffff;
             }}
             .quota-rule {{
-                font-size: 0.58rem;
+                font-size: 0.60rem;
                 color: var(--accent-emerald);
                 font-weight: 600;
+            }}
+
+            /* Mobile Choice Switcher Bar */
+            .mobile-lineup-toggle-bar {{
+                display: flex;
+                gap: 0.35rem;
+                width: 100%;
+                margin-bottom: 0.75rem;
+                background: rgba(15, 23, 42, 0.85);
+                padding: 0.25rem;
+                border-radius: 8px;
+                border: 1px solid var(--border-accent);
+                box-sizing: border-box;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+            }}
+            .mobile-toggle-btn {{
+                flex: 1;
+                padding: 0.45rem 0.4rem;
+                font-size: 0.68rem;
+                font-weight: 700;
+                border-radius: 6px;
+                background: transparent;
+                color: var(--text-secondary);
+                border: 1px solid transparent;
+                cursor: pointer;
+                text-align: center;
+                white-space: nowrap;
+                transition: all 0.18s ease;
+                min-height: 38px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }}
+            .mobile-toggle-btn.active {{
+                background: #1e293b;
+                color: #ffffff;
+                border-color: var(--accent-emerald);
+                box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
             }}
 
             .lineup-split-grid, .summary-split-grid {{ 
@@ -3775,84 +3836,147 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 align-items: flex-start;
                 gap: 0.35rem;
             }}
-            .plan-title {{ font-size: 0.82rem; }}
-            .fin-badge {{ font-size: 0.60rem; padding: 0.15rem 0.42rem; align-self: flex-start; }}
+            .plan-title {{ font-size: 0.84rem; }}
+            .fin-badge {{ font-size: 0.62rem; padding: 0.18rem 0.45rem; align-self: flex-start; }}
             
+            /* Modern Fluid Pitch & Cards */
             .compact-pitch {{ 
                 min-width: 0;
                 width: 100%;
                 box-sizing: border-box;
-                padding: 0.45rem 0.15rem; 
-                min-height: 400px; 
-                gap: 0.35rem; 
+                padding: 0.5rem 0.25rem; 
+                min-height: 420px; 
+                gap: 0.45rem; 
                 overflow: hidden;
             }}
             .pitch-row {{ 
                 min-width: 0;
                 width: 100%;
-                gap: 0.2rem; 
+                gap: 0.25rem; 
                 justify-content: center; 
                 box-sizing: border-box;
             }}
             
             .starter-card {{ 
-                width: 70px; 
-                max-width: 72px;
+                flex: 1 1 0;
+                width: auto;
                 min-width: 0;
-                flex-shrink: 1;
-                padding: 0.18rem 0.16rem 0.14rem; 
+                max-width: 88px;
+                padding: 0.22rem 0.18rem 0.16rem; 
                 border-radius: 6px; 
                 box-sizing: border-box;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
             }}
-            .starter-card-top {{ min-height: 13px; }}
-            .pos-tag-mini {{ font-size: 0.46rem; padding: 0.03rem 0.16rem; border-radius: 2px; }}
-            .role-badge-cap, .role-badge-vc, .role-badge-tc {{ font-size: 0.50rem; padding: 0.03rem 0.2rem; }}
-            .core-tag-mini, .enabler-tag-mini, .transfer-in-tag-mini {{ font-size: 0.44rem; padding: 0.03rem 0.15rem; }}
-            .starter-photo-wrap {{ height: 34px; margin: 0; }}
-            .starter-shirt-img {{ width: 30px; height: 30px; }}
+            .starter-card-top {{ min-height: 14px; gap: 2px; }}
+            .pos-tag-mini {{ font-size: clamp(0.48rem, 1.5vw, 0.54rem); padding: 0.04rem 0.18rem; border-radius: 2px; }}
+            .role-badge-cap, .role-badge-vc, .role-badge-tc {{ font-size: clamp(0.50rem, 1.6vw, 0.56rem); padding: 0.04rem 0.22rem; }}
+            .core-tag-mini, .enabler-tag-mini, .transfer-in-tag-mini {{ font-size: clamp(0.46rem, 1.5vw, 0.52rem); padding: 0.04rem 0.16rem; }}
+            .starter-photo-wrap {{ height: 38px; margin: 1px 0; }}
+            .starter-shirt-img {{ width: 34px; height: 34px; }}
             .starter-info-card {{ padding-top: 2px; }}
-            .starter-name {{ font-size: 0.60rem; letter-spacing: -0.2px; line-height: 1.1; }}
-            .starter-meta {{ font-size: 0.48rem; margin: 1px 0; }}
-            .starter-fix-row {{ font-size: 0.45rem; padding-top: 1px; margin-top: 1px; }}
-            .starter-fix-text {{ font-weight: 600; }}
-            .fdr-pill {{ font-size: 0.46rem; padding: 0.02rem 0.16rem; }}
+            .starter-name {{ 
+                font-size: clamp(0.66rem, 2.2vw, 0.74rem); 
+                letter-spacing: -0.1px; 
+                line-height: 1.15; 
+                font-weight: 700;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }}
+            .starter-meta {{ 
+                font-size: clamp(0.52rem, 1.7vw, 0.58rem); 
+                margin: 1px 0; 
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }}
+            .starter-fix-row {{ 
+                font-size: clamp(0.50rem, 1.6vw, 0.56rem); 
+                padding-top: 2px; 
+                margin-top: 2px; 
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 2px;
+            }}
+            .starter-fix-text {{ 
+                font-weight: 700; 
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }}
+            .fdr-pill {{ 
+                font-size: clamp(0.48rem, 1.5vw, 0.54rem); 
+                padding: 0.03rem 0.20rem; 
+                flex-shrink: 0;
+            }}
 
+            /* Modern Bench Layout */
             .compact-bench-strip {{ 
                 min-width: 0;
                 width: 100%;
                 box-sizing: border-box;
-                padding: 0.35rem 0.3rem; 
-                margin-top: 0.4rem; 
-                border-radius: 7px; 
-                overflow-x: auto;
+                padding: 0.4rem 0.35rem; 
+                margin-top: 0.45rem; 
+                border-radius: 8px; 
+                overflow-x: hidden;
             }}
-            .bench-header-bar {{ margin-bottom: 0.2rem; padding-bottom: 0.15rem; }}
-            .bench-lbl {{ font-size: 0.56rem; }}
-            .bench-count-tag {{ font-size: 0.48rem; padding: 0.03rem 0.25rem; }}
+            .bench-header-bar {{ margin-bottom: 0.25rem; padding-bottom: 0.18rem; }}
+            .bench-lbl {{ font-size: 0.60rem; }}
+            .bench-count-tag {{ font-size: 0.50rem; padding: 0.04rem 0.25rem; }}
             .bench-row {{ 
                 min-width: 0;
                 width: 100%;
-                gap: 0.2rem; 
+                gap: 0.25rem; 
                 justify-content: center; 
                 box-sizing: border-box;
             }}
             .bench-card {{ 
-                width: 70px; 
-                max-width: 72px;
+                flex: 1 1 0;
+                width: auto;
                 min-width: 0;
-                flex-shrink: 1;
-                padding: 0.18rem 0.16rem 0.14rem; 
+                max-width: 88px;
+                padding: 0.22rem 0.18rem 0.16rem; 
                 border-radius: 6px; 
                 box-sizing: border-box;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
             }}
-            .bench-card-top {{ min-height: 13px; }}
-            .sub-label-badge {{ font-size: 0.46rem; padding: 0.03rem 0.18rem; }}
-            .bench-photo-wrap {{ height: 34px; margin: 0; }}
-            .bench-shirt-img {{ width: 30px; height: 30px; }}
+            .bench-card-top {{ min-height: 14px; gap: 2px; }}
+            .sub-label-badge {{ font-size: clamp(0.48rem, 1.5vw, 0.54rem); padding: 0.04rem 0.18rem; }}
+            .bench-photo-wrap {{ height: 38px; margin: 1px 0; }}
+            .bench-shirt-img {{ width: 34px; height: 34px; }}
             .bench-info-card {{ padding-top: 2px; }}
-            .bench-name {{ font-size: 0.60rem; letter-spacing: -0.2px; line-height: 1.1; }}
-            .bench-meta {{ font-size: 0.48rem; margin: 1px 0; }}
-            .bench-fix-row {{ font-size: 0.45rem; padding-top: 1px; margin-top: 1px; }}
+            .bench-name {{ 
+                font-size: clamp(0.66rem, 2.2vw, 0.74rem); 
+                letter-spacing: -0.1px; 
+                line-height: 1.15; 
+                font-weight: 700;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }}
+            .bench-meta {{ 
+                font-size: clamp(0.52rem, 1.7vw, 0.58rem); 
+                margin: 1px 0; 
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }}
+            .bench-fix-row {{ 
+                font-size: clamp(0.50rem, 1.6vw, 0.56rem); 
+                padding-top: 2px; 
+                margin-top: 2px; 
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 2px;
+            }}
+            .bench-fix-text {{ 
+                font-weight: 700; 
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }}
 
             /* Tactical Mobile Transition Divider */
             .mobile-vs-divider {{
@@ -3888,11 +4012,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             .delta-header-strip {{ margin-bottom: 0.25rem; padding-bottom: 0.2rem; }}
             .delta-title {{ font-size: 0.68rem; }}
             .delta-count-pill {{ font-size: 0.52rem; padding: 1px 5px; }}
+            .delta-group {{ flex-wrap: wrap; gap: 0.25rem; }}
+            .delta-tags {{ flex-wrap: wrap; gap: 0.25rem; }}
             .delta-group-label {{ font-size: 0.54rem; min-width: 62px; }}
-            .delta-pill {{ font-size: 0.58rem; padding: 1px 5px; }}
-            .delta-status-banner, .delta-rule-notice {{ font-size: 0.58rem; line-height: 1.35; padding: 0.25rem 0.45rem; }}
-            .status-lbl {{ font-size: 0.54rem; }}
-            .status-txt, .rule-txt {{ font-size: 0.58rem; word-break: keep-all; }}
+            .delta-pill {{ font-size: 0.60rem; padding: 2px 6px; }}
+            .delta-status-banner, .delta-rule-notice {{ font-size: 0.60rem; line-height: 1.45; padding: 0.3rem 0.5rem; }}
+            .status-lbl {{ font-size: 0.56rem; }}
+            .status-txt, .rule-txt {{ font-size: 0.60rem; word-break: break-word; overflow-wrap: break-word; line-height: 1.5; }}
             .delta-ledger-strip {{
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
@@ -3923,39 +4049,180 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             .summary-metric-title {{ font-size: 0.56rem; }}
             .metric-sub-val {{ font-size: 0.76rem; }}
             .squad-health-widget {{ padding: 0.65rem 0.75rem; margin-bottom: 0.75rem; border-radius: 8px; }}
-            .health-heading {{ font-size: 0.78rem; }}
-            .health-detail-text {{ font-size: 0.70rem; line-height: 1.45; word-break: keep-all; }}
+            .health-heading {{ font-size: 0.80rem; }}
+            .health-detail-text {{ font-size: 0.74rem; line-height: 1.6; word-break: break-word; overflow-wrap: break-word; }}
             .summary-plan-panel {{ padding: 0.65rem; border-radius: 8px; gap: 0.55rem; }}
-            .pros-cons-item {{ font-size: 0.68rem; line-height: 1.4; padding: 0.35rem 0.5rem; word-break: keep-all; }}
-            .roadmap-table-wrap {{ overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 0.5rem; }}
+            .pros-cons-item {{ font-size: 0.74rem; line-height: 1.6; padding: 0.45rem 0.65rem; word-break: break-word; overflow-wrap: break-word; }}
+            
+            /* Chip Inventory Cards on Mobile */
+            .chip-inventory-card {{
+                min-width: calc(50% - 0.35rem) !important;
+                padding: 0.45rem 0.6rem !important;
+            }}
+            
+            /* Multi-Week Roadmap Mobile Responsive Table */
+            .roadmap-table-wrap {{ 
+                overflow-x: auto; 
+                -webkit-overflow-scrolling: touch; 
+                margin-top: 0.5rem; 
+            }}
             .roadmap-table {{ min-width: 580px; }}
+            .roadmap-table th:first-child,
+            .roadmap-table td:first-child {{
+                position: sticky;
+                left: 0;
+                background: #0f141c;
+                z-index: 2;
+                border-right: 1px solid var(--border-muted);
+                font-weight: 700;
+            }}
+            .roadmap-table th:first-child {{
+                z-index: 3;
+                background: #151b26;
+            }}
 
-            /* Tab 3 FDR Ticker Mobile Sticky Columns */
-            .tbl-sticky {{ min-width: 82px; font-size: 0.68rem; padding: 0.35rem 0.25rem; }}
-            .tbl-sticky-2 {{ left: 82px; min-width: 42px; font-size: 0.68rem; padding: 0.35rem 0.25rem; }}
-            .tbl-sticky-3 {{ left: 124px; min-width: 40px; font-size: 0.68rem; padding: 0.35rem 0.25rem; }}
-            .tbl-sticky-4 {{ left: 164px; min-width: 45px; font-size: 0.68rem; padding: 0.35rem 0.25rem; }}
-            .fdr-box-lg {{ min-width: 48px; font-size: 0.60rem; padding: 0.18rem 0.3rem; }}
-            .ticker-scroll-pane {{ max-height: calc(100vh - 210px); }}
+            /* Tab 3 FDR Ticker Mobile Sticky Columns (Unpin Col 2,3,4 to free 127px) */
+            .tbl-sticky-2, .tbl-sticky-3, .tbl-sticky-4 {{
+                position: static !important;
+                left: auto !important;
+                z-index: 1 !important;
+                border-right: 1px solid var(--border-muted) !important;
+            }}
+            th.tbl-sticky-2, th.tbl-sticky-3, th.tbl-sticky-4 {{
+                position: sticky !important;
+                top: 0 !important;
+                left: auto !important;
+                z-index: 10 !important;
+            }}
+            .tbl-sticky {{
+                position: sticky !important;
+                left: 0 !important;
+                z-index: 15 !important;
+                min-width: 86px !important;
+                max-width: 92px !important;
+                font-size: 0.68rem !important;
+                padding: 0.35rem 0.35rem !important;
+                background: #0f141c !important;
+                border-right: 2px solid var(--accent-emerald) !important;
+                box-shadow: 2px 0 6px rgba(0, 0, 0, 0.45);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }}
+            th.tbl-sticky {{
+                top: 0 !important;
+                z-index: 35 !important;
+                background: #1a2230 !important;
+            }}
+            .fdr-box-lg {{ min-width: 46px; font-size: 0.60rem; padding: 0.18rem 0.25rem; }}
+            .ticker-scroll-pane {{ max-height: calc(100vh - 200px); }}
+            .ticker-header-bar {{ flex-direction: column; align-items: stretch; gap: 0.45rem; }}
 
             /* Tab 4 Research Sources Mobile */
             .source-ledger-row {{
                 grid-template-columns: 1fr;
-                gap: 0.35rem;
-                padding: 0.65rem 0.3rem;
+                gap: 0.45rem;
+                padding: 0.75rem 0.3rem;
             }}
-            .source-main-name {{ font-size: 0.82rem; }}
-            .source-link-url {{ font-size: 0.65rem; }}
-            .source-feature-text {{ font-size: 0.72rem; line-height: 1.4; word-break: keep-all; }}
+            .source-main-name {{ font-size: 0.86rem; }}
+            .source-link-url {{ 
+                font-size: 0.68rem; 
+                display: inline-flex;
+                align-items: center;
+                padding: 4px 8px;
+                background: rgba(56, 189, 248, 0.08);
+                border: 1px solid rgba(56, 189, 248, 0.2);
+                border-radius: 4px;
+                margin-top: 2px;
+                word-break: break-all;
+                min-height: 36px;
+            }}
+            .source-feature-text {{ 
+                font-size: 0.75rem; 
+                line-height: 1.6; 
+                word-break: break-word; 
+                overflow-wrap: break-word;
+            }}
+
+            /* Tab 5 Post-Match Review Mobile */
+            .gw3-hero-banner {{
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem;
+                padding: 0.85rem 0.9rem;
+            }}
+            .gw3-hero-left {{
+                width: 100%;
+            }}
+            .gw3-scoreboard {{
+                width: 100%;
+                justify-content: space-around;
+                padding: 0.5rem 0.8rem;
+                gap: 0.75rem;
+                box-sizing: border-box;
+            }}
+            .score-val {{
+                font-size: 1.5rem;
+            }}
+            .h2h-leaderboard-card {{
+                padding: 0.85rem 0.9rem !important;
+            }}
+            .h2h-summary-strip {{
+                width: 100%;
+                justify-content: space-around;
+                gap: 0.75rem !important;
+                padding-top: 0.4rem;
+                border-top: 1px dashed rgba(255, 255, 255, 0.08);
+            }}
+            .review-gw-selector {{
+                gap: 6px !important;
+                flex-wrap: wrap;
+                width: 100%;
+            }}
+            .review-gw-selector button {{
+                flex: 1 1 calc(25% - 6px);
+                min-width: 65px;
+                min-height: 38px;
+                font-size: 0.70rem;
+                padding: 0.35rem 0.5rem;
+            }}
+            .gw3-table th, .gw3-table td {{
+                padding: 6px 4px !important;
+                font-size: 0.72rem !important;
+            }}
+            .gw3-decider-box {{
+                padding: 0.75rem 0.85rem;
+            }}
+            .gw3-decider-item {{
+                font-size: 0.74rem;
+                line-height: 1.6;
+                padding: 0.5rem 0.7rem;
+                word-break: break-word;
+                overflow-wrap: break-word;
+            }}
         }}
 
         @media (max-width: 380px) {{
-            .starter-card, .bench-card {{ width: 70px; padding: 0.15rem 0.14rem; }}
-            .pitch-row, .bench-row {{ gap: 0.18rem; }}
-            .starter-name, .bench-name {{ font-size: 0.58rem; }}
+            .starter-card, .bench-card {{ 
+                max-width: 80px; 
+                padding: 0.18rem 0.14rem 0.14rem; 
+            }}
+            .pitch-row, .bench-row {{ gap: 0.16rem; }}
+            .starter-name, .bench-name {{ font-size: 0.62rem; }}
+            .starter-meta, .bench-meta {{ font-size: 0.50rem; }}
+            .starter-fix-row, .bench-fix-row {{ font-size: 0.48rem; }}
             .starter-photo-wrap, .bench-photo-wrap {{ height: 32px; }}
             .starter-shirt-img, .bench-shirt-img {{ width: 28px; height: 28px; }}
             .compact-pitch {{ padding: 0.35rem 0.12rem; }}
+        }}
+
+        @media (min-width: 769px) {{
+            #c1-column, #choice-2 {{
+                display: block !important;
+            }}
+            .mobile-lineup-toggle-bar, .mobile-vs-divider {{
+                display: none !important;
+            }}
         }}
     </style>
 </head>
@@ -4040,10 +4307,17 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 </div>
             </div>
 
+            <!-- MOBILE LINEUP TOGGLE (Choice 1 vs Choice 2) -->
+            <div class="mobile-lineup-toggle-bar" id="mobileLineupToggle">
+                <button type="button" class="mobile-toggle-btn active" onclick="setMobileLineupView('all', this)">All (Side-by-Side)</button>
+                <button type="button" class="mobile-toggle-btn" onclick="setMobileLineupView('c1', this)">Choice 1 (Micky)</button>
+                <button type="button" class="mobile-toggle-btn" onclick="setMobileLineupView('c2', this)">Choice 2 (Gemini)</button>
+            </div>
+
             <div class="lineup-split-grid">
                 
                 <!-- LEFT COLUMN: CHOICE 1 (MICKY SELECTION) -->
-                <div class="plan-column">
+                <div class="plan-column" id="c1-column">
                     <div class="plan-col-header">
                         <div>
                             <div class="plan-title">Choice 1 &bull; Micky Selection (GW{active_gw})</div>
@@ -4514,6 +4788,30 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
         }}
 
+        // Mobile Choice 1 vs Choice 2 View Switcher
+        function setMobileLineupView(mode, btn) {{
+            const c1 = document.getElementById('c1-column');
+            const c2 = document.getElementById('choice-2');
+            const divider = document.querySelector('.mobile-vs-divider');
+            const btns = document.querySelectorAll('.mobile-toggle-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            if (mode === 'c1') {{
+                if (c1) c1.style.display = 'block';
+                if (c2) c2.style.display = 'none';
+                if (divider) divider.style.display = 'none';
+            }} else if (mode === 'c2') {{
+                if (c1) c1.style.display = 'none';
+                if (c2) c2.style.display = 'block';
+                if (divider) divider.style.display = 'none';
+            }} else {{
+                if (c1) c1.style.display = 'block';
+                if (c2) c2.style.display = 'block';
+                if (divider) divider.style.display = 'flex';
+            }}
+        }}
+
         // Support direct tab deep-linking via URL hash (e.g. #summary, #ticker, #sources, #gw6-review, #gw5-review, #gw4-review, #gw3-review, #review)
         window.addEventListener('DOMContentLoaded', () => {{
             const hash = window.location.hash.replace('#', '');
@@ -4536,6 +4834,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     const gw3Btn = document.getElementById('btn-review-gw3');
                     if (gw3Btn) switchReviewGw(3, gw3Btn);
                 }}
+            }}
+            if (window.location.hash === '#choice-2' && window.innerWidth <= 768) {{
+                const c2Btn = document.querySelectorAll('.mobile-toggle-btn')[2];
+                if (c2Btn) setMobileLineupView('c2', c2Btn);
             }}
         }});
 
