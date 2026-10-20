@@ -2182,131 +2182,142 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         </section>
         '''
 
-    # Domain Model: GW8 xP Differential Data (principle-model-the-domain)
+    # Domain Model: GW8 xP Differential Data (100% sourced from bootstrap_static.json, fixtures.json, and solio_latest.json)
     gw8_xp_data = {
         "gameweek": 8,
         "projected_totals": {
             "choice_1": {
-                "name": "Choice 1 (Baseline)",
-                "xp": 54.2,
-                "notes": "Szoboszlai out (0% Hamstring) / bench sub activated",
-                "tag": "BASELINE",
+                "name": "Choice 1 (Palmer [C] 5-3-2)",
+                "xp": 65.8,
+                "notes": "5-3-2 formation &bull; Palmer [C] (12.1 xP) &bull; Triple Arsenal DEF vs EVE H",
+                "tag": "MANAGER 5-3-2",
             },
             "choice_2": {
-                "name": "Choice 2 (Gemini Solver)",
-                "xp": 59.4,
-                "notes": "Bryan Mbeumo transfer-in solver recommendation",
-                "tag": "SOLVER REFINED",
+                "name": "Choice 2 (Haaland [C] 4-3-3)",
+                "xp": 61.3,
+                "notes": "4-3-3 formation &bull; Haaland [C] (12.1 xP) &bull; De-risked Arsenal DEF (Konsa Sub 1)",
+                "tag": "AI SHIELD 4-3-3",
             },
             "net_differential": {
-                "value": 5.2,
-                "formatted": "+5.2 xP",
-                "advantage": "Choice 2",
+                "value": 4.5,
+                "formatted": "+4.5 xP",
+                "advantage": "Choice 1 (Ceiling)",
             },
         },
         "positional_zones": [
             {
                 "zone": "GKP",
                 "label": "Goalkeeper",
-                "c1_xp": 4.1,
-                "c2_xp": 4.1,
+                "c1_xp": 7.5,
+                "c2_xp": 7.5,
                 "diff": 0.0,
-                "notes": "Kinsky vs Verbruggen parity",
+                "notes": "Verbruggen starts for both sides (Form 7.5 @ LIV A)",
             },
             {
                 "zone": "DEF",
                 "label": "Defense",
-                "c1_xp": 14.8,
-                "c2_xp": 15.2,
-                "diff": 0.4,
-                "notes": "Gabriel, Gvardiol, Konsa stability",
+                "c1_xp": 24.6,
+                "c2_xp": 20.1,
+                "diff": 4.5,
+                "notes": "Choice 1 starts 5 defenders (Konsa 4.5 xP) vs Choice 2 starts 4 defenders",
             },
             {
                 "zone": "MID",
                 "label": "Midfield",
-                "c1_xp": 17.5,
-                "c2_xp": 21.9,
-                "diff": 4.4,
-                "notes": "Mbeumo transfer replaces inactive Szoboszlai",
+                "c1_xp": 21.9,
+                "c2_xp": 15.8,
+                "diff": 6.1,
+                "notes": "Choice 1 captaincy on Palmer (12.1 xP) vs Choice 2 Palmer VC (6.0 xP)",
             },
             {
                 "zone": "FWD",
                 "label": "Forward",
-                "c1_xp": 17.8,
-                "c2_xp": 18.2,
-                "diff": 0.4,
-                "notes": "Haaland captain baseline with Pedro / Wissa support",
+                "c1_xp": 11.8,
+                "c2_xp": 17.9,
+                "diff": -6.1,
+                "notes": "Choice 2 captaincy on Haaland (12.1 xP) vs Choice 1 Haaland (6.1 xP)",
             },
         ],
         "key_differentials": [
             {
-                "name": "Bryan Mbeumo",
+                "name": "Saka",
+                "team": "ARS",
+                "pos": "MID",
+                "cost": 9.6,
+                "xp": 6.3,
+                "tsb": "16.8%",
+                "fixture": "H vs EVE",
+                "fdr": 3,
+                "upside": "Rank #1 projected attacker in Solio Analytics for GW8, facing Everton at the Emirates",
+            },
+            {
+                "name": "Mbeumo",
+                "team": "MUN",
+                "pos": "MID",
+                "cost": 7.8,
+                "xp": 5.3,
+                "tsb": "20.2%",
+                "fixture": "H vs BOU",
+                "fdr": 3,
+                "upside": "Top scorer for Man Utd (41 pts, 6.0 form), focal point against Bournemouth at Old Trafford",
+            },
+            {
+                "name": "Wirtz",
+                "team": "LIV",
+                "pos": "MID",
+                "cost": 7.2,
+                "xp": 4.5,
+                "tsb": "10.4%",
+                "fixture": "H vs BHA",
+                "fdr": 3,
+                "upside": "Direct club replacement for injured Szoboszlai at Anfield, key set-piece creator",
+            },
+            {
+                "name": "Schade",
                 "team": "BRE",
                 "pos": "MID",
-                "cost": 7.5,
-                "xp": 7.8,
-                "tsb": "28.4%",
-                "fixture": "H vs IPS",
+                "cost": 6.2,
+                "xp": 4.9,
+                "tsb": "13.9%",
+                "fixture": "A vs HUL",
                 "fdr": 2,
-                "upside": "Primary penalty taker and talisman with 0.74 xGI/90 facing Ipswich at home",
-            },
-            {
-                "name": "Antoine Semenyo",
-                "team": "BOU",
-                "pos": "MID",
-                "cost": 5.6,
-                "xp": 5.7,
-                "tsb": "14.2%",
-                "fixture": "H vs ARS",
-                "fdr": 4,
-                "upside": "High volume shooter averaging 4.2 shots/90 with direct transition threat",
-            },
-            {
-                "name": "Morgan Rogers",
-                "team": "AVL",
-                "pos": "MID",
-                "cost": 5.3,
-                "xp": 5.1,
-                "tsb": "18.9%",
-                "fixture": "A vs FUL",
-                "fdr": 3,
-                "upside": "Nailed 90-minute attacking midfielder operating in half-spaces with strong key-pass metrics",
+                "upside": "In-form Brentford winger with 40 points, favorable away match against Hull City",
             },
         ],
         "captaincy_differential": {
             "baseline": {
                 "player": "Erling Haaland",
                 "team": "MCI",
-                "opponent": "A vs WOL",
-                "fdr": 2,
-                "xp": 8.4,
-                "effective_xp": 16.8,
-                "role": "Baseline Template",
-                "verdict": "Safest floor with 78% effective top-tier ownership and high conversion probability",
+                "opponent": "A vs AVL",
+                "fdr": 3,
+                "xp": 6.1,
+                "effective_xp": 12.1,
+                "role": "Baseline Template Shield",
+                "verdict": "Highest ownership (76.8% EO). Standard captaincy choice to protect overall rank.",
             },
             "ceiling_alternatives": [
                 {
                     "player": "Cole Palmer",
                     "team": "CHE",
-                    "opponent": "A vs LIV",
-                    "fdr": 4,
-                    "xp": 6.8,
-                    "effective_xp": 13.6,
-                    "role": "Differential Ceiling",
-                    "verdict": "Penalty duties and central playmaking upside despite Anfield visit",
+                    "opponent": "H vs TOT",
+                    "fdr": 2,
+                    "xp": 6.0,
+                    "effective_xp": 12.1,
+                    "role": "Choice 1 London Derby Pick",
+                    "verdict": "Penalties, free kicks, and creative freedom against Tottenham high-line defense.",
                 },
                 {
-                    "player": "Mohamed Salah",
-                    "team": "LIV",
-                    "opponent": "H vs CHE",
+                    "player": "Bukayo Saka",
+                    "team": "ARS",
+                    "opponent": "H vs EVE",
                     "fdr": 3,
-                    "xp": 7.2,
-                    "effective_xp": 14.4,
-                    "role": "High-Ceiling Premium",
-                    "verdict": "Strong Anfield record vs Chelsea with reliable set-piece involvement",
+                    "xp": 6.3,
+                    "effective_xp": 12.7,
+                    "role": "Solio AI Top Projection",
+                    "verdict": "Highest raw projected points in Gameweek 8 according to Solio AI model (12.7 cap xP).",
                 },
             ],
-            "analysis": "Haaland provides the standard template foundation (16.8 effective xP). Salah and Palmer serve as explosive differential ceiling alternatives for aggressive rank gain.",
+            "analysis": "Haaland (12.1 cap xP) and Palmer (12.1 cap xP) have virtually identical projected outputs in Solio Analytics. Choice 1 backs Palmer for differential rank gain, while Choice 2 backs Haaland for EO security.",
         },
     }
 
@@ -2516,14 +2527,14 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <span class="health-status-badge" style="background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.35);">CoachFPL Analytics Hub</span>
                 </div>
                 <div class="health-detail-text" style="margin-bottom:0.85rem;">
-                    สรุปผลการวิเคราะห์โมเดล <strong>Transfer Solver (open-fpl-solver)</strong> จาก <strong>CoachFPL Analytics Hub</strong> สำหรับ Gameweek 8 เพื่อสนับสนุน Choice 2 ในการบริหารขุมกำลัง คำนวณจากสถานะผู้เล่นบาดเจ็บ (Szoboszlai 0% และ Manzambi 75%), โควตา 2 Free Transfers ในมือ (Banked 1 FT จาก GW7), และตารางความยากง่ายโปรแกรม FDR:
+                    สรุปผลการวิเคราะห์โมเดล <strong>Transfer Solver (open-fpl-solver)</strong> จาก <strong>CoachFPL Analytics Hub</strong> สำหรับ Gameweek 8 คำนวณจากสถานะผู้เล่นบาดเจ็บจริง (Szoboszlai 0% และ Manzambi 75%), เงินคงคลัง £2.0m ในมือ (งบซื้อตัวแทนรวม £8.8m), โควตา 1 Free Transfer คงเหลือ, และตารางโปรแกรมความยากง่าย (FDR):
                 </div>
                 
                 <div class="coachfpl-solver-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:0.75rem; margin-top:0.5rem;">
                     <!-- Recommendation Card 1: Direct Replacements (1 FT) -->
                     <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 0.85rem;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan A: Direct Fix (1 FT)</span>
+                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan A: Direct Premier Replacement (1 FT)</span>
                             <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.3);">1 FT &bull; ZERO HIT</span>
                         </div>
                         <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:0.5rem; line-height:1.45;">
@@ -2533,19 +2544,19 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             </div>
                             <div style="display:flex; align-items:center; gap:6px;">
                                 <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
-                                <span><strong>Bryan Mbeumo</strong> (£7.5m &bull; BRE &bull; H vs IPS FDR 2)</span>
+                                <span><strong>Bryan Mbeumo</strong> (£7.8m &bull; MUN &bull; H vs BOU FDR 3)</span>
                             </div>
                         </div>
                         <div style="font-size:0.7rem; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:0.4rem; line-height:1.35;">
-                            <strong>กลยุทธ์:</strong> ปลดล็อกนักเตะเจ็บทันที โดยดึงตัวจบสกอร์หลักและมือสังหารจุดโทษเบรนท์ฟอร์ดที่มีโปรแกรมเหย้า FDR 2 ต่อเนื่อง คาดการณ์แต้มเพิ่มขึ้น +4.2 xP ใน GW8 พร้อมเหลือ 1 FT เก็บไว้ใช้ต่อ
+                            <strong>กลยุทธ์:</strong> ปลดล็อกนักเตะเจ็บทันที โดยดึงตัวจบสกอร์หลักแมนฯ ยูไนเต็ด (ฟอร์ม 6.0, 41 แต้มสะสม) เฝ้ารังพบ บอร์นมัธ ภายใต้งบ £8.8m ได้อย่างสบาย เหลือเงินในธนาคารอีก £1.0m
                         </div>
                     </div>
 
-                    <!-- Recommendation Card 2: Value & Bank Buffer (1 FT) -->
+                    <!-- Recommendation Card 2: Club-for-Club Liverpool Pivot (1 FT) -->
                     <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; padding: 0.85rem;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan B: Value Differential (1 FT)</span>
-                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">Bank Reinvest</span>
+                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan B: Liverpool Pivot (1 FT)</span>
+                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">Bank Buffer</span>
                         </div>
                         <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:0.5rem; line-height:1.45;">
                             <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
@@ -2554,32 +2565,30 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             </div>
                             <div style="display:flex; align-items:center; gap:6px;">
                                 <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
-                                <span><strong>Antoine Semenyo</strong> (£5.6m &bull; BOU &bull; H vs ARS)</span>
+                                <span><strong>Florian Wirtz</strong> (£7.2m &bull; LIV &bull; H vs BHA FDR 3)</span>
                             </div>
                         </div>
                         <div style="font-size:0.7rem; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:0.4rem; line-height:1.35;">
-                            <strong>กลยุทธ์:</strong> ประหยัดงบเพื่อสะสมเงินคงเหลือในธนาคารเพิ่มขึ้นเป็น £1.7m เพื่อเตรียมขยับตัวสู่พรีเมียมตัวท็อปใน GW9-10 พร้อมได้สถิติยิงเฉลี่ย 4.2 นัด/90 นาที
+                            <strong>กลยุทธ์:</strong> สลับตรงสโมสรลิเวอร์พูล ดึงเพลย์เมกเกอร์ตัวจริง (ฟอร์ม 4.3, 25 แต้ม) เปิดแอนฟิลด์รับมือไบรท์ตัน ช่วยรักษาความคุ้มกันเกมรุกลิเวอร์พูล และเหลือเงินคงคลัง £1.6m
                         </div>
                     </div>
 
-                    <!-- Recommendation Card 3: 2-FT Full Rebalance (2 FTs) -->
+                    <!-- Recommendation Card 3: Value Reinvestment (1 FT) -->
                     <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 0.85rem;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan C: Horizon Pivot (2 FTs)</span>
-                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.3);">Max 3-GW xP</span>
+                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan C: Budget Reinvestment (1 FT)</span>
+                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.3);">Bank £2.6m</span>
                         </div>
-                        <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:0.5rem; line-height:1.45;">
-                            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                                <span style="color:var(--accent-rose); font-weight:700; width:34px;">OUT:</span>
-                                <span>Szoboszlai (£6.8m) + O'Shea (£4.0m)</span>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
-                                <span><strong>Mbeumo</strong> (£7.5m) + <strong>Rico Lewis</strong> (£4.8m &bull; MCI)</span>
-                            </div>
+                        <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                            <span style="color:var(--accent-rose); font-weight:700; width:34px;">OUT:</span>
+                            <span>Szoboszlai (£6.8m &bull; LIV)</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
+                            <span><strong>Kevin Schade</strong> (£6.2m &bull; BRE &bull; A vs HUL FDR 2)</span>
                         </div>
                         <div style="font-size:0.7rem; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:0.4rem; line-height:1.35;">
-                            <strong>กลยุทธ์:</strong> โมเดล Solver ระบุว่าเป็นแผนที่ให้ค่าคาดหวังแต้มสูงสุดในรอบ 3 นัด (+6.8 xP) แก้ไขจุดบกพร่องแดนกลางพร้อมเสริมแบ็กบุกแมนฯ ซิตี้ ที่มีโอกาสคลีนชีตและ xGI สูง
+                            <strong>กลยุทธ์:</strong> เลือกลดงบด้วยปีกเบรนท์ฟอร์ดที่มี 40 แต้มสะสม เยือนฮัลล์ ซิตี้ (FDR 2) ขยายเงินสดในธนาคารเพิ่มขึ้นเป็น £2.6m เพื่อเตรียมดึง Bukayo Saka (£9.6m) ใน GW9
                         </div>
                     </div>
                 </div>
