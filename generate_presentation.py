@@ -294,6 +294,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         if m:
             active_gw = int(m.group(1))
     if not active_gw:
+        # Check if future picks file exists in data_dir (e.g. picks_gw8.json)
+        latest_picks_gw = None
+        if os.path.exists(data_dir):
+            for fn in sorted(os.listdir(data_dir)):
+                pm = re.match(r'picks_gw(\d+)\.json', fn)
+                if pm:
+                    latest_picks_gw = max(latest_picks_gw or 0, int(pm.group(1)))
+        if latest_picks_gw and latest_picks_gw > 1:
+            active_gw = latest_picks_gw
+    if not active_gw:
         # 1. If currently inside a gameweek that has passed deadline but not finished:
         for ev in bootstrap.get("events", []):
             if ev.get("deadline_time_epoch", 0) <= now_epoch and not ev.get("finished"):
@@ -518,7 +528,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 pass
 
     if not transferred_in_ids:
-        if active_gw == 5:
+        if active_gw == 8:
+            transferred_in_ids.add(272)
+        elif active_gw == 5:
             transferred_in_ids.add(68)
         elif active_gw == 4 and 15 in [p[0] for p in c1_ids]:
             transferred_in_ids.add(15)
@@ -558,8 +570,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     # Total Team Budget dynamically derived from Choice 1 and FPL Entry data
     total_budget = round(max(c1_cost + c1_bank, (entry.get("last_deadline_value", 1000) + entry.get("last_deadline_bank", 0)) / 10.0), 1)
 
-    user_free_transfers = 3 if active_gw >= 7 else (2 if active_gw in (4, 5, 6) else 1)
-    transfers_count = len(gw_transfers) if active_gw not in (5, 6, 7) else (2 if active_gw == 7 else (1 if active_gw == 5 else 0))
+    user_free_transfers = 2 if active_gw == 8 else (3 if active_gw == 7 else (2 if active_gw in (4, 5, 6) else 1))
+    transfers_count = len(gw_transfers) if active_gw not in (5, 6, 7, 8) else (1 if active_gw == 8 else (2 if active_gw == 7 else (1 if active_gw == 5 else 0)))
 
     def enforce_club_starter_limit(lineup_tuples, max_per_club=2):
         """
@@ -642,7 +654,31 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         return res
 
     # CHOICE 2: GEMINI Autonomous Tactical Variant (0 Hits)
-    if active_gw == 7:
+    if active_gw == 8:
+        # Choice 2: Tactical Refinement for GW8 (Haaland [C] EO Shield & Max 2 Starters per Club Rule &bull; 4-3-3)
+        # 1. Enforces Max 2 Starters per club: Gabriel + Calafiori start, Konsa benched (Sub 1 priority) to de-risk Triple Arsenal DEF wipeout.
+        # 2. Captaincy Shield: Locks Erling Haaland [C] (AVL A) to insulate against 76.8% EO rank collapse, with Palmer [VC] vs TOT H.
+        # 3. Kusi-Asare starts in 4-3-3 alongside João Pedro and Haaland.
+        c2_ids = [
+            (109, True, False, False, False, False),   # Verbruggen (GKP Starter @ LIV A)
+            (391, True, False, False, True, False),    # Gvardiol (DEF @ AVL A)
+            (4, True, False, False, True, False),      # Gabriel (DEF vs EVE H)
+            (8, True, False, False, False, False),     # Calafiori (DEF vs EVE H)
+            (304, True, False, False, False, False),   # O'Shea (DEF vs NFO H)
+            (124, True, False, False, False, False),   # Groß (MID @ LIV A)
+            (68, True, False, False, False, False),    # Tavernier (MID @ MUN A)
+            (154, True, False, True, False, False),    # Palmer (MID VC vs TOT H / Vice Captain)
+            (165, True, False, False, True, False),    # João Pedro (FWD vs TOT H)
+            (411, True, True, False, True, False),     # Haaland (FWD C @ AVL A / Captain & EO Shield)
+            (272, True, False, False, False, False),   # Kusi-Asare (FWD @ COV A)
+            # Bench
+            (496, False, False, False, False, False),  # Kinsky (GKP Sub @ CHE A)
+            (31, False, False, False, False, False),   # Konsa (DEF Sub 1 vs EVE H - De-risks Triple Arsenal DEF wipeout)
+            (368, False, False, False, True, False),   # Szoboszlai (MID Sub 2 vs BHA H - Flagged 0% Hamstring)
+            (53, False, False, False, False, False),   # Manzambi (MID Sub 3 vs MCI H - Flagged 75% Knock)
+        ]
+        c2_ids = enforce_club_starter_limit(c2_ids, max_per_club=2)
+    elif active_gw == 7:
         # Choice 2: Tactical Refinement (3-4-3 &bull; Unleash Manzambi Form 9.0 & De-risk Arsenal DEF)
         # 3-4-3 Formation: Verbruggen starts vs CRY (H - FDR 2), Manzambi promoted to MID starter, Konsa benched (Sub 1 priority)
         c2_ids = [
@@ -747,7 +783,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             bp["tactical_sub_idx"] = c2_outfield_sub
             c2_outfield_sub += 1
     c2_cost = sum(p["cost"] for p in c2_squad)
-    c2_bank = 0.5 if active_gw == 7 else (c1_bank if set(p[0] for p in c1_ids) == set(p[0] for p in c2_ids) else round(max(0.0, total_budget - c2_cost), 1))
+    c2_bank = 2.0 if active_gw == 8 else (0.5 if active_gw == 7 else (c1_bank if set(p[0] for p in c1_ids) == set(p[0] for p in c2_ids) else round(max(0.0, total_budget - c2_cost), 1)))
     c2_bank_str = f"+£{c2_bank:.1f}m"
 
     c2_def_count = sum(1 for p in c2_starters if p["pos"] == "DEF")
@@ -778,7 +814,38 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     c1_in_summary_str = " และ ".join([f"{p['web_name']} £{p['cost']:.1f}m" for p in c1_in_players_objs])
 
     # Dynamic Pros & Cons for Choice 1 and Choice 2:
-    if active_gw == 7:
+    if active_gw == 8:
+        c1_transfer_count_pill = f"{c1_actual_transfers} TRANSFER{'S' if c1_actual_transfers != 1 else ''} &bull; {c1_rem_fts} FT{'s' if c1_rem_fts != 1 else ''} BANKED &bull; {c1_hit_pill}"
+        c1_transfer_status_text = f"จัดทีมสัปดาห์ที่ 8 (ใช้ 1 Free Transfer ดึง {c1_in_summary_str or 'Kusi-Asare £4.4m'} &bull; เหลือ {c1_rem_fts} FT สะสมไป GW9 &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £{c1_bank:.1f}m)"
+        c2_pro_upgrade = "<strong>Erling Haaland Template Shield [C] & Arsenal Defense De-risking (Max 2 Starters):</strong> Choice 2 ล็อกปลอกแขนกัปตันให้ Erling Haaland เพื่อป้องกันอันดับโลกร่วงจากค่า EO มหาศาล 76.8% พร้อมพัก Konsa เป็นสำรองอันดับ 1 เพื่อลดความเสี่ยงเสียคลีนชีตอาร์เซน่อลพร้อมกัน 3 คน"
+        c2_con_transfer = "<strong>1 Free Transfer Banked for GW9 Super-Window:</strong> รักษา 1 Free Transfer สะสมไว้ต่อยอดเป็น 2 FTs ใน GW9 อย่างมั่นคง พร้อมเงินคงคลัง £2.0m"
+
+        c1_pros_items = [
+            ("Cole Palmer Captaincy Exploit [C] vs Tottenham (H - FDR 2):", "มอบปลอกแขนกัปตันให้ Cole Palmer (£9.7m) เปิดสแตมฟอร์ด บริดจ์ ดวลลอนดอนดาร์บี้กับสเปอร์สที่มีแนวรับดันสูง (High Line) เป็นโอกาสโกยแต้มสร้างความต่าง (Differential) เหนือกลุ่มผู้เล่นที่ล็อกกัปตัน Haaland"),
+            ("Triple Arsenal Defense Clean Sheet Stack (Gabriel + Calafiori + Konsa vs EVE H):", "ส่ง 3 ปราการหลังอาร์เซน่อลเฝ้าเอมิเรตส์ สเตเดี้ยม รับมือเอฟเวอร์ตัน หากอาร์เซน่อลเก็บคลีนชีตได้ จะกวาดแต้มคลีนชีตมหาศาลแบบทริปเปิล (+12 แต้มคลีนชีตทันที)"),
+            ("Massive Bank Liquidity Reinvestment (£2.0m Bank in Hand):", "การเปลี่ยนตัวปล่อย Yoane Wissa (£6.1m) แล้วดึง Jonah Kusi-Asare (£4.4m) ปลดล็อกเงินคงคลังเพิ่มขึ้นเป็น £2.0m ทำให้มีความยืดหยุ่นทางการเงินสูงสุดในการอัปเกรดแดนกลางหรือแนวรุกสู่ระดับพรีเมียมใน GW9-10"),
+            ("Solid 5-3-2 Defensive Structure & Injury Insulation:", "ปรับทัพยืนหลัง 5 คนโดยส่ง Dara O'Shea (พบ น็อตติ้งแฮม ฟอเรสต์ ในบ้าน) ลงเป็นตัวจริง ช่วยปิดจุดบกพร่องแดนกลางและลดความเสี่ยงจาก Szoboszlai (เจ็บ 0%) และ Manzambi (เจ็บ 75%)"),
+            ("1 Free Transfer Banked & Zero Hit (Cost 0 pts):", f"ใช้ 1 Free Transfer โดยไม่เสียแต้มลบ พร้อมสะสม 1 Free Transfer สำรองไว้ขยายเป็น 2 FTs ในสัปดาห์ที่ 9 พร้อมเงินคงคลัง £{c1_bank:.1f}m")
+        ]
+        c1_cons_items = [
+            ("Extreme Triple Arsenal Defense Wipeout Risk:", "การลงสนามกองหลังอาร์เซน่อลพร้อมกัน 3 คน หากเอฟเวอร์ตันยิงได้เพียงลูกเดียว แต้มคลีนชีตจะถูกลบหายไปพร้อมกันทั้งหมด 12 แต้มทันที"),
+            ("Erling Haaland Non-Captaincy Rank Exposure (76.8% EO Risk):", "การถอดปลอกแขนกัปตันจาก Erling Haaland (เยือน แอสตัน วิลล่า) มีความเสี่ยงอย่างยิ่งต่ออันดับโลก หาก Haaland ยิงแฮตทริกหรือระเบิดแต้ม อันดับโลกจะร่วงลงอย่างรุนแรงเนื่องจากผู้เล่นส่วนใหญ่ในระดับท็อปเลือกล็อกกัปตัน Haaland"),
+            ("Dual Away Goalkeepers in Heavy Fixtures (Verbruggen @ LIV A):", "ผู้รักษาประตูทั้งสองคนต้องเล่นเกมเยือนยากทั้งคู่ โดยเลือกส่ง Bart Verbruggen ออกไปเยือนแอนฟิลด์พบลิเวอร์พูล (LIV A - FDR 4) ขณะที่ Kinsky ต้องเยือนเชลซี (CHE A - FDR 4)"),
+            ("Benched Capital on Inactive Premium Midfielder:", "เงินลงทุนในตัว Dominik Szoboszlai (£6.8m) ต้องนั่งค้างบนม้านั่งสำรองเนื่องจากอาการบาดเจ็บกล้ามเนื้อต้นขาด้านหลัง (0%)")
+        ]
+        c2_plan_title = "Choice 2 &bull; GEMINI Refined Blueprint (Haaland [C] EO Shield & De-risk Arsenal DEF &bull; 4-3-3)"
+        c2_plan_pill = "Haaland [C] Shield &bull; De-risk Arsenal DEF"
+        c2_pros_items = [
+            ("Erling Haaland Captaincy Anchor [C] @ Aston Villa (A):", "ล็อกปลอกแขนกัปตันให้ Erling Haaland เพื่อคุ้มกันอันดับโลกจากค่า Effective Ownership มหาศาล 76.8% ป้องกันความเสี่ยงจากการถูกทิ้งห่าง"),
+            ("Tactical Arsenal Defense De-risking (Max 2 Starters Rule):", "จัดแนวรับส่ง Gabriel คู่ Calafiori และพัก Konsa เป็นตัวสำรองอันดับ 1 ช่วยลดความเสี่ยงจากการเสียคลีนชีตพร้อมกัน 3 คน และตรงตามหลักการกระจายความเสี่ยงระดับสโมสร"),
+            ("Cole Palmer Elite Vice-Captain [VC] vs Tottenham (H):", "มอบตำแหน่งรองกัปตันให้ Cole Palmer ที่ฟอร์มร้อนแรงในบ้านรับมือสเปอร์ส สแตนด์บายอย่างมั่นใจ"),
+            ("1 Free Transfer Banked for GW9 Super-Window:", "ใช้ 1 Free Transfer เท่ากับ Choice 1 โดยไม่เสียแต้มลบ พร้อมสะสม 1 FT สำรองไว้ขยายเป็น 2 FTs ใน GW9 และมีเงินคงคลัง £2.0m")
+        ]
+        c2_cons_items = [
+            ("Ezri Konsa Rotated to Bench (Sub 1 Priority):", "พัก Ezri Konsa เป็นตัวสำรองอันดับ 1 เพื่อลดการทับซ้อนของแผงหลังอาร์เซน่อล หากอาร์เซน่อลเก็บคลีนชีตได้ จะได้แต้มจากกองหลัง 2 คนแทนที่จะเป็น 3 คน"),
+            ("Dominik Szoboszlai Injury Buffer (Sub 2):", "พัก Szoboszlai ที่ติดธงแดงอาการบาดเจ็บ 0% ไว้บนม้านั่งสำรองอันดับ 2 เพื่อความปลอดภัยสูงสุด")
+        ]
+    elif active_gw == 7:
         c1_transfer_count_pill = f"{c1_actual_transfers} TRANSFER{'S' if c1_actual_transfers != 1 else ''} &bull; {c1_rem_fts} FT{'s' if c1_rem_fts != 1 else ''} BANKED &bull; {c1_hit_pill}"
         chip_tag_c1 = " &bull; เปิดใช้งาน Triple Captain [3x] Active" if c1_active_chip == "3xc" else ""
         if c1_actual_transfers > 0 and c1_in_summary_str:
@@ -1102,7 +1169,40 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         return ""
 
     # Build dynamic multi-week roadmap rows from real official fixtures
-    if active_gw == 7:
+    if active_gw == 8:
+        gw8_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 8), get_fixture_desc("CHE", 8), get_fixture_desc("LIV", 8), get_fixture_desc("ARS", 8)] if f])
+        gw9_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 9), get_fixture_desc("CHE", 9), get_fixture_desc("LIV", 9), get_fixture_desc("ARS", 9)] if f])
+        gw10_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 10), get_fixture_desc("CHE", 10), get_fixture_desc("LIV", 10), get_fixture_desc("ARS", 10)] if f])
+        gw11_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 11), get_fixture_desc("CHE", 11), get_fixture_desc("LIV", 11), get_fixture_desc("ARS", 11)] if f])
+
+        gw8_roadmap_strategy = "<strong>Palmer Differential Gamble [C] vs Haaland EO Shield:</strong> Choice 1 มอบปลอกแขนกัปตันให้ Cole Palmer สู้ศึกลอนดอนดาร์บี้ และวางแนวรับ 5 คน (Triple Arsenal DEF + O'Shea + Gvardiol) เพื่อแก้ปัญหากลางเจ็บ ขณะที่ Choice 2 ล็อกกัปตัน Haaland คุ้มกัน EO 76.8% และกระจายความเสี่ยงแนวรับอาร์เซน่อล (พัก Konsa สำรอง 1) พร้อมเงินคงคลัง £2.0m สะสม 1 FT ลุยต่อ GW9"
+
+        dynamic_roadmap_rows_html = f'''
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW8 (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">1/2 FTs USED &bull; 1 FT BANKED &bull; ZERO HIT</span></td>
+                                <td style="padding:8px 10px;">{gw8_fixes}</td>
+                                <td style="padding:8px 10px;">{gw8_roadmap_strategy}</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW9</td>
+                                <td style="padding:8px 10px;"><strong>2 FTs</strong> (ปลดล็อกเงิน £2.0m ในคลัง)</td>
+                                <td style="padding:8px 10px;">{gw9_fixes}</td>
+                                <td style="padding:8px 10px;">มี 2 Free Transfers และเงินสด £2.0m ในมือ เล็งเป้าเปลี่ยนตัวกลางพรีเมียม (Mbeumo / Saka / Diaz) แทน Szoboszlai ที่เจ็บ</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-subtle);">
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW10</td>
+                                <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (คงความยืดหยุ่น)</td>
+                                <td style="padding:8px 10px;">{gw10_fixes}</td>
+                                <td style="padding:8px 10px;">สลับปรับเปลี่ยนผู้เล่นตามโปรแกรมระยะกลาง และรักษาโครงสร้าง Zero Deadweight 15 ตัวจริง</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW11</td>
+                                <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (บริหารระยะยาว)</td>
+                                <td style="padding:8px 10px;">{gw11_fixes}</td>
+                                <td style="padding:8px 10px;">คงความได้เปรียบเรื่องมูลค่าทีมและโควตาย้ายตัวฟรี</td>
+                            </tr>'''
+    elif active_gw == 7:
         gw7_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 7), get_fixture_desc("CHE", 7), get_fixture_desc("LIV", 7), get_fixture_desc("ARS", 7)] if f])
         gw8_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 8), get_fixture_desc("CHE", 8), get_fixture_desc("LIV", 8), get_fixture_desc("ARS", 8)] if f])
         gw9_fixes = ", ".join([f for f in [get_fixture_desc("MCI", 9), get_fixture_desc("CHE", 9), get_fixture_desc("LIV", 9), get_fixture_desc("ARS", 9)] if f])
@@ -1245,7 +1345,14 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     transfers_out_players = [p for p in c1_squad if p["id"] not in c2_pids]
     transfers_in_players = [p for p in c2_squad if p["id"] not in c1_pids]
     
-    if active_gw == 7:
+    if active_gw == 8:
+        c2_chip_pill = f"GW{active_gw} &bull; 1/2 FTs USED &bull; 1 FT BANKED &bull; ZERO HIT"
+        c2_delta_title = "Transfers (Choice 1 Execution &bull; Kusi-Asare In &bull; Cash Freed)"
+        c2_delta_count_pill = "1 IN &bull; 1 OUT &bull; 0 PT HIT (1/2 FTs &bull; 1 FT BANKED)"
+        c2_delta_in_pills = '<span class="delta-pill pill-in"><span class="delta-pill-badge pos-FWD">FWD</span> <strong>Jonah Kusi-Asare</strong> <small>£4.4m &bull; FUL &bull; COV (A - FDR 2)</small></span>'
+        c2_delta_out_pills = '<span class="delta-pill pill-out"><span class="delta-pill-badge pos-FWD">FWD</span> <strong>Yoane Wissa</strong> <small>£6.1m &bull; NEW &bull; CRY (A - FDR 3)</small></span>'
+        c2_rule_notice = "เงื่อนไข: ใช้ 1 จาก 2 FTs ปล่อย Wissa (£6.1m) แล้วดึง Kusi-Asare (£4.4m) ปลดล็อกเงินคงคลัง £2.0m ในมือ &bull; Choice 2 ใช้ระบบ 4-3-3: ส่ง Haaland กัปตัน [C] เพื่อคุ้มกันอันดับโลกจากค่า EO 76.8% พร้อมพัก Konsa เป็นสำรองอันดับ 1 เพื่อลดความเสี่ยงเสียคลีนชีตอาร์เซน่อลพร้อมกัน 3 คน (ตรงตามกฎ Max 2 ต่อสโมสร) &bull; เหลือ 1 FT สะสมไป GW9 &bull; เงินคงคลัง £2.0m"
+    elif active_gw == 7:
         c2_chip_pill = f"GW{active_gw} &bull; 2/3 FTs USED &bull; 1 FT BANKED &bull; ZERO HIT"
         c2_delta_title = "Transfers (Confirmed 2 FTs Execution &bull; Calafiori & Manzambi In)"
         c2_delta_count_pill = "2 IN &bull; 2 OUT &bull; 0 PT HIT (2/3 FTs &bull; 1 FT BANKED)"
