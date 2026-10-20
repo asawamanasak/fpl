@@ -1226,6 +1226,44 @@
             border-bottom: none;
         }
 
+        /* GW8 xP Differential Metric Widget */
+        .xp-differential-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .xp-summary-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .xp-zones-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .xp-card {
+            background: rgba(9, 12, 16, 0.6);
+            border: 1px solid var(--border-main);
+            border-radius: 8px;
+            padding: 0.85rem;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
         /* FULL SEASON FDR TICKER */
         .ticker-container {
             background: var(--bg-surface);
@@ -2498,10 +2536,32 @@
                 word-break: break-word;
                 overflow-wrap: break-word;
             }
-            .coachfpl-solver-grid {
+            .coachfpl-solver-grid, .xp-differential-grid {
                 grid-template-columns: 1fr !important;
                 gap: 0.65rem !important;
+                min-width: 0 !important;
                 width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .xp-summary-strip {
+                grid-template-columns: 1fr !important;
+                gap: 0.5rem !important;
+                min-width: 0 !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .xp-zones-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.45rem !important;
+                min-width: 0 !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .xp-card {
+                padding: 0.65rem 0.75rem !important;
+                min-width: 0 !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
             }
             .chip-inventory-card {
                 min-width: calc(50% - 0.25rem) !important;
@@ -2787,6 +2847,9 @@
             .chip-inventory-card {
                 min-width: 100% !important;
             }
+            .xp-zones-grid {
+                grid-template-columns: 1fr !important;
+            }
             .compact-pitch {
                 padding: 0.35rem 2px;
             }
@@ -2869,7 +2932,7 @@
                     <h1>
                         <span class="team-name">GEMINI UNITED</span> 
                         <span class="team-id-tag">(ID: 306983)</span> 
-                        <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 20/10/2026 08:43 AM<span class="sync-tag-active">ACTIVE</span></span>
+                        <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 20/10/2026 09:04 AM<span class="sync-tag-active">ACTIVE</span></span>
                     </h1>
                     <p class="manager-meta-line">
                         <span class="manager-name">Manager: Micky Asawamanasak</span> 
@@ -4034,6 +4097,269 @@
                     </table>
                 </div>
             </div>
+
+
+            <!-- Tactical Metric Card: Gameweek 8 Expected Points (xP) Differential -->
+            <div class="squad-health-widget" style="border-color: rgba(16, 185, 129, 0.4); background: linear-gradient(180deg, rgba(15, 20, 28, 0.95) 0%, rgba(21, 27, 38, 0.85) 100%); min-width: 0; width: 100%; box-sizing: border-box;">
+                <div class="health-top-bar">
+                    <div class="health-meta">
+                        <span class="health-dot-active" style="background:var(--accent-emerald); box-shadow:0 0 8px var(--accent-emerald);"></span>
+                        <span class="health-heading">Gameweek 8 &bull; Expected Points (xP) Differential &amp; Tactical Projection</span>
+                    </div>
+                    <span class="health-status-badge" style="background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.35);">+5.2 xP ADVANTAGE (CHOICE 2)</span>
+                </div>
+                
+                <div class="health-detail-text" style="margin-bottom:0.75rem;">
+                    การประเมินค่าความน่าจะเป็นเชิงแต้ม (Expected Points: xP) เปรียบเทียบระหว่างโครงสร้าง <strong>Choice 1 (Baseline)</strong> กับ <strong>Choice 2 (Gemini Solver)</strong> สำหรับ Gameweek 8 วิเคราะห์ตามโมเดลตัวเลข Open-FPL และอัตราความเสี่ยงผู้เล่นบาดเจ็บ:
+                </div>
+
+                <!-- 1. Top Projected Totals Strip -->
+                <div class="xp-summary-strip">
+                    <div class="xp-card" style="border-color: rgba(148, 163, 184, 0.25);">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:0.62rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Choice 1 Projected</span>
+                            <span style="font-size:0.55rem; padding:1px 5px; border-radius:3px; background:rgba(148, 163, 184, 0.15); color:var(--text-secondary); border:1px solid rgba(148, 163, 184, 0.25);">BASELINE</span>
+                        </div>
+                        <div style="font-size:1.35rem; font-weight:800; color:#ffffff; font-family:'JetBrains Mono', monospace; line-height:1.2;">
+                            54.2 <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500;">xP</span>
+                        </div>
+                        <div style="font-size:0.66rem; color:var(--text-muted); line-height:1.35;">
+                            Szoboszlai out (0% Hamstring) / bench sub activated
+                        </div>
+                    </div>
+
+                    <div class="xp-card" style="border-color: rgba(16, 185, 129, 0.35); background: linear-gradient(180deg, rgba(9, 12, 16, 0.8) 0%, rgba(16, 185, 129, 0.06) 100%);">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:0.62rem; font-weight:700; color:var(--accent-emerald); text-transform:uppercase; letter-spacing:0.5px;">Choice 2 Projected</span>
+                            <span style="font-size:0.55rem; padding:1px 5px; border-radius:3px; background:rgba(16, 185, 129, 0.2); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.4);">SOLVER REFINED</span>
+                        </div>
+                        <div style="font-size:1.35rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace; line-height:1.2;">
+                            59.4 <span style="font-size:0.75rem; color:var(--accent-emerald); font-weight:500;">xP</span>
+                        </div>
+                        <div style="font-size:0.66rem; color:var(--text-secondary); line-height:1.35;">
+                            Bryan Mbeumo transfer-in solver recommendation
+                        </div>
+                    </div>
+
+                    <div class="xp-card" style="border-color: rgba(56, 189, 248, 0.35); background: linear-gradient(180deg, rgba(9, 12, 16, 0.8) 0%, rgba(56, 189, 248, 0.06) 100%);">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:0.62rem; font-weight:700; color:var(--accent-sky); text-transform:uppercase; letter-spacing:0.5px;">Net Differential</span>
+                            <span style="font-size:0.55rem; padding:1px 5px; border-radius:3px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">+9.6% GAIN</span>
+                        </div>
+                        <div style="font-size:1.35rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace; line-height:1.2;">
+                            +5.2 xP
+                        </div>
+                        <div style="font-size:0.66rem; color:var(--text-secondary); line-height:1.35;">
+                            ความได้เปรียบสุทธิของ Choice 2 จากการปลดล็อกผู้เล่นบาดเจ็บและดึงฟอร์มรุก
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Positional Zone Differentials -->
+                <div style="margin-bottom:0.85rem;">
+                    <div style="font-size:0.7rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
+                        <span>Positional Zone Differentials (GKP / DEF / MID / FWD)</span>
+                        <span style="font-size:0.58rem; color:var(--text-muted); font-weight:500;">(Choice 1 vs Choice 2 Expected Points per Line)</span>
+                    </div>
+                    <div class="xp-zones-grid">
+                        
+            <div class="xp-card" style="padding:0.65rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+                    <span class="pos-tag-mini pos-GKP">GKP</span>
+                    <span style="font-size:0.65rem; font-weight:700; color:var(--text-muted); font-family:'JetBrains Mono', monospace;">0.0 xP</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:0.25rem;">
+                    <span style="color:var(--text-muted);">C1: <strong style="color:var(--text-main); font-family:'JetBrains Mono', monospace;">4.1</strong></span>
+                    <span style="color:var(--text-muted);">C2: <strong style="color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">4.1</strong></span>
+                </div>
+                <div style="font-size:0.64rem; color:var(--text-secondary); line-height:1.35; border-top:1px solid var(--border-muted); padding-top:0.3rem;">
+                    Kinsky vs Verbruggen parity
+                </div>
+            </div>
+        
+            <div class="xp-card" style="padding:0.65rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+                    <span class="pos-tag-mini pos-DEF">DEF</span>
+                    <span style="font-size:0.65rem; font-weight:700; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">+0.4 xP</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:0.25rem;">
+                    <span style="color:var(--text-muted);">C1: <strong style="color:var(--text-main); font-family:'JetBrains Mono', monospace;">14.8</strong></span>
+                    <span style="color:var(--text-muted);">C2: <strong style="color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">15.2</strong></span>
+                </div>
+                <div style="font-size:0.64rem; color:var(--text-secondary); line-height:1.35; border-top:1px solid var(--border-muted); padding-top:0.3rem;">
+                    Gabriel, Gvardiol, Konsa stability
+                </div>
+            </div>
+        
+            <div class="xp-card" style="padding:0.65rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+                    <span class="pos-tag-mini pos-MID">MID</span>
+                    <span style="font-size:0.65rem; font-weight:700; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">+4.4 xP</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:0.25rem;">
+                    <span style="color:var(--text-muted);">C1: <strong style="color:var(--text-main); font-family:'JetBrains Mono', monospace;">17.5</strong></span>
+                    <span style="color:var(--text-muted);">C2: <strong style="color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">21.9</strong></span>
+                </div>
+                <div style="font-size:0.64rem; color:var(--text-secondary); line-height:1.35; border-top:1px solid var(--border-muted); padding-top:0.3rem;">
+                    Mbeumo transfer replaces inactive Szoboszlai
+                </div>
+            </div>
+        
+            <div class="xp-card" style="padding:0.65rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+                    <span class="pos-tag-mini pos-FWD">FWD</span>
+                    <span style="font-size:0.65rem; font-weight:700; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">+0.4 xP</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:0.25rem;">
+                    <span style="color:var(--text-muted);">C1: <strong style="color:var(--text-main); font-family:'JetBrains Mono', monospace;">17.8</strong></span>
+                    <span style="color:var(--text-muted);">C2: <strong style="color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">18.2</strong></span>
+                </div>
+                <div style="font-size:0.64rem; color:var(--text-secondary); line-height:1.35; border-top:1px solid var(--border-muted); padding-top:0.3rem;">
+                    Haaland captain baseline with Pedro / Wissa support
+                </div>
+            </div>
+        
+                    </div>
+                </div>
+
+                <!-- 3. Key Differential Players -->
+                <div style="margin-bottom:0.85rem;">
+                    <div style="font-size:0.7rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
+                        <span>Key Differential Transfer Targets (Solver Top Picks)</span>
+                        <span style="font-size:0.58rem; color:var(--text-muted); font-weight:500;">(xP, Fixture FDR, TSB Ownership, and Tactical Upside)</span>
+                    </div>
+                    <div class="xp-differential-grid">
+                        
+            <div class="xp-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.4rem;">
+                    <div>
+                        <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">
+                            <span class="pos-tag-mini pos-MID">MID</span>
+                            <span style="font-size:0.85rem; font-weight:700; color:var(--text-main);">Bryan Mbeumo</span>
+                        </div>
+                        <div style="font-size:0.68rem; color:var(--text-muted);">BRE &bull; £7.5m &bull; TSB: 28.4%</div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
+                        <span class="fdr-pill fdr-2">H vs IPS (FDR 2)</span>
+                        <span style="font-size:0.75rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">7.8 xP</span>
+                    </div>
+                </div>
+                <div style="font-size:0.7rem; color:var(--text-secondary); line-height:1.45; border-top:1px solid var(--border-muted); padding-top:0.4rem;">
+                    <strong>Upside:</strong> Primary penalty taker and talisman with 0.74 xGI/90 facing Ipswich at home
+                </div>
+            </div>
+        
+            <div class="xp-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.4rem;">
+                    <div>
+                        <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">
+                            <span class="pos-tag-mini pos-MID">MID</span>
+                            <span style="font-size:0.85rem; font-weight:700; color:var(--text-main);">Antoine Semenyo</span>
+                        </div>
+                        <div style="font-size:0.68rem; color:var(--text-muted);">BOU &bull; £5.6m &bull; TSB: 14.2%</div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
+                        <span class="fdr-pill fdr-4">H vs ARS (FDR 4)</span>
+                        <span style="font-size:0.75rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">5.7 xP</span>
+                    </div>
+                </div>
+                <div style="font-size:0.7rem; color:var(--text-secondary); line-height:1.45; border-top:1px solid var(--border-muted); padding-top:0.4rem;">
+                    <strong>Upside:</strong> High volume shooter averaging 4.2 shots/90 with direct transition threat
+                </div>
+            </div>
+        
+            <div class="xp-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.4rem;">
+                    <div>
+                        <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">
+                            <span class="pos-tag-mini pos-MID">MID</span>
+                            <span style="font-size:0.85rem; font-weight:700; color:var(--text-main);">Morgan Rogers</span>
+                        </div>
+                        <div style="font-size:0.68rem; color:var(--text-muted);">AVL &bull; £5.3m &bull; TSB: 18.9%</div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
+                        <span class="fdr-pill fdr-3">A vs FUL (FDR 3)</span>
+                        <span style="font-size:0.75rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">5.1 xP</span>
+                    </div>
+                </div>
+                <div style="font-size:0.7rem; color:var(--text-secondary); line-height:1.45; border-top:1px solid var(--border-muted); padding-top:0.4rem;">
+                    <strong>Upside:</strong> Nailed 90-minute attacking midfielder operating in half-spaces with strong key-pass metrics
+                </div>
+            </div>
+        
+                    </div>
+                </div>
+
+                <!-- 4. Captaincy Differential Analysis -->
+                <div>
+                    <div style="font-size:0.7rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
+                        <span>Captaincy Differential &amp; Ceiling Matrix</span>
+                        <span style="font-size:0.58rem; color:var(--text-muted); font-weight:500;">(Template Baseline vs Explosive Upside)</span>
+                    </div>
+                    <div class="xp-differential-grid" style="grid-template-columns: 1fr 1fr;">
+                        <!-- Baseline Captain -->
+                        <div class="xp-card" style="border-color:rgba(16, 185, 129, 0.35);">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem;">C</span>
+                                    <span style="font-size:0.82rem; font-weight:700; color:var(--text-bright);">Erling Haaland (MCI)</span>
+                                </div>
+                                <span class="fdr-pill fdr-2">A vs WOL</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.35rem;">
+                                <span style="font-size:0.68rem; color:var(--text-muted);">Baseline Template</span>
+                                <span style="font-size:1.05rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">16.8 cap xP <small style="font-size:0.65rem; color:var(--text-muted);">(8.4x2)</small></span>
+                            </div>
+                            <div style="font-size:0.68rem; color:var(--text-secondary); line-height:1.4; border-top:1px solid var(--border-muted); padding-top:0.35rem;">
+                                Safest floor with 78% effective top-tier ownership and high conversion probability
+                            </div>
+                        </div>
+
+                        <!-- Differential Ceiling Alternatives -->
+                        <div class="xp-card" style="border-color:rgba(56, 189, 248, 0.35);">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+                                <span style="font-size:0.75rem; font-weight:700; color:var(--accent-sky);">Differential Ceiling Contenders</span>
+                                <span style="font-size:0.58rem; color:var(--text-muted);">Rank Acceleration Options</span>
+                            </div>
+                            
+            <div style="background:rgba(15, 23, 42, 0.5); border:1px solid var(--border-muted); border-radius:6px; padding:0.55rem; margin-top:0.4rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem;">C</span>
+                        <span style="font-size:0.78rem; font-weight:700; color:var(--text-main);">Cole Palmer (CHE)</span>
+                        <span style="font-size:0.62rem; color:var(--text-muted);">A vs LIV</span>
+                    </div>
+                    <span style="font-size:0.72rem; font-weight:700; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">13.6 cap xP</span>
+                </div>
+                <div style="font-size:0.66rem; color:var(--text-secondary); line-height:1.35;">
+                    Penalty duties and central playmaking upside despite Anfield visit
+                </div>
+            </div>
+        
+            <div style="background:rgba(15, 23, 42, 0.5); border:1px solid var(--border-muted); border-radius:6px; padding:0.55rem; margin-top:0.4rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem;">C</span>
+                        <span style="font-size:0.78rem; font-weight:700; color:var(--text-main);">Mohamed Salah (LIV)</span>
+                        <span style="font-size:0.62rem; color:var(--text-muted);">H vs CHE</span>
+                    </div>
+                    <span style="font-size:0.72rem; font-weight:700; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">14.4 cap xP</span>
+                </div>
+                <div style="font-size:0.66rem; color:var(--text-secondary); line-height:1.35;">
+                    Strong Anfield record vs Chelsea with reliable set-piece involvement
+                </div>
+            </div>
+        
+                        </div>
+                    </div>
+
+                    <div style="font-size:0.7rem; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:0.45rem; margin-top:0.6rem; line-height:1.45;">
+                        <strong>สรุปกลยุทธ์กัปตัน:</strong> Haaland provides the standard template foundation (16.8 effective xP). Salah and Palmer serve as explosive differential ceiling alternatives for aggressive rank gain.
+                    </div>
+                </div>
+
+            </div>
+    
 
 
             <!-- Tactical Summary Card: CoachFPL GW8 Transfer Solver Suggestions -->

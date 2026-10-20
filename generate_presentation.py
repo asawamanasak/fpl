@@ -2075,6 +2075,328 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         </section>
         '''
 
+    # Domain Model: GW8 xP Differential Data (principle-model-the-domain)
+    gw8_xp_data = {
+        "gameweek": 8,
+        "projected_totals": {
+            "choice_1": {
+                "name": "Choice 1 (Baseline)",
+                "xp": 54.2,
+                "notes": "Szoboszlai out (0% Hamstring) / bench sub activated",
+                "tag": "BASELINE",
+            },
+            "choice_2": {
+                "name": "Choice 2 (Gemini Solver)",
+                "xp": 59.4,
+                "notes": "Bryan Mbeumo transfer-in solver recommendation",
+                "tag": "SOLVER REFINED",
+            },
+            "net_differential": {
+                "value": 5.2,
+                "formatted": "+5.2 xP",
+                "advantage": "Choice 2",
+            },
+        },
+        "positional_zones": [
+            {
+                "zone": "GKP",
+                "label": "Goalkeeper",
+                "c1_xp": 4.1,
+                "c2_xp": 4.1,
+                "diff": 0.0,
+                "notes": "Kinsky vs Verbruggen parity",
+            },
+            {
+                "zone": "DEF",
+                "label": "Defense",
+                "c1_xp": 14.8,
+                "c2_xp": 15.2,
+                "diff": 0.4,
+                "notes": "Gabriel, Gvardiol, Konsa stability",
+            },
+            {
+                "zone": "MID",
+                "label": "Midfield",
+                "c1_xp": 17.5,
+                "c2_xp": 21.9,
+                "diff": 4.4,
+                "notes": "Mbeumo transfer replaces inactive Szoboszlai",
+            },
+            {
+                "zone": "FWD",
+                "label": "Forward",
+                "c1_xp": 17.8,
+                "c2_xp": 18.2,
+                "diff": 0.4,
+                "notes": "Haaland captain baseline with Pedro / Wissa support",
+            },
+        ],
+        "key_differentials": [
+            {
+                "name": "Bryan Mbeumo",
+                "team": "BRE",
+                "pos": "MID",
+                "cost": 7.5,
+                "xp": 7.8,
+                "tsb": "28.4%",
+                "fixture": "H vs IPS",
+                "fdr": 2,
+                "upside": "Primary penalty taker and talisman with 0.74 xGI/90 facing Ipswich at home",
+            },
+            {
+                "name": "Antoine Semenyo",
+                "team": "BOU",
+                "pos": "MID",
+                "cost": 5.6,
+                "xp": 5.7,
+                "tsb": "14.2%",
+                "fixture": "H vs ARS",
+                "fdr": 4,
+                "upside": "High volume shooter averaging 4.2 shots/90 with direct transition threat",
+            },
+            {
+                "name": "Morgan Rogers",
+                "team": "AVL",
+                "pos": "MID",
+                "cost": 5.3,
+                "xp": 5.1,
+                "tsb": "18.9%",
+                "fixture": "A vs FUL",
+                "fdr": 3,
+                "upside": "Nailed 90-minute attacking midfielder operating in half-spaces with strong key-pass metrics",
+            },
+        ],
+        "captaincy_differential": {
+            "baseline": {
+                "player": "Erling Haaland",
+                "team": "MCI",
+                "opponent": "A vs WOL",
+                "fdr": 2,
+                "xp": 8.4,
+                "effective_xp": 16.8,
+                "role": "Baseline Template",
+                "verdict": "Safest floor with 78% effective top-tier ownership and high conversion probability",
+            },
+            "ceiling_alternatives": [
+                {
+                    "player": "Cole Palmer",
+                    "team": "CHE",
+                    "opponent": "A vs LIV",
+                    "fdr": 4,
+                    "xp": 6.8,
+                    "effective_xp": 13.6,
+                    "role": "Differential Ceiling",
+                    "verdict": "Penalty duties and central playmaking upside despite Anfield visit",
+                },
+                {
+                    "player": "Mohamed Salah",
+                    "team": "LIV",
+                    "opponent": "H vs CHE",
+                    "fdr": 3,
+                    "xp": 7.2,
+                    "effective_xp": 14.4,
+                    "role": "High-Ceiling Premium",
+                    "verdict": "Strong Anfield record vs Chelsea with reliable set-piece involvement",
+                },
+            ],
+            "analysis": "Haaland provides the standard template foundation (16.8 effective xP). Salah and Palmer serve as explosive differential ceiling alternatives for aggressive rank gain.",
+        },
+    }
+
+    # Render Positional Zones HTML
+    xp_zones_html_list = []
+    for z in gw8_xp_data["positional_zones"]:
+        diff_color = "var(--accent-emerald)" if z["diff"] > 0 else "var(--text-muted)"
+        diff_str = f"+{z['diff']:.1f} xP" if z["diff"] > 0 else f"{z['diff']:.1f} xP"
+        xp_zones_html_list.append(f'''
+            <div class="xp-card" style="padding:0.65rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+                    <span class="pos-tag-mini pos-{z['zone']}">{z['zone']}</span>
+                    <span style="font-size:0.65rem; font-weight:700; color:{diff_color}; font-family:'JetBrains Mono', monospace;">{diff_str}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:0.25rem;">
+                    <span style="color:var(--text-muted);">C1: <strong style="color:var(--text-main); font-family:'JetBrains Mono', monospace;">{z['c1_xp']:.1f}</strong></span>
+                    <span style="color:var(--text-muted);">C2: <strong style="color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">{z['c2_xp']:.1f}</strong></span>
+                </div>
+                <div style="font-size:0.64rem; color:var(--text-secondary); line-height:1.35; border-top:1px solid var(--border-muted); padding-top:0.3rem;">
+                    {z['notes']}
+                </div>
+            </div>
+        ''')
+    xp_zones_html = "".join(xp_zones_html_list)
+
+    # Render Key Differentials HTML
+    xp_diff_players_list = []
+    for dp in gw8_xp_data["key_differentials"]:
+        fdr_class = f"fdr-{dp['fdr']}"
+        pos_class = f"pos-{dp['pos']}"
+        xp_diff_players_list.append(f'''
+            <div class="xp-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.4rem;">
+                    <div>
+                        <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">
+                            <span class="pos-tag-mini {pos_class}">{dp['pos']}</span>
+                            <span style="font-size:0.85rem; font-weight:700; color:var(--text-main);">{dp['name']}</span>
+                        </div>
+                        <div style="font-size:0.68rem; color:var(--text-muted);">{dp['team']} &bull; £{dp['cost']:.1f}m &bull; TSB: {dp['tsb']}</div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
+                        <span class="fdr-pill {fdr_class}">{dp['fixture']} (FDR {dp['fdr']})</span>
+                        <span style="font-size:0.75rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">{dp['xp']:.1f} xP</span>
+                    </div>
+                </div>
+                <div style="font-size:0.7rem; color:var(--text-secondary); line-height:1.45; border-top:1px solid var(--border-muted); padding-top:0.4rem;">
+                    <strong>Upside:</strong> {dp['upside']}
+                </div>
+            </div>
+        ''')
+    xp_diff_players_html = "".join(xp_diff_players_list)
+
+    # Render Captaincy Differentials HTML
+    cap_baseline = gw8_xp_data["captaincy_differential"]["baseline"]
+    cap_ceilings = gw8_xp_data["captaincy_differential"]["ceiling_alternatives"]
+    cap_ceilings_html_list = []
+    for c_alt in cap_ceilings:
+        cap_ceilings_html_list.append(f'''
+            <div style="background:rgba(15, 23, 42, 0.5); border:1px solid var(--border-muted); border-radius:6px; padding:0.55rem; margin-top:0.4rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem;">C</span>
+                        <span style="font-size:0.78rem; font-weight:700; color:var(--text-main);">{c_alt['player']} ({c_alt['team']})</span>
+                        <span style="font-size:0.62rem; color:var(--text-muted);">{c_alt['opponent']}</span>
+                    </div>
+                    <span style="font-size:0.72rem; font-weight:700; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">{c_alt['effective_xp']:.1f} cap xP</span>
+                </div>
+                <div style="font-size:0.66rem; color:var(--text-secondary); line-height:1.35;">
+                    {c_alt['verdict']}
+                </div>
+            </div>
+        ''')
+    cap_ceilings_html = "".join(cap_ceilings_html_list)
+
+    # Build GW8 xP Differential Widget HTML
+    gw8_xp_widget_html = f'''
+            <!-- Tactical Metric Card: Gameweek 8 Expected Points (xP) Differential -->
+            <div class="squad-health-widget" style="border-color: rgba(16, 185, 129, 0.4); background: linear-gradient(180deg, rgba(15, 20, 28, 0.95) 0%, rgba(21, 27, 38, 0.85) 100%); min-width: 0; width: 100%; box-sizing: border-box;">
+                <div class="health-top-bar">
+                    <div class="health-meta">
+                        <span class="health-dot-active" style="background:var(--accent-emerald); box-shadow:0 0 8px var(--accent-emerald);"></span>
+                        <span class="health-heading">Gameweek 8 &bull; Expected Points (xP) Differential &amp; Tactical Projection</span>
+                    </div>
+                    <span class="health-status-badge" style="background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.35);">+5.2 xP ADVANTAGE (CHOICE 2)</span>
+                </div>
+                
+                <div class="health-detail-text" style="margin-bottom:0.75rem;">
+                    การประเมินค่าความน่าจะเป็นเชิงแต้ม (Expected Points: xP) เปรียบเทียบระหว่างโครงสร้าง <strong>Choice 1 (Baseline)</strong> กับ <strong>Choice 2 (Gemini Solver)</strong> สำหรับ Gameweek 8 วิเคราะห์ตามโมเดลตัวเลข Open-FPL และอัตราความเสี่ยงผู้เล่นบาดเจ็บ:
+                </div>
+
+                <!-- 1. Top Projected Totals Strip -->
+                <div class="xp-summary-strip">
+                    <div class="xp-card" style="border-color: rgba(148, 163, 184, 0.25);">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:0.62rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Choice 1 Projected</span>
+                            <span style="font-size:0.55rem; padding:1px 5px; border-radius:3px; background:rgba(148, 163, 184, 0.15); color:var(--text-secondary); border:1px solid rgba(148, 163, 184, 0.25);">BASELINE</span>
+                        </div>
+                        <div style="font-size:1.35rem; font-weight:800; color:#ffffff; font-family:'JetBrains Mono', monospace; line-height:1.2;">
+                            {gw8_xp_data["projected_totals"]["choice_1"]["xp"]:.1f} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500;">xP</span>
+                        </div>
+                        <div style="font-size:0.66rem; color:var(--text-muted); line-height:1.35;">
+                            {gw8_xp_data["projected_totals"]["choice_1"]["notes"]}
+                        </div>
+                    </div>
+
+                    <div class="xp-card" style="border-color: rgba(16, 185, 129, 0.35); background: linear-gradient(180deg, rgba(9, 12, 16, 0.8) 0%, rgba(16, 185, 129, 0.06) 100%);">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:0.62rem; font-weight:700; color:var(--accent-emerald); text-transform:uppercase; letter-spacing:0.5px;">Choice 2 Projected</span>
+                            <span style="font-size:0.55rem; padding:1px 5px; border-radius:3px; background:rgba(16, 185, 129, 0.2); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.4);">SOLVER REFINED</span>
+                        </div>
+                        <div style="font-size:1.35rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace; line-height:1.2;">
+                            {gw8_xp_data["projected_totals"]["choice_2"]["xp"]:.1f} <span style="font-size:0.75rem; color:var(--accent-emerald); font-weight:500;">xP</span>
+                        </div>
+                        <div style="font-size:0.66rem; color:var(--text-secondary); line-height:1.35;">
+                            {gw8_xp_data["projected_totals"]["choice_2"]["notes"]}
+                        </div>
+                    </div>
+
+                    <div class="xp-card" style="border-color: rgba(56, 189, 248, 0.35); background: linear-gradient(180deg, rgba(9, 12, 16, 0.8) 0%, rgba(56, 189, 248, 0.06) 100%);">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:0.62rem; font-weight:700; color:var(--accent-sky); text-transform:uppercase; letter-spacing:0.5px;">Net Differential</span>
+                            <span style="font-size:0.55rem; padding:1px 5px; border-radius:3px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">+9.6% GAIN</span>
+                        </div>
+                        <div style="font-size:1.35rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace; line-height:1.2;">
+                            {gw8_xp_data["projected_totals"]["net_differential"]["formatted"]}
+                        </div>
+                        <div style="font-size:0.66rem; color:var(--text-secondary); line-height:1.35;">
+                            ความได้เปรียบสุทธิของ Choice 2 จากการปลดล็อกผู้เล่นบาดเจ็บและดึงฟอร์มรุก
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Positional Zone Differentials -->
+                <div style="margin-bottom:0.85rem;">
+                    <div style="font-size:0.7rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
+                        <span>Positional Zone Differentials (GKP / DEF / MID / FWD)</span>
+                        <span style="font-size:0.58rem; color:var(--text-muted); font-weight:500;">(Choice 1 vs Choice 2 Expected Points per Line)</span>
+                    </div>
+                    <div class="xp-zones-grid">
+                        {xp_zones_html}
+                    </div>
+                </div>
+
+                <!-- 3. Key Differential Players -->
+                <div style="margin-bottom:0.85rem;">
+                    <div style="font-size:0.7rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
+                        <span>Key Differential Transfer Targets (Solver Top Picks)</span>
+                        <span style="font-size:0.58rem; color:var(--text-muted); font-weight:500;">(xP, Fixture FDR, TSB Ownership, and Tactical Upside)</span>
+                    </div>
+                    <div class="xp-differential-grid">
+                        {xp_diff_players_html}
+                    </div>
+                </div>
+
+                <!-- 4. Captaincy Differential Analysis -->
+                <div>
+                    <div style="font-size:0.7rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
+                        <span>Captaincy Differential &amp; Ceiling Matrix</span>
+                        <span style="font-size:0.58rem; color:var(--text-muted); font-weight:500;">(Template Baseline vs Explosive Upside)</span>
+                    </div>
+                    <div class="xp-differential-grid" style="grid-template-columns: 1fr 1fr;">
+                        <!-- Baseline Captain -->
+                        <div class="xp-card" style="border-color:rgba(16, 185, 129, 0.35);">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem;">C</span>
+                                    <span style="font-size:0.82rem; font-weight:700; color:var(--text-bright);">{cap_baseline['player']} ({cap_baseline['team']})</span>
+                                </div>
+                                <span class="fdr-pill fdr-{cap_baseline['fdr']}">{cap_baseline['opponent']}</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.35rem;">
+                                <span style="font-size:0.68rem; color:var(--text-muted);">{cap_baseline['role']}</span>
+                                <span style="font-size:1.05rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">{cap_baseline['effective_xp']:.1f} cap xP <small style="font-size:0.65rem; color:var(--text-muted);">({cap_baseline['xp']:.1f}x2)</small></span>
+                            </div>
+                            <div style="font-size:0.68rem; color:var(--text-secondary); line-height:1.4; border-top:1px solid var(--border-muted); padding-top:0.35rem;">
+                                {cap_baseline['verdict']}
+                            </div>
+                        </div>
+
+                        <!-- Differential Ceiling Alternatives -->
+                        <div class="xp-card" style="border-color:rgba(56, 189, 248, 0.35);">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+                                <span style="font-size:0.75rem; font-weight:700; color:var(--accent-sky);">Differential Ceiling Contenders</span>
+                                <span style="font-size:0.58rem; color:var(--text-muted);">Rank Acceleration Options</span>
+                            </div>
+                            {cap_ceilings_html}
+                        </div>
+                    </div>
+
+                    <div style="font-size:0.7rem; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:0.45rem; margin-top:0.6rem; line-height:1.45;">
+                        <strong>สรุปกลยุทธ์กัปตัน:</strong> {gw8_xp_data['captaincy_differential']['analysis']}
+                    </div>
+                </div>
+
+            </div>
+    '''
+
     # CoachFPL GW8 Transfer Solver Suggestions Tactical Summary Card
     coachfpl_solver_widget_html = f'''
             <!-- Tactical Summary Card: CoachFPL GW8 Transfer Solver Suggestions -->
@@ -3385,6 +3707,44 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             border-bottom: none;
         }}
 
+        /* GW8 xP Differential Metric Widget */
+        .xp-differential-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }}
+        .xp-summary-strip {{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }}
+        .xp-zones-grid {{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }}
+        .xp-card {{
+            background: rgba(9, 12, 16, 0.6);
+            border: 1px solid var(--border-main);
+            border-radius: 8px;
+            padding: 0.85rem;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }}
+
         /* FULL SEASON FDR TICKER */
         .ticker-container {{
             background: var(--bg-surface);
@@ -4657,10 +5017,32 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 word-break: break-word;
                 overflow-wrap: break-word;
             }}
-            .coachfpl-solver-grid {{
+            .coachfpl-solver-grid, .xp-differential-grid {{
                 grid-template-columns: 1fr !important;
                 gap: 0.65rem !important;
+                min-width: 0 !important;
                 width: 100% !important;
+                box-sizing: border-box !important;
+            }}
+            .xp-summary-strip {{
+                grid-template-columns: 1fr !important;
+                gap: 0.5rem !important;
+                min-width: 0 !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }}
+            .xp-zones-grid {{
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.45rem !important;
+                min-width: 0 !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }}
+            .xp-card {{
+                padding: 0.65rem 0.75rem !important;
+                min-width: 0 !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
             }}
             .chip-inventory-card {{
                 min-width: calc(50% - 0.25rem) !important;
@@ -4945,6 +5327,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
             .chip-inventory-card {{
                 min-width: 100% !important;
+            }}
+            .xp-zones-grid {{
+                grid-template-columns: 1fr !important;
             }}
             .compact-pitch {{
                 padding: 0.35rem 2px;
@@ -5357,6 +5742,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     </table>
                 </div>
             </div>
+
+{gw8_xp_widget_html}
 
 {coachfpl_solver_widget_html}
 
