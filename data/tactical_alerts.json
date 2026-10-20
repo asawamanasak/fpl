@@ -1,6 +1,6 @@
 {
-  "last_checked": "2026-10-19T14:01:46.986144+00:00",
-  "total_alerts": 6,
+  "last_checked": "2026-10-20T20:39:29.665453+00:00",
+  "total_alerts": 5,
   "alerts": [
     {
       "id": 53,
@@ -8,7 +8,7 @@
       "status": "d",
       "chance": 75,
       "news": "Calf injury - 75% chance of playing",
-      "timestamp": "2026-10-19T14:01:46.985996+00:00"
+      "timestamp": "2026-10-20T20:39:29.665297+00:00"
     },
     {
       "id": 368,
@@ -16,23 +16,15 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Unknown return date",
-      "timestamp": "2026-10-19T14:01:46.986019+00:00"
-    },
-    {
-      "id": 411,
-      "web_name": "Haaland",
-      "status": "d",
-      "chance": 75,
-      "news": "Unspecified injury - 75% chance of playing",
-      "timestamp": "2026-10-19T14:01:46.986026+00:00"
+      "timestamp": "2026-10-20T20:39:29.665326+00:00"
     },
     {
       "id": 423,
       "web_name": "Shaw",
-      "status": "d",
-      "chance": 75,
-      "news": "Unspecified injury - 75% chance of playing",
-      "timestamp": "2026-10-19T14:01:46.986030+00:00"
+      "status": "i",
+      "chance": 0,
+      "news": "Unspecified injury - Unknown return date",
+      "timestamp": "2026-10-20T20:39:29.665335+00:00"
     },
     {
       "id": 499,
@@ -40,7 +32,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Expected back 24 Oct",
-      "timestamp": "2026-10-19T14:01:46.986035+00:00"
+      "timestamp": "2026-10-20T20:39:29.665342+00:00"
     },
     {
       "id": 557,
@@ -48,7 +40,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Expected back 1 Nov",
-      "timestamp": "2026-10-19T14:01:46.986039+00:00"
+      "timestamp": "2026-10-20T20:39:29.665347+00:00"
     }
   ]
 }
