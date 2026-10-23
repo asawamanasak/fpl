@@ -1,5 +1,5 @@
 {
-  "last_checked": "2026-10-20T20:39:29.665453+00:00",
+  "last_checked": "2026-10-23T15:24:43.090217+00:00",
   "total_alerts": 5,
   "alerts": [
     {
@@ -8,7 +8,15 @@
       "status": "d",
       "chance": 75,
       "news": "Calf injury - 75% chance of playing",
-      "timestamp": "2026-10-20T20:39:29.665297+00:00"
+      "timestamp": "2026-10-23T15:24:43.090063+00:00"
+    },
+    {
+      "id": 346,
+      "web_name": "Calvert-Lewin",
+      "status": "d",
+      "chance": 50,
+      "news": "Foot injury - 50% chance of playing",
+      "timestamp": "2026-10-23T15:24:43.090091+00:00"
     },
     {
       "id": 368,
@@ -16,7 +24,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Unknown return date",
-      "timestamp": "2026-10-20T20:39:29.665326+00:00"
+      "timestamp": "2026-10-23T15:24:43.090097+00:00"
     },
     {
       "id": 423,
@@ -24,15 +32,7 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-10-20T20:39:29.665335+00:00"
-    },
-    {
-      "id": 499,
-      "web_name": "Pedro Porro",
-      "status": "i",
-      "chance": 0,
-      "news": "Hamstring injury - Expected back 24 Oct",
-      "timestamp": "2026-10-20T20:39:29.665342+00:00"
+      "timestamp": "2026-10-23T15:24:43.090105+00:00"
     },
     {
       "id": 557,
@@ -40,7 +40,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Expected back 1 Nov",
-      "timestamp": "2026-10-20T20:39:29.665347+00:00"
+      "timestamp": "2026-10-23T15:24:43.090113+00:00"
     }
   ]
 }
