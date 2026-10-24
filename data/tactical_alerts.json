@@ -1,14 +1,22 @@
 {
-  "last_checked": "2026-10-24T13:38:35.551102+00:00",
-  "total_alerts": 4,
+  "last_checked": "2026-10-24T17:01:19.815168+00:00",
+  "total_alerts": 5,
   "alerts": [
+    {
+      "id": 165,
+      "web_name": "João Pedro",
+      "status": "d",
+      "chance": 75,
+      "news": "Unspecified injury - 75% chance of playing",
+      "timestamp": "2026-10-24T17:01:19.814987+00:00"
+    },
     {
       "id": 346,
       "web_name": "Calvert-Lewin",
       "status": "d",
       "chance": 50,
       "news": "Foot injury - 50% chance of playing",
-      "timestamp": "2026-10-24T13:38:35.550972+00:00"
+      "timestamp": "2026-10-24T17:01:19.815021+00:00"
     },
     {
       "id": 368,
@@ -16,7 +24,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Unknown return date",
-      "timestamp": "2026-10-24T13:38:35.550996+00:00"
+      "timestamp": "2026-10-24T17:01:19.815028+00:00"
     },
     {
       "id": 423,
@@ -24,7 +32,7 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-10-24T13:38:35.551005+00:00"
+      "timestamp": "2026-10-24T17:01:19.815038+00:00"
     },
     {
       "id": 557,
@@ -32,7 +40,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Expected back 1 Nov",
-      "timestamp": "2026-10-24T13:38:35.551014+00:00"
+      "timestamp": "2026-10-24T17:01:19.815048+00:00"
     }
   ]
 }
