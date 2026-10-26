@@ -1969,9 +1969,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     (304, False, False, False)
                 ]
             else:
-                c2_tuples_6 = [(pid, st, (pid == 411), (pid == 154), False, False) for (pid, st, _, _) in dyn_c1]
+                c2_tuples_6 = [(p[0], p[1], (p[0] == 411), (p[0] == 154), False, False) for p in dyn_c1]
                 c2_enforced = enforce_club_starter_limit(c2_tuples_6, max_per_club=2)
-                dyn_c2 = [(pid, st, is_c, is_v) for (pid, st, is_c, is_v, _, _) in c2_enforced]
+                dyn_c2 = [(t[0], t[1], t[2], t[3]) for t in c2_enforced]
 
             h_entry = hist_by_gw.get(dyn_gw, {})
             dyn_avg = ev_meta.get("average_entry_score") or 50
