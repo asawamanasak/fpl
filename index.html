@@ -196,6 +196,75 @@
             letter-spacing: 0.5px;
         }
 
+        .edge-pill {
+            font-size: 0.64rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-sky);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 0.1rem 0.45rem;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-left: 0.35rem;
+            letter-spacing: 0.2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .edge-pill:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.6);
+        }
+        .edge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-sky);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 6px var(--accent-sky);
+        }
+        .edge-dot.syncing {
+            animation: edgePulse 0.8s infinite alternate;
+        }
+        @keyframes edgePulse {
+            from { opacity: 0.3; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1.25); }
+        }
+
+        .card-live-strip {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            font-weight: 700;
+            color: var(--accent-emerald);
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 3px;
+            padding: 1px 4px;
+            margin-top: 3px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+        .card-live-strip.in-play {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+        .card-live-strip .card-live-unit {
+            font-size: 0.5rem;
+            opacity: 0.85;
+        }
+        .card-live-strip .card-live-bps {
+            font-size: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
         .stats-strip { 
             display: flex; 
             gap: 0.4rem; 
@@ -2380,7 +2449,7 @@
             .title-box h1 { font-size: clamp(0.90rem, 3.2vw, 1.05rem); line-height: 1.25; }
             .team-name { display: inline-block; word-break: break-word; }
             .team-id-tag { font-size: 0.68rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
-            .sync-pill { margin-left: 0; margin-top: 3px; font-size: 0.58rem; display: inline-flex; }
+            .sync-pill, .edge-pill { margin-left: 0; margin-top: 3px; font-size: 0.58rem; display: inline-flex; }
             .manager-meta-line {
                 font-size: 0.70rem;
                 line-height: 1.55;
@@ -3327,20 +3396,21 @@
         <div class="header-wrap">
             <div class="brand-meta">
                 <div class="season-badge">FPL 2026/27</div>
-                <div class="gw-top-badge">GW8</div>
+                <div class="gw-top-badge">GW9</div>
                 <div class="title-box">
                     <h1>
                         <span class="team-name">GEMINI UNITED</span> 
                         <span class="team-id-tag">(ID: 306983)</span> 
-                        <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 27/10/2026 03:01 PM<span class="sync-tag-active">ACTIVE</span></span>
+                        <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 27/10/2026 07:53 PM<span class="sync-tag-active">ACTIVE</span></span>
+                        <span class="edge-pill" id="edgeStatusPill" title="Cloudflare Worker Edge Proxy (fpl-selection.asawamanasak.workers.dev) - Click to poll live match data"><span class="edge-dot"></span>Edge: Connected</span>
                     </h1>
                     <p class="manager-meta-line">
                         <span class="manager-name">Manager: Micky Asawamanasak</span> 
                         <span class="header-dot">&bull;</span> 
-                        <span class="gw-target-txt">จัดทีมสำหรับสัปดาห์ที่ 8 (Gameweek 8)</span>
+                        <span class="gw-target-txt">จัดทีมสำหรับสัปดาห์ที่ 9 (Gameweek 9)</span>
                     </p>
-                    <div class="deadline-pill" title="Official Gameweek 8 Deadline">
-                        <span class="deadline-tag-prefix">DEADLINE</span> Sat 24 Oct, 00:30 ICT &bull; <span id="countdownTimer" class="countdown-clock">--h --m --s</span> <span class="lockdown-badge">LOCKDOWN AT -30M</span>
+                    <div class="deadline-pill" title="Official Gameweek 9 Deadline">
+                        <span class="deadline-tag-prefix">DEADLINE</span> Sat 31 Oct, 18:00 ICT &bull; <span id="countdownTimer" class="countdown-clock">--h --m --s</span> <span class="lockdown-badge">LOCKDOWN AT -30M</span>
                     </div>
                 </div>
             </div>
@@ -3355,7 +3425,7 @@
                 </div>
                 <div class="stat-cell" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08);">
                     <span class="lbl" style="color:var(--accent-sky); font-weight:700;">Target Gameweek</span>
-                    <span class="val" style="color:var(--accent-sky); font-weight:800; font-size:0.95rem;">GW8</span>
+                    <span class="val" style="color:var(--accent-sky); font-weight:800; font-size:0.95rem;">GW9</span>
                 </div>
                 <div class="stat-cell stat-rank-cell">
                     <span class="lbl">Global Rank</span>
@@ -3368,7 +3438,7 @@
 
     <!-- Navigation (5 Clean Tabs) -->
     <nav class="nav-bar">
-        <button class="tab-btn active" onclick="switchTab('comparison', this)">Plan Lineup (GW8)</button>
+        <button class="tab-btn active" onclick="switchTab('comparison', this)">Plan Lineup (GW9)</button>
         <button class="tab-btn" onclick="switchTab('summary', this)">Plan Summary</button>
         <button class="tab-btn" onclick="switchTab('ticker', this)">FDR Ticker</button>
         <button class="tab-btn" onclick="switchTab('sources', this)">Research Sources</button>
@@ -3382,16 +3452,16 @@
             <!-- Gameweek Target Banner on Front Page -->
             <div class="gw-target-banner">
                 <div class="gw-banner-left">
-                    <span class="gw-badge-pill">GAMEWEEK 8</span>
+                    <span class="gw-badge-pill">GAMEWEEK 9</span>
                     <div class="gw-banner-title-wrap">
-                        <span class="gw-banner-title">การจัดทีมสำหรับสัปดาห์ที่ 8</span>
-                        <span class="gw-banner-en">(Gameweek 8 Lineup &amp; Strategy)</span>
+                        <span class="gw-banner-title">การจัดทีมสำหรับสัปดาห์ที่ 9</span>
+                        <span class="gw-banner-en">(Gameweek 9 Lineup &amp; Strategy)</span>
                     </div>
                 </div>
                 <div class="gw-banner-right">
                     <div class="gw-info-chip">
                         <span class="chip-label">DEADLINE:</span>
-                        <strong class="chip-val">Sat 24 Oct, 00:30 ICT</strong>
+                        <strong class="chip-val">Sat 31 Oct, 18:00 ICT</strong>
                     </div>
                     <span class="gw-divider">&bull;</span>
                     <div class="gw-info-chip">
@@ -3414,10 +3484,10 @@
                 <div class="plan-column" id="c1-column">
                     <div class="plan-col-header">
                         <div>
-                            <div class="plan-title">Choice 1 &bull; Micky Selection (GW8)</div>
+                            <div class="plan-title">Choice 1 &bull; Micky Selection (GW9)</div>
                             <div class="plan-sub-tags">
                                 <span class="formation-pill">5-3-2</span>
-                                <span class="active-chip-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.3);">GW8 &bull; BASELINE</span>
+                                <span class="active-chip-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.3);">GW9 &bull; BASELINE</span>
                             </div>
                         </div>
                         <div class="fin-badge">
@@ -3429,7 +3499,7 @@
                         <!-- FWD (3) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="165" data-player-name="João Pedro">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
             <div class="starter-badges-group">
@@ -3449,13 +3519,17 @@
             <div class="starter-name" title="João Pedro Junqueira de Jesus">João Pedro</div>
             <div class="starter-meta">CHE &bull; £7.9m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">TOT</span>
-                <span class="fdr-pill fdr-2">FDR 2</span>
+                <span class="starter-fix-text">MUN</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="165">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="411" data-player-name="Haaland">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
             <div class="starter-badges-group">
@@ -3475,8 +3549,12 @@
             <div class="starter-name" title="Erling Haaland">Haaland</div>
             <div class="starter-meta">MCI &bull; £15.7m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">AVL</span>
+                <span class="starter-fix-text">BHA</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="411">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -3485,7 +3563,7 @@
                         <!-- MID (4) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="154" data-player-name="Palmer">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -3505,13 +3583,17 @@
             <div class="starter-name" title="Cole Palmer">Palmer</div>
             <div class="starter-meta">CHE &bull; £9.8m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">TOT</span>
-                <span class="fdr-pill fdr-2">FDR 2</span>
+                <span class="starter-fix-text">MUN</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="154">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="68" data-player-name="Tavernier">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -3531,13 +3613,17 @@
             <div class="starter-name" title="Marcus Tavernier">Tavernier</div>
             <div class="starter-meta">BOU &bull; £6.4m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">MUN</span>
-                <span class="fdr-pill fdr-4">FDR 4</span>
+                <span class="starter-fix-text">LEE</span>
+                <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="68">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="124" data-player-name="Groß">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -3557,8 +3643,12 @@
             <div class="starter-name" title="Pascal Groß">Groß</div>
             <div class="starter-meta">BHA &bull; £6.2m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">LIV</span>
-                <span class="fdr-pill fdr-4">FDR 4</span>
+                <span class="starter-fix-text">MCI</span>
+                <span class="fdr-pill fdr-5">FDR 5</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="124">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -3567,7 +3657,7 @@
                         <!-- DEF (3) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="4" data-player-name="Gabriel">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -3587,13 +3677,17 @@
             <div class="starter-name" title="Gabriel dos Santos Magalhães">Gabriel</div>
             <div class="starter-meta">ARS &bull; £7.9m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">EVE</span>
-                <span class="fdr-pill fdr-3">FDR 3</span>
+                <span class="starter-fix-text">LIV</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="4">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="304" data-player-name="O&#x27;Shea">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -3613,13 +3707,17 @@
             <div class="starter-name" title="Dara O&#x27;Shea">O&#x27;Shea</div>
             <div class="starter-meta">IPS &bull; £4.0m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">NFO</span>
-                <span class="fdr-pill fdr-3">FDR 3</span>
+                <span class="starter-fix-text">HUL</span>
+                <span class="fdr-pill fdr-2">FDR 2</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="304">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="8" data-player-name="Calafiori">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -3639,13 +3737,17 @@
             <div class="starter-name" title="Riccardo Calafiori">Calafiori</div>
             <div class="starter-meta">ARS &bull; £6.0m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">EVE</span>
-                <span class="fdr-pill fdr-3">FDR 3</span>
+                <span class="starter-fix-text">LIV</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="8">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="391" data-player-name="Gvardiol">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -3665,13 +3767,17 @@
             <div class="starter-name" title="Joško Gvardiol">Gvardiol</div>
             <div class="starter-meta">MCI &bull; £5.7m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">AVL</span>
+                <span class="starter-fix-text">BHA</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="391">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="31" data-player-name="Konsa">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -3691,8 +3797,12 @@
             <div class="starter-name" title="Ezri Konsa Ngoyo">Konsa</div>
             <div class="starter-meta">ARS &bull; £4.7m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">EVE</span>
-                <span class="fdr-pill fdr-3">FDR 3</span>
+                <span class="starter-fix-text">LIV</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="31">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -3701,7 +3811,7 @@
                         <!-- GKP (1) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="109" data-player-name="Verbruggen">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-GKP">GKP</span>
             <div class="starter-badges-group">
@@ -3721,8 +3831,12 @@
             <div class="starter-name" title="Bart Verbruggen">Verbruggen</div>
             <div class="starter-meta">BHA &bull; £4.6m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">LIV</span>
-                <span class="fdr-pill fdr-4">FDR 4</span>
+                <span class="starter-fix-text">MCI</span>
+                <span class="fdr-pill fdr-5">FDR 5</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="109">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -3737,7 +3851,7 @@
                         </div>
                         <div class="bench-row">
                             
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="496" data-player-name="Kinsky">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-GKP">GKP</span>
             <div class="starter-badges-group">
@@ -3757,13 +3871,17 @@
             <div class="bench-name" title="Antonín Kinský">Kinsky</div>
             <div class="bench-meta">TOT &bull; £4.4m</div>
             <div class="bench-fix-row">
-                <span class="bench-fix-text">CHE</span>
-                <span class="fdr-pill fdr-4">FDR 4</span>
+                <span class="bench-fix-text">CRY</span>
+                <span class="fdr-pill fdr-2">FDR 2</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="496">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="368" data-player-name="Szoboszlai">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -3783,13 +3901,17 @@
             <div class="bench-name" title="Dominik Szoboszlai">Szoboszlai</div>
             <div class="bench-meta">LIV &bull; £6.7m</div>
             <div class="bench-fix-row">
-                <span class="bench-fix-text">BHA</span>
-                <span class="fdr-pill fdr-3">FDR 3</span>
+                <span class="bench-fix-text">ARS</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="368">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="53" data-player-name="Manzambi">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -3809,18 +3931,22 @@
             <div class="bench-name" title="Johan Manzambi">Manzambi</div>
             <div class="bench-meta">AVL &bull; £6.0m</div>
             <div class="bench-fix-row">
-                <span class="bench-fix-text">MCI</span>
-                <span class="fdr-pill fdr-4">FDR 4</span>
+                <span class="bench-fix-text">FUL</span>
+                <span class="fdr-pill fdr-2">FDR 2</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="53">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="bench-card card-transfer-in">
+    <div class="bench-card" data-player-id="272" data-player-name="Kusi-Asare">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
             <div class="starter-badges-group">
                 <span class="sub-label-badge">SUB 3</span>
-                <span class="transfer-in-tag-mini">IN</span>
+                
                 
                 
             </div>
@@ -3835,8 +3961,12 @@
             <div class="bench-name" title="Jonah Kusi-Asare">Kusi-Asare</div>
             <div class="bench-meta">FUL &bull; £4.4m</div>
             <div class="bench-fix-row">
-                <span class="bench-fix-text">COV</span>
-                <span class="fdr-pill fdr-2">FDR 2</span>
+                <span class="bench-fix-text">AVL</span>
+                <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="272">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -3851,11 +3981,11 @@
                                 <span class="delta-indicator-dot dot-baseline"></span>
                                 <span class="delta-title" style="color:var(--text-secondary);">Transfers (Choice 1 Baseline)</span>
                             </div>
-                            <span class="delta-count-pill pill-baseline">1 TRANSFER &bull; 1 FT BANKED &bull; ZERO HIT</span>
+                            <span class="delta-count-pill pill-baseline">0 TRANSFERS &bull; 2 FTs BANKED &bull; ZERO HIT</span>
                         </div>
                         <div class="delta-status-banner">
                             <span class="status-lbl">STATUS:</span>
-                            <span class="status-txt">จัดทีมสัปดาห์ที่ 8 (ใช้ 1 Free Transfer ดึง Kusi-Asare £4.4m &bull; เหลือ 1 FT สะสมไป GW9 &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £2.0m)</span>
+                            <span class="status-txt">จัดทีมสัปดาห์ที่ 9 (สะสม 2 Free Transfers ไว้พร้อมใช้งาน &bull; ไม่เสียแต้มลบ 0 pts &bull; เงินคงคลัง £2.0m)</span>
                         </div>
                         <div class="delta-ledger-strip">
                             <div class="delta-ledger-cell">
@@ -3887,10 +4017,10 @@
                 <div class="plan-column plan-c2" id="choice-2">
                     <div class="plan-col-header">
                         <div>
-                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint (GW8)</div>
+                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint (GW9)</div>
                             <div class="plan-sub-tags">
-                                <span class="formation-pill">4-3-3</span>
-                                <span class="active-chip-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">GW8 &bull; 1/2 FTs USED &bull; 1 FT BANKED &bull; ZERO HIT</span>
+                                <span class="formation-pill">4-4-2</span>
+                                <span class="active-chip-pill" style="background:rgba(16,185,129,0.15); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.3);">GW9 &bull; 2 FTs BANKED &bull; ZERO HIT</span>
                             </div>
                         </div>
                         <div class="fin-badge" style="border-color:var(--accent-emerald);">
@@ -3902,13 +4032,13 @@
                         <!-- FWD (3) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="165" data-player-name="João Pedro">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
             <div class="starter-badges-group">
+                <span class="role-badge-vc">V</span>
                 
                 
-                <span class="core-tag-mini">CORE</span>
                 
             </div>
         </div>
@@ -3922,19 +4052,23 @@
             <div class="starter-name" title="João Pedro Junqueira de Jesus">João Pedro</div>
             <div class="starter-meta">CHE &bull; £7.9m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">TOT</span>
-                <span class="fdr-pill fdr-2">FDR 2</span>
+                <span class="starter-fix-text">MUN</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="165">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="411" data-player-name="Haaland">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
             <div class="starter-badges-group">
                 <span class="role-badge-cap">C</span>
                 
-                <span class="core-tag-mini">CORE</span>
+                
                 
             </div>
         </div>
@@ -3948,34 +4082,12 @@
             <div class="starter-name" title="Erling Haaland">Haaland</div>
             <div class="starter-meta">MCI &bull; £15.7m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">AVL</span>
+                <span class="starter-fix-text">BHA</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
             </div>
-        </div>
-    </div>
-    
-    <div class="starter-card card-transfer-in">
-        <div class="starter-card-top">
-            <span class="pos-tag-mini pos-FWD">FWD</span>
-            <div class="starter-badges-group">
-                
-                <span class="transfer-in-tag-mini">IN</span>
-                
-                
-            </div>
-        </div>
-        <div class="starter-photo-wrap">
-            <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_54-66.png" 
-                 alt="Kusi-Asare" 
-                 class="starter-shirt-img" 
-                 width="36" height="36" />
-        </div>
-        <div class="starter-info-card">
-            <div class="starter-name" title="Jonah Kusi-Asare">Kusi-Asare</div>
-            <div class="starter-meta">FUL &bull; £4.4m</div>
-            <div class="starter-fix-row">
-                <span class="starter-fix-text">COV</span>
-                <span class="fdr-pill fdr-2">FDR 2</span>
+            <div class="card-live-strip" data-live-pid="411">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -3984,11 +4096,11 @@
                         <!-- MID (4) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="154" data-player-name="Palmer">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
-                <span class="role-badge-vc">V</span>
+                
                 
                 
                 
@@ -4004,13 +4116,17 @@
             <div class="starter-name" title="Cole Palmer">Palmer</div>
             <div class="starter-meta">CHE &bull; £9.8m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">TOT</span>
-                <span class="fdr-pill fdr-2">FDR 2</span>
+                <span class="starter-fix-text">MUN</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="154">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="68" data-player-name="Tavernier">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -4030,13 +4146,17 @@
             <div class="starter-name" title="Marcus Tavernier">Tavernier</div>
             <div class="starter-meta">BOU &bull; £6.4m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">MUN</span>
-                <span class="fdr-pill fdr-4">FDR 4</span>
+                <span class="starter-fix-text">LEE</span>
+                <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="68">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="124" data-player-name="Groß">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -4056,8 +4176,42 @@
             <div class="starter-name" title="Pascal Groß">Groß</div>
             <div class="starter-meta">BHA &bull; £6.2m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">LIV</span>
-                <span class="fdr-pill fdr-4">FDR 4</span>
+                <span class="starter-fix-text">MCI</span>
+                <span class="fdr-pill fdr-5">FDR 5</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="124">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="starter-card" data-player-id="53" data-player-name="Manzambi">
+        <div class="starter-card-top">
+            <span class="pos-tag-mini pos-MID">MID</span>
+            <div class="starter-badges-group">
+                
+                
+                
+                
+            </div>
+        </div>
+        <div class="starter-photo-wrap">
+            <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_7-66.png" 
+                 alt="Manzambi" 
+                 class="starter-shirt-img" 
+                 width="36" height="36" />
+        </div>
+        <div class="starter-info-card">
+            <div class="starter-name" title="Johan Manzambi">Manzambi</div>
+            <div class="starter-meta">AVL &bull; £6.0m</div>
+            <div class="starter-fix-row">
+                <span class="starter-fix-text">FUL</span>
+                <span class="fdr-pill fdr-2">FDR 2</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="53">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -4066,39 +4220,13 @@
                         <!-- DEF (3) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="4" data-player-name="Gabriel">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
                 
                 
-                <span class="core-tag-mini">CORE</span>
                 
-            </div>
-        </div>
-        <div class="starter-photo-wrap">
-            <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_43-66.png" 
-                 alt="Gvardiol" 
-                 class="starter-shirt-img" 
-                 width="36" height="36" />
-        </div>
-        <div class="starter-info-card">
-            <div class="starter-name" title="Joško Gvardiol">Gvardiol</div>
-            <div class="starter-meta">MCI &bull; £5.7m</div>
-            <div class="starter-fix-row">
-                <span class="starter-fix-text">AVL</span>
-                <span class="fdr-pill fdr-3">FDR 3</span>
-            </div>
-        </div>
-    </div>
-    
-    <div class="starter-card">
-        <div class="starter-card-top">
-            <span class="pos-tag-mini pos-DEF">DEF</span>
-            <div class="starter-badges-group">
-                
-                
-                <span class="core-tag-mini">CORE</span>
                 
             </div>
         </div>
@@ -4112,39 +4240,17 @@
             <div class="starter-name" title="Gabriel dos Santos Magalhães">Gabriel</div>
             <div class="starter-meta">ARS &bull; £7.9m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">EVE</span>
-                <span class="fdr-pill fdr-3">FDR 3</span>
+                <span class="starter-fix-text">LIV</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="4">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="starter-card">
-        <div class="starter-card-top">
-            <span class="pos-tag-mini pos-DEF">DEF</span>
-            <div class="starter-badges-group">
-                
-                
-                
-                
-            </div>
-        </div>
-        <div class="starter-photo-wrap">
-            <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_3-66.png" 
-                 alt="Calafiori" 
-                 class="starter-shirt-img" 
-                 width="36" height="36" />
-        </div>
-        <div class="starter-info-card">
-            <div class="starter-name" title="Riccardo Calafiori">Calafiori</div>
-            <div class="starter-meta">ARS &bull; £6.0m</div>
-            <div class="starter-fix-row">
-                <span class="starter-fix-text">EVE</span>
-                <span class="fdr-pill fdr-3">FDR 3</span>
-            </div>
-        </div>
-    </div>
-    
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="304" data-player-name="O&#x27;Shea">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -4164,8 +4270,72 @@
             <div class="starter-name" title="Dara O&#x27;Shea">O&#x27;Shea</div>
             <div class="starter-meta">IPS &bull; £4.0m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">NFO</span>
+                <span class="starter-fix-text">HUL</span>
+                <span class="fdr-pill fdr-2">FDR 2</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="304">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="starter-card" data-player-id="391" data-player-name="Gvardiol">
+        <div class="starter-card-top">
+            <span class="pos-tag-mini pos-DEF">DEF</span>
+            <div class="starter-badges-group">
+                
+                
+                
+                
+            </div>
+        </div>
+        <div class="starter-photo-wrap">
+            <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_43-66.png" 
+                 alt="Gvardiol" 
+                 class="starter-shirt-img" 
+                 width="36" height="36" />
+        </div>
+        <div class="starter-info-card">
+            <div class="starter-name" title="Joško Gvardiol">Gvardiol</div>
+            <div class="starter-meta">MCI &bull; £5.7m</div>
+            <div class="starter-fix-row">
+                <span class="starter-fix-text">BHA</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="391">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="starter-card" data-player-id="31" data-player-name="Konsa">
+        <div class="starter-card-top">
+            <span class="pos-tag-mini pos-DEF">DEF</span>
+            <div class="starter-badges-group">
+                
+                
+                
+                
+            </div>
+        </div>
+        <div class="starter-photo-wrap">
+            <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_3-66.png" 
+                 alt="Konsa" 
+                 class="starter-shirt-img" 
+                 width="36" height="36" />
+        </div>
+        <div class="starter-info-card">
+            <div class="starter-name" title="Ezri Konsa Ngoyo">Konsa</div>
+            <div class="starter-meta">ARS &bull; £4.7m</div>
+            <div class="starter-fix-row">
+                <span class="starter-fix-text">LIV</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="31">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -4174,7 +4344,7 @@
                         <!-- GKP (1) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="109" data-player-name="Verbruggen">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-GKP">GKP</span>
             <div class="starter-badges-group">
@@ -4194,8 +4364,12 @@
             <div class="starter-name" title="Bart Verbruggen">Verbruggen</div>
             <div class="starter-meta">BHA &bull; £4.6m</div>
             <div class="starter-fix-row">
-                <span class="starter-fix-text">LIV</span>
-                <span class="fdr-pill fdr-4">FDR 4</span>
+                <span class="starter-fix-text">MCI</span>
+                <span class="fdr-pill fdr-5">FDR 5</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="109">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -4210,7 +4384,7 @@
                         </div>
                         <div class="bench-row">
                             
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="496" data-player-name="Kinsky">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-GKP">GKP</span>
             <div class="starter-badges-group">
@@ -4230,19 +4404,23 @@
             <div class="bench-name" title="Antonín Kinský">Kinsky</div>
             <div class="bench-meta">TOT &bull; £4.4m</div>
             <div class="bench-fix-row">
-                <span class="bench-fix-text">CHE</span>
-                <span class="fdr-pill fdr-4">FDR 4</span>
+                <span class="bench-fix-text">CRY</span>
+                <span class="fdr-pill fdr-2">FDR 2</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="496">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
     
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="368" data-player-name="Szoboszlai">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
                 <span class="sub-label-badge">SUB 2</span>
                 
-                <span class="core-tag-mini">CORE</span>
+                
                 
             </div>
         </div>
@@ -4256,39 +4434,17 @@
             <div class="bench-name" title="Dominik Szoboszlai">Szoboszlai</div>
             <div class="bench-meta">LIV &bull; £6.7m</div>
             <div class="bench-fix-row">
-                <span class="bench-fix-text">BHA</span>
-                <span class="fdr-pill fdr-3">FDR 3</span>
-            </div>
-        </div>
-    </div>
-    
-    <div class="bench-card">
-        <div class="bench-card-top">
-            <span class="pos-tag-mini pos-MID">MID</span>
-            <div class="starter-badges-group">
-                <span class="sub-label-badge">SUB 3</span>
-                
-                
-                
-            </div>
-        </div>
-        <div class="bench-photo-wrap">
-            <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_7-66.png" 
-                 alt="Manzambi" 
-                 class="bench-shirt-img" 
-                 width="30" height="30" />
-        </div>
-        <div class="bench-info-card">
-            <div class="bench-name" title="Johan Manzambi">Manzambi</div>
-            <div class="bench-meta">AVL &bull; £6.0m</div>
-            <div class="bench-fix-row">
-                <span class="bench-fix-text">MCI</span>
+                <span class="bench-fix-text">ARS</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="368">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="8" data-player-name="Calafiori">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -4300,16 +4456,50 @@
         </div>
         <div class="bench-photo-wrap">
             <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_3-66.png" 
-                 alt="Konsa" 
+                 alt="Calafiori" 
                  class="bench-shirt-img" 
                  width="30" height="30" />
         </div>
         <div class="bench-info-card">
-            <div class="bench-name" title="Ezri Konsa Ngoyo">Konsa</div>
-            <div class="bench-meta">ARS &bull; £4.7m</div>
+            <div class="bench-name" title="Riccardo Calafiori">Calafiori</div>
+            <div class="bench-meta">ARS &bull; £6.0m</div>
             <div class="bench-fix-row">
-                <span class="bench-fix-text">EVE</span>
+                <span class="bench-fix-text">LIV</span>
+                <span class="fdr-pill fdr-4">FDR 4</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="8">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bench-card" data-player-id="272" data-player-name="Kusi-Asare">
+        <div class="bench-card-top">
+            <span class="pos-tag-mini pos-FWD">FWD</span>
+            <div class="starter-badges-group">
+                <span class="sub-label-badge">SUB 3</span>
+                
+                
+                
+            </div>
+        </div>
+        <div class="bench-photo-wrap">
+            <img src="https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_54-66.png" 
+                 alt="Kusi-Asare" 
+                 class="bench-shirt-img" 
+                 width="30" height="30" />
+        </div>
+        <div class="bench-info-card">
+            <div class="bench-name" title="Jonah Kusi-Asare">Kusi-Asare</div>
+            <div class="bench-meta">FUL &bull; £4.4m</div>
+            <div class="bench-fix-row">
+                <span class="bench-fix-text">AVL</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="272">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -4322,26 +4512,26 @@
                         <div class="delta-header-strip">
                             <div class="delta-title-wrap">
                                 <span class="delta-indicator-dot"></span>
-                                <span class="delta-title">Transfers (Choice 1 Execution &bull; Kusi-Asare In &bull; Cash Freed)</span>
+                                <span class="delta-title">Transfers (Choice 2 Strategy)</span>
                             </div>
-                            <span class="delta-count-pill">1 IN &bull; 1 OUT &bull; 0 PT HIT (1/2 FTs &bull; 1 FT BANKED)</span>
+                            <span class="delta-count-pill">0 TRANSFERS &bull; 2 FTs BANKED FOR GW10</span>
                         </div>
                         <div class="delta-list-grid">
                             <div class="delta-group">
                                 <div class="delta-group-label in-lbl">TRANSFER IN</div>
                                 <div class="delta-tags">
-                                    <span class="delta-pill pill-in"><span class="delta-pill-badge pos-FWD">FWD</span> <strong>Jonah Kusi-Asare</strong> <small>£4.4m &bull; FUL &bull; COV (A - FDR 2)</small></span>
+                                    <span style="color:var(--text-muted); font-size:0.8rem;">ไม่มีการย้ายตัว (ขุมกำลังสมบูรณ์)</span>
                                 </div>
                             </div>
                             <div class="delta-group">
                                 <div class="delta-group-label out-lbl">TRANSFER OUT</div>
                                 <div class="delta-tags">
-                                    <span class="delta-pill pill-out"><span class="delta-pill-badge pos-FWD">FWD</span> <strong>Yoane Wissa</strong> <small>£6.1m &bull; NEW &bull; CRY (A - FDR 3)</small></span>
+                                    <span style="color:var(--text-muted); font-size:0.8rem;">ไม่มีการย้ายตัว (ขุมกำลังสมบูรณ์)</span>
                                 </div>
                             </div>
                         </div>
                         <div class="delta-rule-notice">
-                            <span class="rule-txt">เงื่อนไข: ใช้ 1 จาก 2 FTs ปล่อย Wissa (£6.1m) แล้วดึง Kusi-Asare (£4.4m) ปลดล็อกเงินคงคลัง £2.0m ในมือ &bull; Choice 2 ใช้ระบบ 4-3-3: ส่ง Haaland กัปตัน [C] เพื่อคุ้มกันอันดับโลกจากค่า EO 76.8% พร้อมพัก Konsa เป็นสำรองอันดับ 1 เพื่อลดความเสี่ยงเสียคลีนชีตอาร์เซน่อลพร้อมกัน 3 คน (ตรงตามกฎ Max 2 ต่อสโมสร) &bull; เหลือ 1 FT สะสมไป GW9 &bull; เงินคงคลัง £2.0m</span>
+                            <span class="rule-txt">เงื่อนไข: ห้ามเปลี่ยนตัวติดลบ (Cost 0 pts &bull; สะสม 2 FTs ไป GW10)</span>
                         </div>
                         <div class="delta-ledger-strip">
                             <div class="delta-ledger-cell">
@@ -4453,7 +4643,7 @@
                 <div class="health-top-bar">
                     <div class="health-meta">
                         <span class="health-dot-active" style="background:var(--accent-emerald);"></span>
-                        <span class="health-heading">Multi-Week Strategic Transfer &amp; Chip Roadmap (GW8 - GW11)</span>
+                        <span class="health-heading">Multi-Week Strategic Transfer &amp; Chip Roadmap (GW9 - GW12)</span>
                     </div>
                     <span class="health-status-badge health-badge-ok">ACTIVE WEAPONS: TC1 &amp; FH1 READY</span>
                 </div>
@@ -4470,28 +4660,10 @@
                         <tbody>
 
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW8 (สัปดาห์นี้)</td>
-                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">1/2 FTs USED &bull; 1 FT BANKED &bull; ZERO HIT</span></td>
-                                <td style="padding:8px 10px;">MCI @ AVL (A - FDR 3), CHE vs TOT (H - FDR 2), LIV vs BHA (H - FDR 3), ARS vs EVE (H - FDR 3)</td>
-                                <td style="padding:8px 10px;"><strong>Palmer Differential Gamble [C] vs Haaland EO Shield:</strong> Choice 1 มอบปลอกแขนกัปตันให้ Cole Palmer สู้ศึกลอนดอนดาร์บี้ และวางแนวรับ 5 คน (Triple Arsenal DEF + O'Shea + Gvardiol) เพื่อแก้ปัญหากลางเจ็บ ขณะที่ Choice 2 ล็อกกัปตัน Haaland คุ้มกัน EO 76.8% และกระจายความเสี่ยงแนวรับอาร์เซน่อล (พัก Konsa สำรอง 1) พร้อมเงินคงคลัง £2.0m สะสม 1 FT ลุยต่อ GW9</td>
-                            </tr>
-                            <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW9</td>
-                                <td style="padding:8px 10px;"><strong>2 FTs</strong> (ปลดล็อกเงิน £2.0m ในคลัง)</td>
-                                <td style="padding:8px 10px;">MCI vs BHA (H - FDR 3), CHE vs MUN (H - FDR 4), LIV vs ARS (H - FDR 4), ARS @ LIV (A - FDR 4)</td>
-                                <td style="padding:8px 10px;">มี 2 Free Transfers และเงินสด £2.0m ในมือ เล็งเป้าเปลี่ยนตัวกลางความฟิตสมบูรณ์ (Mbeumo / Cunha / Rogers / Rice) แทน Szoboszlai ที่เจ็บแฮมสตริง (0%)</td>
-                            </tr>
-                            <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW10</td>
-                                <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (คงความยืดหยุ่น)</td>
-                                <td style="padding:8px 10px;">MCI @ NFO (A - FDR 3), CHE @ SUN (A - FDR 3), LIV @ CRY (A - FDR 3), ARS vs HUL (H - FDR 2)</td>
-                                <td style="padding:8px 10px;">สลับปรับเปลี่ยนผู้เล่นตามโปรแกรมระยะกลาง และรักษาโครงสร้าง Zero Deadweight 15 ตัวจริง</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW11</td>
-                                <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (บริหารระยะยาว)</td>
-                                <td style="padding:8px 10px;">MCI vs FUL (H - FDR 2), CHE vs LEE (H - FDR 3), LIV vs MUN (H - FDR 4), ARS @ NEW (A - FDR 3)</td>
-                                <td style="padding:8px 10px;">คงความได้เปรียบเรื่องมูลค่าทีมและโควตาย้ายตัวฟรี</td>
+                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW9 (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">2 FTs &bull; ZERO HIT</span></td>
+                                <td style="padding:8px 10px;">-</td>
+                                <td style="padding:8px 10px;">บริหารจัดการทีมตามโควตา Free Transfer และโปรแกรมแข่งขัน</td>
                             </tr>
                         </tbody>
                     </table>
@@ -4499,367 +4671,8 @@
             </div>
 
 
-            <!-- Tactical Metric Card: Gameweek 8 Expected Points (xP) Differential -->
-            <div class="squad-health-widget" style="border-color: rgba(16, 185, 129, 0.4); background: linear-gradient(180deg, rgba(15, 20, 28, 0.95) 0%, rgba(21, 27, 38, 0.85) 100%); min-width: 0; width: 100%; box-sizing: border-box;">
-                <div class="health-top-bar">
-                    <div class="health-meta">
-                        <span class="health-dot-active" style="background:var(--accent-emerald);"></span>
-                        <span class="health-heading">Gameweek 8 &bull; Expected Points (xP) Differential &amp; Tactical Projection</span>
-                    </div>
-                    <span class="health-status-badge" style="background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.35);">+4.5 xP (CHOICE 1 CEILING)</span>
-                </div>
-                
-                <div class="health-detail-text" style="margin-bottom:0.75rem;">
-                    การประเมินค่าความน่าจะเป็นเชิงแต้ม (Expected Points: xP) เปรียบเทียบระหว่างโครงสร้าง <strong>Choice 1 (Baseline 5-3-2)</strong> กับ <strong>Choice 2 (Gemini Solver 4-3-3)</strong> สำหรับ Gameweek 8 วิเคราะห์ตามโมเดลตัวเลข Solio Analytics และสถานะความฟิตจริงจากฐานข้อมูล:
-                </div>
-
-                <!-- 1. Top Projected Totals Strip -->
-                <div class="xp-summary-strip">
-                    <div class="xp-card" style="border-color: rgba(148, 163, 184, 0.25);">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-size:0.6875rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:normal;">Choice 1 Projected</span>
-                            <span style="font-size:0.6875rem; padding:1px 5px; border-radius:3px; background:rgba(148, 163, 184, 0.15); color:var(--text-secondary); border:1px solid rgba(148, 163, 184, 0.25);">BASELINE</span>
-                        </div>
-                        <div style="font-size:1.35rem; font-weight:800; color:#ffffff; font-family:'JetBrains Mono', monospace; line-height:1.2;">
-                            64.0 <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500;">xP</span>
-                        </div>
-                        <div style="font-size:0.6875rem; color:var(--text-muted); line-height:1.45;">
-                            5-3-2 formation &bull; Palmer [C] (12.1 xP) &bull; Triple Arsenal DEF vs EVE H
-                        </div>
-                    </div>
-
-                    <div class="xp-card" style="border-color: rgba(16, 185, 129, 0.35); background: linear-gradient(180deg, rgba(9, 12, 16, 0.9) 0%, rgba(16, 185, 129, 0.06) 100%);">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-size:0.6875rem; font-weight:700; color:#34d399; text-transform:uppercase; letter-spacing:normal;">Choice 2 Projected</span>
-                            <span style="font-size:0.6875rem; padding:1px 5px; border-radius:3px; background:rgba(16, 185, 129, 0.2); color:#34d399; border:1px solid rgba(16, 185, 129, 0.4);">EO SHIELD</span>
-                        </div>
-                        <div style="font-size:1.35rem; font-weight:800; color:#34d399; font-family:'JetBrains Mono', monospace; line-height:1.2;">
-                            59.5 <span style="font-size:0.75rem; color:#34d399; font-weight:500;">xP</span>
-                        </div>
-                        <div style="font-size:0.6875rem; color:var(--text-secondary); line-height:1.45;">
-                            4-3-3 formation &bull; Haaland [C] (12.1 xP) &bull; De-risked Arsenal DEF (Konsa Sub 1)
-                        </div>
-                    </div>
-
-                    <div class="xp-card" style="border-color: rgba(56, 189, 248, 0.35); background: linear-gradient(180deg, rgba(9, 12, 16, 0.8) 0%, rgba(56, 189, 248, 0.06) 100%);">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-size:0.6875rem; font-weight:700; color:var(--accent-sky); text-transform:uppercase; letter-spacing:normal;">Net Differential (C1 vs C2)</span>
-                            <span style="font-size:0.6875rem; padding:1px 5px; border-radius:3px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">+7.6% CEILING</span>
-                        </div>
-                        <div style="font-size:1.35rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace; line-height:1.2;">
-                            +4.5 xP
-                        </div>
-                        <div style="font-size:0.6875rem; color:var(--text-secondary); line-height:1.45;">
-                            Choice 1 มีเพดานแต้มดิบสูงกว่า +4.5 xP จากการส่ง Konsa (4.5 xP) ยืนหลัง 5 คน ขณะที่ Choice 2 ยอมสละแต้มดิบเพื่อล็อกกัปตัน Haaland คุ้มกัน EO 76.8% และลดความเสี่ยงคลีนชีตอาร์เซน่อลล่มพร้อมกัน 3 คน
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. Positional Zone Differentials -->
-                <div style="margin-bottom:0.85rem;">
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
-                        <span>Positional Zone Differentials (GKP / DEF / MID / FWD)</span>
-                        <span style="font-size:0.6875rem; color:var(--text-muted); font-weight:500;">(Choice 1 vs Choice 2 Expected Points per Line)</span>
-                    </div>
-                    <div class="xp-zones-grid">
-                        
-            <div class="xp-card" style="padding:0.65rem;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
-                    <span class="pos-tag-mini pos-GKP">GKP</span>
-                    <span style="font-size:0.65rem; font-weight:700; color:var(--text-muted); font-family:'JetBrains Mono', monospace;">0.0 xP</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:0.25rem;">
-                    <span style="color:var(--text-muted);">C1: <strong style="color:var(--text-main); font-family:'JetBrains Mono', monospace;">5.7</strong></span>
-                    <span style="color:var(--text-muted);">C2: <strong style="color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">5.7</strong></span>
-                </div>
-                <div style="font-size:0.64rem; color:var(--text-secondary); line-height:1.35; border-top:1px solid var(--border-muted); padding-top:0.3rem;">
-                    Verbruggen starts for both sides (Form 5.7 @ LIV A)
-                </div>
-            </div>
-        
-            <div class="xp-card" style="padding:0.65rem;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
-                    <span class="pos-tag-mini pos-DEF">DEF</span>
-                    <span style="font-size:0.65rem; font-weight:700; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">+4.5 xP</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:0.25rem;">
-                    <span style="color:var(--text-muted);">C1: <strong style="color:var(--text-main); font-family:'JetBrains Mono', monospace;">24.6</strong></span>
-                    <span style="color:var(--text-muted);">C2: <strong style="color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">20.1</strong></span>
-                </div>
-                <div style="font-size:0.64rem; color:var(--text-secondary); line-height:1.35; border-top:1px solid var(--border-muted); padding-top:0.3rem;">
-                    Choice 1 starts 5 defenders (Konsa 4.5 xP) vs Choice 2 starts 4 defenders
-                </div>
-            </div>
-        
-            <div class="xp-card" style="padding:0.65rem;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
-                    <span class="pos-tag-mini pos-MID">MID</span>
-                    <span style="font-size:0.65rem; font-weight:700; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">+6.1 xP</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:0.25rem;">
-                    <span style="color:var(--text-muted);">C1: <strong style="color:var(--text-main); font-family:'JetBrains Mono', monospace;">21.9</strong></span>
-                    <span style="color:var(--text-muted);">C2: <strong style="color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">15.8</strong></span>
-                </div>
-                <div style="font-size:0.64rem; color:var(--text-secondary); line-height:1.35; border-top:1px solid var(--border-muted); padding-top:0.3rem;">
-                    Choice 1 captaincy on Palmer (12.1 xP) vs Choice 2 Palmer VC (6.0 xP)
-                </div>
-            </div>
-        
-            <div class="xp-card" style="padding:0.65rem;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
-                    <span class="pos-tag-mini pos-FWD">FWD</span>
-                    <span style="font-size:0.65rem; font-weight:700; color:var(--text-muted); font-family:'JetBrains Mono', monospace;">-6.1 xP</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:0.25rem;">
-                    <span style="color:var(--text-muted);">C1: <strong style="color:var(--text-main); font-family:'JetBrains Mono', monospace;">11.8</strong></span>
-                    <span style="color:var(--text-muted);">C2: <strong style="color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">17.9</strong></span>
-                </div>
-                <div style="font-size:0.64rem; color:var(--text-secondary); line-height:1.35; border-top:1px solid var(--border-muted); padding-top:0.3rem;">
-                    Choice 2 captaincy on Haaland (12.1 xP) vs Choice 1 Haaland (6.1 xP)
-                </div>
-            </div>
-        
-                    </div>
-                </div>
-
-                <!-- 3. Key Differential Players -->
-                <div style="margin-bottom:0.85rem;">
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
-                        <span>Key Differential Transfer Targets (Solver Top Picks)</span>
-                        <span style="font-size:0.6875rem; color:var(--text-muted); font-weight:500;">(xP, Fixture FDR, TSB Ownership, and Tactical Upside)</span>
-                    </div>
-                    <div class="xp-differential-grid">
-                        
-            <div class="xp-card">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.4rem;">
-                    <div>
-                        <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">
-                            <span class="pos-tag-mini pos-MID">MID</span>
-                            <span style="font-size:0.85rem; font-weight:700; color:var(--text-main);">Mbeumo</span>
-                        </div>
-                        <div style="font-size:0.68rem; color:var(--text-muted);">MUN &bull; £7.9m &bull; TSB: 21.6%</div>
-                    </div>
-                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
-                        <span class="fdr-pill fdr-3">H vs BOU (FDR 3)</span>
-                        <span style="font-size:0.75rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">5.3 xP</span>
-                    </div>
-                </div>
-                <div style="font-size:0.7rem; color:var(--text-secondary); line-height:1.45; border-top:1px solid var(--border-muted); padding-top:0.4rem;">
-                    <strong>Upside:</strong> Top-scoring Man Utd midfielder (43 pts, 6.0 form), 100% fit focal point against Bournemouth at Old Trafford
-                </div>
-            </div>
-        
-            <div class="xp-card">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.4rem;">
-                    <div>
-                        <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">
-                            <span class="pos-tag-mini pos-MID">MID</span>
-                            <span style="font-size:0.85rem; font-weight:700; color:var(--text-main);">Rogers</span>
-                        </div>
-                        <div style="font-size:0.68rem; color:var(--text-muted);">CHE &bull; £8.0m &bull; TSB: 50.0%</div>
-                    </div>
-                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
-                        <span class="fdr-pill fdr-2">H vs TOT (FDR 2)</span>
-                        <span style="font-size:0.75rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">5.4 xP</span>
-                    </div>
-                </div>
-                <div style="font-size:0.7rem; color:var(--text-secondary); line-height:1.45; border-top:1px solid var(--border-muted); padding-top:0.4rem;">
-                    <strong>Upside:</strong> 100% match-fit Chelsea attacker (41 pts, 4.0 form) facing Tottenham at Stamford Bridge (FDR 2)
-                </div>
-            </div>
-        
-            <div class="xp-card">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.4rem;">
-                    <div>
-                        <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">
-                            <span class="pos-tag-mini pos-MID">MID</span>
-                            <span style="font-size:0.85rem; font-weight:700; color:var(--text-main);">Cunha</span>
-                        </div>
-                        <div style="font-size:0.68rem; color:var(--text-muted);">MUN &bull; £7.9m &bull; TSB: 6.1%</div>
-                    </div>
-                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
-                        <span class="fdr-pill fdr-3">H vs BOU (FDR 3)</span>
-                        <span style="font-size:0.75rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">5.0 xP</span>
-                    </div>
-                </div>
-                <div style="font-size:0.7rem; color:var(--text-secondary); line-height:1.45; border-top:1px solid var(--border-muted); padding-top:0.4rem;">
-                    <strong>Upside:</strong> Low-ownership Solio Top Differential (38 pts, 4.0 form, 100% fit) vs Bournemouth at Old Trafford
-                </div>
-            </div>
-        
-            <div class="xp-card">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.4rem;">
-                    <div>
-                        <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">
-                            <span class="pos-tag-mini pos-MID">MID</span>
-                            <span style="font-size:0.85rem; font-weight:700; color:var(--text-main);">Schade</span>
-                        </div>
-                        <div style="font-size:0.68rem; color:var(--text-muted);">BRE &bull; £6.2m &bull; TSB: 15.1%</div>
-                    </div>
-                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
-                        <span class="fdr-pill fdr-2">A vs HUL (FDR 2)</span>
-                        <span style="font-size:0.75rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">4.9 xP</span>
-                    </div>
-                </div>
-                <div style="font-size:0.7rem; color:var(--text-secondary); line-height:1.45; border-top:1px solid var(--border-muted); padding-top:0.4rem;">
-                    <strong>Upside:</strong> High-scoring Brentford winger (42 pts, 1.0 form) with a green-zone away match at Hull City (FDR 2)
-                </div>
-            </div>
-        
-                    </div>
-                </div>
-
-                <!-- 4. Captaincy Differential Analysis -->
-                <div>
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
-                        <span>Captaincy Differential &amp; Ceiling Matrix</span>
-                        <span style="font-size:0.6875rem; color:var(--text-muted); font-weight:500;">(Template Baseline vs Explosive Upside)</span>
-                    </div>
-                    <div class="xp-differential-grid">
-                        <!-- Baseline Captain -->
-                        <div class="xp-card" style="border-color:rgba(16, 185, 129, 0.35);">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
-                                <div style="display:flex; align-items:center; gap:6px;">
-                                    <span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem;">C</span>
-                                    <span style="font-size:0.82rem; font-weight:700; color:var(--text-bright);">Erling Haaland (MCI)</span>
-                                </div>
-                                <span class="fdr-pill fdr-3">A vs AVL</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.35rem;">
-                                <span style="font-size:0.68rem; color:var(--text-muted);">Baseline Template Shield</span>
-                                <span style="font-size:1.05rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">12.1 cap xP <small style="font-size:0.65rem; color:var(--text-muted);">(6.1x2)</small></span>
-                            </div>
-                            <div style="font-size:0.68rem; color:var(--text-secondary); line-height:1.4; border-top:1px solid var(--border-muted); padding-top:0.35rem;">
-                                Highest ownership (76.8% Solio EO / 78.0% TSB). Standard captaincy choice to protect overall rank.
-                            </div>
-                        </div>
-
-                        <!-- Differential Ceiling Alternatives -->
-                        <div class="xp-card" style="border-color:rgba(56, 189, 248, 0.35);">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
-                                <span style="font-size:0.75rem; font-weight:700; color:var(--accent-sky);">Differential Ceiling Contenders</span>
-                                <span style="font-size:0.58rem; color:var(--text-muted);">Rank Acceleration Options</span>
-                            </div>
-                            
-            <div style="background:rgba(15, 23, 42, 0.5); border:1px solid var(--border-muted); border-radius:6px; padding:0.55rem; margin-top:0.4rem;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem;">C</span>
-                        <span style="font-size:0.78rem; font-weight:700; color:var(--text-main);">Cole Palmer (CHE)</span>
-                        <span style="font-size:0.62rem; color:var(--text-muted);">H vs TOT</span>
-                    </div>
-                    <span style="font-size:0.72rem; font-weight:700; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">12.1 cap xP</span>
-                </div>
-                <div style="font-size:0.66rem; color:var(--text-secondary); line-height:1.35;">
-                    Penalties, free kicks, and creative freedom against Tottenham high-line defense.
-                </div>
-            </div>
-        
-            <div style="background:rgba(15, 23, 42, 0.5); border:1px solid var(--border-muted); border-radius:6px; padding:0.55rem; margin-top:0.4rem;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem;">C</span>
-                        <span style="font-size:0.78rem; font-weight:700; color:var(--text-main);">Bruno Fernandes (MUN)</span>
-                        <span style="font-size:0.62rem; color:var(--text-muted);">H vs BOU</span>
-                    </div>
-                    <span style="font-size:0.72rem; font-weight:700; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">12.1 cap xP</span>
-                </div>
-                <div style="font-size:0.66rem; color:var(--text-secondary); line-height:1.35;">
-                    Highest projected healthy midfielder in Solio AI (12.13 cap xP, £11.7m) while Bukayo Saka is red-flagged (0% thigh injury).
-                </div>
-            </div>
-        
-                        </div>
-                    </div>
-
-                    <div style="font-size:0.7rem; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:0.45rem; margin-top:0.6rem; line-height:1.45;">
-                        <strong>สรุปกลยุทธ์กัปตัน:</strong> Haaland (12.1 cap xP), Bruno Fernandes (12.1 cap xP), and Palmer (12.1 cap xP) lead healthy captaincy projections in Solio Analytics (with Saka ruled out at 0% thigh injury). Choice 1 backs Palmer for differential rank gain, while Choice 2 backs Haaland for 76.8% EO security.
-                    </div>
-                </div>
-
-            </div>
-        
 
 
-            <!-- Tactical Summary Card: CoachFPL GW8 Transfer Solver Suggestions -->
-            <div class="squad-health-widget" style="border-color: rgba(56, 189, 248, 0.4); background: linear-gradient(180deg, rgba(15, 20, 28, 0.95) 0%, rgba(21, 27, 38, 0.85) 100%);">
-                <div class="health-top-bar">
-                    <div class="health-meta">
-                        <span class="health-dot-active" style="background:var(--accent-sky);"></span>
-                        <span class="health-heading">Coach FPL &bull; GW8 Transfer Solver Tactical Recommendations</span>
-                    </div>
-                    <span class="health-status-badge" style="background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.35);">CoachFPL Analytics Hub</span>
-                </div>
-                <div class="health-detail-text" style="margin-bottom:0.85rem;">
-                    สรุปผลการวิเคราะห์โมเดล <strong>Transfer Solver (open-fpl-solver)</strong> จาก <strong>CoachFPL Analytics Hub</strong> สำหรับ Gameweek 8 คำนวณจากสถานะผู้เล่นบาดเจ็บจริงในทีม (Szoboszlai เจ็บแฮมสตริง 0%, Calafiori และ João Pedro ติดธงเหลือง 75%), เงินคงคลัง £2.0m ในมือ (เมื่อขาย Szoboszlai £6.7m จะมีงบซื้อตัวแทนรวม £8.7m), โควตา 1 Free Transfer คงเหลือ, และตารางโปรแกรมความยากง่าย (FDR):
-                </div>
-                
-                <div class="coachfpl-solver-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:0.75rem; margin-top:0.5rem;">
-                    <!-- Recommendation Card 1: Direct Replacements (1 FT) -->
-                    <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 0.85rem;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan A: Direct Premier Replacement (1 FT)</span>
-                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.3);">1 FT &bull; ZERO HIT</span>
-                        </div>
-                        <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:0.5rem; line-height:1.45;">
-                            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                                <span style="color:var(--accent-rose); font-weight:700; width:34px;">OUT:</span>
-                                <span>Szoboszlai (£6.7m &bull; LIV &bull; เจ็บ Hamstring 0%)</span>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
-                                <span><strong>Bryan Mbeumo</strong> (£7.9m &bull; MUN &bull; H vs BOU FDR 3)</span>
-                            </div>
-                        </div>
-                        <div style="font-size:0.7rem; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:0.4rem; line-height:1.35;">
-                            <strong>กลยุทธ์:</strong> ปลดล็อกนักเตะเจ็บทันที โดยดึงตัวจบสกอร์หลักแมนฯ ยูไนเต็ดที่ฟิตสมบูรณ์ 100% (ฟอร์ม 6.0, 43 แต้มสะสม) เฝ้ารังพบ บอร์นมัธ ภายใต้งบ £8.7m เหลือเงินในธนาคารอีก £0.8m
-                        </div>
-                    </div>
-
-                    <!-- Recommendation Card 2: In-Form Midfield Pivot (1 FT) -->
-                    <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; padding: 0.85rem;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan B: Healthy Set-Piece Pivot (1 FT)</span>
-                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">Bank £1.3m</span>
-                        </div>
-                        <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:0.5rem; line-height:1.45;">
-                            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                                <span style="color:var(--accent-rose); font-weight:700; width:34px;">OUT:</span>
-                                <span>Szoboszlai (£6.7m &bull; LIV &bull; เจ็บ 0%)</span>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
-                                <span><strong>Declan Rice</strong> (£7.4m &bull; ARS &bull; H vs EVE FDR 3)</span>
-                            </div>
-                        </div>
-                        <div style="font-size:0.7rem; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:0.4rem; line-height:1.35;">
-                            <strong>กลยุทธ์:</strong> เนื่องจาก Florian Wirtz (£7.2m, 31 แต้ม) ติดธงเหลืองเจ็บข้อเท้า 75% และ Bukayo Saka เจ็บต้นขา 0% การดึง Declan Rice ที่ฟิต 100% (ฟอร์ม 6.3, 39 แต้ม) เปิดบ้านพบเอฟเวอร์ตันจึงปลอดภัยกว่าและเหลือเงินคงคลัง £1.3m
-                        </div>
-                    </div>
-
-                    <!-- Recommendation Card 3: Value Reinvestment (1 FT) -->
-                    <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 0.85rem;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan C: Budget Reinvestment (1 FT)</span>
-                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.3);">Bank £2.5m</span>
-                        </div>
-                        <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:0.5rem; line-height:1.45;">
-                            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                                <span style="color:var(--accent-rose); font-weight:700; width:34px;">OUT:</span>
-                                <span>Szoboszlai (£6.7m &bull; LIV)</span>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
-                                <span><strong>Kevin Schade</strong> (£6.2m &bull; BRE &bull; A vs HUL FDR 2)</span>
-                            </div>
-                        </div>
-                        <div style="font-size:0.7rem; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:0.4rem; line-height:1.35;">
-                            <strong>กลยุทธ์:</strong> เลือกลดงบด้วยปีกเบรนท์ฟอร์ดที่ฟิต 100% (42 แต้มสะสม) เยือนฮัลล์ ซิตี้ (FDR 2) ขยายเงินสดในธนาคารเพิ่มขึ้นเป็น £2.5m เพื่อเตรียมอัปเกรดเป็นตัวรุกพรีเมียมใน GW9
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
 
             <!-- Pros & Cons Split Grid -->
             <div class="summary-split-grid">
@@ -4877,13 +4690,13 @@
                     <!-- Pros -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
-                        <div class="pros-cons-item"><strong>Cole Palmer Captaincy Exploit [C] vs Tottenham (H - FDR 2):</strong> มอบปลอกแขนกัปตันให้ Cole Palmer (£9.8m) เปิดสแตมฟอร์ด บริดจ์ ดวลลอนดอนดาร์บี้กับสเปอร์สที่มีแนวรับดันสูง (High Line) เป็นโอกาสโกยแต้มสร้างความต่าง (Differential) เหนือกลุ่มผู้เล่นที่ล็อกกัปตัน Haaland</div><div class="pros-cons-item"><strong>Triple Arsenal Defense Clean Sheet Stack (Gabriel + Calafiori + Konsa vs EVE H):</strong> ส่ง 3 ปราการหลังอาร์เซน่อลเฝ้าเอมิเรตส์ สเตเดี้ยม รับมือเอฟเวอร์ตัน หากอาร์เซน่อลเก็บคลีนชีตได้ จะกวาดแต้มคลีนชีตมหาศาลแบบทริปเปิล (+12 แต้มคลีนชีตทันที)</div><div class="pros-cons-item"><strong>Massive Bank Liquidity Reinvestment (£2.0m Bank in Hand):</strong> การเปลี่ยนตัวปล่อย Yoane Wissa (£6.1m) แล้วดึง Jonah Kusi-Asare (£4.4m) ปลดล็อกเงินคงคลังเพิ่มขึ้นเป็น £2.0m ทำให้มีความยืดหยุ่นทางการเงินสูงสุดในการอัปเกรดแดนกลางหรือแนวรุกสู่ระดับพรีเมียมใน GW9-10</div><div class="pros-cons-item"><strong>Solid 5-3-2 Defensive Structure & Injury Insulation:</strong> ปรับทัพยืนหลัง 5 คนโดยส่ง Dara O'Shea (พบ น็อตติ้งแฮม ฟอเรสต์ ในบ้าน) ลงเป็นตัวจริง ช่วยปิดจุดบกพร่องแดนกลางจาก Szoboszlai (เจ็บ Hamstring 0%) พร้อมมี Manzambi (ฟิตสมบูรณ์ 100%) สแตนด์บายเป็นสำรองพร้อมเสียบแทนผู้เล่นที่ติดธงเหลือง 75% (Calafiori และ João Pedro)</div><div class="pros-cons-item"><strong>1 Free Transfer Banked & Zero Hit (Cost 0 pts):</strong> ใช้ 1 Free Transfer โดยไม่เสียแต้มลบ พร้อมสะสม 1 Free Transfer สำรองไว้ขยายเป็น 2 FTs ในสัปดาห์ที่ 9 พร้อมเงินคงคลัง £2.0m</div>
+                        <div class="pros-cons-item"><strong>Core Squad Stability:</strong> ขุมกำลังหลักมีเสถียรภาพและกระจายตัวในทีมชั้นนำครบถ้วน</div><div class="pros-cons-item"><strong>Full Free Transfer Warchest:</strong> มีโควตา Free Transfer พร้อมใช้งานและเงินคงคลัง £2.0m</div>
                     </div>
 
                     <!-- Cons -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
-                        <div class="pros-cons-item"><strong>Extreme Triple Arsenal Defense Wipeout Risk:</strong> การลงสนามกองหลังอาร์เซน่อลพร้อมกัน 3 คน หากเอฟเวอร์ตันยิงได้เพียงลูกเดียว แต้มคลีนชีตจะถูกลบหายไปพร้อมกันทั้งหมด 12 แต้มทันที</div><div class="pros-cons-item"><strong>Erling Haaland Non-Captaincy Rank Exposure (76.8% EO Risk):</strong> การถอดปลอกแขนกัปตันจาก Erling Haaland (เยือน แอสตัน วิลล่า) มีความเสี่ยงอย่างยิ่งต่ออันดับโลก หาก Haaland ยิงแฮตทริกหรือระเบิดแต้ม อันดับโลกจะร่วงลงอย่างรุนแรงเนื่องจากผู้เล่นส่วนใหญ่ในระดับท็อปเลือกล็อกกัปตัน Haaland</div><div class="pros-cons-item"><strong>Dual Away Goalkeepers in Heavy Fixtures (Verbruggen @ LIV A):</strong> ผู้รักษาประตูทั้งสองคนต้องเล่นเกมเยือนยากทั้งคู่ โดยเลือกส่ง Bart Verbruggen ออกไปเยือนแอนฟิลด์พบลิเวอร์พูล (LIV A - FDR 4) ขณะที่ Kinsky ต้องเยือนเชลซี (CHE A - FDR 4)</div><div class="pros-cons-item"><strong>Benched Capital on Inactive Premium Midfielder:</strong> เงินลงทุนในตัว Dominik Szoboszlai (£6.7m) ต้องนั่งค้างบนม้านั่งสำรองเนื่องจากอาการบาดเจ็บกล้ามเนื้อต้นขาด้านหลัง (0%)</div>
+                        <div class="pros-cons-item"><strong>Fixture Rotation Risk:</strong> ต้องจับตาสภาพความฟิตและการโรเตชั่นของนักเตะ</div>
                     </div>
                 </div>
 
@@ -4891,22 +4704,22 @@
                 <div class="summary-plan-panel" style="border-color: rgba(16, 185, 129, 0.45);">
                     <div class="summary-panel-header">
                         <div>
-                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint (Haaland [C] EO Shield & De-risk Arsenal DEF &bull; 4-3-3)</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">4-3-3 Formation &bull; Cost: £100.4m &bull; Bank: +£2.0m &bull; Hits: 0 pts</span>
+                            <div class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Autonomous Blueprint (GW9)</div>
+                            <span style="font-size:0.65rem; color:var(--text-secondary);">4-4-2 Formation &bull; Cost: £100.4m &bull; Bank: +£2.0m &bull; Hits: 0 pts</span>
                         </div>
-                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">Haaland [C] Shield &bull; De-risk Arsenal DEF</span>
+                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">Autonomous Optimization</span>
                     </div>
 
                     <!-- Pros -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-pro">ข้อดีและจุดแข็ง (Strengths &amp; Pros)</div>
-                        <div class="pros-cons-item"><strong>Erling Haaland Captaincy Anchor [C] @ Aston Villa (A):</strong> ล็อกปลอกแขนกัปตันให้ Erling Haaland เพื่อคุ้มกันอันดับโลกจากค่า Effective Ownership มหาศาล 76.8% ป้องกันความเสี่ยงจากการถูกทิ้งห่าง</div><div class="pros-cons-item"><strong>Tactical Arsenal Defense De-risking (Max 2 Starters Rule):</strong> จัดแนวรับส่ง Gabriel คู่ Calafiori และพัก Konsa เป็นตัวสำรองอันดับ 1 ช่วยลดความเสี่ยงจากการเสียคลีนชีตพร้อมกัน 3 คน และตรงตามหลักการกระจายความเสี่ยงระดับสโมสร</div><div class="pros-cons-item"><strong>Cole Palmer Elite Vice-Captain [VC] vs Tottenham (H):</strong> มอบตำแหน่งรองกัปตันให้ Cole Palmer ที่ฟอร์มร้อนแรงในบ้านรับมือสเปอร์ส สแตนด์บายอย่างมั่นใจ</div><div class="pros-cons-item"><strong>1 Free Transfer Banked for GW9 Super-Window:</strong> ใช้ 1 Free Transfer เท่ากับ Choice 1 โดยไม่เสียแต้มลบ พร้อมสะสม 1 FT สำรองไว้ขยายเป็น 2 FTs ใน GW9 และมีเงินคงคลัง £2.0m</div>
+                        <div class="pros-cons-item"><strong>Zero-Hit Rule & Max 2 Per Club Enforced:</strong> ไม่เสียแต้มลบและจำกัดผู้เล่นตัวจริงไม่เกินสโมสรละ 2 คนเพื่อลดความเสี่ยง</div><div class="pros-cons-item"><strong>Optimized Captaincy Foundation:</strong> จัดสรรปลอกแขนกัปตันตามค่า Expected Involvements สูงสุด</div>
                     </div>
 
                     <!-- Cons -->
                     <div class="pros-cons-section">
                         <div class="section-badge-title badge-con">ข้อเสียและจุดที่ต้องระวัง (Weaknesses &amp; Cons)</div>
-                        <div class="pros-cons-item"><strong>Ezri Konsa Rotated to Bench (Sub 1 Priority):</strong> พัก Ezri Konsa เป็นตัวสำรองอันดับ 1 เพื่อลดการทับซ้อนของแผงหลังอาร์เซน่อล หากอาร์เซน่อลเก็บคลีนชีตได้ จะได้แต้มจากกองหลัง 2 คนแทนที่จะเป็น 3 คน</div><div class="pros-cons-item"><strong>Dominik Szoboszlai Injury Buffer (Sub 2):</strong> พัก Szoboszlai ที่ติดธงแดงอาการบาดเจ็บ 0% ไว้บนม้านั่งสำรองอันดับ 2 เพื่อความปลอดภัยสูงสุด</div>
+                        <div class="pros-cons-item"><strong>Bench Resource Value:</strong> อาจมีแต้มค้างอยู่บนม้านั่งสำรองในสัปดาห์ที่มีคู่แข่งใกล้เคียงกัน</div>
                     </div>
                 </div>
 
@@ -4918,7 +4731,7 @@
             <div class="ticker-container">
                 <div class="ticker-header-bar">
                     <div>
-                        <h2 style="font-size:0.95rem; font-weight:700; color:#ffffff;">Full Season Fixture Difficulty &amp; Sorting (GW8 &ndash; GW38)</h2>
+                        <h2 style="font-size:0.95rem; font-weight:700; color:#ffffff;">Full Season Fixture Difficulty &amp; Sorting (GW9 &ndash; GW38)</h2>
                         <div class="fdr-legend-strip">
                             <span class="fdr-legend-label">FDR Scale:</span>
                             <span class="fdr-legend-item fdr-2">FDR 2 &bull; Easy</span>
@@ -4929,7 +4742,7 @@
                     </div>
                     <div style="display:flex; gap:0.5rem; align-items:center;">
                         <button class="reset-btn" onclick="resetTableSort()">Reset Sort</button>
-                        <span style="font-size:0.65rem; color:var(--text-muted);">Scroll &rarr; to view GW8-38</span>
+                        <span style="font-size:0.65rem; color:var(--text-muted);">Scroll &rarr; to view GW9-38</span>
                     </div>
                 </div>
                 
@@ -4941,7 +4754,7 @@
                                 <th class="tbl-sticky-2 sortable-th" onclick="sortTable(1, 'text')" onkeydown="handleSortKey(event, 1, 'text')" onkeyup="handleSortKeyup(event, 1, 'text')" tabindex="0" role="button" aria-sort="none" title="Sort by Club">Club <span class="sort-icon">&varr;</span></th>
                                 <th class="tbl-sticky-3 sortable-th" onclick="sortTable(2, 'number')" onkeydown="handleSortKey(event, 2, 'number')" onkeyup="handleSortKeyup(event, 2, 'number')" tabindex="0" role="button" aria-sort="none" title="Sort by Position">Pos <span class="sort-icon">&varr;</span></th>
                                 <th class="tbl-sticky-4 sortable-th" onclick="sortTable(3, 'number')" onkeydown="handleSortKey(event, 3, 'number')" onkeyup="handleSortKeyup(event, 3, 'number')" tabindex="0" role="button" aria-sort="none" title="Sort by Cost">Cost <span class="sort-icon">&varr;</span></th>
-                                <th onclick="sortTable(4, 'number')" onkeydown="handleSortKey(event, 4, 'number')" onkeyup="handleSortKeyup(event, 4, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW8 FDR">GW8 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(5, 'number')" onkeydown="handleSortKey(event, 5, 'number')" onkeyup="handleSortKeyup(event, 5, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW9 FDR">GW9 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(6, 'number')" onkeydown="handleSortKey(event, 6, 'number')" onkeyup="handleSortKeyup(event, 6, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW10 FDR">GW10 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(7, 'number')" onkeydown="handleSortKey(event, 7, 'number')" onkeyup="handleSortKeyup(event, 7, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW11 FDR">GW11 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(8, 'number')" onkeydown="handleSortKey(event, 8, 'number')" onkeyup="handleSortKeyup(event, 8, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW12 FDR">GW12 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(9, 'number')" onkeydown="handleSortKey(event, 9, 'number')" onkeyup="handleSortKeyup(event, 9, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW13 FDR">GW13 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(10, 'number')" onkeydown="handleSortKey(event, 10, 'number')" onkeyup="handleSortKeyup(event, 10, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW14 FDR">GW14 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(11, 'number')" onkeydown="handleSortKey(event, 11, 'number')" onkeyup="handleSortKeyup(event, 11, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW15 FDR">GW15 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(12, 'number')" onkeydown="handleSortKey(event, 12, 'number')" onkeyup="handleSortKeyup(event, 12, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW16 FDR">GW16 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(13, 'number')" onkeydown="handleSortKey(event, 13, 'number')" onkeyup="handleSortKeyup(event, 13, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW17 FDR">GW17 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(14, 'number')" onkeydown="handleSortKey(event, 14, 'number')" onkeyup="handleSortKeyup(event, 14, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW18 FDR">GW18 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(15, 'number')" onkeydown="handleSortKey(event, 15, 'number')" onkeyup="handleSortKeyup(event, 15, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW19 FDR">GW19 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(16, 'number')" onkeydown="handleSortKey(event, 16, 'number')" onkeyup="handleSortKeyup(event, 16, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW20 FDR">GW20 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(17, 'number')" onkeydown="handleSortKey(event, 17, 'number')" onkeyup="handleSortKeyup(event, 17, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW21 FDR">GW21 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(18, 'number')" onkeydown="handleSortKey(event, 18, 'number')" onkeyup="handleSortKeyup(event, 18, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW22 FDR">GW22 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(19, 'number')" onkeydown="handleSortKey(event, 19, 'number')" onkeyup="handleSortKeyup(event, 19, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW23 FDR">GW23 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(20, 'number')" onkeydown="handleSortKey(event, 20, 'number')" onkeyup="handleSortKeyup(event, 20, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW24 FDR">GW24 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(21, 'number')" onkeydown="handleSortKey(event, 21, 'number')" onkeyup="handleSortKeyup(event, 21, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW25 FDR">GW25 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(22, 'number')" onkeydown="handleSortKey(event, 22, 'number')" onkeyup="handleSortKeyup(event, 22, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW26 FDR">GW26 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(23, 'number')" onkeydown="handleSortKey(event, 23, 'number')" onkeyup="handleSortKeyup(event, 23, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW27 FDR">GW27 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(24, 'number')" onkeydown="handleSortKey(event, 24, 'number')" onkeyup="handleSortKeyup(event, 24, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW28 FDR">GW28 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(25, 'number')" onkeydown="handleSortKey(event, 25, 'number')" onkeyup="handleSortKeyup(event, 25, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW29 FDR">GW29 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(26, 'number')" onkeydown="handleSortKey(event, 26, 'number')" onkeyup="handleSortKeyup(event, 26, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW30 FDR">GW30 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(27, 'number')" onkeydown="handleSortKey(event, 27, 'number')" onkeyup="handleSortKeyup(event, 27, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW31 FDR">GW31 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(28, 'number')" onkeydown="handleSortKey(event, 28, 'number')" onkeyup="handleSortKeyup(event, 28, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW32 FDR">GW32 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(29, 'number')" onkeydown="handleSortKey(event, 29, 'number')" onkeyup="handleSortKeyup(event, 29, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW33 FDR">GW33 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(30, 'number')" onkeydown="handleSortKey(event, 30, 'number')" onkeyup="handleSortKeyup(event, 30, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW34 FDR">GW34 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(31, 'number')" onkeydown="handleSortKey(event, 31, 'number')" onkeyup="handleSortKeyup(event, 31, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW35 FDR">GW35 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(32, 'number')" onkeydown="handleSortKey(event, 32, 'number')" onkeyup="handleSortKeyup(event, 32, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW36 FDR">GW36 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(33, 'number')" onkeydown="handleSortKey(event, 33, 'number')" onkeyup="handleSortKeyup(event, 33, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW37 FDR">GW37 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(34, 'number')" onkeydown="handleSortKey(event, 34, 'number')" onkeyup="handleSortKeyup(event, 34, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW38 FDR">GW38 <span class="sort-icon">&varr;</span></th>
+                                <th onclick="sortTable(4, 'number')" onkeydown="handleSortKey(event, 4, 'number')" onkeyup="handleSortKeyup(event, 4, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW9 FDR">GW9 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(5, 'number')" onkeydown="handleSortKey(event, 5, 'number')" onkeyup="handleSortKeyup(event, 5, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW10 FDR">GW10 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(6, 'number')" onkeydown="handleSortKey(event, 6, 'number')" onkeyup="handleSortKeyup(event, 6, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW11 FDR">GW11 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(7, 'number')" onkeydown="handleSortKey(event, 7, 'number')" onkeyup="handleSortKeyup(event, 7, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW12 FDR">GW12 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(8, 'number')" onkeydown="handleSortKey(event, 8, 'number')" onkeyup="handleSortKeyup(event, 8, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW13 FDR">GW13 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(9, 'number')" onkeydown="handleSortKey(event, 9, 'number')" onkeyup="handleSortKeyup(event, 9, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW14 FDR">GW14 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(10, 'number')" onkeydown="handleSortKey(event, 10, 'number')" onkeyup="handleSortKeyup(event, 10, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW15 FDR">GW15 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(11, 'number')" onkeydown="handleSortKey(event, 11, 'number')" onkeyup="handleSortKeyup(event, 11, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW16 FDR">GW16 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(12, 'number')" onkeydown="handleSortKey(event, 12, 'number')" onkeyup="handleSortKeyup(event, 12, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW17 FDR">GW17 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(13, 'number')" onkeydown="handleSortKey(event, 13, 'number')" onkeyup="handleSortKeyup(event, 13, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW18 FDR">GW18 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(14, 'number')" onkeydown="handleSortKey(event, 14, 'number')" onkeyup="handleSortKeyup(event, 14, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW19 FDR">GW19 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(15, 'number')" onkeydown="handleSortKey(event, 15, 'number')" onkeyup="handleSortKeyup(event, 15, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW20 FDR">GW20 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(16, 'number')" onkeydown="handleSortKey(event, 16, 'number')" onkeyup="handleSortKeyup(event, 16, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW21 FDR">GW21 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(17, 'number')" onkeydown="handleSortKey(event, 17, 'number')" onkeyup="handleSortKeyup(event, 17, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW22 FDR">GW22 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(18, 'number')" onkeydown="handleSortKey(event, 18, 'number')" onkeyup="handleSortKeyup(event, 18, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW23 FDR">GW23 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(19, 'number')" onkeydown="handleSortKey(event, 19, 'number')" onkeyup="handleSortKeyup(event, 19, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW24 FDR">GW24 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(20, 'number')" onkeydown="handleSortKey(event, 20, 'number')" onkeyup="handleSortKeyup(event, 20, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW25 FDR">GW25 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(21, 'number')" onkeydown="handleSortKey(event, 21, 'number')" onkeyup="handleSortKeyup(event, 21, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW26 FDR">GW26 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(22, 'number')" onkeydown="handleSortKey(event, 22, 'number')" onkeyup="handleSortKeyup(event, 22, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW27 FDR">GW27 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(23, 'number')" onkeydown="handleSortKey(event, 23, 'number')" onkeyup="handleSortKeyup(event, 23, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW28 FDR">GW28 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(24, 'number')" onkeydown="handleSortKey(event, 24, 'number')" onkeyup="handleSortKeyup(event, 24, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW29 FDR">GW29 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(25, 'number')" onkeydown="handleSortKey(event, 25, 'number')" onkeyup="handleSortKeyup(event, 25, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW30 FDR">GW30 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(26, 'number')" onkeydown="handleSortKey(event, 26, 'number')" onkeyup="handleSortKeyup(event, 26, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW31 FDR">GW31 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(27, 'number')" onkeydown="handleSortKey(event, 27, 'number')" onkeyup="handleSortKeyup(event, 27, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW32 FDR">GW32 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(28, 'number')" onkeydown="handleSortKey(event, 28, 'number')" onkeyup="handleSortKeyup(event, 28, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW33 FDR">GW33 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(29, 'number')" onkeydown="handleSortKey(event, 29, 'number')" onkeyup="handleSortKeyup(event, 29, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW34 FDR">GW34 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(30, 'number')" onkeydown="handleSortKey(event, 30, 'number')" onkeyup="handleSortKeyup(event, 30, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW35 FDR">GW35 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(31, 'number')" onkeydown="handleSortKey(event, 31, 'number')" onkeyup="handleSortKeyup(event, 31, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW36 FDR">GW36 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(32, 'number')" onkeydown="handleSortKey(event, 32, 'number')" onkeyup="handleSortKeyup(event, 32, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW37 FDR">GW37 <span class="sort-icon">&varr;</span></th><th onclick="sortTable(33, 'number')" onkeydown="handleSortKey(event, 33, 'number')" onkeyup="handleSortKeyup(event, 33, 'number')" tabindex="0" role="button" aria-sort="none" class="sortable-th" title="Click to sort GW38 FDR">GW38 <span class="sort-icon">&varr;</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -4956,7 +4769,7 @@
         <td class="tbl-sticky-2" data-val="BHA">BHA</td>
         <td class="tbl-sticky-3" data-val="1"><span class="pos-tag-mini pos-GKP">GKP</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="4.6">£4.6m</td>
-        <td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td>
+        <td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td>
     </tr>
     
     <tr data-orig-index="1">
@@ -4969,7 +4782,7 @@
         <td class="tbl-sticky-2" data-val="ARS">ARS</td>
         <td class="tbl-sticky-3" data-val="2"><span class="pos-tag-mini pos-DEF">DEF</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="7.9">£7.9m</td>
-        <td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td>
+        <td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td>
     </tr>
     
     <tr data-orig-index="2">
@@ -4982,7 +4795,7 @@
         <td class="tbl-sticky-2" data-val="IPS">IPS</td>
         <td class="tbl-sticky-3" data-val="2"><span class="pos-tag-mini pos-DEF">DEF</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="4.0">£4.0m</td>
-        <td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td>
+        <td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td>
     </tr>
     
     <tr data-orig-index="3">
@@ -4995,7 +4808,7 @@
         <td class="tbl-sticky-2" data-val="ARS">ARS</td>
         <td class="tbl-sticky-3" data-val="2"><span class="pos-tag-mini pos-DEF">DEF</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="6.0">£6.0m</td>
-        <td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td>
+        <td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td>
     </tr>
     
     <tr data-orig-index="4">
@@ -5008,7 +4821,7 @@
         <td class="tbl-sticky-2" data-val="MCI">MCI</td>
         <td class="tbl-sticky-3" data-val="2"><span class="pos-tag-mini pos-DEF">DEF</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="5.7">£5.7m</td>
-        <td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td>
+        <td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td>
     </tr>
     
     <tr data-orig-index="5">
@@ -5021,7 +4834,7 @@
         <td class="tbl-sticky-2" data-val="ARS">ARS</td>
         <td class="tbl-sticky-3" data-val="2"><span class="pos-tag-mini pos-DEF">DEF</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="4.7">£4.7m</td>
-        <td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td>
+        <td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td>
     </tr>
     
     <tr data-orig-index="6">
@@ -5034,7 +4847,7 @@
         <td class="tbl-sticky-2" data-val="CHE">CHE</td>
         <td class="tbl-sticky-3" data-val="3"><span class="pos-tag-mini pos-MID">MID</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="9.8">£9.8m</td>
-        <td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td>
+        <td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td>
     </tr>
     
     <tr data-orig-index="7">
@@ -5047,7 +4860,7 @@
         <td class="tbl-sticky-2" data-val="BOU">BOU</td>
         <td class="tbl-sticky-3" data-val="3"><span class="pos-tag-mini pos-MID">MID</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="6.4">£6.4m</td>
-        <td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td>
+        <td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td>
     </tr>
     
     <tr data-orig-index="8">
@@ -5060,7 +4873,7 @@
         <td class="tbl-sticky-2" data-val="BHA">BHA</td>
         <td class="tbl-sticky-3" data-val="3"><span class="pos-tag-mini pos-MID">MID</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="6.2">£6.2m</td>
-        <td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td>
+        <td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td>
     </tr>
     
     <tr data-orig-index="9">
@@ -5073,7 +4886,7 @@
         <td class="tbl-sticky-2" data-val="CHE">CHE</td>
         <td class="tbl-sticky-3" data-val="4"><span class="pos-tag-mini pos-FWD">FWD</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="7.9">£7.9m</td>
-        <td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td>
+        <td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td>
     </tr>
     
     <tr data-orig-index="10">
@@ -5086,7 +4899,7 @@
         <td class="tbl-sticky-2" data-val="MCI">MCI</td>
         <td class="tbl-sticky-3" data-val="4"><span class="pos-tag-mini pos-FWD">FWD</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="15.7">£15.7m</td>
-        <td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td>
+        <td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td>
     </tr>
     
     <tr data-orig-index="11">
@@ -5099,7 +4912,7 @@
         <td class="tbl-sticky-2" data-val="TOT">TOT</td>
         <td class="tbl-sticky-3" data-val="1"><span class="pos-tag-mini pos-GKP">GKP</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="4.4">£4.4m</td>
-        <td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td>
+        <td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td>
     </tr>
     
     <tr data-orig-index="12">
@@ -5112,7 +4925,7 @@
         <td class="tbl-sticky-2" data-val="LIV">LIV</td>
         <td class="tbl-sticky-3" data-val="3"><span class="pos-tag-mini pos-MID">MID</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="6.7">£6.7m</td>
-        <td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td>
+        <td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td>
     </tr>
     
     <tr data-orig-index="13">
@@ -5125,7 +4938,7 @@
         <td class="tbl-sticky-2" data-val="AVL">AVL</td>
         <td class="tbl-sticky-3" data-val="3"><span class="pos-tag-mini pos-MID">MID</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="6.0">£6.0m</td>
-        <td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td>
+        <td data-val="2"><span class="fdr-box-lg fdr-2">FUL(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">CRY(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">FUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td>
     </tr>
     
     <tr data-orig-index="14">
@@ -5138,7 +4951,7 @@
         <td class="tbl-sticky-2" data-val="FUL">FUL</td>
         <td class="tbl-sticky-3" data-val="4"><span class="pos-tag-mini pos-FWD">FWD</span></td>
         <td class="tbl-sticky-4 font-mono" data-val="4.4">£4.4m</td>
-        <td data-val="2"><span class="fdr-box-lg fdr-2">COV(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td>
+        <td data-val="3"><span class="fdr-box-lg fdr-3">AVL(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">MCI(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">TOT(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BHA(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">ARS(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">TOT(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NEW(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">AVL(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BOU(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MCI(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">NFO(H)</span></td><td data-val="5"><span class="fdr-box-lg fdr-5">ARS(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">LEE(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">BHA(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">CRY(A)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">LIV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">CHE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">SUN(H)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">BRE(A)</span></td><td data-val="3"><span class="fdr-box-lg fdr-3">EVE(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">IPS(H)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">HUL(A)</span></td><td data-val="2"><span class="fdr-box-lg fdr-2">COV(H)</span></td><td data-val="4"><span class="fdr-box-lg fdr-4">MUN(A)</span></td>
     </tr>
     
                         </tbody>
@@ -9326,7 +9139,7 @@
         }
 
         // Feature 5: Real-Time Deadline Countdown Timer
-        const deadlineEpoch = 1792776600;
+        const deadlineEpoch = 1793444400;
         function updateDeadlineCountdown() {
             const now = Math.floor(Date.now() / 1000);
             const diff = deadlineEpoch - now;
@@ -9344,6 +9157,73 @@
         }
         setInterval(updateDeadlineCountdown, 1000);
         updateDeadlineCountdown();
+
+        // Feature 6: Cloudflare Edge Live Hydration (Instant Matchday Score Sync)
+        const FPL_PROXY_BASE = "https://fpl-selection.asawamanasak.workers.dev";
+        const TARGET_GW_NUM = 9;
+
+        async function syncLiveEdgeScores(gwNum) {
+            const gw = gwNum || TARGET_GW_NUM;
+            const edgePill = document.getElementById('edgeStatusPill');
+            const edgeDot = edgePill ? edgePill.querySelector('.edge-dot') : null;
+            if (edgeDot) edgeDot.classList.add('syncing');
+
+            try {
+                const res = await fetch(FPL_PROXY_BASE + '/event/' + gw + '/live/');
+                if (!res.ok) throw new Error('Proxy responded with status ' + res.status);
+                const data = await res.json();
+                if (data && Array.isArray(data.elements)) {
+                    const liveMap = {};
+                    data.elements.forEach(function(el) {
+                        if (el && el.id && el.stats) {
+                            liveMap[el.id] = el.stats;
+                        }
+                    });
+
+                    let hydratedCount = 0;
+                    document.querySelectorAll('[data-player-id]').forEach(function(card) {
+                        const pid = parseInt(card.getAttribute('data-player-id'), 10);
+                        if (pid && liveMap[pid]) {
+                            const stats = liveMap[pid];
+                            const strip = card.querySelector('.card-live-strip');
+                            if (strip) {
+                                const ptsEl = strip.querySelector('.card-live-pts');
+                                const bpsEl = strip.querySelector('.card-live-bps');
+                                const played = (stats.minutes > 0) || (stats.total_points !== 0);
+                                if (played) {
+                                    if (ptsEl) ptsEl.textContent = stats.total_points;
+                                    if (bpsEl && stats.bps) bpsEl.textContent = '(' + stats.bps + ' bps)';
+                                    strip.style.display = 'inline-flex';
+                                    if (stats.minutes > 0 && stats.minutes < 90) {
+                                        strip.classList.add('in-play');
+                                    } else {
+                                        strip.classList.remove('in-play');
+                                    }
+                                    hydratedCount++;
+                                }
+                            }
+                        }
+                    });
+
+                    if (edgePill) {
+                        const timeStr = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                        edgePill.title = 'Cloudflare Worker Edge Proxy Active (GW' + gw + ' Live Synced at ' + timeStr + ' ICT)';
+                    }
+                }
+            } catch (e) {
+                console.warn('Edge live sync notice:', e);
+            } finally {
+                if (edgeDot) edgeDot.classList.remove('syncing');
+            }
+        }
+
+        const edgePillBtn = document.getElementById('edgeStatusPill');
+        if (edgePillBtn) {
+            edgePillBtn.addEventListener('click', function() {
+                syncLiveEdgeScores(TARGET_GW_NUM);
+            });
+        }
+        syncLiveEdgeScores(TARGET_GW_NUM);
     </script>
 </body>
 </html>

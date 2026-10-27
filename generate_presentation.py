@@ -56,7 +56,7 @@ def render_starter_card(p):
     fpl_shirt_url = f"https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_{t_code}{shirt_suffix}"
 
     return f"""
-    <div class="starter-card{card_extra}">
+    <div class="starter-card{card_extra}" data-player-id="{p.get('id', '')}" data-player-name="{p.get('web_name', '')}">
         <div class="starter-card-top">
             <span class="pos-tag-mini {pos_class}">{p['pos']}</span>
             <div class="starter-badges-group">
@@ -78,6 +78,10 @@ def render_starter_card(p):
             <div class="starter-fix-row">
                 <span class="starter-fix-text">{p['next_fix'].split(' ')[0]}</span>
                 <span class="fdr-pill {fdr_class}">FDR {p['next_fdr']}</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="{p.get('id', '')}">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -102,7 +106,7 @@ def render_bench_card(p, sub_idx=1):
     fpl_shirt_url = f"https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_{t_code}{shirt_suffix}"
 
     return f"""
-    <div class="bench-card{card_extra}">
+    <div class="bench-card{card_extra}" data-player-id="{p.get('id', '')}" data-player-name="{p.get('web_name', '')}">
         <div class="bench-card-top">
             <span class="pos-tag-mini {pos_class}">{p['pos']}</span>
             <div class="starter-badges-group">
@@ -124,6 +128,10 @@ def render_bench_card(p, sub_idx=1):
             <div class="bench-fix-row">
                 <span class="bench-fix-text">{p['next_fix'].split(' ')[0]}</span>
                 <span class="fdr-pill {fdr_class}">FDR {p['next_fdr']}</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="{p.get('id', '')}">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -318,28 +326,30 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         return raw_picks
 
     if not active_gw:
-        # 1. If currently inside a gameweek that has passed deadline but not finished:
+        # 1. If currently inside a gameweek that has passed deadline but not finished (live matches in progress):
         for ev in bootstrap.get("events", []):
             if ev.get("deadline_time_epoch", 0) <= now_epoch and not ev.get("finished"):
                 active_gw = ev.get("id")
                 break
-        # 2. If current gameweek in bootstrap has an official picks file (or newer picks file exists):
-        if not active_gw:
-            latest_picks_gw = None
-            if os.path.exists(data_dir):
-                for fn in sorted(os.listdir(data_dir)):
-                    pm = re.match(r'picks_gw(\d+)\.json', fn)
-                    if pm:
-                        latest_picks_gw = max(latest_picks_gw or 0, int(pm.group(1)))
-            curr_ev = next((ev.get("id") for ev in bootstrap.get("events", []) if ev.get("is_current")), None)
-            if latest_picks_gw and curr_ev and latest_picks_gw >= curr_ev:
-                active_gw = latest_picks_gw
-        # 3. Otherwise upcoming deadline (is_next):
+        # 2. Otherwise next upcoming gameweek to plan for (is_next):
         if not active_gw:
             for ev in bootstrap.get("events", []):
                 if ev.get("is_next"):
                     active_gw = ev.get("id")
                     break
+        # 3. If an explicit future picks file exists that is newer than finished gameweeks:
+        if not active_gw:
+            finished_ids = set(ev.get("id") for ev in bootstrap.get("events", []) if ev.get("finished"))
+            latest_picks_gw = None
+            if os.path.exists(data_dir):
+                for fn in sorted(os.listdir(data_dir)):
+                    pm = re.match(r'picks_gw(\d+)\.json', fn)
+                    if pm:
+                        gw_cand = int(pm.group(1))
+                        if gw_cand not in finished_ids:
+                            latest_picks_gw = max(latest_picks_gw or 0, gw_cand)
+            if latest_picks_gw:
+                active_gw = latest_picks_gw
         # 4. Fallback to is_current or default 4:
         if not active_gw:
             for ev in bootstrap.get("events", []):
@@ -3094,6 +3104,75 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             letter-spacing: 0.5px;
         }}
 
+        .edge-pill {{
+            font-size: 0.64rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-sky);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 0.1rem 0.45rem;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-left: 0.35rem;
+            letter-spacing: 0.2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }}
+        .edge-pill:hover {{
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.6);
+        }}
+        .edge-dot {{
+            width: 6px;
+            height: 6px;
+            background: var(--accent-sky);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 6px var(--accent-sky);
+        }}
+        .edge-dot.syncing {{
+            animation: edgePulse 0.8s infinite alternate;
+        }}
+        @keyframes edgePulse {{
+            from {{ opacity: 0.3; transform: scale(0.8); }}
+            to {{ opacity: 1; transform: scale(1.25); }}
+        }}
+
+        .card-live-strip {{
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            font-weight: 700;
+            color: var(--accent-emerald);
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 3px;
+            padding: 1px 4px;
+            margin-top: 3px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }}
+        .card-live-strip.in-play {{
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.5);
+        }}
+        .card-live-strip .card-live-unit {{
+            font-size: 0.5rem;
+            opacity: 0.85;
+        }}
+        .card-live-strip .card-live-bps {{
+            font-size: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }}
+
         .stats-strip {{ 
             display: flex; 
             gap: 0.4rem; 
@@ -5278,7 +5357,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             .title-box h1 {{ font-size: clamp(0.90rem, 3.2vw, 1.05rem); line-height: 1.25; }}
             .team-name {{ display: inline-block; word-break: break-word; }}
             .team-id-tag {{ font-size: 0.68rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }}
-            .sync-pill {{ margin-left: 0; margin-top: 3px; font-size: 0.58rem; display: inline-flex; }}
+            .sync-pill, .edge-pill {{ margin-left: 0; margin-top: 3px; font-size: 0.58rem; display: inline-flex; }}
             .manager-meta-line {{
                 font-size: 0.70rem;
                 line-height: 1.55;
@@ -6231,6 +6310,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <span class="team-name">{html.escape(str(entry.get("name", "GEMINI UNITED")))}</span> 
                         <span class="team-id-tag">(ID: {entry.get('id', 306983)})</span> 
                         <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: {last_sync_str}<span class="sync-tag-active">ACTIVE</span></span>
+                        <span class="edge-pill" id="edgeStatusPill" title="Cloudflare Worker Edge Proxy (fpl-selection.asawamanasak.workers.dev) - Click to poll live match data"><span class="edge-dot"></span>Edge: Connected</span>
                     </h1>
                     <p class="manager-meta-line">
                         <span class="manager-name">Manager: {html.escape(str(entry.get("player_first_name", "")))} {html.escape(str(entry.get("player_last_name", "")))}</span> 
@@ -6986,6 +7066,73 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         setInterval(updateDeadlineCountdown, 1000);
         updateDeadlineCountdown();
+
+        // Feature 6: Cloudflare Edge Live Hydration (Instant Matchday Score Sync)
+        const FPL_PROXY_BASE = "https://fpl-selection.asawamanasak.workers.dev";
+        const TARGET_GW_NUM = {active_gw};
+
+        async function syncLiveEdgeScores(gwNum) {{
+            const gw = gwNum || TARGET_GW_NUM;
+            const edgePill = document.getElementById('edgeStatusPill');
+            const edgeDot = edgePill ? edgePill.querySelector('.edge-dot') : null;
+            if (edgeDot) edgeDot.classList.add('syncing');
+
+            try {{
+                const res = await fetch(FPL_PROXY_BASE + '/event/' + gw + '/live/');
+                if (!res.ok) throw new Error('Proxy responded with status ' + res.status);
+                const data = await res.json();
+                if (data && Array.isArray(data.elements)) {{
+                    const liveMap = {{}};
+                    data.elements.forEach(function(el) {{
+                        if (el && el.id && el.stats) {{
+                            liveMap[el.id] = el.stats;
+                        }}
+                    }});
+
+                    let hydratedCount = 0;
+                    document.querySelectorAll('[data-player-id]').forEach(function(card) {{
+                        const pid = parseInt(card.getAttribute('data-player-id'), 10);
+                        if (pid && liveMap[pid]) {{
+                            const stats = liveMap[pid];
+                            const strip = card.querySelector('.card-live-strip');
+                            if (strip) {{
+                                const ptsEl = strip.querySelector('.card-live-pts');
+                                const bpsEl = strip.querySelector('.card-live-bps');
+                                const played = (stats.minutes > 0) || (stats.total_points !== 0);
+                                if (played) {{
+                                    if (ptsEl) ptsEl.textContent = stats.total_points;
+                                    if (bpsEl && stats.bps) bpsEl.textContent = '(' + stats.bps + ' bps)';
+                                    strip.style.display = 'inline-flex';
+                                    if (stats.minutes > 0 && stats.minutes < 90) {{
+                                        strip.classList.add('in-play');
+                                    }} else {{
+                                        strip.classList.remove('in-play');
+                                    }}
+                                    hydratedCount++;
+                                }}
+                            }}
+                        }}
+                    }});
+
+                    if (edgePill) {{
+                        const timeStr = new Date().toLocaleTimeString('th-TH', {{ hour: '2-digit', minute: '2-digit', second: '2-digit' }});
+                        edgePill.title = 'Cloudflare Worker Edge Proxy Active (GW' + gw + ' Live Synced at ' + timeStr + ' ICT)';
+                    }}
+                }}
+            }} catch (e) {{
+                console.warn('Edge live sync notice:', e);
+            }} finally {{
+                if (edgeDot) edgeDot.classList.remove('syncing');
+            }}
+        }}
+
+        const edgePillBtn = document.getElementById('edgeStatusPill');
+        if (edgePillBtn) {{
+            edgePillBtn.addEventListener('click', function() {{
+                syncLiveEdgeScores(TARGET_GW_NUM);
+            }});
+        }}
+        syncLiveEdgeScores(TARGET_GW_NUM);
     </script>
 </body>
 </html>

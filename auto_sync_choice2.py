@@ -64,6 +64,23 @@ def fetch_json_with_retry(url, headers, timeout=15, max_retries=3, backoff_facto
                 time.sleep(sleep_sec)
     raise last_error
 
+CLOUDFLARE_PROXY_BASE = "https://fpl-selection.asawamanasak.workers.dev"
+FPL_OFFICIAL_BASE = "https://fantasy.premierleague.com/api"
+
+def fetch_fpl_api(endpoint, headers, timeout=15):
+    """
+    Attempts to fetch from Cloudflare Worker Edge Proxy first (cached & rate-limit protected);
+    falls back cleanly to official FPL API if proxy is unavailable.
+    """
+    clean_ep = endpoint.lstrip('/')
+    proxy_url = f"{CLOUDFLARE_PROXY_BASE}/{clean_ep}"
+    official_url = f"{FPL_OFFICIAL_BASE}/{clean_ep}"
+    try:
+        return fetch_json_with_retry(proxy_url, headers=headers, timeout=timeout, max_retries=2)
+    except Exception as proxy_err:
+        print(f"Notice: Cloudflare proxy failed ({proxy_err}), falling back to official FPL API")
+        return fetch_json_with_retry(official_url, headers=headers, timeout=timeout, max_retries=3)
+
 def extract_data_fingerprint(bs, fix):
     """
     Generate a deterministic SHA256 hash of all fields that impact FPL decisions:
@@ -305,7 +322,7 @@ def fetch_live_data():
 
     # 1. bootstrap-static
     try:
-        bs = fetch_json_with_retry('https://fantasy.premierleague.com/api/bootstrap-static/', headers=headers)
+        bs = fetch_fpl_api('bootstrap-static/', headers=headers)
     except Exception as e:
         print(f"Warning fetching live bootstrap-static after retries: {e}")
         if os.path.exists('data/bootstrap_static.json'):
@@ -314,7 +331,7 @@ def fetch_live_data():
 
     # 2. fixtures
     try:
-        fix = fetch_json_with_retry('https://fantasy.premierleague.com/api/fixtures/', headers=headers)
+        fix = fetch_fpl_api('fixtures/', headers=headers)
     except Exception as e:
         print(f"Warning fetching live fixtures after retries: {e}")
         if os.path.exists('data/fixtures.json'):
@@ -330,7 +347,7 @@ def fetch_live_data():
 
     for endpoint, filename in [('entry/306983/', 'data/entry.json'), ('entry/306983/history/', 'data/history.json'), ('entry/306983/transfers/', 'data/transfers.json')]:
         try:
-            data = fetch_json_with_retry(f'https://fantasy.premierleague.com/api/{endpoint}', headers=headers)
+            data = fetch_fpl_api(endpoint, headers=headers)
             if filename == 'data/transfers.json' and isinstance(data, list) and os.path.exists(filename):
                 # Before deadline and during post-deadline FPL API processing lag, preserve local transfers for unfinished GWs not yet published by API
                 try:
@@ -365,7 +382,7 @@ def fetch_live_data():
                 picks_file = f"data/picks_gw{ev_id}.json"
                 if not os.path.exists(picks_file) or not is_finished or ev_id >= active_gw_now:
                     try:
-                        picks_data = fetch_json_with_retry(f'https://fantasy.premierleague.com/api/entry/306983/event/{ev_id}/picks/', headers=headers)
+                        picks_data = fetch_fpl_api(f'entry/306983/event/{ev_id}/picks/', headers=headers)
                         if picks_data and "picks" in picks_data:
                             with open(picks_file, 'w', encoding='utf-8') as f:
                                 json.dump(picks_data, f, ensure_ascii=False)
@@ -375,7 +392,7 @@ def fetch_live_data():
                 live_file = f"data/live_gw{ev_id}.json"
                 if not os.path.exists(live_file) or not is_finished:
                     try:
-                        live_data = fetch_json_with_retry(f'https://fantasy.premierleague.com/api/event/{ev_id}/live/', headers=headers)
+                        live_data = fetch_fpl_api(f'event/{ev_id}/live/', headers=headers)
                         if live_data and "elements" in live_data:
                             with open(live_file, 'w', encoding='utf-8') as f:
                                 json.dump(live_data, f, ensure_ascii=False)
@@ -453,7 +470,7 @@ def main():
     active_gw = get_active_gameweek(bs)
 
     # Re-run presentation generator for main dashboard
-    cmd = [sys.executable, "generate_presentation.py", "--out", "index.html"]
+    cmd = [sys.executable, "generate_presentation.py", "--out", "index.html", "--gw", str(active_gw)]
     subprocess.run(cmd, check=True)
 
     # Dynamically compile gameweek presentations from GW3 to active_gw

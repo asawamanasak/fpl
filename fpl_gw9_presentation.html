@@ -196,6 +196,75 @@
             letter-spacing: 0.5px;
         }
 
+        .edge-pill {
+            font-size: 0.64rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-sky);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 0.1rem 0.45rem;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-left: 0.35rem;
+            letter-spacing: 0.2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .edge-pill:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.6);
+        }
+        .edge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-sky);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 6px var(--accent-sky);
+        }
+        .edge-dot.syncing {
+            animation: edgePulse 0.8s infinite alternate;
+        }
+        @keyframes edgePulse {
+            from { opacity: 0.3; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1.25); }
+        }
+
+        .card-live-strip {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            font-weight: 700;
+            color: var(--accent-emerald);
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 3px;
+            padding: 1px 4px;
+            margin-top: 3px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+        .card-live-strip.in-play {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+        .card-live-strip .card-live-unit {
+            font-size: 0.5rem;
+            opacity: 0.85;
+        }
+        .card-live-strip .card-live-bps {
+            font-size: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
         .stats-strip { 
             display: flex; 
             gap: 0.4rem; 
@@ -2380,7 +2449,7 @@
             .title-box h1 { font-size: clamp(0.90rem, 3.2vw, 1.05rem); line-height: 1.25; }
             .team-name { display: inline-block; word-break: break-word; }
             .team-id-tag { font-size: 0.68rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
-            .sync-pill { margin-left: 0; margin-top: 3px; font-size: 0.58rem; display: inline-flex; }
+            .sync-pill, .edge-pill { margin-left: 0; margin-top: 3px; font-size: 0.58rem; display: inline-flex; }
             .manager-meta-line {
                 font-size: 0.70rem;
                 line-height: 1.55;
@@ -3332,7 +3401,8 @@
                     <h1>
                         <span class="team-name">GEMINI UNITED</span> 
                         <span class="team-id-tag">(ID: 306983)</span> 
-                        <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 27/10/2026 03:01 PM<span class="sync-tag-active">ACTIVE</span></span>
+                        <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: 27/10/2026 07:53 PM<span class="sync-tag-active">ACTIVE</span></span>
+                        <span class="edge-pill" id="edgeStatusPill" title="Cloudflare Worker Edge Proxy (fpl-selection.asawamanasak.workers.dev) - Click to poll live match data"><span class="edge-dot"></span>Edge: Connected</span>
                     </h1>
                     <p class="manager-meta-line">
                         <span class="manager-name">Manager: Micky Asawamanasak</span> 
@@ -3429,7 +3499,7 @@
                         <!-- FWD (3) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="165" data-player-name="João Pedro">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
             <div class="starter-badges-group">
@@ -3452,10 +3522,14 @@
                 <span class="starter-fix-text">MUN</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="165">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="411" data-player-name="Haaland">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
             <div class="starter-badges-group">
@@ -3478,6 +3552,10 @@
                 <span class="starter-fix-text">BHA</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
             </div>
+            <div class="card-live-strip" data-live-pid="411">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
@@ -3485,7 +3563,7 @@
                         <!-- MID (4) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="154" data-player-name="Palmer">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -3508,10 +3586,14 @@
                 <span class="starter-fix-text">MUN</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="154">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="68" data-player-name="Tavernier">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -3534,10 +3616,14 @@
                 <span class="starter-fix-text">LEE</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
             </div>
+            <div class="card-live-strip" data-live-pid="68">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="124" data-player-name="Groß">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -3560,6 +3646,10 @@
                 <span class="starter-fix-text">MCI</span>
                 <span class="fdr-pill fdr-5">FDR 5</span>
             </div>
+            <div class="card-live-strip" data-live-pid="124">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
@@ -3567,7 +3657,7 @@
                         <!-- DEF (3) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="4" data-player-name="Gabriel">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -3590,10 +3680,14 @@
                 <span class="starter-fix-text">LIV</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="4">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="304" data-player-name="O&#x27;Shea">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -3616,10 +3710,14 @@
                 <span class="starter-fix-text">HUL</span>
                 <span class="fdr-pill fdr-2">FDR 2</span>
             </div>
+            <div class="card-live-strip" data-live-pid="304">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="8" data-player-name="Calafiori">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -3642,10 +3740,14 @@
                 <span class="starter-fix-text">LIV</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="8">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="391" data-player-name="Gvardiol">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -3668,10 +3770,14 @@
                 <span class="starter-fix-text">BHA</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
             </div>
+            <div class="card-live-strip" data-live-pid="391">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="31" data-player-name="Konsa">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -3694,6 +3800,10 @@
                 <span class="starter-fix-text">LIV</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="31">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
@@ -3701,7 +3811,7 @@
                         <!-- GKP (1) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="109" data-player-name="Verbruggen">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-GKP">GKP</span>
             <div class="starter-badges-group">
@@ -3724,6 +3834,10 @@
                 <span class="starter-fix-text">MCI</span>
                 <span class="fdr-pill fdr-5">FDR 5</span>
             </div>
+            <div class="card-live-strip" data-live-pid="109">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
@@ -3737,7 +3851,7 @@
                         </div>
                         <div class="bench-row">
                             
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="496" data-player-name="Kinsky">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-GKP">GKP</span>
             <div class="starter-badges-group">
@@ -3760,10 +3874,14 @@
                 <span class="bench-fix-text">CRY</span>
                 <span class="fdr-pill fdr-2">FDR 2</span>
             </div>
+            <div class="card-live-strip" data-live-pid="496">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="368" data-player-name="Szoboszlai">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -3786,10 +3904,14 @@
                 <span class="bench-fix-text">ARS</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="368">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="53" data-player-name="Manzambi">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -3812,10 +3934,14 @@
                 <span class="bench-fix-text">FUL</span>
                 <span class="fdr-pill fdr-2">FDR 2</span>
             </div>
+            <div class="card-live-strip" data-live-pid="53">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="272" data-player-name="Kusi-Asare">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
             <div class="starter-badges-group">
@@ -3837,6 +3963,10 @@
             <div class="bench-fix-row">
                 <span class="bench-fix-text">AVL</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="272">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -3902,7 +4032,7 @@
                         <!-- FWD (3) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="165" data-player-name="João Pedro">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
             <div class="starter-badges-group">
@@ -3925,10 +4055,14 @@
                 <span class="starter-fix-text">MUN</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="165">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="411" data-player-name="Haaland">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
             <div class="starter-badges-group">
@@ -3951,6 +4085,10 @@
                 <span class="starter-fix-text">BHA</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
             </div>
+            <div class="card-live-strip" data-live-pid="411">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
@@ -3958,7 +4096,7 @@
                         <!-- MID (4) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="154" data-player-name="Palmer">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -3981,10 +4119,14 @@
                 <span class="starter-fix-text">MUN</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="154">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="68" data-player-name="Tavernier">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -4007,10 +4149,14 @@
                 <span class="starter-fix-text">LEE</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
             </div>
+            <div class="card-live-strip" data-live-pid="68">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="124" data-player-name="Groß">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -4033,10 +4179,14 @@
                 <span class="starter-fix-text">MCI</span>
                 <span class="fdr-pill fdr-5">FDR 5</span>
             </div>
+            <div class="card-live-strip" data-live-pid="124">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="53" data-player-name="Manzambi">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -4059,6 +4209,10 @@
                 <span class="starter-fix-text">FUL</span>
                 <span class="fdr-pill fdr-2">FDR 2</span>
             </div>
+            <div class="card-live-strip" data-live-pid="53">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
@@ -4066,7 +4220,7 @@
                         <!-- DEF (3) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="4" data-player-name="Gabriel">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -4089,10 +4243,14 @@
                 <span class="starter-fix-text">LIV</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="4">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="304" data-player-name="O&#x27;Shea">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -4115,10 +4273,14 @@
                 <span class="starter-fix-text">HUL</span>
                 <span class="fdr-pill fdr-2">FDR 2</span>
             </div>
+            <div class="card-live-strip" data-live-pid="304">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="391" data-player-name="Gvardiol">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -4141,10 +4303,14 @@
                 <span class="starter-fix-text">BHA</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
             </div>
+            <div class="card-live-strip" data-live-pid="391">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="31" data-player-name="Konsa">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -4167,6 +4333,10 @@
                 <span class="starter-fix-text">LIV</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="31">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
@@ -4174,7 +4344,7 @@
                         <!-- GKP (1) -->
                         <div class="pitch-row">
                             
-    <div class="starter-card">
+    <div class="starter-card" data-player-id="109" data-player-name="Verbruggen">
         <div class="starter-card-top">
             <span class="pos-tag-mini pos-GKP">GKP</span>
             <div class="starter-badges-group">
@@ -4197,6 +4367,10 @@
                 <span class="starter-fix-text">MCI</span>
                 <span class="fdr-pill fdr-5">FDR 5</span>
             </div>
+            <div class="card-live-strip" data-live-pid="109">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
@@ -4210,7 +4384,7 @@
                         </div>
                         <div class="bench-row">
                             
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="496" data-player-name="Kinsky">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-GKP">GKP</span>
             <div class="starter-badges-group">
@@ -4233,10 +4407,14 @@
                 <span class="bench-fix-text">CRY</span>
                 <span class="fdr-pill fdr-2">FDR 2</span>
             </div>
+            <div class="card-live-strip" data-live-pid="496">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="368" data-player-name="Szoboszlai">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-MID">MID</span>
             <div class="starter-badges-group">
@@ -4259,10 +4437,14 @@
                 <span class="bench-fix-text">ARS</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="368">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="8" data-player-name="Calafiori">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-DEF">DEF</span>
             <div class="starter-badges-group">
@@ -4285,10 +4467,14 @@
                 <span class="bench-fix-text">LIV</span>
                 <span class="fdr-pill fdr-4">FDR 4</span>
             </div>
+            <div class="card-live-strip" data-live-pid="8">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
+            </div>
         </div>
     </div>
     
-    <div class="bench-card">
+    <div class="bench-card" data-player-id="272" data-player-name="Kusi-Asare">
         <div class="bench-card-top">
             <span class="pos-tag-mini pos-FWD">FWD</span>
             <div class="starter-badges-group">
@@ -4310,6 +4496,10 @@
             <div class="bench-fix-row">
                 <span class="bench-fix-text">AVL</span>
                 <span class="fdr-pill fdr-3">FDR 3</span>
+            </div>
+            <div class="card-live-strip" data-live-pid="272">
+                <span class="card-live-pts">0</span> <span class="card-live-unit">pts</span>
+                <span class="card-live-bps"></span>
             </div>
         </div>
     </div>
@@ -8967,6 +9157,73 @@
         }
         setInterval(updateDeadlineCountdown, 1000);
         updateDeadlineCountdown();
+
+        // Feature 6: Cloudflare Edge Live Hydration (Instant Matchday Score Sync)
+        const FPL_PROXY_BASE = "https://fpl-selection.asawamanasak.workers.dev";
+        const TARGET_GW_NUM = 9;
+
+        async function syncLiveEdgeScores(gwNum) {
+            const gw = gwNum || TARGET_GW_NUM;
+            const edgePill = document.getElementById('edgeStatusPill');
+            const edgeDot = edgePill ? edgePill.querySelector('.edge-dot') : null;
+            if (edgeDot) edgeDot.classList.add('syncing');
+
+            try {
+                const res = await fetch(FPL_PROXY_BASE + '/event/' + gw + '/live/');
+                if (!res.ok) throw new Error('Proxy responded with status ' + res.status);
+                const data = await res.json();
+                if (data && Array.isArray(data.elements)) {
+                    const liveMap = {};
+                    data.elements.forEach(function(el) {
+                        if (el && el.id && el.stats) {
+                            liveMap[el.id] = el.stats;
+                        }
+                    });
+
+                    let hydratedCount = 0;
+                    document.querySelectorAll('[data-player-id]').forEach(function(card) {
+                        const pid = parseInt(card.getAttribute('data-player-id'), 10);
+                        if (pid && liveMap[pid]) {
+                            const stats = liveMap[pid];
+                            const strip = card.querySelector('.card-live-strip');
+                            if (strip) {
+                                const ptsEl = strip.querySelector('.card-live-pts');
+                                const bpsEl = strip.querySelector('.card-live-bps');
+                                const played = (stats.minutes > 0) || (stats.total_points !== 0);
+                                if (played) {
+                                    if (ptsEl) ptsEl.textContent = stats.total_points;
+                                    if (bpsEl && stats.bps) bpsEl.textContent = '(' + stats.bps + ' bps)';
+                                    strip.style.display = 'inline-flex';
+                                    if (stats.minutes > 0 && stats.minutes < 90) {
+                                        strip.classList.add('in-play');
+                                    } else {
+                                        strip.classList.remove('in-play');
+                                    }
+                                    hydratedCount++;
+                                }
+                            }
+                        }
+                    });
+
+                    if (edgePill) {
+                        const timeStr = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                        edgePill.title = 'Cloudflare Worker Edge Proxy Active (GW' + gw + ' Live Synced at ' + timeStr + ' ICT)';
+                    }
+                }
+            } catch (e) {
+                console.warn('Edge live sync notice:', e);
+            } finally {
+                if (edgeDot) edgeDot.classList.remove('syncing');
+            }
+        }
+
+        const edgePillBtn = document.getElementById('edgeStatusPill');
+        if (edgePillBtn) {
+            edgePillBtn.addEventListener('click', function() {
+                syncLiveEdgeScores(TARGET_GW_NUM);
+            });
+        }
+        syncLiveEdgeScores(TARGET_GW_NUM);
     </script>
 </body>
 </html>
