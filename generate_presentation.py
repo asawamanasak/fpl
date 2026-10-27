@@ -3137,6 +3137,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         .edge-dot.syncing {{
             animation: edgePulse 0.8s infinite alternate;
         }}
+        .edge-tag-active {{
+            background: rgba(56, 189, 248, 0.22);
+            color: var(--accent-sky);
+            font-size: 0.52rem;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            margin-left: 2px;
+            letter-spacing: 0.5px;
+        }}
         @keyframes edgePulse {{
             from {{ opacity: 0.3; transform: scale(0.8); }}
             to {{ opacity: 1; transform: scale(1.25); }}
@@ -6309,8 +6319,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <h1>
                         <span class="team-name">{html.escape(str(entry.get("name", "GEMINI UNITED")))}</span> 
                         <span class="team-id-tag">(ID: {entry.get('id', 306983)})</span> 
-                        <span class="sync-pill" title="Automated Engine Active: Offset 15m schedule monitors prices, injuries, and lineups in real-time. Market data unchanged since last sync"><span class="sync-dot"></span>Last Sync: {last_sync_str}<span class="sync-tag-active">ACTIVE</span></span>
-                        <span class="edge-pill" id="edgeStatusPill" title="Cloudflare Worker Edge Proxy (fpl-selection.asawamanasak.workers.dev) - Click to poll live match data"><span class="edge-dot"></span>Edge: Connected</span>
+                        <span class="edge-pill" id="edgeStatusPill" title="Cloudflare Worker Edge Proxy (fpl-selection.asawamanasak.workers.dev) - Click to poll live match data"><span class="edge-dot"></span>Edge Live: <span id="edgeSyncTime">{last_sync_str}</span><span class="edge-tag-active">LIVE</span></span>
                     </h1>
                     <p class="manager-meta-line">
                         <span class="manager-name">Manager: {html.escape(str(entry.get("player_first_name", "")))} {html.escape(str(entry.get("player_last_name", "")))}</span> 
@@ -7115,8 +7124,15 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     }});
 
                     if (edgePill) {{
-                        const timeStr = new Date().toLocaleTimeString('th-TH', {{ hour: '2-digit', minute: '2-digit', second: '2-digit' }});
-                        edgePill.title = 'Cloudflare Worker Edge Proxy Active (GW' + gw + ' Live Synced at ' + timeStr + ' ICT)';
+                        const now = new Date();
+                        const datePart = now.toLocaleDateString('en-GB');
+                        const timePart = now.toLocaleTimeString('en-US', {{ hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }});
+                        const liveTimeStr = datePart + ' ' + timePart;
+                        const syncTimeEl = document.getElementById('edgeSyncTime');
+                        if (syncTimeEl) {{
+                            syncTimeEl.textContent = liveTimeStr;
+                        }}
+                        edgePill.title = 'Cloudflare Worker Edge Proxy Active (GW' + gw + ' Live Synced at ' + liveTimeStr + ' ICT)';
                     }}
                 }}
             }} catch (e) {{
