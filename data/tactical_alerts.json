@@ -1,5 +1,5 @@
 {
-  "last_checked": "2026-10-25T19:17:44.980273+00:00",
+  "last_checked": "2026-10-27T19:29:00.027540+00:00",
   "total_alerts": 6,
   "alerts": [
     {
@@ -8,15 +8,15 @@
       "status": "d",
       "chance": 75,
       "news": "Hip injury - 75% chance of playing",
-      "timestamp": "2026-10-25T19:17:44.980074+00:00"
+      "timestamp": "2026-10-27T19:29:00.027384+00:00"
     },
     {
       "id": 165,
       "web_name": "João Pedro",
-      "status": "d",
-      "chance": 75,
-      "news": "Unspecified injury - 75% chance of playing",
-      "timestamp": "2026-10-25T19:17:44.980109+00:00"
+      "status": "i",
+      "chance": 0,
+      "news": "Thigh injury - Unknown return date",
+      "timestamp": "2026-10-27T19:29:00.027408+00:00"
     },
     {
       "id": 366,
@@ -24,7 +24,7 @@
       "status": "d",
       "chance": 75,
       "news": "Ankle injury - 75% chance of playing",
-      "timestamp": "2026-10-25T19:17:44.980124+00:00"
+      "timestamp": "2026-10-27T19:29:00.027420+00:00"
     },
     {
       "id": 368,
@@ -32,7 +32,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Unknown return date",
-      "timestamp": "2026-10-25T19:17:44.980129+00:00"
+      "timestamp": "2026-10-27T19:29:00.027423+00:00"
     },
     {
       "id": 423,
@@ -40,7 +40,7 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-10-25T19:17:44.980137+00:00"
+      "timestamp": "2026-10-27T19:29:00.027429+00:00"
     },
     {
       "id": 557,
@@ -48,7 +48,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Expected back 1 Nov",
-      "timestamp": "2026-10-25T19:17:44.980145+00:00"
+      "timestamp": "2026-10-27T19:29:00.027436+00:00"
     }
   ]
 }
