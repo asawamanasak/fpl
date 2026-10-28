@@ -1,6 +1,6 @@
 {
-  "last_checked": "2026-10-27T19:29:00.027540+00:00",
-  "total_alerts": 6,
+  "last_checked": "2026-10-28T20:20:18.275284+00:00",
+  "total_alerts": 5,
   "alerts": [
     {
       "id": 8,
@@ -8,7 +8,7 @@
       "status": "d",
       "chance": 75,
       "news": "Hip injury - 75% chance of playing",
-      "timestamp": "2026-10-27T19:29:00.027384+00:00"
+      "timestamp": "2026-10-28T20:20:18.275132+00:00"
     },
     {
       "id": 165,
@@ -16,15 +16,7 @@
       "status": "i",
       "chance": 0,
       "news": "Thigh injury - Unknown return date",
-      "timestamp": "2026-10-27T19:29:00.027408+00:00"
-    },
-    {
-      "id": 366,
-      "web_name": "Wirtz",
-      "status": "d",
-      "chance": 75,
-      "news": "Ankle injury - 75% chance of playing",
-      "timestamp": "2026-10-27T19:29:00.027420+00:00"
+      "timestamp": "2026-10-28T20:20:18.275154+00:00"
     },
     {
       "id": 368,
@@ -32,7 +24,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Unknown return date",
-      "timestamp": "2026-10-27T19:29:00.027423+00:00"
+      "timestamp": "2026-10-28T20:20:18.275167+00:00"
     },
     {
       "id": 423,
@@ -40,7 +32,7 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-10-27T19:29:00.027429+00:00"
+      "timestamp": "2026-10-28T20:20:18.275174+00:00"
     },
     {
       "id": 557,
@@ -48,7 +40,7 @@
       "status": "i",
       "chance": 0,
       "news": "Hamstring injury - Expected back 1 Nov",
-      "timestamp": "2026-10-27T19:29:00.027436+00:00"
+      "timestamp": "2026-10-28T20:20:18.275180+00:00"
     }
   ]
 }
