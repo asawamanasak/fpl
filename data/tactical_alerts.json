@@ -1,5 +1,5 @@
 {
-  "last_checked": "2026-10-30T14:34:22.550491+00:00",
+  "last_checked": "2026-10-30T19:38:20.762396+00:00",
   "total_alerts": 5,
   "alerts": [
     {
@@ -8,7 +8,7 @@
       "status": "d",
       "chance": 75,
       "news": "Hip injury - 75% chance of playing",
-      "timestamp": "2026-10-30T14:34:22.550331+00:00"
+      "timestamp": "2026-10-30T19:38:20.762248+00:00"
     },
     {
       "id": 165,
@@ -16,15 +16,15 @@
       "status": "i",
       "chance": 0,
       "news": "Thigh injury - Unknown return date",
-      "timestamp": "2026-10-30T14:34:22.550353+00:00"
+      "timestamp": "2026-10-30T19:38:20.762268+00:00"
     },
     {
       "id": 368,
       "web_name": "Szoboszlai",
-      "status": "i",
-      "chance": 0,
-      "news": "Hamstring injury - Unknown return date",
-      "timestamp": "2026-10-30T14:34:22.550367+00:00"
+      "status": "d",
+      "chance": 50,
+      "news": "Hamstring injury - 50% chance of playing",
+      "timestamp": "2026-10-30T19:38:20.762281+00:00"
     },
     {
       "id": 423,
@@ -32,7 +32,7 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-10-30T14:34:22.550374+00:00"
+      "timestamp": "2026-10-30T19:38:20.762288+00:00"
     },
     {
       "id": 557,
@@ -40,7 +40,7 @@
       "status": "d",
       "chance": 75,
       "news": "Hamstring injury - 75% chance of playing",
-      "timestamp": "2026-10-30T14:34:22.550381+00:00"
+      "timestamp": "2026-10-30T19:38:20.762295+00:00"
     }
   ]
 }
