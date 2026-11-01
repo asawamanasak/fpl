@@ -1,30 +1,14 @@
 {
-  "last_checked": "2026-10-30T19:38:20.762396+00:00",
-  "total_alerts": 5,
+  "last_checked": "2026-11-01T18:59:46.869858+00:00",
+  "total_alerts": 2,
   "alerts": [
-    {
-      "id": 8,
-      "web_name": "Calafiori",
-      "status": "d",
-      "chance": 75,
-      "news": "Hip injury - 75% chance of playing",
-      "timestamp": "2026-10-30T19:38:20.762248+00:00"
-    },
     {
       "id": 165,
       "web_name": "João Pedro",
       "status": "i",
       "chance": 0,
       "news": "Thigh injury - Unknown return date",
-      "timestamp": "2026-10-30T19:38:20.762268+00:00"
-    },
-    {
-      "id": 368,
-      "web_name": "Szoboszlai",
-      "status": "d",
-      "chance": 50,
-      "news": "Hamstring injury - 50% chance of playing",
-      "timestamp": "2026-10-30T19:38:20.762281+00:00"
+      "timestamp": "2026-11-01T18:59:46.869700+00:00"
     },
     {
       "id": 423,
@@ -32,15 +16,7 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-10-30T19:38:20.762288+00:00"
-    },
-    {
-      "id": 557,
-      "web_name": "Tzolis",
-      "status": "d",
-      "chance": 75,
-      "news": "Hamstring injury - 75% chance of playing",
-      "timestamp": "2026-10-30T19:38:20.762295+00:00"
+      "timestamp": "2026-11-01T18:59:46.869735+00:00"
     }
   ]
 }
