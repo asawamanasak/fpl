@@ -590,11 +590,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     c1_formation_str = f"{c1_def_count}-{c1_mid_count}-{c1_fwd_count}"
 
     if c1_active_chip == "3xc":
-        c1_chip_pill_pitch = '<span class="active-chip-pill chip-pill-tc" style="background:rgba(245,158,11,0.2); color:#fbbf24; border:1px solid rgba(245,158,11,0.5); font-weight:800; letter-spacing:0.5px;">TRIPLE CAPTAIN ACTIVE (3x)</span>'
+        c1_chip_pill_pitch = '<span class="active-chip-pill chip-pill-tc" style="background:rgba(245,158,11,0.2); color:#fbbf24; border:1px solid rgba(245,158,11,0.5); font-weight:600; letter-spacing:0.5px;">TRIPLE CAPTAIN ACTIVE (3x)</span>'
         c1_lockdown_pill = '<span class="source-pill" style="border-color:#f59e0b; color:#fbbf24; background:rgba(245,158,11,0.15);">Triple Captain Active (3x)</span>'
         roadmap_active_weapons_badge = f'<span class="health-status-badge" style="background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.35);">ACTIVE WEAPONS: TC1 ACTIVE (GW{active_gw}) &bull; FH1 READY</span>'
     elif c1_active_chip:
-        c1_chip_pill_pitch = f'<span class="active-chip-pill" style="background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4); font-weight:800;">{c1_active_chip.upper()} ACTIVE</span>'
+        c1_chip_pill_pitch = f'<span class="active-chip-pill" style="background:rgba(16,185,129,0.2); color:var(--accent-emerald); border:1px solid rgba(16,185,129,0.4); font-weight:600;">{c1_active_chip.upper()} ACTIVE</span>'
         c1_lockdown_pill = f'<span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">{c1_active_chip.upper()} Active</span>'
         roadmap_active_weapons_badge = f'<span class="health-status-badge health-badge-ok">ACTIVE WEAPONS: {c1_active_chip.upper()} ACTIVE &bull; FH1 READY</span>'
     else:
@@ -1212,9 +1212,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 note = "พร้อมใช้ทันที (หมดอายุสิ้น GW19)"
             
             card = f'''<div class="chip-inventory-card" style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid {border_color}; border-radius:6px; padding:0.5rem 0.75rem;">
-                <div style="font-size:0.6875rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:normal;">{display_title} &bull; GW{s_ev}-{e_ev}</div>
-                <div style="font-size:0.85rem; font-weight:700; color:{status_color}; margin-top:2px;">{status_badge}</div>
-                <div style="font-size:0.6875rem; color:var(--text-muted); margin-top:2px;">{note}</div>
+                <div style="font-size:var(--text-xs); color:var(--text-muted); text-transform:none; letter-spacing:normal;">{display_title} &bull; GW{s_ev}-{e_ev}</div>
+                <div style="font-size:0.85rem; font-weight:500; color:{status_color}; margin-top:2px;">{status_badge}</div>
+                <div style="font-size:var(--text-xs); color:var(--text-muted); margin-top:2px;">{note}</div>
             </div>'''
             half1_cards_html.append(card)
         else:
@@ -1238,9 +1238,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 note = "ปลดล็อกครึ่งฤดูกาลหลัง"
             
             card = f'''<div class="chip-inventory-card" style="flex:1; min-width:130px; background:var(--bg-card-hover); border:1px solid {border_color}; border-radius:6px; padding:0.5rem 0.75rem;">
-                <div style="font-size:0.6875rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:normal;">{display_title} &bull; GW{s_ev}-{e_ev}</div>
-                <div style="font-size:0.85rem; font-weight:700; color:{status_color}; margin-top:2px;">{status_badge}</div>
-                <div style="font-size:0.6875rem; color:var(--text-muted); margin-top:2px;">{note}</div>
+                <div style="font-size:var(--text-xs); color:var(--text-muted); text-transform:none; letter-spacing:normal;">{display_title} &bull; GW{s_ev}-{e_ev}</div>
+                <div style="font-size:0.85rem; font-weight:500; color:{status_color}; margin-top:2px;">{status_badge}</div>
+                <div style="font-size:var(--text-xs); color:var(--text-muted); margin-top:2px;">{note}</div>
             </div>'''
             half2_cards_html.append(card)
 
@@ -1281,13 +1281,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         dynamic_roadmap_rows_html = f'''
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW9 (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px; font-weight:500; color:var(--accent-emerald);">GW9 (สัปดาห์นี้)</td>
                                 <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">0/1 FT USED &bull; 1 FT BANKED &bull; ZERO HIT</span></td>
                                 <td style="padding:8px 10px;">{gw9_fixes}</td>
                                 <td style="padding:8px 10px;">{gw9_roadmap_strategy}</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-sky);">GW10 (หน้าต่างทองคำ)</td>
+                                <td style="padding:8px 10px; font-weight:500; color:var(--accent-sky);">GW10 (หน้าต่างทองคำ)</td>
                                 <td style="padding:8px 10px;"><strong>2 FTs</strong> (พร้อมเงินสด £2.0m ในคลัง)</td>
                                 <td style="padding:8px 10px;">{gw10_fixes}</td>
                                 <td style="padding:8px 10px;">มี 2 Free Transfers และเงินสด £2.0m ในมือ เล็งเป้าอัปเกรดแดนกลางหรือแนวรุกสู่ระดับพรีเมียม (เช่น Mbeumo / Rogers / Cunha) ปลดปล่อยเงินทุนที่ค้างใน Szoboszlai (เจ็บ 0%)</td>
@@ -1314,25 +1314,25 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         dynamic_roadmap_rows_html = f'''
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW8 (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px; font-weight:500; color:var(--accent-emerald);">GW8 (สัปดาห์นี้)</td>
                                 <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">1/2 FTs USED &bull; 1 FT BANKED &bull; ZERO HIT</span></td>
                                 <td style="padding:8px 10px;">{gw8_fixes}</td>
                                 <td style="padding:8px 10px;">{gw8_roadmap_strategy}</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW9</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW9</td>
                                 <td style="padding:8px 10px;"><strong>2 FTs</strong> (ปลดล็อกเงิน £2.0m ในคลัง)</td>
                                 <td style="padding:8px 10px;">{gw9_fixes}</td>
                                 <td style="padding:8px 10px;">มี 2 Free Transfers และเงินสด £2.0m ในมือ เล็งเป้าเปลี่ยนตัวกลางความฟิตสมบูรณ์ (Mbeumo / Cunha / Rogers / Rice) แทน Szoboszlai ที่เจ็บแฮมสตริง (0%)</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW10</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW10</td>
                                 <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (คงความยืดหยุ่น)</td>
                                 <td style="padding:8px 10px;">{gw10_fixes}</td>
                                 <td style="padding:8px 10px;">สลับปรับเปลี่ยนผู้เล่นตามโปรแกรมระยะกลาง และรักษาโครงสร้าง Zero Deadweight 15 ตัวจริง</td>
                             </tr>
                             <tr>
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW11</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW11</td>
                                 <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (บริหารระยะยาว)</td>
                                 <td style="padding:8px 10px;">{gw11_fixes}</td>
                                 <td style="padding:8px 10px;">คงความได้เปรียบเรื่องมูลค่าทีมและโควตาย้ายตัวฟรี</td>
@@ -1348,25 +1348,25 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         dynamic_roadmap_rows_html = f'''
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW7 (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px; font-weight:500; color:var(--accent-emerald);">GW7 (สัปดาห์นี้)</td>
                                 <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">2/3 FTs USED &bull; 1 FT BANKED &bull; ZERO HIT{gw7_chip_roadmap_note}</span></td>
                                 <td style="padding:8px 10px;">{gw7_fixes}</td>
                                 <td style="padding:8px 10px;">{gw7_roadmap_strategy}</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW8</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW8</td>
                                 <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (คงความยืดหยุ่น)</td>
                                 <td style="padding:8px 10px;">{gw8_fixes}</td>
                                 <td style="padding:8px 10px;">ประเมินโปรแกรมแข่งขันและสภาพความฟิตนักเตะหลังพักเบรกทีมชาติ สะสมโควตา Free Transfer เพื่อความคล่องตัว</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW9</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW9</td>
                                 <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (บริหารโรเตชั่น)</td>
                                 <td style="padding:8px 10px;">{gw9_fixes}</td>
                                 <td style="padding:8px 10px;">สลับปรับเปลี่ยนผู้เล่นตามโปรแกรมระยะกลาง และรักษาโครงสร้าง Zero Deadweight 15 ตัวจริง</td>
                             </tr>
                             <tr>
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW10</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW10</td>
                                 <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (บริหารระยะยาว)</td>
                                 <td style="padding:8px 10px;">{gw10_fixes}</td>
                                 <td style="padding:8px 10px;">คงความได้เปรียบเรื่องมูลค่าทีมและโควตาย้ายตัวฟรี</td>
@@ -1379,25 +1379,25 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         dynamic_roadmap_rows_html = f'''
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW6 (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px; font-weight:500; color:var(--accent-emerald);">GW6 (สัปดาห์นี้)</td>
                                 <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">2 FTs BANKED &bull; ZERO HIT</span></td>
                                 <td style="padding:8px 10px;">{gw6_fixes}</td>
                                 <td style="padding:8px 10px;"><strong>บิ๊กแมตช์แอนฟิลด์ (LIV vs MCI - FDR 4):</strong> แมนฯ ซิตี้ บุกเยือนลิเวอร์พูล เลี่ยงการใช้ชิปในสัปดาห์นี้ อาศัยตัวทำเกมอาร์เซนอล (ARS vs LEE - H FDR 3) และ Palmer (CHE vs BOU - H FDR 3) เป็นหัวใจหลัก พร้อมสะสม 2 FTs เต็มโควตาไปใช้ GW7</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW7</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW7</td>
                                 <td style="padding:8px 10px;"><strong>2 FTs &bull; จุดพิจารณา Triple Captain #1</strong></td>
                                 <td style="padding:8px 10px;">{gw7_fixes}</td>
                                 <td style="padding:8px 10px;"><strong>โอกาสทองใช้ Triple Captain #1:</strong> Man City vs Ipswich (H - FDR 2 โซนเขียว) ฮาแลนด์เปิดบ้านพบอิปสวิช โอกาสระเบิดแต้ม 3 เท่า พร้อม 2 Free Transfers สำรองไว้แก้เกม</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW8</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW8</td>
                                 <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (คงความยืดหยุ่น)</td>
                                 <td style="padding:8px 10px;">{gw8_fixes}</td>
                                 <td style="padding:8px 10px;">ประเมินโปรแกรมแข่งขันและสภาพความฟิตนักเตะหลังพักเบรกทีมชาติ สะสมโควตา Free Transfer เพื่อความคล่องตัว</td>
                             </tr>
                             <tr>
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW9</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW9</td>
                                 <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (บริหารโรเตชั่น)</td>
                                 <td style="padding:8px 10px;">{gw9_fixes}</td>
                                 <td style="padding:8px 10px;">สลับปรับเปลี่ยนผู้เล่นตามโปรแกรมระยะกลาง และรักษาโครงสร้าง Zero Deadweight 15 ตัวจริง</td>
@@ -1410,25 +1410,25 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         dynamic_roadmap_rows_html = f'''
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW5 (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px; font-weight:500; color:var(--accent-emerald);">GW5 (สัปดาห์นี้)</td>
                                 <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">1/2 FTs &bull; ZERO HIT</span></td>
                                 <td style="padding:8px 10px;">{gw5_fixes}</td>
                                 <td style="padding:8px 10px;">ใช้โควตา 1 จาก 2 FTs ดึง <strong>Marcus Tavernier (£6.0m)</strong> แทน Foden ที่ติดโทษแบน พร้อมเก็บสะสม 1 FT สำรองไว้ลุยบิ๊กแมตช์ใน GW6 (กัปตัน Haaland vs Sunderland H &bull; Cost: 0 pts)</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW6</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW6</td>
                                 <td style="padding:8px 10px;"><strong>1-2 Free Transfers</strong> (บิ๊กแมตช์ &bull; เลี่ยงชิป)</td>
                                 <td style="padding:8px 10px;">{gw6_fixes}</td>
                                 <td style="padding:8px 10px;"><strong>บิ๊กแมตช์แอนฟิลด์ (LIV vs MCI - FDR 4):</strong> แมนฯ ซิตี้ บุกเยือนลิเวอร์พูล เลี่ยงการใช้ชิปในสัปดาห์นี้ อาศัยตัวทำเกมอาร์เซนอล (ARS vs LEE - H FDR 2) และ Palmer (CHE vs BOU - H FDR 3) เป็นหัวใจหลัก</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW7</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW7</td>
                                 <td style="padding:8px 10px;"><strong>1-2 FTs &bull; จุดพิจารณา Triple Captain #1</strong></td>
                                 <td style="padding:8px 10px;">{gw7_fixes}</td>
                                 <td style="padding:8px 10px;"><strong>โอกาสทองใช้ Triple Captain #1:</strong> Man City vs Ipswich (H - FDR 2 โซนเขียว) ฮาแลนด์เปิดบ้านพบอิปสวิช ก่อนพิจารณาเก็บ Free Hit #1 ไว้แก้ทางฉุกเฉินก่อนจบ GW19</td>
                             </tr>
                             <tr>
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW8</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW8</td>
                                 <td style="padding:8px 10px;"><strong>1-2 FTs</strong> (คงความยืดหยุ่น)</td>
                                 <td style="padding:8px 10px;">{gw8_fixes}</td>
                                 <td style="padding:8px 10px;">ประเมินโปรแกรมแข่งขันและสภาพความฟิตนักเตะหลังพักเบรกทีมชาติ สะสมโควตา Free Transfer เพื่อความคล่องตัว</td>
@@ -1442,25 +1442,25 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         dynamic_roadmap_rows_html = f'''
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW4 (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px; font-weight:500; color:var(--accent-emerald);">GW4 (สัปดาห์นี้)</td>
                                 <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">{user_free_transfers} FTs &bull; ZERO HIT</span></td>
                                 <td style="padding:8px 10px;">{gw4_fixes}</td>
                                 <td style="padding:8px 10px;">{gw4_roadmap_rec}</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW5</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW5</td>
                                 <td style="padding:8px 10px;"><strong>1-2 FTs &bull; จุดพิจารณา Triple Captain #1 ตัวเลือกที่ 1</strong></td>
                                 <td style="padding:8px 10px;">{gw5_fixes}</td>
                                 <td style="padding:8px 10px;"><strong>โอกาสทองใช้ Triple Captain #1 (ตัวเลือกที่ 1):</strong> Man City vs Sunderland (H - FDR 2 โซนเขียว) ฮาแลนด์เฝ้ารังพบซันเดอร์แลนด์ เหมาะแก่การระเบิดแต้ม 3 เท่า หรือเก็บชิปไว้ลุย GW7 หากต้องการถือ 2 FTs</td>
                             </tr>
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW6</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW6</td>
                                 <td style="padding:8px 10px;"><strong>1-2 Free Transfers</strong> (บิ๊กแมตช์ &bull; เลี่ยงชิป)</td>
                                 <td style="padding:8px 10px;">{gw6_fixes}</td>
                                 <td style="padding:8px 10px;"><strong>บิ๊กแมตช์แอนฟิลด์ (LIV vs MCI - FDR 4):</strong> แมนฯ ซิตี้ บุกเยือนลิเวอร์พูล เลี่ยงการใช้ชิปในสัปดาห์นี้ อาศัยตัวทำเกมอาร์เซนอล (ARS vs LEE - H FDR 2) และ Palmer (CHE vs BOU - H FDR 3) เป็นหัวใจหลัก</td>
                             </tr>
                             <tr>
-                                <td style="padding:8px 10px; font-weight:700; color:#ffffff;">GW7</td>
+                                <td style="padding:8px 10px; font-weight:500; color:#ffffff;">GW7</td>
                                 <td style="padding:8px 10px;"><strong>1-2 FTs &bull; จุดพิจารณา Triple Captain #1 ตัวเลือกที่ 2</strong></td>
                                 <td style="padding:8px 10px;">{gw7_fixes}</td>
                                 <td style="padding:8px 10px;"><strong>โอกาสทองใช้ Triple Captain #1 (ตัวเลือกที่ 2):</strong> Man City vs Ipswich (H - FDR 2 โซนเขียว) ฮาแลนด์เปิดบ้านพบอิปสวิช ก่อนพิจารณาเก็บ Free Hit #1 ไว้แก้ทางฉุกเฉินก่อนจบ GW19</td>
@@ -1468,7 +1468,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     else:
         dynamic_roadmap_rows_html = f'''
                             <tr style="border-bottom:1px solid var(--border-subtle);">
-                                <td style="padding:8px 10px; font-weight:700; color:var(--accent-emerald);">GW{active_gw} (สัปดาห์นี้)</td>
+                                <td style="padding:8px 10px; font-weight:500; color:var(--accent-emerald);">GW{active_gw} (สัปดาห์นี้)</td>
                                 <td style="padding:8px 10px;"><span style="color:var(--accent-emerald); font-weight:600;">{user_free_transfers} FTs &bull; ZERO HIT</span></td>
                                 <td style="padding:8px 10px;">-</td>
                                 <td style="padding:8px 10px;">บริหารจัดการทีมตามโควตา Free Transfer และโปรแกรมแข่งขัน</td>
@@ -1788,14 +1788,14 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     def render_review_player_row(p, is_diff=False):
         cap_badge = ""
         if p["is_captain"] and p["multiplier"] == 3:
-            cap_badge = '<span class="role-badge-cap role-badge-tc" style="width:24px; height:18px; font-size:0.55rem; margin-left:4px;">3XC</span>'
+            cap_badge = '<span class="role-badge-cap role-badge-tc" style="width:24px; height:18px; font-size: var(--text-xs); margin-left:4px;">3XC</span>'
         elif p["is_captain"] and p["multiplier"] == 2:
-            cap_badge = '<span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px;">C</span>'
+            cap_badge = '<span class="role-badge-cap" style="width:18px; height:18px; font-size: var(--text-xs); margin-left:4px;">C</span>'
         elif p.get("is_promoted_captain"):
             cap_label = "3XC*" if p["multiplier"] == 3 else "C*"
-            cap_badge = f'<span class="role-badge-cap" style="width:24px; height:18px; font-size:0.55rem; margin-left:4px; background:var(--accent-amber);" title="Promoted to Captain (C played 0 min)">{cap_label}</span>'
+            cap_badge = f'<span class="role-badge-cap" style="width:24px; height:18px; font-size: var(--text-xs); margin-left:4px; background:var(--accent-amber);" title="Promoted to Captain (C played 0 min)">{cap_label}</span>'
         elif p["is_vice_captain"]:
-            cap_badge = '<span class="role-badge-vc" style="width:18px; height:18px; font-size:0.55rem; margin-left:4px;">V</span>'
+            cap_badge = '<span class="role-badge-vc" style="width:18px; height:18px; font-size: var(--text-xs); margin-left:4px;">V</span>'
 
         sub_badge = ""
         if p.get("auto_sub_in"):
@@ -1909,7 +1909,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <span class="gw3-meta-chip">
                             <span class="meta-lbl">World Avg:</span>
                             <strong class="meta-val">{world_avg} pts</strong>
-                            <small style="color:{c1_vs_avg_color}; font-weight:700;">({c1_vs_avg_str})</small>
+                            <small style="color:{c1_vs_avg_color}; font-weight:500;">({c1_vs_avg_str})</small>
                         </span>
                         <span class="gw3-meta-chip">
                             <span class="meta-lbl">GW{gw_num} Rank:</span>
@@ -1951,7 +1951,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             <span class="plan-title" style="color:var(--accent-sky);">{c1_title}</span>
                             <div style="font-size:0.75rem; color:var(--text-secondary);">{c1_sub}</div>
                         </div>
-                        <span class="source-pill" style="border-color:var(--accent-sky); color:var(--accent-sky); font-size:0.75rem; font-weight:800;">
+                        <span class="source-pill" style="border-color:var(--accent-sky); color:var(--accent-sky); font-size:0.75rem; font-weight:600;">
                             {c1_start_pts} PTS
                         </span>
                     </div>
@@ -2020,7 +2020,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             <span class="plan-title" style="color:var(--accent-emerald);">{c2_title}</span>
                             <div style="font-size:0.75rem; color:var(--text-secondary);">{c2_sub}</div>
                         </div>
-                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald); font-size:0.75rem; font-weight:800;">
+                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald); font-size:0.75rem; font-weight:600;">
                             {c2_start_pts} PTS
                         </span>
                     </div>
@@ -2084,7 +2084,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             </div>
 
             <div class="gw3-decider-box">
-                <div style="font-size:0.85rem; font-weight:700; color:#ffffff; display:flex; align-items:center; gap:6px;">
+                <div style="font-size:0.85rem; font-weight:500; color:#ffffff; display:flex; align-items:center; gap:6px;">
                     <span>จุดชี้ขาดสำคัญของการแข่งขันสัปดาห์ที่ {gw_num} (Key Tactical Match Deciders)</span>
                 </div>
                 {deciders_html}
@@ -2365,9 +2365,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <span class="h2h-gw-label">Gameweek {gw_num}</span>
                     {latest_tag_html}
                 </td>
-                <td class="h2h-td-num" style="color:var(--accent-sky); font-weight:800;">{r['c1_pts']} pts</td>
-                <td class="h2h-td-num" style="color:var(--accent-emerald); font-weight:700;">{r['c2_pts']} pts</td>
-                <td class="h2h-td-num" style="color:{diff_color}; font-weight:700;">{diff_str}</td>
+                <td class="h2h-td-num" style="color:var(--accent-sky); font-weight:600;">{r['c1_pts']} pts</td>
+                <td class="h2h-td-num" style="color:var(--accent-emerald); font-weight:500;">{r['c2_pts']} pts</td>
+                <td class="h2h-td-num" style="color:{diff_color}; font-weight:500;">{diff_str}</td>
                 <td style="padding:10px 12px; text-align:center; white-space:nowrap;">{winner_badge}</td>
                 <td style="padding:10px 12px; color:var(--text-secondary); font-size:0.75rem; line-height:1.5;">{r['short_decider']}</td>
                 <td style="padding:10px 12px; text-align:right; white-space:nowrap;">
@@ -2419,7 +2419,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         btn_style = "border-color:var(--accent-emerald); color:var(--accent-emerald); background:rgba(16,185,129,0.15);" if is_latest else "border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b;"
         latest_label = " (ล่าสุด)" if is_latest else ""
         aria_sel = "true" if is_latest else "false"
-        selector_buttons.append(f'''<button type="button" role="tab" aria-selected="{aria_sel}" aria-controls="review-content-gw{gw_num}" id="btn-review-gw{gw_num}" class="source-pill review-gw-btn" onclick="switchReviewGw({gw_num}, this, false)" style="cursor:pointer; padding:6px 14px; min-block-size:44px; font-size:0.75rem; font-weight:700; border-radius:6px; {btn_style} transition:all 0.2s ease;">GW{gw_num} Review{latest_label}</button>''')
+        selector_buttons.append(f'''<button type="button" role="tab" aria-selected="{aria_sel}" aria-controls="review-content-gw{gw_num}" id="btn-review-gw{gw_num}" class="source-pill review-gw-btn" onclick="switchReviewGw({gw_num}, this, false)" style="cursor:pointer; padding:6px 14px; min-block-size:44px; font-size:0.75rem; font-weight:500; border-radius:6px; {btn_style} transition:all 0.2s ease;">GW{gw_num} Review{latest_label}</button>''')
         display_style = "" if is_latest else ' style="display:none;"'
         review_panels.append(f'''<div id="review-content-gw{gw_num}" role="tabpanel" aria-labelledby="btn-review-gw{gw_num}" class="review-gw-panel"{display_style}>{r['html']}</div>''')
 
@@ -2429,7 +2429,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     if active_gw >= 5:
         review_section_html = f'''
         <!-- TAB 5: POST-MATCH REVIEW & COMPARISON -->
-        <section id="tab-review" role="tabpanel" aria-labelledby="tab-btn-review" class="tab-content">
+        <section id="tab-review" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-review">
             <div class="gw3-review-container">
                 <!-- SEASON HEAD-TO-HEAD LEADERBOARD -->
                 <div class="h2h-leaderboard-card">
@@ -2478,10 +2478,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                             </tbody>
                             <tfoot>
                                 <tr class="h2h-tfoot-row">
-                                    <td style="padding:10px 12px; font-weight:800; color:#ffffff; white-space:nowrap;">รวมสะสม ({num_gws_reviewed} GWs)</td>
-                                    <td class="h2h-td-num" style="color:var(--accent-sky); font-weight:900;">{total_c1_pts} pts <small class="h2h-avg-sub">({avg_c1_pts:.1f}/GW)</small></td>
-                                    <td class="h2h-td-num" style="color:var(--accent-emerald); font-weight:900;">{total_c2_pts} pts <small class="h2h-avg-sub">({avg_c2_pts:.1f}/GW)</small></td>
-                                    <td class="h2h-td-num" style="color:{h2h_diff_color}; font-weight:900;">{h2h_diff_str}</td>
+                                    <td style="padding:10px 12px; font-weight:600; color:#ffffff; white-space:nowrap;">รวมสะสม ({num_gws_reviewed} GWs)</td>
+                                    <td class="h2h-td-num" style="color:var(--accent-sky); font-weight:600;">{total_c1_pts} pts <small class="h2h-avg-sub">({avg_c1_pts:.1f}/GW)</small></td>
+                                    <td class="h2h-td-num" style="color:var(--accent-emerald); font-weight:600;">{total_c2_pts} pts <small class="h2h-avg-sub">({avg_c2_pts:.1f}/GW)</small></td>
+                                    <td class="h2h-td-num" style="color:{h2h_diff_color}; font-weight:600;">{h2h_diff_str}</td>
                                     <td style="padding:10px 12px; text-align:center; white-space:nowrap;">
                                         <span class="mobile-winner-pill {'pill-c1' if h2h_diff > 0 else ('pill-c2' if h2h_diff < 0 else 'pill-draw')}">{h2h_status_pill.upper()}</span>
                                     </td>
@@ -2531,7 +2531,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     else:
         review_section_html = f'''
         <!-- TAB 5: POST-MATCH REVIEW & COMPARISON -->
-        <section id="tab-review" role="tabpanel" aria-labelledby="tab-btn-review" class="tab-content">
+        <section id="tab-review" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-review">
             <div class="gw3-review-container">
                 {review_panels_html}
             </div>
@@ -2714,13 +2714,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             <div class="xp-card" style="padding:0.65rem;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
                     <span class="pos-tag-mini pos-{z['zone']}">{z['zone']}</span>
-                    <span style="font-size:0.65rem; font-weight:700; color:{diff_color}; font-family:'JetBrains Mono', monospace;">{diff_str}</span>
+                    <span style="font-size: var(--text-xs); font-weight:500; color:{diff_color}; font-family:'JetBrains Mono', monospace;">{diff_str}</span>
                 </div>
                 <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:0.25rem;">
                     <span style="color:var(--text-muted);">C1: <strong style="color:var(--text-main); font-family:'JetBrains Mono', monospace;">{z['c1_xp']:.1f}</strong></span>
                     <span style="color:var(--text-muted);">C2: <strong style="color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">{z['c2_xp']:.1f}</strong></span>
                 </div>
-                <div style="font-size:0.64rem; color:var(--text-secondary); line-height:1.35; border-top:1px solid var(--border-muted); padding-top:0.3rem;">
+                <div style="font-size: var(--text-xs); color:var(--text-secondary); line-height:1.35; border-top:1px solid var(--border-muted); padding-top:0.3rem;">
                     {z['notes']}
                 </div>
             </div>
@@ -2738,13 +2738,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <div>
                         <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">
                             <span class="pos-tag-mini {pos_class}">{dp['pos']}</span>
-                            <span style="font-size:0.85rem; font-weight:700; color:var(--text-main);">{dp['name']}</span>
+                            <span style="font-size:0.85rem; font-weight:500; color:var(--text-main);">{dp['name']}</span>
                         </div>
-                        <div style="font-size:0.68rem; color:var(--text-muted);">{dp['team']} &bull; £{dp['cost']:.1f}m &bull; TSB: {dp['tsb']}</div>
+                        <div style="font-size:var(--text-xs); color:var(--text-muted);">{dp['team']} &bull; £{dp['cost']:.1f}m &bull; TSB: {dp['tsb']}</div>
                     </div>
                     <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
                         <span class="fdr-pill {fdr_class}">{dp['fixture']} (FDR {dp['fdr']})</span>
-                        <span style="font-size:0.75rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">{dp['xp']:.1f} xP</span>
+                        <span style="font-size:0.75rem; font-weight:600; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">{dp['xp']:.1f} xP</span>
                     </div>
                 </div>
                 <div style="font-size:0.7rem; color:var(--text-secondary); line-height:1.45; border-top:1px solid var(--border-muted); padding-top:0.4rem;">
@@ -2763,11 +2763,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             <div style="background:rgba(15, 23, 42, 0.5); border:1px solid var(--border-muted); border-radius:6px; padding:0.55rem; margin-top:0.4rem;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
                     <div style="display:flex; align-items:center; gap:6px;">
-                        <span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem;">C</span>
-                        <span style="font-size:0.78rem; font-weight:700; color:var(--text-main);">{c_alt['player']} ({c_alt['team']})</span>
-                        <span style="font-size:0.62rem; color:var(--text-muted);">{c_alt['opponent']}</span>
+                        <span class="role-badge-cap" style="width:18px; height:18px; font-size: var(--text-xs);">C</span>
+                        <span style="font-size:0.78rem; font-weight:500; color:var(--text-main);">{c_alt['player']} ({c_alt['team']})</span>
+                        <span style="font-size: var(--text-xs); color:var(--text-muted);">{c_alt['opponent']}</span>
                     </div>
-                    <span style="font-size:0.72rem; font-weight:700; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">{c_alt['effective_xp']:.1f} cap xP</span>
+                    <span style="font-size:0.72rem; font-weight:500; color:var(--accent-sky); font-family:'JetBrains Mono', monospace;">{c_alt['effective_xp']:.1f} cap xP</span>
                 </div>
                 <div style="font-size:0.66rem; color:var(--text-secondary); line-height:1.35;">
                     {c_alt['verdict']}
@@ -2798,7 +2798,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     if active_gw == 8:
         gw8_xp_widget_html = f'''
             <!-- Tactical Metric Card: Gameweek 8 Expected Points (xP) Differential -->
-            <div class="squad-health-widget" style="border-color: rgba(16, 185, 129, 0.4); background: linear-gradient(180deg, rgba(15, 20, 28, 0.95) 0%, rgba(21, 27, 38, 0.85) 100%); min-width: 0; width: 100%; box-sizing: border-box;">
+            <div class="squad-health-widget" style="border-color: rgba(16, 185, 129, 0.25); background: var(--bg-surface); min-width: 0; width: 100%; box-sizing: border-box;">
                 <div class="health-top-bar">
                     <div class="health-meta">
                         <span class="health-dot-active" style="background:var(--accent-emerald);"></span>
@@ -2815,39 +2815,39 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 <div class="xp-summary-strip">
                     <div class="xp-card" style="border-color: rgba(148, 163, 184, 0.25);">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-size:0.6875rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:normal;">Choice 1 Projected</span>
-                            <span style="font-size:0.6875rem; padding:1px 5px; border-radius:3px; background:rgba(148, 163, 184, 0.15); color:var(--text-secondary); border:1px solid rgba(148, 163, 184, 0.25);">BASELINE</span>
+                            <span style="font-size:var(--text-xs); font-weight:500; color:var(--text-muted); text-transform:none; letter-spacing:normal;">Choice 1 Projected</span>
+                            <span style="font-size:var(--text-xs); padding:1px 5px; border-radius:3px; background:rgba(148, 163, 184, 0.15); color:var(--text-secondary); border:1px solid rgba(148, 163, 184, 0.25);">BASELINE</span>
                         </div>
-                        <div style="font-size:1.35rem; font-weight:800; color:#ffffff; font-family:'JetBrains Mono', monospace; line-height:1.2;">
+                        <div style="font-size:1.35rem; font-weight:600; color:#ffffff; font-family:'JetBrains Mono', monospace; line-height:1.2;">
                             {gw8_xp_data["projected_totals"]["choice_1"]["xp"]:.1f} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500;">xP</span>
                         </div>
-                        <div style="font-size:0.6875rem; color:var(--text-muted); line-height:1.45;">
+                        <div style="font-size:var(--text-xs); color:var(--text-muted); line-height:1.45;">
                             {gw8_xp_data["projected_totals"]["choice_1"]["notes"]}
                         </div>
                     </div>
 
-                    <div class="xp-card" style="border-color: rgba(16, 185, 129, 0.35); background: linear-gradient(180deg, rgba(9, 12, 16, 0.9) 0%, rgba(16, 185, 129, 0.06) 100%);">
+                    <div class="xp-card" style="border-color: rgba(16, 185, 129, 0.25); background: var(--bg-card);">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-size:0.6875rem; font-weight:700; color:#34d399; text-transform:uppercase; letter-spacing:normal;">Choice 2 Projected</span>
-                            <span style="font-size:0.6875rem; padding:1px 5px; border-radius:3px; background:rgba(16, 185, 129, 0.2); color:#34d399; border:1px solid rgba(16, 185, 129, 0.4);">EO SHIELD</span>
+                            <span style="font-size:var(--text-xs); font-weight:500; color:#34d399; text-transform:none; letter-spacing:normal;">Choice 2 Projected</span>
+                            <span style="font-size:var(--text-xs); padding:1px 5px; border-radius:3px; background:rgba(16, 185, 129, 0.2); color:#34d399; border:1px solid rgba(16, 185, 129, 0.4);">EO SHIELD</span>
                         </div>
-                        <div style="font-size:1.35rem; font-weight:800; color:#34d399; font-family:'JetBrains Mono', monospace; line-height:1.2;">
+                        <div style="font-size:1.35rem; font-weight:600; color:#34d399; font-family:'JetBrains Mono', monospace; line-height:1.2;">
                             {gw8_xp_data["projected_totals"]["choice_2"]["xp"]:.1f} <span style="font-size:0.75rem; color:#34d399; font-weight:500;">xP</span>
                         </div>
-                        <div style="font-size:0.6875rem; color:var(--text-secondary); line-height:1.45;">
+                        <div style="font-size:var(--text-xs); color:var(--text-secondary); line-height:1.45;">
                             {gw8_xp_data["projected_totals"]["choice_2"]["notes"]}
                         </div>
                     </div>
 
-                    <div class="xp-card" style="border-color: rgba(56, 189, 248, 0.35); background: linear-gradient(180deg, rgba(9, 12, 16, 0.8) 0%, rgba(56, 189, 248, 0.06) 100%);">
+                    <div class="xp-card" style="border-color: rgba(56, 189, 248, 0.25); background: var(--bg-card);">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-size:0.6875rem; font-weight:700; color:var(--accent-sky); text-transform:uppercase; letter-spacing:normal;">Net Differential (C1 vs C2)</span>
-                            <span style="font-size:0.6875rem; padding:1px 5px; border-radius:3px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">{gw8_xp_data["projected_totals"]["net_differential"]["pct_formatted"]}</span>
+                            <span style="font-size:var(--text-xs); font-weight:500; color:var(--accent-sky); text-transform:none; letter-spacing:normal;">Net Differential (C1 vs C2)</span>
+                            <span style="font-size:var(--text-xs); padding:1px 5px; border-radius:3px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">{gw8_xp_data["projected_totals"]["net_differential"]["pct_formatted"]}</span>
                         </div>
-                        <div style="font-size:1.35rem; font-weight:800; color:var(--accent-sky); font-family:'JetBrains Mono', monospace; line-height:1.2;">
+                        <div style="font-size:1.35rem; font-weight:600; color:var(--accent-sky); font-family:'JetBrains Mono', monospace; line-height:1.2;">
                             {gw8_xp_data["projected_totals"]["net_differential"]["formatted"]}
                         </div>
-                        <div style="font-size:0.6875rem; color:var(--text-secondary); line-height:1.45;">
+                        <div style="font-size:var(--text-xs); color:var(--text-secondary); line-height:1.45;">
                             {gw8_xp_data["projected_totals"]["net_differential"]["summary_note"]}
                         </div>
                     </div>
@@ -2855,9 +2855,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
                 <!-- 2. Positional Zone Differentials -->
                 <div style="margin-bottom:0.85rem;">
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
+                    <div style="font-size:0.75rem; font-weight:500; color:var(--text-bright); margin-bottom:0.4rem; text-transform:none; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
                         <span>Positional Zone Differentials (GKP / DEF / MID / FWD)</span>
-                        <span style="font-size:0.6875rem; color:var(--text-muted); font-weight:500;">(Choice 1 vs Choice 2 Expected Points per Line)</span>
+                        <span style="font-size:var(--text-xs); color:var(--text-muted); font-weight:500;">(Choice 1 vs Choice 2 Expected Points per Line)</span>
                     </div>
                     <div class="xp-zones-grid">
                         {xp_zones_html}
@@ -2866,9 +2866,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
                 <!-- 3. Key Differential Players -->
                 <div style="margin-bottom:0.85rem;">
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
+                    <div style="font-size:0.75rem; font-weight:500; color:var(--text-bright); margin-bottom:0.4rem; text-transform:none; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
                         <span>Key Differential Transfer Targets (Solver Top Picks)</span>
-                        <span style="font-size:0.6875rem; color:var(--text-muted); font-weight:500;">(xP, Fixture FDR, TSB Ownership, and Tactical Upside)</span>
+                        <span style="font-size:var(--text-xs); color:var(--text-muted); font-weight:500;">(xP, Fixture FDR, TSB Ownership, and Tactical Upside)</span>
                     </div>
                     <div class="xp-differential-grid">
                         {xp_diff_players_html}
@@ -2877,25 +2877,25 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
                 <!-- 4. Captaincy Differential Analysis -->
                 <div>
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
+                    <div style="font-size:0.75rem; font-weight:500; color:var(--text-bright); margin-bottom:0.4rem; text-transform:none; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
                         <span>Captaincy Differential &amp; Ceiling Matrix</span>
-                        <span style="font-size:0.6875rem; color:var(--text-muted); font-weight:500;">(Template Baseline vs Explosive Upside)</span>
+                        <span style="font-size:var(--text-xs); color:var(--text-muted); font-weight:500;">(Template Baseline vs Explosive Upside)</span>
                     </div>
                     <div class="xp-differential-grid">
                         <!-- Baseline Captain -->
                         <div class="xp-card" style="border-color:rgba(16, 185, 129, 0.35);">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
                                 <div style="display:flex; align-items:center; gap:6px;">
-                                    <span class="role-badge-cap" style="width:18px; height:18px; font-size:0.55rem;">C</span>
-                                    <span style="font-size:0.82rem; font-weight:700; color:var(--text-bright);">{cap_baseline['player']} ({cap_baseline['team']})</span>
+                                    <span class="role-badge-cap" style="width:18px; height:18px; font-size: var(--text-xs);">C</span>
+                                    <span style="font-size:0.82rem; font-weight:500; color:var(--text-bright);">{cap_baseline['player']} ({cap_baseline['team']})</span>
                                 </div>
                                 <span class="fdr-pill fdr-{cap_baseline['fdr']}">{cap_baseline['opponent']}</span>
                             </div>
                             <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.35rem;">
-                                <span style="font-size:0.68rem; color:var(--text-muted);">{cap_baseline['role']}</span>
-                                <span style="font-size:1.05rem; font-weight:800; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">{cap_baseline['effective_xp']:.1f} cap xP <small style="font-size:0.65rem; color:var(--text-muted);">({cap_baseline['xp']:.1f}x2)</small></span>
+                                <span style="font-size:var(--text-xs); color:var(--text-muted);">{cap_baseline['role']}</span>
+                                <span style="font-size:1.05rem; font-weight:600; color:var(--accent-emerald); font-family:'JetBrains Mono', monospace;">{cap_baseline['effective_xp']:.1f} cap xP <small style="font-size: var(--text-xs); color:var(--text-muted);">({cap_baseline['xp']:.1f}x2)</small></span>
                             </div>
-                            <div style="font-size:0.68rem; color:var(--text-secondary); line-height:1.4; border-top:1px solid var(--border-muted); padding-top:0.35rem;">
+                            <div style="font-size:var(--text-xs); color:var(--text-secondary); line-height:1.4; border-top:1px solid var(--border-muted); padding-top:0.35rem;">
                                 {cap_baseline['verdict']}
                             </div>
                         </div>
@@ -2903,8 +2903,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                         <!-- Differential Ceiling Alternatives -->
                         <div class="xp-card" style="border-color:rgba(56, 189, 248, 0.35);">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
-                                <span style="font-size:0.75rem; font-weight:700; color:var(--accent-sky);">Differential Ceiling Contenders</span>
-                                <span style="font-size:0.58rem; color:var(--text-muted);">Rank Acceleration Options</span>
+                                <span style="font-size:0.75rem; font-weight:500; color:var(--accent-sky);">Differential Ceiling Contenders</span>
+                                <span style="font-size: var(--text-xs); color:var(--text-muted);">Rank Acceleration Options</span>
                             </div>
                             {cap_ceilings_html}
                         </div>
@@ -2920,7 +2920,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         coachfpl_solver_widget_html = f'''
             <!-- Tactical Summary Card: CoachFPL GW8 Transfer Solver Suggestions -->
-            <div class="squad-health-widget" style="border-color: rgba(56, 189, 248, 0.4); background: linear-gradient(180deg, rgba(15, 20, 28, 0.95) 0%, rgba(21, 27, 38, 0.85) 100%);">
+            <div class="squad-health-widget" style="border-color: rgba(56, 189, 248, 0.25); background: var(--bg-surface);">
                 <div class="health-top-bar">
                     <div class="health-meta">
                         <span class="health-dot-active" style="background:var(--accent-sky);"></span>
@@ -2936,16 +2936,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <!-- Recommendation Card 1: Direct Replacements (1 FT) -->
                     <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 0.85rem;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan A: Direct Premier Replacement (1 FT)</span>
-                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.3);">1 FT &bull; ZERO HIT</span>
+                            <span style="font-size:0.75rem; font-weight:500; color:var(--text-bright);">Solver Plan A: Direct Premier Replacement (1 FT)</span>
+                            <span style="font-size: var(--text-xs); padding:2px 6px; border-radius:4px; background:rgba(16, 185, 129, 0.15); color:var(--accent-emerald); border:1px solid rgba(16, 185, 129, 0.3);">1 FT &bull; ZERO HIT</span>
                         </div>
                         <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:0.5rem; line-height:1.45;">
                             <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                                <span style="color:var(--accent-rose); font-weight:700; width:34px;">OUT:</span>
+                                <span style="color:var(--accent-rose); font-weight:500; width:34px;">OUT:</span>
                                 <span>Szoboszlai (£{szo_cost:.1f}m &bull; LIV &bull; เจ็บ Hamstring 0%)</span>
                             </div>
                             <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
+                                <span style="color:var(--accent-emerald); font-weight:500; width:34px;">IN:</span>
                                 <span><strong>Bryan Mbeumo</strong> (£{mbeumo_cost:.1f}m &bull; MUN &bull; H vs BOU FDR 3)</span>
                             </div>
                         </div>
@@ -2957,16 +2957,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <!-- Recommendation Card 2: In-Form Midfield Pivot (1 FT) -->
                     <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; padding: 0.85rem;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan B: Healthy Set-Piece Pivot (1 FT)</span>
-                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">Bank £{plan_b_bank:.1f}m</span>
+                            <span style="font-size:0.75rem; font-weight:500; color:var(--text-bright);">Solver Plan B: Healthy Set-Piece Pivot (1 FT)</span>
+                            <span style="font-size: var(--text-xs); padding:2px 6px; border-radius:4px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">Bank £{plan_b_bank:.1f}m</span>
                         </div>
                         <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:0.5rem; line-height:1.45;">
                             <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                                <span style="color:var(--accent-rose); font-weight:700; width:34px;">OUT:</span>
+                                <span style="color:var(--accent-rose); font-weight:500; width:34px;">OUT:</span>
                                 <span>Szoboszlai (£{szo_cost:.1f}m &bull; LIV &bull; เจ็บ 0%)</span>
                             </div>
                             <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
+                                <span style="color:var(--accent-emerald); font-weight:500; width:34px;">IN:</span>
                                 <span><strong>Declan Rice</strong> (£{rice_cost:.1f}m &bull; ARS &bull; H vs EVE FDR 3)</span>
                             </div>
                         </div>
@@ -2978,16 +2978,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <!-- Recommendation Card 3: Value Reinvestment (1 FT) -->
                     <div style="background: rgba(9, 12, 16, 0.6); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 0.85rem;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                            <span style="font-size:0.75rem; font-weight:700; color:var(--text-bright);">Solver Plan C: Budget Reinvestment (1 FT)</span>
-                            <span style="font-size:0.6rem; padding:2px 6px; border-radius:4px; background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.3);">Bank £{plan_c_bank:.1f}m</span>
+                            <span style="font-size:0.75rem; font-weight:500; color:var(--text-bright);">Solver Plan C: Budget Reinvestment (1 FT)</span>
+                            <span style="font-size: var(--text-xs); padding:2px 6px; border-radius:4px; background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.3);">Bank £{plan_c_bank:.1f}m</span>
                         </div>
                         <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:0.5rem; line-height:1.45;">
                             <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                                <span style="color:var(--accent-rose); font-weight:700; width:34px;">OUT:</span>
+                                <span style="color:var(--accent-rose); font-weight:500; width:34px;">OUT:</span>
                                 <span>Szoboszlai (£{szo_cost:.1f}m &bull; LIV)</span>
                             </div>
                             <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="color:var(--accent-emerald); font-weight:700; width:34px;">IN:</span>
+                                <span style="color:var(--accent-emerald); font-weight:500; width:34px;">IN:</span>
                                 <span><strong>Kevin Schade</strong> (£{schade_cost:.1f}m &bull; BRE &bull; A vs HUL FDR 2)</span>
                             </div>
                         </div>
@@ -3037,7 +3037,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             --bg-surface: #0f141c;
             --bg-card: #151b26;
             --bg-card-inner: #0b0f16;
-            --bg-card-hover: #1a2230;
+            --bg-card-hover: #1e2634;
             --border-main: #212936;
             --border-muted: #18202c;
             --border-subtle: rgba(255, 255, 255, 0.08);
@@ -3045,30 +3045,38 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             
             --text-bright: #ffffff;
             --text-main: #f1f5f9;
-            --text-secondary: #b0c0d4;
-            --text-muted: #8b9bb4;
-            --text-xs: 0.6875rem;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --text-xs: 0.72rem;
             
             --c1-accent: #38bdf8;
-            --c1-bg: rgba(56, 189, 248, 0.12);
-            --c1-border: rgba(56, 189, 248, 0.35);
+            --c1-bg: rgba(56, 189, 248, 0.08);
+            --c1-border: rgba(56, 189, 248, 0.25);
             
             --c2-accent: #10b981;
-            --c2-bg: rgba(16, 185, 129, 0.12);
-            --c2-border: rgba(16, 185, 129, 0.35);
+            --c2-bg: rgba(16, 185, 129, 0.08);
+            --c2-border: rgba(16, 185, 129, 0.25);
             
             --touch-target-min: 44px;
             
             --accent-emerald: #10b981;
             --accent-sky: #38bdf8;
             --accent-amber: #f59e0b;
-            --accent-rose: #f43f5e;
+            --accent-rose: #ef4444;
             
             --fdr-1: #10b981;
             --fdr-2: #0284c7;
             --fdr-3: #64748b;
             --fdr-4: #d97706;
             --fdr-5: #dc2626;
+
+            --radius-xs: 4px;
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 14px;
+            --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+            --duration-fast: 140ms;
         }}
 
         * {{ margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }}
@@ -3093,23 +3101,24 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         
         body {{
-            font-family: 'Sarabun', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', 'Sarabun', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-base);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            line-height: 1.6;
+            line-height: 1.5;
             letter-spacing: normal;
+            font-weight: 400;
             word-break: break-word;
             overflow-wrap: break-word;
         }}
 
         h1, h2, h3, h4, h5, h6 {{
-            font-family: 'Sarabun', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-weight: 700;
-            line-height: 1.35;
+            font-family: 'Inter', 'Sarabun', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 500;
+            line-height: 1.3;
             text-wrap: balance;
             overflow-wrap: break-word;
             word-break: break-word;
@@ -3148,15 +3157,15 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             background: #1e293b;
             color: var(--text-main);
             border: 1px solid var(--border-accent);
-            font-weight: 700;
-            font-size: 0.65rem;
+            font-weight: 500;
+            font-size: var(--text-xs);
             padding: 0.18rem 0.4rem;
             border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .title-box h1 {{
             font-size: 1.05rem;
-            font-weight: 700;
+            font-weight: 500;
             color: #ffffff;
             line-height: 1.35;
         }}
@@ -3167,9 +3176,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         
         .sync-pill {{
-            font-size: 0.64rem;
+            font-size: var(--text-xs);
             font-weight: 600;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             background: rgba(16, 185, 129, 0.1);
             color: var(--accent-emerald);
             border: 1px solid rgba(16, 185, 129, 0.3);
@@ -3192,18 +3201,18 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         .sync-tag-active {{
             background: rgba(16, 185, 129, 0.2);
             color: var(--accent-emerald);
-            font-size: 0.52rem;
-            font-weight: 700;
+            font-size: var(--text-xs);
+            font-weight: 500;
             padding: 1px 5px;
             border-radius: 3px;
             margin-left: 2px;
-            letter-spacing: 0.5px;
+            letter-spacing: normal;
         }}
 
         .edge-pill {{
-            font-size: 0.64rem;
+            font-size: var(--text-xs);
             font-weight: 600;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             background: rgba(56, 189, 248, 0.1);
             color: var(--accent-sky);
             border: 1px solid rgba(56, 189, 248, 0.35);
@@ -3228,23 +3237,21 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             background: var(--accent-sky);
             border-radius: 50%;
             display: inline-block;
-            box-shadow: 0 0 6px var(--accent-sky);
         }}
         .edge-dot.syncing {{
-            animation: edgePulse 0.8s infinite alternate;
+            opacity: 0.7;
         }}
         .edge-tag-active {{
             background: rgba(56, 189, 248, 0.22);
             color: var(--accent-sky);
-            font-size: 0.52rem;
-            font-weight: 700;
+            font-size: var(--text-xs);
+            font-weight: 500;
             padding: 1px 5px;
             border-radius: 3px;
             margin-left: 2px;
-            letter-spacing: 0.5px;
+            letter-spacing: normal;
         }}
-        @keyframes edgePulse {{
-            from {{ opacity: 0.3; transform: scale(0.8); }}
+        
             to {{ opacity: 1; transform: scale(1.25); }}
         }}
 
@@ -3253,16 +3260,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             align-items: center;
             justify-content: center;
             gap: 3px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.58rem;
-            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            font-size: var(--text-xs);
+            font-weight: 500;
             color: var(--accent-emerald);
             background: rgba(16, 185, 129, 0.15);
             border: 1px solid rgba(16, 185, 129, 0.4);
             border-radius: 3px;
             padding: 1px 4px;
             margin-top: 3px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            
         }}
         .card-live-strip.in-play {{
             color: #38bdf8;
@@ -3270,11 +3277,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             border-color: rgba(56, 189, 248, 0.5);
         }}
         .card-live-strip .card-live-unit {{
-            font-size: 0.5rem;
+            font-size: var(--text-xs);
             opacity: 0.85;
         }}
         .card-live-strip .card-live-bps {{
-            font-size: 0.5rem;
+            font-size: var(--text-xs);
             color: var(--text-muted);
             font-weight: 500;
         }}
@@ -3294,16 +3301,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             min-width: 75px;
         }}
         .stat-cell .lbl {{
-            font-size: 0.54rem;
-            text-transform: uppercase;
+            font-size: var(--text-xs);
+            text-transform: none;
             color: var(--text-muted);
             font-weight: 600;
         }}
         .stat-cell .val {{
             font-size: 0.88rem;
-            font-weight: 700;
+            font-weight: 500;
             color: var(--accent-emerald);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             line-height: 1.2;
         }}
 
@@ -3315,24 +3322,24 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             background: rgba(30, 41, 59, 0.7);
             border: 1px solid rgba(56, 189, 248, 0.3);
             padding: 2px 8px;
-            border-radius: 9999px;
-            font-size: 0.62rem;
+            border-radius: var(--radius-sm);
+            font-size: var(--text-xs);
             color: var(--text-muted);
             margin-top: 4px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .deadline-tag-prefix {{
             background: rgba(56, 189, 248, 0.2);
             color: var(--accent-sky);
             padding: 1px 5px;
             border-radius: 4px;
-            font-weight: 700;
-            font-size: 0.55rem;
-            letter-spacing: 0.5px;
+            font-weight: 500;
+            font-size: var(--text-xs);
+            letter-spacing: normal;
         }}
         .countdown-clock {{
             color: #ffffff;
-            font-weight: 700;
+            font-weight: 500;
         }}
         .lockdown-badge {{
             background: rgba(245, 158, 11, 0.18);
@@ -3340,22 +3347,22 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             padding: 1px 5px;
             border-radius: 4px;
             font-weight: 600;
-            font-size: 0.52rem;
-            letter-spacing: 0.4px;
+            font-size: var(--text-xs);
+            letter-spacing: normal;
         }}
 
         /* Feature 3: Top 100k Trajectory Cell */
         .stat-rank-cell {{
-            border-color: rgba(16, 185, 129, 0.35);
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(15, 23, 42, 0.6));
+            border-color: rgba(16, 185, 129, 0.25);
+            background: var(--bg-card);
         }}
         .rank-trajectory-tag {{
-            font-size: 0.52rem;
-            font-weight: 700;
+            font-size: var(--text-xs);
+            font-weight: 500;
             padding: 1px 5px;
             border-radius: 3px;
             margin-top: 3px;
-            letter-spacing: 0.4px;
+            letter-spacing: normal;
             display: inline-block;
             width: fit-content;
         }}
@@ -3373,11 +3380,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         /* Feature 4: Squad Fitness & Press Conference Widget */
         .squad-health-widget {{
             background: var(--bg-card);
-            border: 1px solid var(--border-main);
-            border-radius: 10px;
-            padding: 0.9rem 1.2rem;
-            margin-bottom: 1.25rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 14px 16px;
+            margin-bottom: 16px;
         }}
         .health-top-bar {{
             display: flex;
@@ -3394,7 +3400,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .health-heading {{
             font-size: 0.92rem;
-            font-weight: 700;
+            font-weight: 500;
             color: var(--text-bright);
             line-height: 1.35;
         }}
@@ -3406,11 +3412,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             display: inline-block;
         }}
         .health-status-badge {{
-            font-size: 0.6875rem;
-            font-weight: 700;
+            font-size: var(--text-xs);
+            font-weight: 500;
             padding: 3px 8px;
             border-radius: 4px;
-            letter-spacing: 0.5px;
+            letter-spacing: normal;
         }}
         .health-badge-ok {{
             background: rgba(16, 185, 129, 0.15);
@@ -3463,25 +3469,26 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         .nav-bar::-webkit-scrollbar {{ display: none; }}
         .tab-btn {{
             background: var(--bg-surface);
-            border: 1px solid var(--border-main);
+            border: 1px solid var(--border-subtle);
             color: var(--text-secondary);
-            padding: 0.45rem 0.85rem;
+            padding: 8px 16px;
             min-block-size: var(--touch-target-min);
             min-height: var(--touch-target-min);
-            border-radius: 6px;
-            font-size: 0.76rem;
-            font-weight: 700;
+            border-radius: var(--radius-md);
+            font-size: 0.8125rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
             white-space: nowrap;
             display: inline-flex;
             align-items: center;
             justify-content: center;
         }}
         .tab-btn.active {{
-            background: #1e293b;
-            border-color: var(--accent-emerald);
+            background: var(--bg-card-hover);
+            border-color: rgba(255, 255, 255, 0.16);
             color: #ffffff;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }}
 
         /* Main View Container */
@@ -3501,28 +3508,27 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             background: rgba(56, 189, 248, 0.16);
             color: var(--accent-sky);
             border: 1px solid rgba(56, 189, 248, 0.4);
-            font-weight: 800;
+            font-weight: 600;
             font-size: 0.72rem;
             padding: 0.16rem 0.48rem;
             border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 0.5px;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            letter-spacing: normal;
         }}
 
         /* Gameweek Target Banner on Front Page */
         .gw-target-banner {{
-            margin-bottom: 0.65rem;
-            background: linear-gradient(90deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
-            border: 1px solid rgba(56, 189, 248, 0.35);
-            border-radius: 9px;
-            padding: 0.55rem 0.9rem;
+            margin-bottom: 12px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 10px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 10px;
             flex-shrink: 0;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
         }}
         .gw-banner-left {{
             display: flex;
@@ -3532,12 +3538,12 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         .gw-badge-pill {{
             background: #0369a1;
             color: #ffffff;
-            font-size: 0.6875rem;
-            font-weight: 800;
+            font-size: var(--text-xs);
+            font-weight: 600;
             padding: 0.2rem 0.6rem;
             border-radius: 5px;
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 0.6px;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            letter-spacing: normal;
             white-space: nowrap;
         }}
         .gw-banner-title-wrap {{
@@ -3548,7 +3554,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .gw-banner-title {{
             font-size: 0.88rem;
-            font-weight: 700;
+            font-weight: 500;
             color: #ffffff;
             letter-spacing: 0.2px;
             line-height: 1.4;
@@ -3574,19 +3580,19 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             gap: 0.35rem;
         }}
         .chip-label {{
-            font-size: 0.6875rem;
-            font-weight: 700;
+            font-size: var(--text-xs);
+            font-weight: 500;
             color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .chip-val {{
             color: #ffffff;
-            font-weight: 700;
+            font-weight: 500;
         }}
         .quota-rule {{
             font-weight: 600;
             color: var(--accent-emerald);
-            font-size: 0.6875rem;
+            font-size: var(--text-xs);
         }}
         .gw-divider {{
             color: var(--border-accent);
@@ -3601,19 +3607,17 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
 
         .plan-column {{
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.92) 0%, rgba(10, 16, 28, 0.98) 100%);
+            background: var(--bg-surface);
             border: 1px solid var(--c1-border);
-            border-radius: 12px;
-            padding: 0.75rem;
+            border-radius: var(--radius-xl);
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+            gap: 12px;
         }}
 
         .plan-column.plan-c2 {{
             border-color: var(--c2-border);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
         }}
 
         .plan-col-header {{
@@ -3628,7 +3632,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .plan-title {{ 
             font-size: 0.9rem; 
-            font-weight: 700; 
+            font-weight: 500; 
             color: #ffffff; 
             display: flex;
             align-items: center;
@@ -3642,9 +3646,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             flex-wrap: wrap;
         }}
         .formation-pill {{
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.62rem;
-            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            font-size: var(--text-xs);
+            font-weight: 500;
             background: rgba(30, 41, 59, 0.8);
             color: #cbd5e1;
             padding: 0.12rem 0.45rem;
@@ -3652,15 +3656,15 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             border: 1px solid var(--border-accent);
         }}
         .active-chip-pill {{
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.62rem;
-            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            font-size: var(--text-xs);
+            font-weight: 600;
             padding: 0.12rem 0.5rem;
             border-radius: 4px;
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            text-transform: uppercase;
+            text-transform: none;
         }}
         .active-chip-pill.chip-wildcard {{
             background: rgba(16, 185, 129, 0.18);
@@ -3668,9 +3672,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             border: 1px solid #10b981;
         }}
         .ft-buffer-pill {{
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.62rem;
-            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            font-size: var(--text-xs);
+            font-weight: 500;
             background: rgba(56, 189, 248, 0.12);
             color: #38bdf8;
             padding: 0.1rem 0.4rem;
@@ -3678,9 +3682,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             border: 1px solid #0284c7;
         }}
         .fin-badge {{
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.68rem;
-            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            font-size: var(--text-xs);
+            font-weight: 500;
             background: rgba(15, 23, 42, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.12);
             padding: 0.2rem 0.55rem;
@@ -3708,7 +3712,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             justify-content: space-around;
             gap: 0.5rem;
             min-height: 520px;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+            
         }}
         /* Pitch Tactical Markings (Midfield line & center circle) */
         .compact-pitch::before {{
@@ -3747,44 +3751,32 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         /* MODERN GLASSMORPHIC STARTER CARD */
         .starter-card {{
-            background: linear-gradient(180deg, rgba(30, 41, 59, 0.86) 0%, rgba(15, 23, 42, 0.96) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            border-radius: 8px;
-            padding: 0.22rem 0.32rem 0.2rem;
-            width: 95px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 6px 6px 5px;
+            width: 100px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 2px;
             flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
-            transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.18s ease, box-shadow 0.18s ease;
+            transition: background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
             position: relative;
-            backdrop-filter: blur(8px);
         }}
-        .starter-card:hover {{
-            transform: translateY(-3px);
-            border-color: rgba(56, 189, 248, 0.6);
-            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.65);
-        }}
+        .starter-card:hover, 
         /* Highlighted Transfer In Card */
         .starter-card.card-transfer-in, .bench-card.card-transfer-in {{
-            border-color: rgba(16, 185, 129, 0.7) !important;
-            background: linear-gradient(180deg, rgba(16, 45, 34, 0.88) 0%, rgba(10, 26, 20, 0.98) 100%) !important;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+            border-color: rgba(16, 185, 129, 0.4) !important;
+            background: rgba(16, 185, 129, 0.08) !important;
         }}
-        .starter-card.card-transfer-in:hover, .bench-card.card-transfer-in:hover {{
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7) !important;
-        }}
+        
         /* Highlighted Triple Captain Card */
         .starter-card.card-triple-captain {{
-            border-color: rgba(245, 158, 11, 0.85) !important;
-            background: linear-gradient(180deg, rgba(48, 32, 10, 0.92) 0%, rgba(20, 15, 8, 0.98) 100%) !important;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6) !important;
+            border-color: rgba(245, 158, 11, 0.45) !important;
+            background: rgba(245, 158, 11, 0.08) !important;
         }}
-        .starter-card.card-triple-captain:hover {{
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75) !important;
-        }}
+        
 
         .starter-card-top, .bench-card-top {{
             display: flex;
@@ -3800,48 +3792,43 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             gap: 2px;
         }}
         .role-badge-cap {{
-            background: linear-gradient(135deg, #fbbf24, #d97706);
+            background: #d97706;
             color: #000000;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             font-size: var(--text-xs);
-            font-weight: 900;
-            padding: 0.05rem 0.28rem;
-            border-radius: 3px;
+            font-weight: 600;
+            padding: 1px 5px;
+            border-radius: 2px;
             line-height: 1;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
         }}
         .role-badge-tc {{
-            background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+            background: #d97706 !important;
             color: #000000 !important;
-            border: 1px solid #fef08a;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) !important;
+            border: 1px solid #fde047;
             font-size: var(--text-xs);
-            padding: 0.05rem 0.3rem;
-            letter-spacing: 0.5px;
-        }}
-            padding: 0.05rem 0.3rem;
-            letter-spacing: 0.5px;
-        }}
-        .tc-mult-tag {{
-            font-size: 0.52rem;
-            font-weight: 900;
+            font-weight: 600;
+            padding: 1px 5px;
+            border-radius: 2px;
+        }}.tc-mult-tag {{
+            font-size: var(--text-xs);
+            font-weight: 600;
             color: #fbbf24;
             background: rgba(245, 158, 11, 0.2);
             border: 1px solid rgba(245, 158, 11, 0.5);
             border-radius: 3px;
             padding: 1px 4px;
-            letter-spacing: 0.5px;
+            letter-spacing: normal;
             margin-left: 3px;
             display: inline-block;
         }}
         .role-badge-vc {{
-            background: linear-gradient(135deg, #e2e8f0, #94a3b8);
-            color: #0f172a;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.58rem;
-            font-weight: 900;
-            padding: 0.05rem 0.28rem;
-            border-radius: 3px;
+            background: #334155;
+            color: #f1f5f9;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            font-size: var(--text-xs);
+            font-weight: 600;
+            padding: 1px 5px;
+            border-radius: 2px;
             line-height: 1;
         }}
         .starter-photo-wrap, .bench-photo-wrap {{
@@ -3851,19 +3838,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             justify-content: center;
             align-items: center;
             margin: 1px 0;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.06) 0%, transparent 68%);
-            border-radius: 4px;
+            background: transparent;
+            border-radius: var(--radius-xs);
         }}
         .starter-shirt-img, .bench-shirt-img {{
             width: 38px;
             height: 38px;
             object-fit: contain;
-            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.65));
-            transition: transform 0.2s ease;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
         }}
-        .starter-card:hover .starter-shirt-img, .bench-card:hover .bench-shirt-img {{
-            transform: scale(1.08);
-        }}
+        
         .starter-info-card, .bench-info-card {{
             width: 100%;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -3872,7 +3856,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .starter-name, .bench-name {{
             font-size: 0.72rem;
-            font-weight: 700;
+            font-weight: 500;
             color: #ffffff;
             white-space: nowrap;
             overflow: hidden;
@@ -3881,9 +3865,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             letter-spacing: 0.2px;
         }}
         .starter-meta, .bench-meta {{
-            font-size: 0.58rem;
+            font-size: var(--text-xs);
             color: #94a3b8;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             margin: 1px 0;
             font-weight: 600;
         }}
@@ -3891,7 +3875,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.56rem;
+            font-size: var(--text-xs);
             border-top: 1px solid rgba(255, 255, 255, 0.06);
             padding-top: 2px;
             margin-top: 2px;
@@ -3903,14 +3887,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         /* FULL-SIZE BENCH / DUGOUT STRIP */
         .compact-bench-strip {{ 
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.85) 0%, rgba(10, 16, 26, 0.95) 100%); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-radius: 9px; 
-            padding: 0.45rem 0.6rem; 
-            margin-top: 0.45rem; 
+            background: var(--bg-surface); 
+            border: 1px solid var(--border-subtle); 
+            border-radius: var(--radius-lg); 
+            padding: 10px 12px; 
+            margin-top: 8px; 
             flex-shrink: 0; 
             overflow-x: auto;
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
         }}
         .bench-header-bar {{
             display: flex;
@@ -3921,16 +3904,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }}
         .bench-lbl {{ 
-            font-size: 0.62rem; 
-            font-weight: 800; 
+            font-size: var(--text-xs); 
+            font-weight: 600; 
             color: var(--text-secondary); 
-            text-transform: uppercase; 
-            letter-spacing: 0.6px; 
+            text-transform: none; 
+            letter-spacing: normal; 
         }}
         .bench-count-tag {{
-            font-size: 0.54rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
+            font-size: var(--text-xs);
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            font-weight: 500;
             color: var(--text-muted);
             background: rgba(255, 255, 255, 0.05);
             padding: 0.05rem 0.35rem;
@@ -3945,37 +3928,30 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
 
         .bench-card {{
-            background: linear-gradient(180deg, rgba(24, 34, 52, 0.85) 0%, rgba(13, 20, 34, 0.95) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
-            padding: 0.28rem 0.35rem 0.24rem;
-            width: 98px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 6px 6px 5px;
+            width: 100px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 2px;
             flex-shrink: 0;
-            transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.18s ease, box-shadow 0.18s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
+            transition: background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
         }}
-        .bench-card:hover {{
-            transform: translateY(-3px);
-            border-color: rgba(56, 189, 248, 0.6);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.65);
-        }}
+        
 
         /* Small Transfers In/Out Delta Box */
         .transfers-delta-box {{
-            margin-top: 0.45rem;
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.85) 0%, rgba(6, 32, 22, 0.35) 100%);
-            border: 1px solid rgba(16, 185, 129, 0.45);
-            border-radius: 8px;
-            padding: 0.45rem 0.65rem;
-            font-size: 0.7rem;
+            margin-top: 8px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 10px 12px;
+            font-size: 0.75rem;
             flex-shrink: 0;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
         }}
         .delta-header-strip {{
             display: flex;
@@ -3997,20 +3973,20 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             border-radius: 50%;
         }}
         .delta-title {{
-            font-weight: 700;
+            font-weight: 500;
             color: #ffffff;
             font-size: 0.72rem;
             letter-spacing: 0.3px;
         }}
         .delta-count-pill {{
-            font-size: 0.58rem;
-            font-weight: 700;
+            font-size: var(--text-xs);
+            font-weight: 500;
             padding: 2px 7px;
             border-radius: 4px;
             background: rgba(16, 185, 129, 0.15);
             color: var(--accent-emerald);
             border: 1px solid rgba(16, 185, 129, 0.35);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .delta-list-grid {{
             display: flex;
@@ -4024,9 +4000,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             flex-wrap: wrap;
         }}
         .delta-group-label {{
-            font-size: 0.6rem;
-            font-weight: 800;
-            letter-spacing: 0.6px;
+            font-size: var(--text-xs);
+            font-weight: 600;
+            letter-spacing: normal;
             min-width: 74px;
         }}
         .delta-group-label.in-lbl {{ color: var(--accent-emerald); }}
@@ -4038,7 +4014,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             flex: 1;
         }}
         .delta-pill {{
-            font-size: 0.62rem;
+            font-size: var(--text-xs);
             padding: 2px 7px;
             border-radius: 4px;
             font-weight: 600;
@@ -4051,11 +4027,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             font-weight: 500;
         }}
         .delta-pill-badge {{
-            font-size: 0.5rem;
-            font-weight: 800;
+            font-size: var(--text-xs);
+            font-weight: 600;
             padding: 0.04rem 0.22rem;
             border-radius: 2px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .delta-pill.pill-in {{
             background: rgba(16, 185, 129, 0.15);
@@ -4071,7 +4047,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             margin-top: 0.35rem;
             padding-top: 0.25rem;
             border-top: 1px dashed rgba(255, 255, 255, 0.1);
-            font-size: 0.62rem;
+            font-size: var(--text-xs);
             color: var(--text-muted);
             display: flex;
             justify-content: space-between;
@@ -4103,14 +4079,14 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             gap: 0.4rem;
         }}
         .status-lbl {{
-            font-size: 0.58rem;
-            font-weight: 800;
+            font-size: var(--text-xs);
+            font-weight: 600;
             color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             white-space: nowrap;
         }}
         .status-txt {{
-            font-size: 0.64rem;
+            font-size: var(--text-xs);
             color: var(--text-muted);
             word-break: keep-all;
         }}
@@ -4122,7 +4098,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             border: 1px solid rgba(16, 185, 129, 0.25);
         }}
         .rule-txt {{
-            font-size: 0.64rem;
+            font-size: var(--text-xs);
             color: var(--accent-emerald);
             font-weight: 600;
             word-break: keep-all;
@@ -4143,19 +4119,19 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             gap: 0.35rem;
         }}
         .dl-lbl {{
-            font-size: 0.58rem;
+            font-size: var(--text-xs);
             color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
+            text-transform: none;
+            letter-spacing: normal;
         }}
         .dl-val {{
-            font-size: 0.68rem;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
+            font-size: var(--text-xs);
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             color: #ffffff;
         }}
         .dl-gain {{
-            font-size: 0.60rem;
+            font-size: var(--text-xs);
             color: var(--accent-emerald);
             margin-left: 2px;
         }}
@@ -4164,9 +4140,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
 
         .sub-label-badge {{
-            font-size: 0.52rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 800;
+            font-size: var(--text-xs);
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            font-weight: 600;
             background: rgba(2, 132, 199, 0.25);
             color: #38bdf8;
             border: 1px solid rgba(2, 132, 199, 0.4);
@@ -4175,23 +4151,23 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
 
         .pos-tag-mini {{ 
-            font-size: 0.52rem; 
-            font-weight: 800; 
+            font-size: var(--text-xs); 
+            font-weight: 600; 
             padding: 0.05rem 0.24rem; 
             border-radius: 3px; 
-            font-family: 'JetBrains Mono', monospace; 
-            text-transform: uppercase; 
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; 
+            text-transform: none; 
         }}
         .pos-GKP {{ background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }}
         .pos-DEF {{ background: rgba(56, 189, 248, 0.16); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); }}
         .pos-MID {{ background: rgba(52, 211, 153, 0.16); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.35); }}
         .pos-FWD {{ background: rgba(251, 113, 133, 0.16); color: #fb7185; border: 1px solid rgba(251, 113, 133, 0.35); }}
 
-        .core-tag-mini {{ font-size: 0.48rem; font-weight: 800; background: rgba(6, 182, 212, 0.2); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.4); padding: 0.04rem 0.2rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }}
-        .enabler-tag-mini {{ font-size: 0.48rem; font-weight: 800; background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); padding: 0.04rem 0.2rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }}
-        .transfer-in-tag-mini {{ font-size: 0.48rem; font-weight: 900; background: #34d399; color: #022c22; padding: 0.04rem 0.24rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }}
+        .core-tag-mini {{ font-size: var(--text-xs); font-weight: 600; background: rgba(6, 182, 212, 0.2); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.4); padding: 0.04rem 0.2rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }}
+        .enabler-tag-mini {{ font-size: var(--text-xs); font-weight: 600; background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); padding: 0.04rem 0.2rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }}
+        .transfer-in-tag-mini {{ font-size: var(--text-xs); font-weight: 600; background: #34d399; color: #022c22; padding: 0.04rem 0.24rem; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }}
 
-        .fdr-pill {{ font-size: 0.56rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; padding: 0.04rem 0.22rem; border-radius: 3px; }}
+        .fdr-pill {{ font-size: var(--text-xs); font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; font-weight: 500; padding: 0.04rem 0.22rem; border-radius: 3px; }}
         .fdr-pill.fdr-1 {{ background: rgba(16, 185, 129, 0.25); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }}
         .fdr-pill.fdr-2 {{ background: rgba(14, 165, 233, 0.22); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.35); }}
         .fdr-pill.fdr-3 {{ background: rgba(148, 163, 184, 0.18); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.25); }}
@@ -4218,11 +4194,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             gap: 2px;
         }}
         .summary-metric-title {{
-            font-size: 0.62rem;
-            font-weight: 700;
+            font-size: var(--text-xs);
+            font-weight: 500;
             color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            text-transform: none;
+            letter-spacing: normal;
         }}
         .summary-metric-values {{
             display: flex;
@@ -4231,9 +4207,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             margin-top: 2px;
         }}
         .metric-sub-val {{
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             font-size: 0.82rem;
-            font-weight: 700;
+            font-weight: 500;
         }}
         .metric-tag-c1 {{ color: #cbd5e1; }}
         .metric-tag-c2 {{ color: var(--accent-emerald); }}
@@ -4270,9 +4246,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .section-badge-title {{
             font-size: 0.72rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-weight: 600;
+            text-transform: none;
+            letter-spacing: normal;
             display: flex;
             align-items: center;
             gap: 4px;
@@ -4295,7 +4271,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .pros-cons-item strong {{
             color: var(--text-main);
-            font-weight: 700;
+            font-weight: 500;
         }}
 
         /* Strategic Roadmap Table */
@@ -4319,7 +4295,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             background: rgba(15, 20, 28, 0.8);
             border-bottom: 1px solid var(--border-main);
             color: var(--text-muted);
-            font-weight: 700;
+            font-weight: 500;
             white-space: nowrap;
         }}
         .roadmap-table td {{
@@ -4404,17 +4380,17 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             flex-wrap: wrap;
         }}
         .fdr-legend-label {{
-            font-size: 0.6rem;
+            font-size: var(--text-xs);
             color: var(--text-muted);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: normal;
             margin-right: 2px;
         }}
         .fdr-legend-item {{
-            font-size: 0.6rem;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
+            font-size: var(--text-xs);
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             padding: 0.1rem 0.35rem;
             border-radius: 3px;
             display: inline-flex;
@@ -4427,6 +4403,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         .fdr-legend-item.fdr-5 {{ background: #450a0a; color: #f87171; border: 1px solid #7f1d1d; }}
 
         .reset-btn {{
+            min-width: 44px;
+            min-height: 44px;
             background: #1e293b;
             border: 1px solid var(--border-accent);
             color: var(--text-main);
@@ -4471,8 +4449,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .ticker-table-full th {{
             color: var(--text-muted);
-            font-weight: 700;
-            font-size: 0.6875rem;
+            font-weight: 500;
+            font-size: var(--text-xs);
             background: #151b26;
             position: sticky;
             top: 0;
@@ -4480,6 +4458,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             border-bottom: 1px solid var(--border-main);
         }}
         .sortable-th {{
+            min-height: 44px;
             cursor: pointer;
             transition: background 0.15s ease, color 0.15s ease;
             user-select: none;
@@ -4490,7 +4469,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             color: var(--accent-sky);
         }}
         .sort-icon {{
-            font-size: 0.62rem;
+            font-size: var(--text-xs);
             color: var(--text-muted);
             margin-left: 2px;
         }}
@@ -4502,7 +4481,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             background: #0f141c;
             z-index: 15;
             text-align: left !important;
-            font-weight: 700;
+            font-weight: 500;
             color: #ffffff;
             min-width: 105px;
             border-right: 1px solid var(--border-muted);
@@ -4540,9 +4519,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         .fdr-box-lg {{
             padding: 0.25rem 0.45rem;
             border-radius: 4px;
-            font-weight: 700;
-            font-size: 0.68rem;
-            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            font-size: var(--text-xs);
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             display: inline-block;
             min-width: 58px;
             text-align: center;
@@ -4564,21 +4543,21 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .source-ledger-row:last-child {{ border-bottom: none; }}
         .source-identity {{ display: flex; flex-direction: column; gap: 2px; }}
-        .source-main-name {{ font-size: 0.9rem; font-weight: 700; color: #ffffff; }}
-        .source-link-url {{ font-size: 0.7rem; color: var(--accent-sky); text-decoration: none; font-family: 'JetBrains Mono', monospace; }}
+        .source-main-name {{ font-size: 0.9rem; font-weight: 500; color: #ffffff; }}
+        .source-link-url {{ font-size: 0.7rem; color: var(--accent-sky); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }}
         .source-link-url:hover {{ text-decoration: underline; }}
         .source-feature-body {{ display: flex; flex-direction: column; gap: 3px; }}
-        .source-feature-label {{ font-size: 0.64rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }}
+        .source-feature-label {{ font-size: var(--text-xs); font-weight: 500; color: var(--text-muted); text-transform: none; letter-spacing: normal; }}
         .source-feature-text {{ font-size: 0.82rem; color: var(--text-secondary); line-height: 1.65; overflow-wrap: break-word; word-break: break-word; text-wrap: pretty; }}
-        .source-feature-text strong {{ color: var(--text-main); font-weight: 700; }}
+        .source-feature-text strong {{ color: var(--text-main); font-weight: 500; }}
 
         .panel-scroll {{ overflow-y: auto; flex: 1; padding-right: 0.3rem; }}
         .grid-2 {{ display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }}
         .panel {{ background: var(--bg-surface); border: 1px solid var(--border-main); border-radius: 10px; padding: 0.85rem; }}
         .panel-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; border-bottom: 1px solid var(--border-main); padding-bottom: 0.35rem; }}
-        .panel-title {{ font-size: 0.88rem; font-weight: 700; color: #ffffff; }}
+        .panel-title {{ font-size: 0.88rem; font-weight: 500; color: #ffffff; }}
         .stat-card-row {{ background: var(--bg-card); border: 1px solid var(--border-muted); border-radius: 6px; padding: 0.5rem 0.75rem; margin-bottom: 0.45rem; }}
-        .source-pill {{ display: inline-block; font-size: 0.58rem; font-weight: 700; text-transform: uppercase; padding: 0.12rem 0.35rem; border-radius: 3px; background: #1e293b; color: var(--text-secondary); border: 1px solid var(--border-accent); }}
+        .source-pill {{ display: inline-block; font-size: var(--text-xs); font-weight: 500; text-transform: none; padding: 0.12rem 0.35rem; border-radius: 3px; background: #1e293b; color: var(--text-secondary); border: 1px solid var(--border-accent); }}
         .font-mono {{ font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }}
 
         /* =========================================================
@@ -4594,17 +4573,16 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             padding-right: 0.25rem;
         }}
         .gw3-hero-banner {{
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 22, 0.95));
-            border: 1px solid var(--border-accent);
-            border-radius: 12px;
-            padding: 1.1rem 1.4rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 16px;
             position: relative;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
         }}
         .gw3-hero-left {{
             display: flex;
@@ -4621,7 +4599,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .gw3-result-summary-text {{
             font-size: 0.80rem;
-            font-weight: 700;
+            font-weight: 500;
             color: var(--text-main);
         }}
         .gw3-result-pill {{
@@ -4629,13 +4607,13 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             align-items: center;
             gap: 6px;
             font-size: 0.72rem;
-            font-weight: 800;
+            font-weight: 600;
             padding: 0.24rem 0.75rem;
             border-radius: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            text-transform: none;
+            letter-spacing: normal;
             width: fit-content;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .gw3-result-pill.winner-c1 {{
             background: var(--c1-bg);
@@ -4654,7 +4632,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .gw3-hero-title {{
             font-size: 1.12rem;
-            font-weight: 800;
+            font-weight: 600;
             color: #ffffff;
             letter-spacing: -0.2px;
         }}
@@ -4677,15 +4655,15 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .gw3-meta-chip .meta-lbl {{
             color: var(--text-muted);
-            font-size: 0.6875rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
+            font-size: var(--text-xs);
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: normal;
         }}
         .gw3-meta-chip .meta-val {{
             color: #ffffff;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            font-weight: 500;
         }}
         .gw3-scoreboard {{
             display: flex;
@@ -4716,33 +4694,33 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             border-color: var(--c2-border);
         }}
         .score-lbl {{
-            font-size: 0.6875rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: var(--text-xs);
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: normal;
             white-space: nowrap;
         }}
         .score-lbl.lbl-c1 {{ color: var(--c1-accent); }}
         .score-lbl.lbl-c2 {{ color: var(--c2-accent); }}
         .score-val {{
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             font-size: 1.85rem;
-            font-weight: 800;
+            font-weight: 600;
             line-height: 1.05;
             font-variant-numeric: tabular-nums;
         }}
         .score-val.val-c1 {{ color: var(--c1-accent); }}
         .score-val.val-c2 {{ color: var(--c2-accent); }}
         .score-bench-sub {{
-            font-size: 0.6875rem;
+            font-size: var(--text-xs);
             color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .score-divider {{
             font-size: 0.95rem;
-            font-weight: 800;
+            font-weight: 600;
             color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
 
         .gw-review-mobile-switcher {{
@@ -4788,10 +4766,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             background: rgba(15, 20, 28, 0.9);
             border-bottom: 1px solid var(--border-main);
             color: var(--text-muted);
-            font-weight: 700;
+            font-weight: 500;
             font-size: 0.66rem;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
+            text-transform: none;
+            letter-spacing: normal;
             white-space: nowrap;
         }}
         .gw3-table td {{
@@ -4814,58 +4792,58 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             font-weight: 600;
         }}
         .gw3-tag-autosub {{
-            font-size: 0.52rem;
-            font-weight: 800;
+            font-size: var(--text-xs);
+            font-weight: 600;
             color: var(--accent-emerald);
             background: rgba(16, 185, 129, 0.15);
             border: 1px solid rgba(16, 185, 129, 0.35);
             border-radius: 3px;
             padding: 1px 4px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             white-space: nowrap;
         }}
         .gw3-tag-subbed {{
-            font-size: 0.54rem;
+            font-size: var(--text-xs);
             color: var(--text-muted);
             white-space: nowrap;
         }}
         .gw3-tag-diff {{
-            font-size: 0.50rem;
-            font-weight: 800;
+            font-size: var(--text-xs);
+            font-weight: 600;
             color: var(--accent-sky);
             background: rgba(56, 189, 248, 0.14);
             border: 1px solid rgba(56, 189, 248, 0.35);
             border-radius: 3px;
             padding: 1px 4px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             white-space: nowrap;
         }}
         .gw3-td-club {{
             padding: 7px 6px;
             text-align: center;
             font-size: 0.72rem;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             color: var(--text-secondary);
             white-space: nowrap;
         }}
         .gw3-td-pts {{
             padding: 7px 10px;
             text-align: right;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            font-weight: 500;
             font-size: 0.84rem;
             white-space: nowrap;
             font-variant-numeric: tabular-nums;
         }}
         .pts-mult {{
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             color: var(--text-muted);
-            font-size: 0.64rem;
+            font-size: var(--text-xs);
             font-weight: 600;
         }}
         .pts-mult-tc {{
             color: var(--accent-amber);
-            font-weight: 800;
+            font-weight: 600;
         }}
         .gw3-table tr:hover td {{
             background: rgba(255, 255, 255, 0.025);
@@ -4885,10 +4863,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             background: rgba(9, 12, 16, 0.75);
             border-top: 1px solid var(--border-accent);
             border-bottom: none;
-            font-weight: 800;
+            font-weight: 600;
             font-size: 0.74rem;
             color: var(--text-main);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .gw3-tfoot-row.gw3-tfoot-bench td {{
             background: rgba(9, 12, 16, 0.45);
@@ -4900,11 +4878,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.68rem;
-            font-weight: 700;
+            font-size: var(--text-xs);
+            font-weight: 500;
             color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            text-transform: none;
+            letter-spacing: normal;
             padding: 0.25rem 0.2rem 0.1rem;
         }}
         .gw3-subhead-bench {{
@@ -4913,8 +4891,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             padding-top: 0.55rem;
         }}
         .gw3-subhead-pts {{
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            font-weight: 600;
             color: var(--text-secondary);
         }}
         .gw3-decider-box {{
@@ -4942,12 +4920,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         /* Season H2H Desktop Table & Mobile Cards */
         .h2h-leaderboard-card {{
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 22, 0.98));
-            border: 1px solid var(--border-accent);
-            border-radius: 12px;
-            padding: 1.1rem 1.4rem;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-            margin-bottom: 0.2rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            padding: 16px 20px;
+            margin-bottom: 8px;
         }}
         .h2h-card-header {{
             display: flex;
@@ -4965,10 +4942,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             gap: 2px;
         }}
         .h2h-audit-tag {{
-            font-size: 0.6875rem;
-            font-weight: 800;
+            font-size: var(--text-xs);
+            font-weight: 600;
             color: var(--accent-emerald);
-            text-transform: uppercase;
+            text-transform: none;
             letter-spacing: normal;
             display: flex;
             align-items: center;
@@ -4983,7 +4960,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .h2h-main-title {{
             font-size: 1.15rem;
-            font-weight: 800;
+            font-weight: 600;
             color: #ffffff;
             margin: 0.25rem 0 0 0;
             display: flex;
@@ -4992,11 +4969,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .h2h-lead-pill {{
             font-size: 0.7rem;
-            font-weight: 700;
+            font-weight: 500;
             padding: 2px 8px;
             border-radius: 6px;
             border: 1px solid transparent;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .h2h-summary-strip {{
             display: flex;
@@ -5015,15 +4992,15 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         .h2h-stat-box.box-c1 {{ text-align: right; }}
         .h2h-stat-box.box-c2 {{ text-align: left; }}
         .h2h-stat-lbl {{
-            font-size: 0.64rem;
+            font-size: var(--text-xs);
             color: var(--text-secondary);
-            text-transform: uppercase;
+            text-transform: none;
             font-weight: 600;
         }}
         .h2h-stat-val {{
             font-size: 1.02rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             font-variant-numeric: tabular-nums;
         }}
         .h2h-stat-val.val-c1 {{ color: var(--c1-accent); }}
@@ -5031,14 +5008,14 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         .h2h-stat-sub {{
             font-size: 0.74rem;
             color: #ffffff;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             font-variant-numeric: tabular-nums;
         }}
         .h2h-stat-vs {{
             font-size: 0.9rem;
-            font-weight: 800;
+            font-weight: 600;
             color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
 
         .h2h-desktop-table-wrap {{
@@ -5063,8 +5040,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             background: rgba(9, 12, 16, 0.75);
             border-bottom: 1px solid var(--border-main);
             color: var(--text-secondary);
-            font-size: 0.6875rem;
-            text-transform: uppercase;
+            font-size: var(--text-xs);
+            text-transform: none;
             letter-spacing: normal;
             white-space: nowrap;
         }}
@@ -5085,7 +5062,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .h2h-td-gw {{
             padding: 10px 12px;
-            font-weight: 700;
+            font-weight: 500;
             color: #ffffff;
             white-space: nowrap;
         }}
@@ -5093,9 +5070,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             margin-right: 6px;
         }}
         .h2h-latest-badge {{
-            font-size: 0.52rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
+            font-size: var(--text-xs);
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             padding: 1px 5px;
             border-radius: 3px;
             background: rgba(16, 185, 129, 0.2);
@@ -5106,12 +5083,12 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         .h2h-td-num {{
             padding: 10px 12px;
             text-align: center;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             font-variant-numeric: tabular-nums;
             white-space: nowrap;
         }}
         .h2h-avg-sub {{
-            font-size: 0.64rem;
+            font-size: var(--text-xs);
             color: var(--text-muted);
             font-weight: 600;
         }}
@@ -5151,17 +5128,17 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             width: 100%;
         }}
         .h2h-match-card {{
-            background: linear-gradient(135deg, rgba(20, 29, 45, 0.95), rgba(11, 16, 26, 0.98));
-            border: 1px solid var(--border-accent);
-            border-radius: 10px;
-            padding: 0.85rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 14px;
             display: flex;
             flex-direction: column;
-            gap: 0.65rem;
+            gap: 10px;
         }}
         .h2h-match-card.is-active-gw {{
-            border-color: rgba(16, 185, 129, 0.55);
-            background: linear-gradient(135deg, rgba(16, 38, 34, 0.95), rgba(11, 16, 26, 0.98));
+            border-color: rgba(16, 185, 129, 0.4);
+            background: var(--bg-card);
         }}
         .h2h-match-card-header {{
             display: flex;
@@ -5172,19 +5149,19 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         }}
         .h2h-match-gw {{
             font-size: 0.78rem;
-            font-weight: 800;
+            font-weight: 600;
             color: #ffffff;
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 0.5px;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
+            letter-spacing: normal;
         }}
         .mobile-winner-pill {{
-            font-size: 0.6875rem;
-            font-weight: 800;
+            font-size: var(--text-xs);
+            font-weight: 600;
             padding: 2px 8px;
             border-radius: 4px;
-            letter-spacing: 0.4px;
+            letter-spacing: normal;
             display: inline-block;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .mobile-winner-pill.pill-c1 {{
             background: var(--c1-bg);
@@ -5221,19 +5198,19 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             align-items: flex-end;
         }}
         .h2h-team-name {{
-            font-size: 0.6875rem;
+            font-size: var(--text-xs);
             color: var(--text-secondary);
             font-weight: 600;
         }}
         .h2h-team-pts {{
             font-size: 1.35rem;
-            font-weight: 900;
-            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             line-height: 1;
             font-variant-numeric: tabular-nums;
         }}
         .h2h-team-pts small {{
-            font-size: 0.6875rem;
+            font-size: var(--text-xs);
             font-weight: 600;
             color: var(--text-muted);
         }}
@@ -5247,19 +5224,19 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             padding: 0 4px;
         }}
         .h2h-vs-badge {{
-            font-size: 0.6875rem;
-            font-weight: 800;
+            font-size: var(--text-xs);
+            font-weight: 600;
             color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .h2h-margin-badge {{
-            font-size: 0.6875rem;
-            font-weight: 700;
+            font-size: var(--text-xs);
+            font-weight: 500;
             padding: 1px 5px;
             border-radius: 3px;
             background: rgba(255, 255, 255, 0.05);
             white-space: nowrap;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .h2h-match-decider-box {{
             background: rgba(10, 15, 24, 0.72);
@@ -5271,11 +5248,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             gap: 3px;
         }}
         .h2h-decider-lbl {{
-            font-size: 0.6875rem;
-            font-weight: 800;
+            font-size: var(--text-xs);
+            font-weight: 600;
             color: var(--accent-emerald);
-            letter-spacing: 0.5px;
-            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: normal;
+            font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
         }}
         .h2h-decider-txt {{
             font-size: 0.76rem;
@@ -5287,7 +5264,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             width: 100%;
             padding: 0.55rem;
             font-size: 0.74rem;
-            font-weight: 700;
+            font-weight: 500;
             border-radius: 6px;
             background: #1e293b;
             color: #ffffff;
@@ -5316,11 +5293,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             gap: 0.45rem;
         }}
         .h2h-mobile-totals-head {{
-            font-size: 0.68rem;
-            font-weight: 800;
+            font-size: var(--text-xs);
+            font-weight: 600;
             color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
+            text-transform: none;
+            letter-spacing: normal;
             border-bottom: 1px solid var(--border-muted);
             padding-bottom: 0.35rem;
         }}
@@ -5339,11 +5316,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             padding: 0.65rem 1rem;
             border-radius: 10px;
             border: 1px solid var(--border-accent);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            
         }}
         .review-archive-title {{
             font-size: 0.75rem;
-            font-weight: 700;
+            font-weight: 500;
             color: var(--text-secondary);
             display: flex;
             align-items: center;
@@ -5439,18 +5416,22 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 display: none;
             }}
             .tab-btn {{
-                font-size: 0.74rem;
-                padding: 0.45rem 0.85rem;
-                border-radius: 6px;
-                min-block-size: var(--touch-target-min);
-                min-height: var(--touch-target-min);
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                scroll-snap-align: start;
-                white-space: nowrap;
-                flex-shrink: 0;
-            }}
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            min-block-size: var(--touch-target-min);
+            min-height: var(--touch-target-min);
+            border-radius: var(--radius-md);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }}
 
             /* 4. Header Details & Stats */
             .brand-meta {{
@@ -5462,8 +5443,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             .title-box {{ width: 100%; }}
             .title-box h1 {{ font-size: clamp(0.90rem, 3.2vw, 1.05rem); line-height: 1.25; }}
             .team-name {{ display: inline-block; word-break: break-word; }}
-            .team-id-tag {{ font-size: 0.68rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }}
-            .sync-pill, .edge-pill {{ margin-left: 0; margin-top: 3px; font-size: 0.58rem; display: inline-flex; }}
+            .team-id-tag {{ font-size: var(--text-xs); color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }}
+            .sync-pill, .edge-pill {{ margin-left: 0; margin-top: 3px; font-size: var(--text-xs); display: inline-flex; }}
             .manager-meta-line {{
                 font-size: 0.70rem;
                 line-height: 1.55;
@@ -5473,7 +5454,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 word-break: break-word;
             }}
             .deadline-pill {{
-                font-size: 0.60rem;
+                font-size: var(--text-xs);
                 padding: 4px 8px;
                 flex-wrap: wrap;
                 width: 100%;
@@ -5493,19 +5474,24 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 padding: 0.4rem 0.5rem;
                 box-sizing: border-box;
             }}
-            .stat-cell .lbl {{ font-size: 0.54rem; letter-spacing: 0.3px; }}
+            .stat-cell .lbl {{ font-size: var(--text-xs); letter-spacing: 0.3px; }}
             .stat-cell .val {{ font-size: clamp(0.76rem, 2.5vw, 0.90rem); }}
-            .rank-trajectory-tag {{ font-size: 0.52rem; padding: 1px 4px; }}
+            .rank-trajectory-tag {{ font-size: var(--text-xs); padding: 1px 4px; }}
 
             /* 5. Gameweek Target Banner */
             .gw-target-banner {{
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0.45rem;
-                padding: 0.55rem 0.65rem;
-                width: 100%;
-                box-sizing: border-box;
-            }}
+            margin-bottom: 12px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            flex-shrink: 0;
+        }}
             .gw-banner-left {{
                 display: flex;
                 align-items: flex-start;
@@ -5513,20 +5499,20 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 width: 100%;
             }}
             .gw-badge-pill {{
-                font-size: 0.58rem;
+                font-size: var(--text-xs);
                 padding: 0.14rem 0.45rem;
                 flex-shrink: 0;
             }}
             .gw-banner-title {{
                 font-size: clamp(0.74rem, 2.4vw, 0.82rem);
-                font-weight: 700;
+                font-weight: 500;
                 color: #ffffff;
                 line-height: 1.4;
                 word-break: break-word;
                 overflow-wrap: break-word;
             }}
             .gw-banner-en {{
-                font-size: 0.64rem;
+                font-size: var(--text-xs);
                 color: var(--text-muted);
                 display: block;
                 margin-top: 1px;
@@ -5549,18 +5535,18 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 width: 100%;
             }}
             .chip-label {{
-                font-size: 0.56rem;
-                font-weight: 700;
+                font-size: var(--text-xs);
+                font-weight: 500;
                 color: var(--text-muted);
-                font-family: 'JetBrains Mono', monospace;
+                font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
             }}
             .chip-val {{
-                font-size: 0.68rem;
+                font-size: var(--text-xs);
                 color: #ffffff;
                 word-break: break-word;
             }}
             .quota-rule {{
-                font-size: 0.60rem;
+                font-size: var(--text-xs);
                 color: var(--accent-emerald);
                 font-weight: 600;
             }}
@@ -5576,13 +5562,15 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 border-radius: 8px;
                 border: 1px solid var(--border-accent);
                 box-sizing: border-box;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+                
             }}
             .mobile-toggle-btn {{
+            min-width: 44px;
+            min-height: 44px;
                 flex: 1;
                 padding: 0.45rem 0.35rem;
                 font-size: clamp(0.6875rem, 1.8vw, 0.74rem);
-                font-weight: 700;
+                font-weight: 500;
                 border-radius: 6px;
                 background: transparent;
                 color: var(--text-secondary);
@@ -5601,7 +5589,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 background: #1e293b;
                 color: #ffffff;
                 border-color: var(--accent-emerald);
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+                
             }}
 
             /* 7. Tab 1 Lineup Split Grid & Vertical Stack */
@@ -5613,13 +5601,14 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 box-sizing: border-box;
             }}
             .plan-column {{
-                min-width: 0;
-                width: 100%;
-                max-width: 100%;
-                box-sizing: border-box;
-                padding: 0.45rem 0.4rem;
-                border-radius: 9px;
-            }}
+            background: var(--bg-surface);
+            border: 1px solid var(--c1-border);
+            border-radius: var(--radius-xl);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }}
             .plan-col-header {{
                 flex-direction: column;
                 align-items: flex-start;
@@ -5627,7 +5616,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 width: 100%;
             }}
             .plan-title {{ font-size: 0.84rem; word-break: break-word; }}
-            .fin-badge {{ font-size: 0.62rem; padding: 0.18rem 0.45rem; align-self: flex-start; }}
+            .fin-badge {{ font-size: var(--text-xs); padding: 0.18rem 0.45rem; align-self: flex-start; }}
 
             /* 8. Fluid Responsive Pitch & Cards (Zero-Overflow on 5-Man Midfield) */
             .compact-pitch {{
@@ -5650,16 +5639,19 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 box-sizing: border-box;
             }}
             .starter-card {{
-                flex: 1 1 0;
-                width: auto;
-                min-width: 0;
-                max-width: 82px;
-                padding: 0.18rem 0.12rem 0.14rem;
-                border-radius: 6px;
-                box-sizing: border-box;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-                overflow: hidden;
-            }}
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 6px 6px 5px;
+            width: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+            transition: background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+            position: relative;
+        }}
             .starter-card-top, .bench-card-top {{
                 min-height: 12px;
                 gap: 1px;
@@ -5682,18 +5674,14 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 flex-shrink: 0;
             }}
             .role-badge-cap, .role-badge-vc, .role-badge-tc {{
-                width: 16px !important;
-                min-width: 16px !important;
-                height: 16px !important;
-                font-size: var(--text-xs) !important;
-                padding: 0 !important;
-                margin-left: 1px !important;
-                display: inline-flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                flex-shrink: 0;
-            }}
-            .core-tag-mini, .enabler-tag-mini, .transfer-in-tag-mini {{
+            background: #d97706 !important;
+            color: #000000 !important;
+            border: 1px solid #fde047;
+            font-size: var(--text-xs);
+            font-weight: 600;
+            padding: 1px 5px;
+            border-radius: 2px;
+        }}.core-tag-mini, .enabler-tag-mini, .transfer-in-tag-mini {{
                 font-size: var(--text-xs) !important;
                 padding: 0 3px !important;
                 line-height: 1.2 !important;
@@ -5704,15 +5692,21 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 text-overflow: ellipsis;
             }}
             .starter-photo-wrap, .bench-photo-wrap {{
-                height: clamp(26px, 7.5vw, 36px);
-                margin: 0;
-                width: 100%;
-            }}
+            width: 100%;
+            height: 42px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1px 0;
+            background: transparent;
+            border-radius: var(--radius-xs);
+        }}
             .starter-shirt-img, .bench-shirt-img {{
-                width: clamp(22px, 6.8vw, 32px);
-                height: clamp(22px, 6.8vw, 32px);
-                object-fit: contain;
-            }}
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+        }}
             .starter-info-card, .bench-info-card {{
                 padding-top: 1px;
                 width: 100%;
@@ -5721,7 +5715,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 font-size: clamp(0.6875rem, 1.8vw, 0.74rem);
                 letter-spacing: -0.1px;
                 line-height: 1.15;
-                font-weight: 700;
+                font-weight: 500;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -5746,7 +5740,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 width: 100%;
             }}
             .starter-fix-text, .bench-fix-text {{
-                font-weight: 700;
+                font-weight: 500;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -5759,16 +5753,15 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
 
             /* 9. Bench Strip Mobile */
-            .compact-bench-strip {{
-                min-width: 0;
-                width: 100%;
-                max-width: 100%;
-                box-sizing: border-box;
-                padding: 0.35rem 0.3rem;
-                margin-top: 0.45rem;
-                border-radius: 8px;
-                overflow-x: hidden;
-            }}
+            .compact-bench-strip {{ 
+            background: var(--bg-surface); 
+            border: 1px solid var(--border-subtle); 
+            border-radius: var(--radius-lg); 
+            padding: 10px 12px; 
+            margin-top: 8px; 
+            flex-shrink: 0; 
+            overflow-x: auto;
+        }}
             .bench-header-bar {{ margin-bottom: 0.25rem; padding-bottom: 0.18rem; }}
             .bench-lbl {{ font-size: var(--text-xs); }}
             .bench-count-tag {{ font-size: var(--text-xs); padding: 0.04rem 0.25rem; }}
@@ -5781,16 +5774,19 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 box-sizing: border-box;
             }}
             .bench-card {{
-                flex: 1 1 0;
-                width: auto;
-                min-width: 0;
-                max-width: 82px;
-                padding: 0.18rem 0.12rem 0.14rem;
-                border-radius: 6px;
-                box-sizing: border-box;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-                overflow: hidden;
-            }}
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 6px 6px 5px;
+            width: 100px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+            transition: background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+        }}
             .sub-label-badge {{ font-size: var(--text-xs); padding: 0 3px; }}
 
             /* 10. Mobile Divider */
@@ -5805,36 +5801,35 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             .vs-line {{
                 flex: 1;
                 height: 1px;
-                background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.4), transparent);
+                background: var(--border-subtle);
             }}
             .vs-badge {{
                 background: #0b1120;
                 border: 1px solid rgba(16, 185, 129, 0.5);
-                border-radius: 9999px;
+                border-radius: var(--radius-sm);
                 padding: 0.22rem 0.65rem;
                 font-size: var(--text-xs);
-                font-weight: 800;
+                font-weight: 600;
                 color: var(--accent-emerald);
-                font-family: 'JetBrains Mono', monospace;
+                font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;
                 display: inline-flex;
                 align-items: center;
                 gap: 5px;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+                
             }}
 
             /* 11. Transfers Delta Box */
             .transfers-delta-box {{
-                padding: 0.45rem 0.55rem;
-                margin-top: 0.4rem;
-                border-radius: 7px;
+                padding: 8px 10px;
+                margin-top: 6px;
                 width: 100%;
                 max-width: 100%;
                 box-sizing: border-box;
                 overflow: hidden;
             }}
             .delta-header-strip {{ margin-bottom: 0.25rem; padding-bottom: 0.2rem; }}
-            .delta-title {{ font-size: 0.68rem; word-break: break-word; }}
-            .delta-count-pill {{ font-size: 0.52rem; padding: 1px 5px; }}
+            .delta-title {{ font-size: var(--text-xs); word-break: break-word; }}
+            .delta-count-pill {{ font-size: var(--text-xs); padding: 1px 5px; }}
             .delta-group {{
                 flex-direction: column;
                 align-items: flex-start;
@@ -5846,24 +5841,24 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 gap: 0.25rem;
                 width: 100%;
             }}
-            .delta-group-label {{ font-size: 0.54rem; min-width: 0; }}
+            .delta-group-label {{ font-size: var(--text-xs); min-width: 0; }}
             .delta-pill {{
-                font-size: 0.60rem;
+                font-size: var(--text-xs);
                 padding: 2px 6px;
                 max-width: 100%;
                 flex-wrap: wrap;
                 word-break: break-word;
             }}
             .delta-status-banner, .delta-rule-notice {{
-                font-size: 0.60rem;
+                font-size: var(--text-xs);
                 line-height: 1.45;
                 padding: 0.3rem 0.5rem;
                 width: 100%;
                 box-sizing: border-box;
             }}
-            .status-lbl {{ font-size: 0.56rem; }}
+            .status-lbl {{ font-size: var(--text-xs); }}
             .status-txt, .rule-txt {{
-                font-size: 0.60rem;
+                font-size: var(--text-xs);
                 word-break: break-word;
                 overflow-wrap: break-word;
                 line-height: 1.5;
@@ -5888,20 +5883,18 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 gap: 2px;
                 min-width: 0;
             }}
-            .dl-lbl {{ font-size: 0.48rem; text-transform: uppercase; color: var(--text-muted); }}
-            .dl-val {{ font-size: clamp(0.56rem, 1.8vw, 0.66rem); font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #ffffff; }}
-            .dl-gain {{ display: block; font-size: 0.52rem; margin-left: 0; }}
+            .dl-lbl {{ font-size: var(--text-xs); text-transform: none; color: var(--text-muted); }}
+            .dl-val {{ font-size: clamp(0.56rem, 1.8vw, 0.66rem); font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; font-weight: 500; color: #ffffff; }}
+            .dl-gain {{ display: block; font-size: var(--text-xs); margin-left: 0; }}
 
             /* 12. Tab 2 Plan Summary Mobile */
             .squad-health-widget {{
-                padding: 0.65rem 0.75rem;
-                margin-bottom: 0.75rem;
-                border-radius: 8px;
-                width: 100%;
-                max-width: 100%;
-                min-width: 0;
-                box-sizing: border-box;
-            }}
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 14px 16px;
+            margin-bottom: 16px;
+        }}
             .health-top-bar {{
                 flex-direction: column;
                 align-items: flex-start;
@@ -5910,7 +5903,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
             .health-heading {{ font-size: clamp(0.78rem, 2.4vw, 0.88rem); line-height: 1.35; }}
             .health-status-badge {{
-                font-size: 0.60rem;
+                font-size: var(--text-xs);
                 padding: 2px 6px;
                 align-self: flex-start;
                 max-width: 100%;
@@ -5993,7 +5986,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 background: #0f141c;
                 z-index: 2;
                 border-right: 1px solid var(--border-muted);
-                font-weight: 700;
+                font-weight: 500;
             }}
             .roadmap-table th:first-child {{
                 z-index: 3;
@@ -6038,7 +6031,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 z-index: 15 !important;
                 min-width: 82px !important;
                 max-width: 88px !important;
-                font-size: 0.68rem !important;
+                font-size: var(--text-xs) !important;
                 padding: 0.35rem 0.35rem !important;
                 background: #0f141c !important;
                 border-right: 2px solid var(--accent-emerald) !important;
@@ -6052,7 +6045,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 z-index: 35 !important;
                 background: #1a2230 !important;
             }}
-            .fdr-box-lg {{ min-width: 44px; font-size: 0.60rem; padding: 0.18rem 0.22rem; }}
+            .fdr-box-lg {{ min-width: 44px; font-size: var(--text-xs); padding: 0.18rem 0.22rem; }}
 
             /* 14. Tab 4 Research Sources Mobile */
             .source-ledger-row {{
@@ -6095,10 +6088,12 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 max-width: 100%;
             }}
             .h2h-leaderboard-card {{
-                padding: 0.75rem 0.65rem !important;
-                width: 100%;
-                box-sizing: border-box;
-            }}
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            padding: 16px 20px;
+            margin-bottom: 8px;
+        }}
             .h2h-card-header {{
                 flex-direction: column;
                 align-items: stretch;
@@ -6128,9 +6123,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
             .h2h-stat-box.box-c1 {{ text-align: left; }}
             .h2h-stat-box.box-c2 {{ text-align: right; }}
-            .h2h-stat-lbl {{ font-size: 0.58rem; }}
+            .h2h-stat-lbl {{ font-size: var(--text-xs); }}
             .h2h-stat-val {{ font-size: 0.88rem; }}
-            .h2h-stat-sub {{ font-size: 0.68rem; }}
+            .h2h-stat-sub {{ font-size: var(--text-xs); }}
             .h2h-stat-vs {{ font-size: 0.75rem; }}
 
             .review-archive-bar {{
@@ -6164,13 +6159,17 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 white-space: nowrap !important;
             }}
             .gw3-hero-banner {{
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0.75rem;
-                padding: 0.85rem 0.75rem;
-                width: 100%;
-                box-sizing: border-box;
-            }}
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            position: relative;
+        }}
             .gw3-hero-left {{ width: 100%; min-width: 0; }}
             .gw3-hero-top-row {{
                 flex-direction: column;
@@ -6197,7 +6196,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
             .gw3-meta-chip {{
                 padding: 0.3rem 0.5rem;
-                font-size: 0.68rem;
+                font-size: var(--text-xs);
                 justify-content: space-between;
             }}
             .gw3-scoreboard {{
@@ -6220,7 +6219,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
             .score-divider {{
                 font-size: 0.80rem;
-                font-weight: 800;
+                font-weight: 600;
                 color: var(--text-muted);
             }}
             .gw-review-mobile-switcher {{
@@ -6238,7 +6237,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 flex: 1;
                 padding: 0.42rem 0.3rem;
                 font-size: clamp(0.6875rem, 1.8vw, 0.74rem);
-                font-weight: 700;
+                font-weight: 500;
                 border-radius: 6px;
                 background: transparent;
                 color: var(--text-secondary);
@@ -6285,7 +6284,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             .gw3-table col.col-pts {{ width: 29%; }}
             .gw3-table th {{
                 padding: 6px 6px !important;
-                font-size: 0.62rem !important;
+                font-size:var(--text-xs) !important;
                 white-space: nowrap !important;
             }}
             .gw3-table td {{
@@ -6331,9 +6330,19 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 gap: 2px;
             }}
             .starter-card, .bench-card {{
-                max-width: 76px;
-                padding: 0.16rem 0.10rem 0.12rem;
-            }}
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 6px 6px 5px;
+            width: 100px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+            transition: background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+        }}
             .starter-name, .bench-name {{
                 font-size: var(--text-xs);
             }}
@@ -6344,19 +6353,38 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 font-size: var(--text-xs);
             }}
             .starter-photo-wrap, .bench-photo-wrap {{
-                height: 28px;
-            }}
+            width: 100%;
+            height: 42px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1px 0;
+            background: transparent;
+            border-radius: var(--radius-xs);
+        }}
             .starter-shirt-img, .bench-shirt-img {{
-                width: 24px;
-                height: 24px;
-            }}
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+        }}
         }}
 
         @media (max-width: 360px) {{
             .starter-card, .bench-card {{
-                max-width: 68px;
-                padding: 0.14rem 0.08rem 0.10rem;
-            }}
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 6px 6px 5px;
+            width: 100px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+            transition: background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+        }}
             .pitch-row, .bench-row {{
                 gap: 1px;
             }}
@@ -6364,12 +6392,21 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 font-size: var(--text-xs);
             }}
             .starter-shirt-img, .bench-shirt-img {{
-                width: 20px;
-                height: 20px;
-            }}
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+        }}
             .starter-photo-wrap, .bench-photo-wrap {{
-                height: 24px;
-            }}
+            width: 100%;
+            height: 42px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1px 0;
+            background: transparent;
+            border-radius: var(--radius-xs);
+        }}
             .stats-strip {{
                 grid-template-columns: 1fr;
             }}
@@ -6437,8 +6474,8 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <span class="val" style="color:var(--accent-sky);">{c2_bank_str}</span>
                 </div>
                 <div class="stat-cell" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08);">
-                    <span class="lbl" style="color:var(--accent-sky); font-weight:700;">Target Gameweek</span>
-                    <span class="val" style="color:var(--accent-sky); font-weight:800; font-size:0.95rem;">GW{active_gw}</span>
+                    <span class="lbl" style="color:var(--accent-sky); font-weight:500;">Target Gameweek</span>
+                    <span class="val" style="color:var(--accent-sky); font-weight:600; font-size:0.95rem;">GW{active_gw}</span>
                 </div>
                 <div class="stat-cell stat-rank-cell">
                     <span class="lbl">Global Rank</span>
@@ -6450,18 +6487,18 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
     </header>
 
     <!-- Navigation (5 Clean Tabs) -->
-    <nav class="nav-bar">
-        <button class="tab-btn active" onclick="switchTab('comparison', this)">Plan Lineup (GW{active_gw})</button>
-        <button class="tab-btn" onclick="switchTab('summary', this)">Plan Summary</button>
-        <button class="tab-btn" onclick="switchTab('ticker', this)">FDR Ticker</button>
-        <button class="tab-btn" onclick="switchTab('sources', this)">Research Sources</button>
-        <button class="tab-btn" onclick="switchTab('review', this)">{review_tab_name}</button>
+    <nav class="nav-bar" role="tablist" aria-label="Tactical Navigation">
+        <button id="tab-btn-comparison" role="tab" aria-selected="true" aria-controls="tab-comparison" class="tab-btn active" onclick="switchTab('comparison', this)">Plan Lineup (GW{active_gw})</button>
+        <button id="tab-btn-summary" role="tab" aria-selected="false" aria-controls="tab-summary" class="tab-btn" onclick="switchTab('summary', this)">Plan Summary</button>
+        <button id="tab-btn-ticker" role="tab" aria-selected="false" aria-controls="tab-ticker" class="tab-btn" onclick="switchTab('ticker', this)">FDR Ticker</button>
+        <button id="tab-btn-sources" role="tab" aria-selected="false" aria-controls="tab-sources" class="tab-btn" onclick="switchTab('sources', this)">Research Sources</button>
+        <button id="tab-btn-review" role="tab" aria-selected="false" aria-controls="tab-review" class="tab-btn" onclick="switchTab('review', this)">{review_tab_name}</button>
     </nav>
 
     <!-- Main Content Area -->
     <main>
         <!-- TAB 1: PLAN LINEUP -->
-        <section id="tab-comparison" class="tab-content active">
+        <section id="tab-comparison" class="tab-content active" role="tabpanel" aria-labelledby="tab-btn-comparison">
             <!-- Gameweek Target Banner on Front Page -->
             <div class="gw-target-banner">
                 <div class="gw-banner-left">
@@ -6667,7 +6704,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         </section>
 
         <!-- TAB 2: PLAN SUMMARY (REAL-TIME STRATEGIC AUDIT & PROS/CONS) -->
-        <section id="tab-summary" class="tab-content">
+        <section id="tab-summary" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-summary">
             <!-- Feature 4: Squad Fitness & Friday Press Conference Watcher Widget -->
             <div class="squad-health-widget">
                 <div class="health-top-bar">
@@ -6698,9 +6735,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                 
                 <!-- Half 1 Chips (GW1 - GW19) -->
                 <div style="margin-bottom:0.75rem;">
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
+                    <div style="font-size:0.75rem; font-weight:500; color:var(--text-bright); margin-bottom:0.4rem; text-transform:none; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
                         <span>ครึ่งแรก (Half 1: GW1 - GW19)</span>
-                        <span style="font-size:0.6875rem; padding:1px 6px; border-radius:3px; background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.3);">เตือน: ชิปที่เหลือจะหมดอายุสิ้น GW19</span>
+                        <span style="font-size:var(--text-xs); padding:1px 6px; border-radius:3px; background:rgba(245, 158, 11, 0.15); color:var(--accent-amber); border:1px solid rgba(245, 158, 11, 0.3);">เตือน: ชิปที่เหลือจะหมดอายุสิ้น GW19</span>
                     </div>
                     <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
                         {chips_half1_str}
@@ -6709,9 +6746,9 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
                 <!-- Half 2 Chips (GW20 - GW38) -->
                 <div>
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-bright); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
+                    <div style="font-size:0.75rem; font-weight:500; color:var(--text-bright); margin-bottom:0.4rem; text-transform:none; letter-spacing:normal; display:flex; align-items:center; gap:6px;">
                         <span>ครึ่งหลัง (Half 2: GW20 - GW38)</span>
-                        <span style="font-size:0.6875rem; padding:1px 6px; border-radius:3px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">ปลดล็อกชุดที่ 2 เต็มอัตราศึก 4 ชิป</span>
+                        <span style="font-size:var(--text-xs); padding:1px 6px; border-radius:3px; background:rgba(56, 189, 248, 0.15); color:var(--accent-sky); border:1px solid rgba(56, 189, 248, 0.3);">ปลดล็อกชุดที่ 2 เต็มอัตราศึก 4 ชิป</span>
                     </div>
                     <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
                         {chips_half2_str}
@@ -6757,7 +6794,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <div class="summary-panel-header">
                         <div>
                             <div class="plan-title">Choice 1 &bull; Micky Final Lockdown Squad</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">{c1_formation_str} Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m &bull; Quota: {user_free_transfers} FTs</span>
+                            <span style="font-size: var(--text-xs); color:var(--text-secondary);">{c1_formation_str} Formation &bull; Cost: £{c1_cost:.1f}m &bull; Bank: £{c1_bank:.1f}m &bull; Quota: {user_free_transfers} FTs</span>
                         </div>
                         {c1_lockdown_pill}
                     </div>
@@ -6780,7 +6817,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     <div class="summary-panel-header">
                         <div>
                             <div class="plan-title" style="color:var(--accent-emerald);">{c2_plan_title}</div>
-                            <span style="font-size:0.65rem; color:var(--text-secondary);">{c2_formation_str} Formation &bull; Cost: £{c2_cost:.1f}m &bull; Bank: {c2_bank_str} &bull; Hits: 0 pts</span>
+                            <span style="font-size: var(--text-xs); color:var(--text-secondary);">{c2_formation_str} Formation &bull; Cost: £{c2_cost:.1f}m &bull; Bank: {c2_bank_str} &bull; Hits: 0 pts</span>
                         </div>
                         <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald);">{c2_plan_pill}</span>
                     </div>
@@ -6802,11 +6839,11 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         </section>
 
         <!-- TAB 3: FDR TICKER -->
-        <section id="tab-ticker" class="tab-content">
+        <section id="tab-ticker" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-ticker">
             <div class="ticker-container">
                 <div class="ticker-header-bar">
                     <div>
-                        <h2 style="font-size:0.95rem; font-weight:700; color:#ffffff;">Full Season Fixture Difficulty &amp; Sorting (GW{active_gw} &ndash; GW38)</h2>
+                        <h2 style="font-size:0.95rem; font-weight:500; color:#ffffff;">Full Season Fixture Difficulty &amp; Sorting (GW{active_gw} &ndash; GW38)</h2>
                         <div class="fdr-legend-strip">
                             <span class="fdr-legend-label">FDR Scale:</span>
                             <span class="fdr-legend-item fdr-2">FDR 2 &bull; Easy</span>
@@ -6817,7 +6854,7 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
                     </div>
                     <div style="display:flex; gap:0.5rem; align-items:center;">
                         <button class="reset-btn" onclick="resetTableSort()">Reset Sort</button>
-                        <span style="font-size:0.65rem; color:var(--text-muted);">Scroll &rarr; to view GW{active_gw}-38</span>
+                        <span style="font-size: var(--text-xs); color:var(--text-muted);">Scroll &rarr; to view GW{active_gw}-38</span>
                     </div>
                 </div>
                 
@@ -6841,10 +6878,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
         </section>
 
         <!-- TAB 4: RESEARCH SOURCES -->
-        <section id="tab-sources" class="tab-content">
+        <section id="tab-sources" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-sources">
             <div class="panel panel-scroll" style="background:transparent; border:none; padding:0.4rem 0.5rem;">
                 <div style="margin-bottom:0.6rem; border-bottom:1px solid var(--border-main); padding-bottom:0.4rem;">
-                    <h2 style="font-size:0.95rem; font-weight:700; color:#ffffff;">Research Sources &amp; Analytical Framework</h2>
+                    <h2 style="font-size:0.95rem; font-weight:500; color:#ffffff;">Research Sources &amp; Analytical Framework</h2>
                     <p style="font-size:0.72rem; color:var(--text-secondary);">แหล่งข้อมูลเชิงลึก 5 ด้านที่เชื่อมโยงในการวิเคราะห์และจัดสรรทีม GEMINI UNITED</p>
                 </div>
 
@@ -6951,7 +6988,10 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
 
         function switchTab(tabId, btn) {{
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => {{
+                el.classList.remove('active');
+                el.setAttribute('aria-selected', 'false');
+            }});
             
             let target = document.getElementById('tab-' + tabId);
             if (!target && (tabId === 'gw-review' || tabId === 'review' || /^gw\d+-review$/.test(tabId))) {{
@@ -6959,16 +6999,30 @@ def generate_html_report(data_dir="data", output_file="index.html", target_gw=No
             }}
             if (target) target.classList.add('active');
             
-            if (btn) {{
-                btn.classList.add('active');
-            }} else if (window.event && window.event.currentTarget) {{
-                window.event.currentTarget.classList.add('active');
+            const activeBtn = btn || document.getElementById('tab-btn-' + tabId) || document.querySelector(`.tab-btn[onclick*="${{tabId}}"]`);
+            if (activeBtn) {{
+                activeBtn.classList.add('active');
+                activeBtn.setAttribute('aria-selected', 'true');
             }}
 
             if (window.history && window.history.replaceState) {{
                 window.history.replaceState(null, '', '#' + tabId);
             }}
         }}
+
+        // Browser Back/Forward navigation support
+        window.addEventListener('popstate', function() {{
+            const hash = window.location.hash.replace('#', '') || 'comparison';
+            switchTab(hash);
+        }});
+
+        // Auto-activate tab from URL hash on initial page load
+        document.addEventListener('DOMContentLoaded', function() {{
+            const hash = window.location.hash.replace('#', '');
+            if (hash) {{
+                switchTab(hash);
+            }}
+        }});
 
         function switchReviewGw(gw, btn, shouldScroll) {{
             document.querySelectorAll('.review-gw-panel').forEach(el => el.style.display = 'none');

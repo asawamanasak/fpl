@@ -95,6 +95,7 @@
 * `rollback_8` : ซิงค์ไลน์อัปไฟนอลล็อกดาวน์ GW4 (Verbruggen เฝ้าเสา, Gakpo -> Ødegaard, Foden สำรอง 1)
 * `rollback_9` : ระบบแท็บ 5 GW3 Review & Performance Comparison (Choice 1 vs Choice 2)
 * `rollback_10` : ทัพ GW5 สมบูรณ์ (Tavernier เข้าทีม £6.0m, Bank £1.4m) พร้อมระบบไดนามิก GW4 Review และ Season Head-to-Head Leaderboard Matrix
+* `rollback_11` : ยกระดับดีไซน์ตามมาตรฐาน Unslop & Impeccable Polish (WCAG AA Contrast 100%, WAI-ARIA Tablist, Micro-Typography Floor >= 11px, Popstate URL Hash Sync, Minimum 44px Touch Targets, Zero Muddy Shadows & Gradients)
 
 ---
 
