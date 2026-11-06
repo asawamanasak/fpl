@@ -1,22 +1,14 @@
 {
-  "last_checked": "2026-11-05T23:32:06.836158+00:00",
-  "total_alerts": 4,
+  "last_checked": "2026-11-06T18:20:18.282027+00:00",
+  "total_alerts": 3,
   "alerts": [
-    {
-      "id": 31,
-      "web_name": "Konsa",
-      "status": "d",
-      "chance": 75,
-      "news": "Knee injury - 75% chance of playing",
-      "timestamp": "2026-11-05T23:32:06.836033+00:00"
-    },
     {
       "id": 165,
       "web_name": "João Pedro",
       "status": "i",
       "chance": 0,
       "news": "Thigh injury - Unknown return date",
-      "timestamp": "2026-11-05T23:32:06.836056+00:00"
+      "timestamp": "2026-11-06T18:20:18.281886+00:00"
     },
     {
       "id": 346,
@@ -24,7 +16,7 @@
       "status": "d",
       "chance": 75,
       "news": "Foot injury - 75% chance of playing",
-      "timestamp": "2026-11-05T23:32:06.836070+00:00"
+      "timestamp": "2026-11-06T18:20:18.281908+00:00"
     },
     {
       "id": 423,
@@ -32,7 +24,7 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-11-05T23:32:06.836080+00:00"
+      "timestamp": "2026-11-06T18:20:18.281918+00:00"
     }
   ]
 }
