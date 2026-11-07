@@ -1,6 +1,6 @@
 {
-  "last_checked": "2026-11-07T15:43:53.308930+00:00",
-  "total_alerts": 2,
+  "last_checked": "2026-11-07T23:06:15.257740+00:00",
+  "total_alerts": 3,
   "alerts": [
     {
       "id": 165,
@@ -8,7 +8,15 @@
       "status": "i",
       "chance": 0,
       "news": "Thigh injury - Unknown return date",
-      "timestamp": "2026-11-07T15:43:53.308802+00:00"
+      "timestamp": "2026-11-07T23:06:15.257578+00:00"
+    },
+    {
+      "id": 391,
+      "web_name": "Gvardiol",
+      "status": "d",
+      "chance": 75,
+      "news": "Unspecified injury - 75% chance of playing",
+      "timestamp": "2026-11-07T23:06:15.257644+00:00"
     },
     {
       "id": 423,
@@ -16,7 +24,7 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-11-07T15:43:53.308839+00:00"
+      "timestamp": "2026-11-07T23:06:15.257654+00:00"
     }
   ]
 }
