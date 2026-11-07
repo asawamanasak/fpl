@@ -1,6 +1,6 @@
 {
-  "last_checked": "2026-11-06T18:20:18.282027+00:00",
-  "total_alerts": 3,
+  "last_checked": "2026-11-07T15:43:53.308930+00:00",
+  "total_alerts": 2,
   "alerts": [
     {
       "id": 165,
@@ -8,15 +8,7 @@
       "status": "i",
       "chance": 0,
       "news": "Thigh injury - Unknown return date",
-      "timestamp": "2026-11-06T18:20:18.281886+00:00"
-    },
-    {
-      "id": 346,
-      "web_name": "Calvert-Lewin",
-      "status": "d",
-      "chance": 75,
-      "news": "Foot injury - 75% chance of playing",
-      "timestamp": "2026-11-06T18:20:18.281908+00:00"
+      "timestamp": "2026-11-07T15:43:53.308802+00:00"
     },
     {
       "id": 423,
@@ -24,7 +16,7 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-11-06T18:20:18.281918+00:00"
+      "timestamp": "2026-11-07T15:43:53.308839+00:00"
     }
   ]
 }
