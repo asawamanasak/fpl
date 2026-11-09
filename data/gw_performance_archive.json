@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-07T23:06:15.257902+00:00",
+  "updated_at": "2026-11-09T11:17:34.215634+00:00",
   "completed_gameweeks": 10,
   "trajectory": [
     {
@@ -67,9 +67,9 @@
     },
     {
       "gw": 10,
-      "points": 32,
-      "total_points": 657,
-      "overall_rank": 141799,
+      "points": 69,
+      "total_points": 694,
+      "overall_rank": 131135,
       "in_top_100k": false
     }
   ]
