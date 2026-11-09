@@ -3448,7 +3448,7 @@
                     <h1>
                         <span class="team-name">GEMINI UNITED</span> 
                         <span class="team-id-tag">(ID: 306983)</span> 
-                        <span class="edge-pill" id="edgeStatusPill" title="Cloudflare Worker Edge Proxy (fpl-selection.asawamanasak.workers.dev) - Click to poll live match data"><span class="edge-dot"></span>Edge Live: <span id="edgeSyncTime">09/11/2026 06:17 PM</span><span class="edge-tag-active">LIVE</span></span>
+                        <span class="edge-pill" id="edgeStatusPill" title="Cloudflare Worker Edge Proxy (fpl-selection.asawamanasak.workers.dev) - Click to poll live match data"><span class="edge-dot"></span>Edge Live: <span id="edgeSyncTime">10/11/2026 04:28 AM</span><span class="edge-tag-active">LIVE</span></span>
                     </h1>
                     <p class="manager-meta-line">
                         <span class="manager-name">Manager: Micky Asawamanasak</span> 
@@ -3488,7 +3488,7 @@
         <button id="tab-btn-summary" role="tab" aria-selected="false" aria-controls="tab-summary" class="tab-btn" onclick="switchTab('summary', this)">Plan Summary</button>
         <button id="tab-btn-ticker" role="tab" aria-selected="false" aria-controls="tab-ticker" class="tab-btn" onclick="switchTab('ticker', this)">FDR Ticker</button>
         <button id="tab-btn-sources" role="tab" aria-selected="false" aria-controls="tab-sources" class="tab-btn" onclick="switchTab('sources', this)">Research Sources</button>
-        <button id="tab-btn-review" role="tab" aria-selected="false" aria-controls="tab-review" class="tab-btn" onclick="switchTab('review', this)">GW9 Review</button>
+        <button id="tab-btn-review" role="tab" aria-selected="false" aria-controls="tab-review" class="tab-btn" onclick="switchTab('review', this)">GW10 Review</button>
     </nav>
 
     <!-- Main Content Area -->
@@ -5108,24 +5108,24 @@
                         <div class="h2h-title-group">
                             <div class="h2h-audit-tag">
                                 <span class="h2h-audit-dot"></span>
-                                SEASON HEAD-TO-HEAD AUDIT (GW3 - GW9)
+                                SEASON HEAD-TO-HEAD AUDIT (GW3 - GW10)
                             </div>
                             <h3 class="h2h-main-title">
                                 <span>Season Head-to-Head Leaderboard</span>
-                                <span class="h2h-lead-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.35);">Choice 1 Leads +11 pts</span>
+                                <span class="h2h-lead-pill" style="background:rgba(56,189,248,0.15); color:var(--accent-sky); border:1px solid rgba(56,189,248,0.35);">Choice 1 Leads +21 pts</span>
                             </h3>
                         </div>
                         <div class="h2h-summary-strip">
                             <div class="h2h-stat-box box-c1">
                                 <div class="h2h-stat-lbl">Choice 1 (Micky)</div>
-                                <div class="h2h-stat-val val-c1">5W &bull; 1D &bull; 1L</div>
-                                <div class="h2h-stat-sub">437 pts <small style="color:var(--text-muted);">(62.4/GW)</small></div>
+                                <div class="h2h-stat-val val-c1">6W &bull; 1D &bull; 1L</div>
+                                <div class="h2h-stat-sub">506 pts <small style="color:var(--text-muted);">(63.2/GW)</small></div>
                             </div>
                             <div class="h2h-stat-vs">VS</div>
                             <div class="h2h-stat-box box-c2">
                                 <div class="h2h-stat-lbl">Choice 2 (Gemini)</div>
-                                <div class="h2h-stat-val val-c2">1W &bull; 1D &bull; 5L</div>
-                                <div class="h2h-stat-sub">426 pts <small style="color:var(--text-muted);">(60.9/GW)</small></div>
+                                <div class="h2h-stat-val val-c2">1W &bull; 1D &bull; 6L</div>
+                                <div class="h2h-stat-sub">485 pts <small style="color:var(--text-muted);">(60.6/GW)</small></div>
                             </div>
                         </div>
                     </div>
@@ -5146,10 +5146,24 @@
                             </thead>
                             <tbody>
                                 
-            <tr id="h2h-row-gw9" class="h2h-table-row is-active-gw">
+            <tr id="h2h-row-gw10" class="h2h-table-row is-active-gw">
+                <td class="h2h-td-gw">
+                    <span class="h2h-gw-label">Gameweek 10</span>
+                    <span class="h2h-latest-badge">LATEST</span>
+                </td>
+                <td class="h2h-td-num" style="color:var(--accent-sky); font-weight:600;">69 pts</td>
+                <td class="h2h-td-num" style="color:var(--accent-emerald); font-weight:500;">59 pts</td>
+                <td class="h2h-td-num" style="color:var(--accent-sky); font-weight:500;">+10 pts</td>
+                <td style="padding:10px 12px; text-align:center; white-space:nowrap;"><span class="mobile-winner-pill pill-c1">CHOICE 1</span></td>
+                <td style="padding:10px 12px; color:var(--text-secondary); font-size:0.75rem; line-height:1.5;">GW10 Automated Tactical Comparison</td>
+                <td style="padding:10px 12px; text-align:right; white-space:nowrap;">
+                    <button type="button" id="h2h-btn-gw10" class="h2h-row-action-btn is-active" onclick="switchReviewGw(10, document.getElementById('btn-review-gw10'), true)">กำลังแสดงผล &bull; ดูซ้ำ &darr;</button>
+                </td>
+            </tr>
+            <tr id="h2h-row-gw9" class="h2h-table-row">
                 <td class="h2h-td-gw">
                     <span class="h2h-gw-label">Gameweek 9</span>
-                    <span class="h2h-latest-badge">LATEST</span>
+                    
                 </td>
                 <td class="h2h-td-num" style="color:var(--accent-sky); font-weight:600;">62 pts</td>
                 <td class="h2h-td-num" style="color:var(--accent-emerald); font-weight:500;">58 pts</td>
@@ -5157,7 +5171,7 @@
                 <td style="padding:10px 12px; text-align:center; white-space:nowrap;"><span class="mobile-winner-pill pill-c1">CHOICE 1</span></td>
                 <td style="padding:10px 12px; color:var(--text-secondary); font-size:0.75rem; line-height:1.5;">GW9 Automated Tactical Comparison</td>
                 <td style="padding:10px 12px; text-align:right; white-space:nowrap;">
-                    <button type="button" id="h2h-btn-gw9" class="h2h-row-action-btn is-active" onclick="switchReviewGw(9, document.getElementById('btn-review-gw9'), true)">กำลังแสดงผล &bull; ดูซ้ำ &darr;</button>
+                    <button type="button" id="h2h-btn-gw9" class="h2h-row-action-btn" onclick="switchReviewGw(9, document.getElementById('btn-review-gw9'), true)">ดูรายละเอียด &rarr;</button>
                 </td>
             </tr>
             <tr id="h2h-row-gw8" class="h2h-table-row">
@@ -5247,15 +5261,15 @@
                             </tbody>
                             <tfoot>
                                 <tr class="h2h-tfoot-row">
-                                    <td style="padding:10px 12px; font-weight:600; color:#ffffff; white-space:nowrap;">รวมสะสม (7 GWs)</td>
-                                    <td class="h2h-td-num" style="color:var(--accent-sky); font-weight:600;">437 pts <small class="h2h-avg-sub">(62.4/GW)</small></td>
-                                    <td class="h2h-td-num" style="color:var(--accent-emerald); font-weight:600;">426 pts <small class="h2h-avg-sub">(60.9/GW)</small></td>
-                                    <td class="h2h-td-num" style="color:var(--accent-sky); font-weight:600;">+11 pts</td>
+                                    <td style="padding:10px 12px; font-weight:600; color:#ffffff; white-space:nowrap;">รวมสะสม (8 GWs)</td>
+                                    <td class="h2h-td-num" style="color:var(--accent-sky); font-weight:600;">506 pts <small class="h2h-avg-sub">(63.2/GW)</small></td>
+                                    <td class="h2h-td-num" style="color:var(--accent-emerald); font-weight:600;">485 pts <small class="h2h-avg-sub">(60.6/GW)</small></td>
+                                    <td class="h2h-td-num" style="color:var(--accent-sky); font-weight:600;">+21 pts</td>
                                     <td style="padding:10px 12px; text-align:center; white-space:nowrap;">
-                                        <span class="mobile-winner-pill pill-c1">CHOICE 1 LEADS +11 PTS</span>
+                                        <span class="mobile-winner-pill pill-c1">CHOICE 1 LEADS +21 PTS</span>
                                     </td>
                                     <td colspan="2" style="padding:10px 12px; color:var(--text-secondary); font-size:0.75rem; text-align:right;">
-                                        สถิติรวม: Choice 1 ชนะ 5 &bull; เสมอ 1 &bull; Choice 2 ชนะ 1
+                                        สถิติรวม: Choice 1 ชนะ 6 &bull; เสมอ 1 &bull; Choice 2 ชนะ 1
                                     </td>
                                 </tr>
                             </tfoot>
@@ -5265,11 +5279,41 @@
                     <!-- H2H Matrix Mobile Match Cards (Redesigned for Mobile) -->
                     <div class="h2h-mobile-card-list">
                         
-            <div id="h2h-card-gw9" class="h2h-match-card is-active-gw">
+            <div id="h2h-card-gw10" class="h2h-match-card is-active-gw">
+                <div class="h2h-match-card-header">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <span class="h2h-match-gw">GAMEWEEK 10</span>
+                        <span class="h2h-latest-badge">LATEST</span>
+                    </div>
+                    <span class="mobile-winner-pill pill-c1">CHOICE 1 WIN</span>
+                </div>
+                <div class="h2h-match-score-row">
+                    <div class="h2h-team-cell">
+                        <span class="h2h-team-name">Choice 1 (Micky)</span>
+                        <span class="h2h-team-pts pts-c1">69 <small>pts</small></span>
+                    </div>
+                    <div class="h2h-vs-indicator">
+                        <span class="h2h-vs-badge">VS</span>
+                        <span class="h2h-margin-badge" style="color:var(--accent-sky);">Margin: +10 pts</span>
+                    </div>
+                    <div class="h2h-team-cell cell-right">
+                        <span class="h2h-team-name">Choice 2 (Gemini)</span>
+                        <span class="h2h-team-pts pts-c2">59 <small>pts</small></span>
+                    </div>
+                </div>
+                <div class="h2h-match-decider-box">
+                    <span class="h2h-decider-lbl">TACTICAL MATCH DECIDER:</span>
+                    <span class="h2h-decider-txt">GW10 Automated Tactical Comparison</span>
+                </div>
+                <button type="button" id="h2h-mob-btn-gw10" class="h2h-match-action-btn is-active" onclick="switchReviewGw(10, document.getElementById('btn-review-gw10'), true)">
+                    ดูรายละเอียดและคะแนนรายตัว GW10 &rarr;
+                </button>
+            </div>
+            <div id="h2h-card-gw9" class="h2h-match-card">
                 <div class="h2h-match-card-header">
                     <div style="display:flex; align-items:center; gap:6px;">
                         <span class="h2h-match-gw">GAMEWEEK 9</span>
-                        <span class="h2h-latest-badge">LATEST</span>
+                        
                     </div>
                     <span class="mobile-winner-pill pill-c1">CHOICE 1 WIN</span>
                 </div>
@@ -5291,7 +5335,7 @@
                     <span class="h2h-decider-lbl">TACTICAL MATCH DECIDER:</span>
                     <span class="h2h-decider-txt">GW9 Automated Tactical Comparison</span>
                 </div>
-                <button type="button" id="h2h-mob-btn-gw9" class="h2h-match-action-btn is-active" onclick="switchReviewGw(9, document.getElementById('btn-review-gw9'), true)">
+                <button type="button" id="h2h-mob-btn-gw9" class="h2h-match-action-btn " onclick="switchReviewGw(9, document.getElementById('btn-review-gw9'), true)">
                     ดูรายละเอียดและคะแนนรายตัว GW9 &rarr;
                 </button>
             </div>
@@ -5476,15 +5520,15 @@
                 </button>
             </div>
                         <div class="h2h-mobile-totals-card">
-                            <div class="h2h-mobile-totals-head">สรุปคะแนนสะสม (7 Gameweeks)</div>
+                            <div class="h2h-mobile-totals-head">สรุปคะแนนสะสม (8 Gameweeks)</div>
                             <div class="h2h-mobile-totals-grid">
                                 <div>
                                     <span class="h2h-team-name">Choice 1 Total</span>
-                                    <div class="h2h-team-pts pts-c1" style="font-size:1.15rem;">437 <small>pts (62.4/GW)</small></div>
+                                    <div class="h2h-team-pts pts-c1" style="font-size:1.15rem;">506 <small>pts (63.2/GW)</small></div>
                                 </div>
                                 <div style="text-align:right;">
                                     <span class="h2h-team-name">Choice 2 Total</span>
-                                    <div class="h2h-team-pts pts-c2" style="font-size:1.15rem;">426 <small>pts (60.9/GW)</small></div>
+                                    <div class="h2h-team-pts pts-c2" style="font-size:1.15rem;">485 <small>pts (60.6/GW)</small></div>
                                 </div>
                             </div>
                         </div>
@@ -5498,7 +5542,8 @@
                         <span>เลือกรอบการแข่งขันที่ต้องการดูผลเปรียบเทียบ (Review Archive):</span>
                     </div>
                     <div class="review-gw-selector" role="tablist" aria-label="Gameweek Review Archive">
-                        <button type="button" role="tab" aria-selected="true" aria-controls="review-content-gw9" id="btn-review-gw9" class="source-pill review-gw-btn" onclick="switchReviewGw(9, this, false)" style="cursor:pointer; padding:6px 14px; min-block-size:44px; font-size:0.75rem; font-weight:500; border-radius:6px; border-color:var(--accent-emerald); color:var(--accent-emerald); background:rgba(16,185,129,0.15); transition:all 0.2s ease;">GW9 Review (ล่าสุด)</button>
+                        <button type="button" role="tab" aria-selected="true" aria-controls="review-content-gw10" id="btn-review-gw10" class="source-pill review-gw-btn" onclick="switchReviewGw(10, this, false)" style="cursor:pointer; padding:6px 14px; min-block-size:44px; font-size:0.75rem; font-weight:500; border-radius:6px; border-color:var(--accent-emerald); color:var(--accent-emerald); background:rgba(16,185,129,0.15); transition:all 0.2s ease;">GW10 Review (ล่าสุด)</button>
+<button type="button" role="tab" aria-selected="false" aria-controls="review-content-gw9" id="btn-review-gw9" class="source-pill review-gw-btn" onclick="switchReviewGw(9, this, false)" style="cursor:pointer; padding:6px 14px; min-block-size:44px; font-size:0.75rem; font-weight:500; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW9 Review</button>
 <button type="button" role="tab" aria-selected="false" aria-controls="review-content-gw8" id="btn-review-gw8" class="source-pill review-gw-btn" onclick="switchReviewGw(8, this, false)" style="cursor:pointer; padding:6px 14px; min-block-size:44px; font-size:0.75rem; font-weight:500; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW8 Review</button>
 <button type="button" role="tab" aria-selected="false" aria-controls="review-content-gw7" id="btn-review-gw7" class="source-pill review-gw-btn" onclick="switchReviewGw(7, this, false)" style="cursor:pointer; padding:6px 14px; min-block-size:44px; font-size:0.75rem; font-weight:500; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW7 Review</button>
 <button type="button" role="tab" aria-selected="false" aria-controls="review-content-gw6" id="btn-review-gw6" class="source-pill review-gw-btn" onclick="switchReviewGw(6, this, false)" style="cursor:pointer; padding:6px 14px; min-block-size:44px; font-size:0.75rem; font-weight:500; border-radius:6px; border-color:var(--border-accent); color:var(--text-secondary); background:#1e293b; transition:all 0.2s ease;">GW6 Review</button>
@@ -5509,7 +5554,590 @@
                 </div>
 
                 <!-- REVIEW PANELS -->
-                <div id="review-content-gw9" role="tabpanel" aria-labelledby="btn-review-gw9" class="review-gw-panel">
+                <div id="review-content-gw10" role="tabpanel" aria-labelledby="btn-review-gw10" class="review-gw-panel">
+            <div class="gw3-hero-banner">
+                <div class="gw3-hero-left">
+                    <div class="gw3-hero-top-row">
+                        <span class="gw3-result-pill winner-c1">[WIN] CHOICE 1 WINS</span>
+                        <span class="gw3-result-summary-text">Choice 1 ชนะด้วยผลต่าง +10 คะแนน (69 vs 59 pts)</span>
+                    </div>
+                    <h2 class="gw3-hero-title">สรุปผลการแข่งขัน &amp; เปรียบเทียบคะแนนสัปดาห์ที่ผ่านมา (GW10 Review)</h2>
+                    <div class="gw3-meta-pills-row">
+                        <span class="gw3-meta-chip">
+                            <span class="meta-lbl">World Avg:</span>
+                            <strong class="meta-val">55 pts</strong>
+                            <small style="color:var(--accent-emerald); font-weight:500;">(+14 pts)</small>
+                        </span>
+                        <span class="gw3-meta-chip">
+                            <span class="meta-lbl">GW10 Rank:</span>
+                            <strong class="meta-val">1,423,102</strong>
+                        </span>
+                        <span class="gw3-meta-chip">
+                            <span class="meta-lbl">Overall Rank:</span>
+                            <strong class="meta-val" style="color:var(--accent-emerald);">131,135</strong>
+                        </span>
+                    </div>
+                </div>
+                <div class="gw3-scoreboard">
+                    <div class="score-box is-winner-c1">
+                        <span class="score-lbl lbl-c1">Choice 1 (Actual)</span>
+                        <span class="score-val val-c1">69</span>
+                        <span class="score-bench-sub">Bench: 5 pts</span>
+                    </div>
+                    <div class="score-divider">VS</div>
+                    <div class="score-box">
+                        <span class="score-lbl lbl-c2">Choice 2 (Variant)</span>
+                        <span class="score-val val-c2">59</span>
+                        <span class="score-bench-sub">Bench: 9 pts</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Quick Switcher for GW10 Review Tables -->
+            <div class="gw-review-mobile-switcher" data-gw="10" role="tablist" aria-label="GW10 Mobile Team Switcher">
+                <button type="button" role="tab" aria-selected="true" class="gw-rev-mob-btn active" onclick="setReviewMobileTeam(10, 'both', this)">เทียบคู่ (Both)</button>
+                <button type="button" role="tab" aria-selected="false" class="gw-rev-mob-btn" onclick="setReviewMobileTeam(10, 'c1', this)">Choice 1 (69 pts)</button>
+                <button type="button" role="tab" aria-selected="false" class="gw-rev-mob-btn" onclick="setReviewMobileTeam(10, 'c2', this)">Choice 2 (59 pts)</button>
+            </div>
+
+            <div class="gw3-grid-2" id="gw-rev-grid-10">
+                <!-- LEFT: CHOICE 1 BREAKDOWN -->
+                <div class="gw3-panel gw-rev-col-c1" style="border-color: rgba(56, 189, 248, 0.35);">
+                    <div class="gw3-panel-header">
+                        <div>
+                            <span class="plan-title" style="color:var(--accent-sky);">Choice 1 &bull; Micky Actual Squad (GW10)</span>
+                            <div style="font-size:0.75rem; color:var(--text-secondary);">ตัวจริง 11 คน &bull; Official FPL Locked Lineup (GW10)</div>
+                        </div>
+                        <span class="source-pill" style="border-color:var(--accent-sky); color:var(--accent-sky); font-size:0.75rem; font-weight:600;">
+                            69 PTS
+                        </span>
+                    </div>
+
+                    <div class="gw3-subhead">
+                        <span>11 ผู้เล่นตัวจริง (Starters XI)</span>
+                        <span class="gw3-subhead-pts" style="color:var(--accent-sky);">69 คะแนน</span>
+                    </div>
+                    <table class="gw3-table">
+                        <colgroup>
+                            <col class="col-player">
+                            <col class="col-club">
+                            <col class="col-pts">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>นักเตะ (Player)</th>
+                                <th style="text-align:center;">สโมสร</th>
+                                <th style="text-align:right;">คะแนน</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-GKP">GKP</span>
+                        <span class="gw3-player-name">Verbruggen</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">BHA</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">6</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-DEF">DEF</span>
+                        <span class="gw3-player-name">Gvardiol</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">MCI</td>
+                <td class="gw3-td-pts" style="color:var(--text-muted);">
+                    <span class="pts-num">0</span>
+                </td>
+            </tr>
+            <tr class="gw3-row is-diff-row is-captain-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-DEF">DEF</span>
+                        <span class="gw3-player-name">Gabriel</span>
+                        <span class="role-badge-cap" style="width:18px; height:18px; font-size: var(--text-xs); margin-left:4px;">C</span><span class="gw3-tag-diff" title="ผู้เล่นตัวจริงที่แตกต่างระหว่าง Choice 1 และ Choice 2">DIFF</span>
+                    </div>
+                </td>
+                <td class="gw3-td-club">ARS</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">16</span> <small class="pts-mult">(8x2)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-DEF">DEF</span>
+                        <span class="gw3-player-name">Konsa</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">ARS</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">8</span>
+                </td>
+            </tr>
+            <tr class="gw3-row is-diff-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-DEF">DEF</span>
+                        <span class="gw3-player-name">Calafiori</span>
+                        <span class="gw3-tag-diff" title="ผู้เล่นตัวจริงที่แตกต่างระหว่าง Choice 1 และ Choice 2">DIFF</span>
+                    </div>
+                </td>
+                <td class="gw3-td-club">ARS</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">6</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-MID">MID</span>
+                        <span class="gw3-player-name">Groß</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">BHA</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">10</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-MID">MID</span>
+                        <span class="gw3-player-name">Szoboszlai</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">LIV</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">7</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-MID">MID</span>
+                        <span class="gw3-player-name">Tavernier</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">BOU</td>
+                <td class="gw3-td-pts" style="color:#ffffff;">
+                    <span class="pts-num">3</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-MID">MID</span>
+                        <span class="gw3-player-name">Palmer</span>
+                        <span class="role-badge-vc" style="width:18px; height:18px; font-size: var(--text-xs); margin-left:4px;">V</span>
+                    </div>
+                </td>
+                <td class="gw3-td-club">CHE</td>
+                <td class="gw3-td-pts" style="color:var(--text-muted);">
+                    <span class="pts-num">2</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-FWD">FWD</span>
+                        <span class="gw3-player-name">Haaland</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">MCI</td>
+                <td class="gw3-td-pts" style="color:var(--text-muted);">
+                    <span class="pts-num">2</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-FWD">FWD</span>
+                        <span class="gw3-player-name">Evanilson</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">BOU</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">9</span>
+                </td>
+            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="gw3-tfoot-row">
+                                <td colspan="2">รวมคะแนน 11 ตัวจริง (Total Starters XI)</td>
+                                <td style="text-align:right; color:var(--accent-sky);">69 pts</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div class="gw3-subhead gw3-subhead-bench">
+                        <span>ตัวสำรองบนม้านั่ง (Bench Reserves)</span>
+                        <span class="gw3-subhead-pts">5 คะแนน</span>
+                    </div>
+                    <table class="gw3-table">
+                        <colgroup>
+                            <col class="col-player">
+                            <col class="col-club">
+                            <col class="col-pts">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>ตัวสำรอง (Bench)</th>
+                                <th style="text-align:center;">สโมสร</th>
+                                <th style="text-align:right;">คะแนน</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr class="gw3-row is-benched">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-GKP">GKP</span>
+                        <span class="gw3-player-name">Kinsky</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">TOT</td>
+                <td class="gw3-td-pts" style="color:var(--text-secondary);">
+                    <span class="pts-num">2</span> <small class="pts-mult">(bench)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row is-benched">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-MID">MID</span>
+                        <span class="gw3-player-name">Manzambi</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">AVL</td>
+                <td class="gw3-td-pts" style="color:var(--text-secondary);">
+                    <span class="pts-num">2</span> <small class="pts-mult">(bench)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row is-benched">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-DEF">DEF</span>
+                        <span class="gw3-player-name">O&#x27;Shea</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">IPS</td>
+                <td class="gw3-td-pts" style="color:var(--text-secondary);">
+                    <span class="pts-num">1</span> <small class="pts-mult">(bench)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row is-benched">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-FWD">FWD</span>
+                        <span class="gw3-player-name">João Pedro</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">CHE</td>
+                <td class="gw3-td-pts" style="color:var(--text-secondary);">
+                    <span class="pts-num">0</span> <small class="pts-mult">(bench)</small>
+                </td>
+            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="gw3-tfoot-row gw3-tfoot-bench">
+                                <td colspan="2">รวมคะแนนบนม้านั่งสำรอง (Total Bench)</td>
+                                <td style="text-align:right; color:var(--text-secondary);">5 pts</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- RIGHT: CHOICE 2 BREAKDOWN -->
+                <div class="gw3-panel gw-rev-col-c2" style="border-color: rgba(16, 185, 129, 0.35);">
+                    <div class="gw3-panel-header">
+                        <div>
+                            <span class="plan-title" style="color:var(--accent-emerald);">Choice 2 &bull; GEMINI Refined Blueprint (GW10)</span>
+                            <div style="font-size:0.75rem; color:var(--text-secondary);">ตัวจริง 11 คน &bull; Max 2 Per Club Tactical Variant (GW10)</div>
+                        </div>
+                        <span class="source-pill" style="border-color:var(--accent-emerald); color:var(--accent-emerald); font-size:0.75rem; font-weight:600;">
+                            59 PTS
+                        </span>
+                    </div>
+
+                    <div class="gw3-subhead">
+                        <span>11 ผู้เล่นตัวจริง (Starters XI)</span>
+                        <span class="gw3-subhead-pts" style="color:var(--accent-emerald);">59 คะแนน</span>
+                    </div>
+                    <table class="gw3-table">
+                        <colgroup>
+                            <col class="col-player">
+                            <col class="col-club">
+                            <col class="col-pts">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>นักเตะ (Player)</th>
+                                <th style="text-align:center;">สโมสร</th>
+                                <th style="text-align:right;">คะแนน</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-GKP">GKP</span>
+                        <span class="gw3-player-name">Verbruggen</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">BHA</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">6</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-DEF">DEF</span>
+                        <span class="gw3-player-name">Gvardiol</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">MCI</td>
+                <td class="gw3-td-pts" style="color:var(--text-muted);">
+                    <span class="pts-num">0</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-DEF">DEF</span>
+                        <span class="gw3-player-name">Gabriel</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">ARS</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">8</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-DEF">DEF</span>
+                        <span class="gw3-player-name">Konsa</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">ARS</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">8</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-MID">MID</span>
+                        <span class="gw3-player-name">Groß</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">BHA</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">10</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-MID">MID</span>
+                        <span class="gw3-player-name">Szoboszlai</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">LIV</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">7</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-MID">MID</span>
+                        <span class="gw3-player-name">Tavernier</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">BOU</td>
+                <td class="gw3-td-pts" style="color:#ffffff;">
+                    <span class="pts-num">3</span>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-MID">MID</span>
+                        <span class="gw3-player-name">Palmer</span>
+                        <span class="role-badge-vc" style="width:18px; height:18px; font-size: var(--text-xs); margin-left:4px;">V</span>
+                    </div>
+                </td>
+                <td class="gw3-td-club">CHE</td>
+                <td class="gw3-td-pts" style="color:var(--text-muted);">
+                    <span class="pts-num">2</span>
+                </td>
+            </tr>
+            <tr class="gw3-row is-diff-row is-captain-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-FWD">FWD</span>
+                        <span class="gw3-player-name">Haaland</span>
+                        <span class="role-badge-cap" style="width:18px; height:18px; font-size: var(--text-xs); margin-left:4px;">C</span><span class="gw3-tag-diff" title="ผู้เล่นตัวจริงที่แตกต่างระหว่าง Choice 1 และ Choice 2">DIFF</span>
+                    </div>
+                </td>
+                <td class="gw3-td-club">MCI</td>
+                <td class="gw3-td-pts" style="color:#ffffff;">
+                    <span class="pts-num">4</span> <small class="pts-mult">(2x2)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-FWD">FWD</span>
+                        <span class="gw3-player-name">Evanilson</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">BOU</td>
+                <td class="gw3-td-pts" style="color:var(--accent-emerald);">
+                    <span class="pts-num">9</span>
+                </td>
+            </tr>
+            <tr class="gw3-row is-diff-row">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-MID">MID</span>
+                        <span class="gw3-player-name">Manzambi</span>
+                        <span class="gw3-tag-diff" title="ผู้เล่นตัวจริงที่แตกต่างระหว่าง Choice 1 และ Choice 2">DIFF</span>
+                    </div>
+                </td>
+                <td class="gw3-td-club">AVL</td>
+                <td class="gw3-td-pts" style="color:var(--text-muted);">
+                    <span class="pts-num">2</span>
+                </td>
+            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="gw3-tfoot-row">
+                                <td colspan="2">รวมคะแนน 11 ตัวจริง (Total Starters XI)</td>
+                                <td style="text-align:right; color:var(--accent-emerald);">59 pts</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div class="gw3-subhead gw3-subhead-bench">
+                        <span>ตัวสำรองบนม้านั่ง (Bench Reserves)</span>
+                        <span class="gw3-subhead-pts">9 คะแนน</span>
+                    </div>
+                    <table class="gw3-table">
+                        <colgroup>
+                            <col class="col-player">
+                            <col class="col-club">
+                            <col class="col-pts">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>ตัวสำรอง (Bench)</th>
+                                <th style="text-align:center;">สโมสร</th>
+                                <th style="text-align:right;">คะแนน</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr class="gw3-row is-benched">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-DEF">DEF</span>
+                        <span class="gw3-player-name">Calafiori</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">ARS</td>
+                <td class="gw3-td-pts" style="color:var(--accent-amber);">
+                    <span class="pts-num">6</span> <small class="pts-mult">(bench)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row is-benched">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-GKP">GKP</span>
+                        <span class="gw3-player-name">Kinsky</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">TOT</td>
+                <td class="gw3-td-pts" style="color:var(--text-secondary);">
+                    <span class="pts-num">2</span> <small class="pts-mult">(bench)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row is-benched">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-DEF">DEF</span>
+                        <span class="gw3-player-name">O&#x27;Shea</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">IPS</td>
+                <td class="gw3-td-pts" style="color:var(--text-secondary);">
+                    <span class="pts-num">1</span> <small class="pts-mult">(bench)</small>
+                </td>
+            </tr>
+            <tr class="gw3-row is-benched">
+                <td class="gw3-td-player">
+                    <div class="gw3-player-cell">
+                        <span class="pos-tag-mini pos-FWD">FWD</span>
+                        <span class="gw3-player-name">João Pedro</span>
+                        
+                    </div>
+                </td>
+                <td class="gw3-td-club">CHE</td>
+                <td class="gw3-td-pts" style="color:var(--text-secondary);">
+                    <span class="pts-num">0</span> <small class="pts-mult">(bench)</small>
+                </td>
+            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="gw3-tfoot-row gw3-tfoot-bench">
+                                <td colspan="2">รวมคะแนนบนม้านั่งสำรอง (Total Bench)</td>
+                                <td style="text-align:right; color:var(--text-secondary);">9 pts</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="gw3-decider-box">
+                <div style="font-size:0.85rem; font-weight:500; color:#ffffff; display:flex; align-items:center; gap:6px;">
+                    <span>จุดชี้ขาดสำคัญของการแข่งขันสัปดาห์ที่ 10 (Key Tactical Match Deciders)</span>
+                </div>
+                <div class="gw3-decider-item"><strong>1. สรุปผลการแข่งขันสัปดาห์ที่ 10 (Automated Post-Match Audit):</strong> ประมวลผลคะแนนจริงและเปรียบเทียบการตัดสินใจเชิงกลยุทธ์ระหว่าง Choice 1 และ Choice 2 อัตโนมัติจากข้อมูลทางการของ FPL</div>
+            </div>
+        </div>
+<div id="review-content-gw9" role="tabpanel" aria-labelledby="btn-review-gw9" class="review-gw-panel" style="display:none;">
             <div class="gw3-hero-banner">
                 <div class="gw3-hero-left">
                     <div class="gw3-hero-top-row">
