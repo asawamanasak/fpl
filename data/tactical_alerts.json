@@ -1,5 +1,5 @@
 {
-  "last_checked": "2026-11-12T18:07:41.629754+00:00",
+  "last_checked": "2026-11-19T21:51:11.819772+00:00",
   "total_alerts": 6,
   "alerts": [
     {
@@ -8,7 +8,7 @@
       "status": "d",
       "chance": 75,
       "news": "Calf injury - 75% chance of playing",
-      "timestamp": "2026-11-12T18:07:41.629607+00:00"
+      "timestamp": "2026-11-19T21:51:11.819662+00:00"
     },
     {
       "id": 165,
@@ -16,7 +16,7 @@
       "status": "i",
       "chance": 0,
       "news": "Thigh injury - Unknown return date",
-      "timestamp": "2026-11-12T18:07:41.629626+00:00"
+      "timestamp": "2026-11-19T21:51:11.819678+00:00"
     },
     {
       "id": 391,
@@ -24,7 +24,7 @@
       "status": "d",
       "chance": 75,
       "news": "Unspecified injury - 75% chance of playing",
-      "timestamp": "2026-11-12T18:07:41.629641+00:00"
+      "timestamp": "2026-11-19T21:51:11.819690+00:00"
     },
     {
       "id": 418,
@@ -32,7 +32,7 @@
       "status": "d",
       "chance": 75,
       "news": "Back injury - 75% chance of playing",
-      "timestamp": "2026-11-12T18:07:41.629647+00:00"
+      "timestamp": "2026-11-19T21:51:11.819695+00:00"
     },
     {
       "id": 423,
@@ -40,15 +40,15 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-11-12T18:07:41.629650+00:00"
+      "timestamp": "2026-11-19T21:51:11.819697+00:00"
     },
     {
       "id": 544,
       "web_name": "Xhaka",
-      "status": "d",
-      "chance": 75,
-      "news": "Calf injury - 75% chance of playing",
-      "timestamp": "2026-11-12T18:07:41.629656+00:00"
+      "status": "i",
+      "chance": 0,
+      "news": "Calf injury - Unknown return date",
+      "timestamp": "2026-11-19T21:51:11.819701+00:00"
     }
   ]
 }
