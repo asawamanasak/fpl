@@ -1,14 +1,22 @@
 {
-  "last_checked": "2026-11-20T18:45:52.900919+00:00",
-  "total_alerts": 4,
+  "last_checked": "2026-11-21T21:03:01.983376+00:00",
+  "total_alerts": 5,
   "alerts": [
+    {
+      "id": 1,
+      "web_name": "Raya",
+      "status": "d",
+      "chance": 75,
+      "news": "Shoulder injury - 75% chance of playing",
+      "timestamp": "2026-11-21T21:03:01.983212+00:00"
+    },
     {
       "id": 165,
       "web_name": "João Pedro",
       "status": "i",
       "chance": 0,
       "news": "Thigh injury - Unknown return date",
-      "timestamp": "2026-11-20T18:45:52.900773+00:00"
+      "timestamp": "2026-11-21T21:03:01.983238+00:00"
     },
     {
       "id": 418,
@@ -16,7 +24,7 @@
       "status": "d",
       "chance": 75,
       "news": "Back injury - 75% chance of playing",
-      "timestamp": "2026-11-20T18:45:52.900803+00:00"
+      "timestamp": "2026-11-21T21:03:01.983255+00:00"
     },
     {
       "id": 423,
@@ -24,7 +32,7 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-11-20T18:45:52.900807+00:00"
+      "timestamp": "2026-11-21T21:03:01.983259+00:00"
     },
     {
       "id": 544,
@@ -32,7 +40,7 @@
       "status": "i",
       "chance": 0,
       "news": "Calf injury - Unknown return date",
-      "timestamp": "2026-11-20T18:45:52.900815+00:00"
+      "timestamp": "2026-11-21T21:03:01.983265+00:00"
     }
   ]
 }
