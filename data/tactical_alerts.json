@@ -1,6 +1,6 @@
 {
-  "last_checked": "2026-11-22T16:10:06.324742+00:00",
-  "total_alerts": 4,
+  "last_checked": "2026-11-22T21:52:35.414410+00:00",
+  "total_alerts": 5,
   "alerts": [
     {
       "id": 1,
@@ -8,7 +8,7 @@
       "status": "d",
       "chance": 75,
       "news": "Shoulder injury - 75% chance of playing",
-      "timestamp": "2026-11-22T16:10:06.324591+00:00"
+      "timestamp": "2026-11-22T21:52:35.414250+00:00"
     },
     {
       "id": 165,
@@ -16,7 +16,15 @@
       "status": "i",
       "chance": 0,
       "news": "Thigh injury - Unknown return date",
-      "timestamp": "2026-11-22T16:10:06.324629+00:00"
+      "timestamp": "2026-11-22T21:52:35.414289+00:00"
+    },
+    {
+      "id": 367,
+      "web_name": "Gakpo",
+      "status": "d",
+      "chance": 75,
+      "news": "Calf injury - 75% chance of playing",
+      "timestamp": "2026-11-22T21:52:35.414309+00:00"
     },
     {
       "id": 423,
@@ -24,7 +32,7 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-11-22T16:10:06.324643+00:00"
+      "timestamp": "2026-11-22T21:52:35.414319+00:00"
     },
     {
       "id": 544,
@@ -32,7 +40,7 @@
       "status": "i",
       "chance": 0,
       "news": "Calf injury - Unknown return date",
-      "timestamp": "2026-11-22T16:10:06.324648+00:00"
+      "timestamp": "2026-11-22T21:52:35.414327+00:00"
     }
   ]
 }
