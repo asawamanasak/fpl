@@ -1,14 +1,14 @@
 {
-  "last_checked": "2026-11-22T21:52:35.414410+00:00",
-  "total_alerts": 5,
+  "last_checked": "2026-11-23T22:12:24.172100+00:00",
+  "total_alerts": 6,
   "alerts": [
     {
       "id": 1,
       "web_name": "Raya",
       "status": "d",
-      "chance": 75,
-      "news": "Shoulder injury - 75% chance of playing",
-      "timestamp": "2026-11-22T21:52:35.414250+00:00"
+      "chance": 50,
+      "news": "Shoulder injury - 50% chance of playing",
+      "timestamp": "2026-11-23T22:12:24.171948+00:00"
     },
     {
       "id": 165,
@@ -16,7 +16,15 @@
       "status": "i",
       "chance": 0,
       "news": "Thigh injury - Unknown return date",
-      "timestamp": "2026-11-22T21:52:35.414289+00:00"
+      "timestamp": "2026-11-23T22:12:24.171978+00:00"
+    },
+    {
+      "id": 229,
+      "web_name": "Tarkowski",
+      "status": "s",
+      "chance": 0,
+      "news": "Suspended until 13 Dec",
+      "timestamp": "2026-11-23T22:12:24.171986+00:00"
     },
     {
       "id": 367,
@@ -24,7 +32,7 @@
       "status": "d",
       "chance": 75,
       "news": "Calf injury - 75% chance of playing",
-      "timestamp": "2026-11-22T21:52:35.414309+00:00"
+      "timestamp": "2026-11-23T22:12:24.171995+00:00"
     },
     {
       "id": 423,
@@ -32,7 +40,7 @@
       "status": "i",
       "chance": 0,
       "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-11-22T21:52:35.414319+00:00"
+      "timestamp": "2026-11-23T22:12:24.172003+00:00"
     },
     {
       "id": 544,
@@ -40,7 +48,7 @@
       "status": "i",
       "chance": 0,
       "news": "Calf injury - Unknown return date",
-      "timestamp": "2026-11-22T21:52:35.414327+00:00"
+      "timestamp": "2026-11-23T22:12:24.172009+00:00"
     }
   ]
 }
