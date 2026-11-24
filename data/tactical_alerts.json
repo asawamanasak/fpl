@@ -1,5 +1,5 @@
 {
-  "last_checked": "2026-11-23T22:12:24.172100+00:00",
+  "last_checked": "2026-11-24T17:32:50.554512+00:00",
   "total_alerts": 6,
   "alerts": [
     {
@@ -8,7 +8,7 @@
       "status": "d",
       "chance": 50,
       "news": "Shoulder injury - 50% chance of playing",
-      "timestamp": "2026-11-23T22:12:24.171948+00:00"
+      "timestamp": "2026-11-24T17:32:50.554390+00:00"
     },
     {
       "id": 165,
@@ -16,7 +16,7 @@
       "status": "i",
       "chance": 0,
       "news": "Thigh injury - Unknown return date",
-      "timestamp": "2026-11-23T22:12:24.171978+00:00"
+      "timestamp": "2026-11-24T17:32:50.554416+00:00"
     },
     {
       "id": 229,
@@ -24,7 +24,7 @@
       "status": "s",
       "chance": 0,
       "news": "Suspended until 13 Dec",
-      "timestamp": "2026-11-23T22:12:24.171986+00:00"
+      "timestamp": "2026-11-24T17:32:50.554423+00:00"
     },
     {
       "id": 367,
@@ -32,15 +32,15 @@
       "status": "d",
       "chance": 75,
       "news": "Calf injury - 75% chance of playing",
-      "timestamp": "2026-11-23T22:12:24.171995+00:00"
+      "timestamp": "2026-11-24T17:32:50.554432+00:00"
     },
     {
       "id": 423,
       "web_name": "Shaw",
-      "status": "i",
-      "chance": 0,
-      "news": "Unspecified injury - Unknown return date",
-      "timestamp": "2026-11-23T22:12:24.172003+00:00"
+      "status": "d",
+      "chance": 75,
+      "news": "Unspecified injury - 75% chance of playing",
+      "timestamp": "2026-11-24T17:32:50.554439+00:00"
     },
     {
       "id": 544,
@@ -48,7 +48,7 @@
       "status": "i",
       "chance": 0,
       "news": "Calf injury - Unknown return date",
-      "timestamp": "2026-11-23T22:12:24.172009+00:00"
+      "timestamp": "2026-11-24T17:32:50.554445+00:00"
     }
   ]
 }
