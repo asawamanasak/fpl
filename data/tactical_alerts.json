@@ -1,6 +1,6 @@
 {
-  "last_checked": "2026-11-27T21:40:16.613300+00:00",
-  "total_alerts": 6,
+  "last_checked": "2026-11-28T20:14:44.324954+00:00",
+  "total_alerts": 5,
   "alerts": [
     {
       "id": 1,
@@ -8,7 +8,7 @@
       "status": "d",
       "chance": 75,
       "news": "Shoulder injury - 75% chance of playing",
-      "timestamp": "2026-11-27T21:40:16.613108+00:00"
+      "timestamp": "2026-11-28T20:14:44.324811+00:00"
     },
     {
       "id": 165,
@@ -16,7 +16,7 @@
       "status": "i",
       "chance": 0,
       "news": "Thigh injury - Unknown return date",
-      "timestamp": "2026-11-27T21:40:16.613143+00:00"
+      "timestamp": "2026-11-28T20:14:44.324838+00:00"
     },
     {
       "id": 229,
@@ -24,7 +24,7 @@
       "status": "s",
       "chance": 0,
       "news": "Suspended until 13 Dec",
-      "timestamp": "2026-11-27T21:40:16.613152+00:00"
+      "timestamp": "2026-11-28T20:14:44.324845+00:00"
     },
     {
       "id": 367,
@@ -32,15 +32,7 @@
       "status": "i",
       "chance": 0,
       "news": "Calf injury - Expected back 2 Dec",
-      "timestamp": "2026-11-27T21:40:16.613163+00:00"
-    },
-    {
-      "id": 426,
-      "web_name": "B.Fernandes",
-      "status": "d",
-      "chance": 75,
-      "news": "Illness - 75% chance of playing",
-      "timestamp": "2026-11-27T21:40:16.613172+00:00"
+      "timestamp": "2026-11-28T20:14:44.324853+00:00"
     },
     {
       "id": 544,
@@ -48,7 +40,7 @@
       "status": "i",
       "chance": 0,
       "news": "Calf injury - Unknown return date",
-      "timestamp": "2026-11-27T21:40:16.613179+00:00"
+      "timestamp": "2026-11-28T20:14:44.324862+00:00"
     }
   ]
 }
